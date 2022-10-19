@@ -1,0 +1,36 @@
+# Sidebar navigation
+
+- label: 'Introdução'
+  link: '/'
+- label: 'Começe agora'
+  link: '/getting-started'
+- label: Cadastros
+  items:
+    - label: 'Usuario'
+      link: '/registration/user'
+    - label: 'Permissão'
+      link: '/registration/permission'
+    - label: 'Perfil'
+      link: '/registration/role'
+    - label: 'Aplicação'
+      link: '/registration/application'
+    - label: 'Região'
+      link: '/registration/region'
+- label: Desenvolvimento
+  items:
+    - label: Api
+      link: /dev/api
+    - label: Frontend Web
+      link: /dev/frontendweb
+    - label: Estrutura pastas
+      link: /dev/folders
+    - label: Banco de dados
+      link: /dev/database
+    - label: 'Github'
+      link: https://github.com/thalamusfiles/iam
+- label: Conhecimentos gerais
+  items:
+    - label: SSO - Single sign-on
+      link: https://en.wikipedia.org/wiki/Single_sign-on
+    - label: RBAC - Role based access control
+      link: https://en.wikipedia.org/wiki/Role-based_access_control
