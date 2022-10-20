@@ -8,4 +8,7 @@ cd "$parent_path"
 cd ../docs/
 
 # Inicia a aplicação
+yarn
+
+# Inicia a aplicação
 yarn build
