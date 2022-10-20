@@ -52,6 +52,16 @@ jobs:
         with:
           version-type: ${{ github.event.inputs.version_type }}
           skip-tag: "true"
+      #Altera versão docs
+      - name: "Add version docs"
+        uses: "phips28/gh-action-bump-version@master"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGEJSON_DIR: "docs"
+        with:
+          version-type: ${{ github.event.inputs.version_type }}
+          skip-tag: "true"
+      #Aguarda uns segundos
       - name: Aguardar 3 segundos
         run: sleep 3s
         shell: bash
