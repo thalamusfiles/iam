@@ -32,9 +32,9 @@ jobs:
           file: 'docs.zip'
           token: ${{ secrets.GITHUB_TOKEN }}
       # Descompacta
-      - name: Descompact Build
+      - name: Descompact Zip
         shell: bash
-        run: unzip build.zip 
+        run: unzip docs.zip 
       # SSH Key
       - name: Baixa KeyPair
         run: |
