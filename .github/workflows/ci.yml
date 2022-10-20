@@ -34,7 +34,7 @@ jobs:
     steps:
       - name: "Checkout"
         uses: actions/checkout@v2
-      #Altera versão
+      #Altera versão backend
       - name: "Add version backend"
         uses: "phips28/gh-action-bump-version@master"
         env:
@@ -43,6 +43,7 @@ jobs:
         with:
           version-type: ${{ github.event.inputs.version_type }}
           skip-tag: "true"
+      #Altera versão frontend
       - name: "Add version frontend_web"
         uses: "phips28/gh-action-bump-version@master"
         env:
@@ -54,6 +55,7 @@ jobs:
       - name: Aguardar 3 segundos
         run: sleep 3s
         shell: bash
+      #Compartilha a versão com a pipe
       - name: Save TAG Parameter
         shell: bash
         id: tag_name
@@ -77,7 +79,7 @@ jobs:
       # Compacta Docs
       - name: Compact Build Docs
         shell: bash
-        run: zip -r docs docs/.cache docs/public docs/package.json
+        run: zip -r docs docs/public docs/package.json
       # Gera o release
       - name: Release
         uses: softprops/action-gh-release@v1
