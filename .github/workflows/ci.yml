@@ -72,6 +72,11 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
+      # Trocar versão node
+      - name: Use Node.js 
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.17
       # Builda Docs
       - name: Build Docs
         shell: bash
