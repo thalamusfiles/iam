@@ -44,8 +44,8 @@ jobs:
         shell: bash
         run: |
           mkdir -p ~/.ssh/
-          ssh-keyscan -H ${{ matrix.instanceip }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.HOST_URL }} >> ~/.ssh/known_hosts
           sudo chmod 600 ~/.ssh/known_hosts
       #Atualiza servidor
       - name: Atualiza servidor
-        run: rsync -e "ssh -i keypair.pem" -av docs/* ${{ secrets.HOST_CONNECTION }}:${{ secrets.HOST_FOLDER }}
+        run: rsync -e "ssh -i keypair.pem" -av docs/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}
