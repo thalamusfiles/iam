@@ -27,7 +27,7 @@
   "scripts": {
     "build": "gatsby build",
     "start": "gatsby develop",
-    "serve": "gatsby serve",
+    "serve": "gatsby --host=0.0.0.0 serve",
     "clean": "gatsby clean"
   }
 }
