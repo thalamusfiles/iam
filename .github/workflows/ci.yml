@@ -94,7 +94,7 @@ jobs:
       # Compacta Docs
       - name: Compact Build Docs
         shell: bash
-        run: zip -r docs docs/public docs/package.json docs/Dockerfile
+        run: zip -r docs docs/public docs/package.json docs/static docs/yarn.lock docs/gatsby-config.js docs/Dockerfile
       # Gera o release
       - name: Release
         uses: softprops/action-gh-release@v1
