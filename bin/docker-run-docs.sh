@@ -31,4 +31,6 @@ echo "Roda o container"
         -p $PORT:9000 \
         -v public:/var/www/docs/public:ro \
         --name iam_docs_prod \
-        -d iam_docs_prod
+        -it iam_docs_prod
+
+#docker run -p 9000:9000 -v public:/var/www/docs/public:ro --name iam_docs_prod -it iam_docs_prod
