@@ -5,6 +5,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+#bks Draw.IO
+diagramas/~*.bkp
+
 # Runtime data
 pids
 *.pid
