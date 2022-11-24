@@ -1,0 +1,203 @@
+$spacer: 0.8rem;
+$font-size-base: 0.9rem !default;
+$line-height-base:            1.2;
+
+$navbar-padding-y: $spacer / 2.5 !default;
+$navbar-padding-x: $spacer !default;
+
+$nav-link-padding-y: .25rem !default;
+
+$form-group-margin-bottom: .5rem;
+$label-margin-bottom: .05rem;
+
+$gray-800: #333333 !default;
+$gray-900: #1b1b1b !default;
+$input-color: #111;
+
+$red:     #d84251 !default;
+/*
+$blue:    #007bff !default;
+$indigo:  #6610f2 !default;
+$purple:  #6f42c1 !default;
+$pink:    #e83e8c !default;
+$orange:  #fd7e14 !default;
+$yellow:  #ffc107 !default;
+$green:   #28a745 !default;
+$teal:    #20c997 !default;
+$cyan:    #17a2b8 !default;
+
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark
+);
+*/
+
+@import "~bootstrap/scss/bootstrap";
+@import "scss/loader";
+@import "scss/fonts.scss";
+
+.mainContainer {
+  min-height: 350px;
+}
+
+.zi1 {
+  z-index: 1;
+}
+
+.fixed {
+  position: fixed;
+  width: 100%;
+  background-color: #FFF;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.navbar-brand img {
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+  margin-top: -3px;
+}
+
+.topSpace {
+  margin-top: $nav-link-height + $navbar-padding-x + 0.1;
+}
+
+.header {
+  border-bottom: 2px solid $gray-100;
+
+  .fa-layers-counter {
+    background-color: $secondary;
+    font-weight: 600;
+    transform: scale(.4);
+    padding: 0.35em 0.6em;
+  }
+}
+
+#user-dd ~ .dropdown-menu {
+  left: -$dropdown-min-width + 3rem;
+}
+
+.footer {
+  margin-top: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.list-tile {
+  cursor: pointer;
+  padding-top: $input-btn-padding-y;
+  padding-bottom: $input-btn-padding-y;
+
+  &:hover {
+    background-color: $gray-200;
+  }
+
+  button {
+    padding-left: 10px;
+    width: 35px;
+    height: 35px;
+
+    .fa-pull-left {
+      margin-left: -3px;
+    }
+    
+    .fa-pull-right {
+      margin-top: -4px;
+      margin-right: -6px;
+    }
+  }
+}
+
+.dashboard {
+  margin-top: $nav-link-height + $navbar-padding-x + 1.5;
+
+  h1 {
+    margin-bottom: $spacer * 1.5;
+  }
+}
+
+.sidebar {
+  input {
+    border-left: 0;
+    background: $input-group-addon-bg;
+  }
+
+  .title {
+    margin-top: $input-btn-padding-y-sm * 2;
+    margin-bottom: $input-btn-padding-y-sm * 2;
+  }
+
+  .action {
+    padding-top: $input-btn-padding-y-sm;
+    padding-bottom: $input-btn-padding-y-sm;
+  }
+}
+
+.sidebar.fixed {
+  position: fixed;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.table-resizable {
+  th {
+    overflow: hidden;
+  }
+
+  td {
+    overflow: hidden;
+  }
+}
+
+.table-resizer {
+  position: absolute;
+  margin-left: $table-cell-padding-sm / 2;
+  width: $table-border-width * 4;
+  height: $line-height-sm * 1em;
+
+  &:hover {
+    background-color: $gray-700;
+    cursor: col-resize;
+  }
+}
+
+table {
+  //Utilizado em tds com botões
+  td.actions {
+    padding: 0 3px;
+    button {
+      padding: 0.15rem 0.4rem;
+    }
+  }
+  //Formulário dentro de tabela
+  .form-group {
+    margin-bottom: 0;
+  }
+}
+
+.bgImageCover {
+  background-size: cover;
+  min-height: 100vh;
+}
+/*FIXs*/
+
+div.react-datepicker {
+  min-width: 328px;
+}
+
+.cdShadow {
+  box-shadow: 0 0 3em black;
+}

@@ -1,0 +1,82 @@
+{
+  "login": {
+    "title":"Thalamus IAM",
+    "subtitle":"Gerenciamento de identidades e acesso.",
+    "system": "Sistema",
+    "username": "Usuário, code ou e-mail",
+    "password": "Senha",
+    "action": {
+      "login": "Login"
+    }
+  },
+  "menu": {
+    "messages": "Mensagens",
+    "both":"Ambos",
+    "about": "Sobre",
+    "all": "Todos",
+    "list": "Lista",
+    "filters": "Filtros",
+    "sort": "Ordem",
+    "save-list": "Salvar Listagem",
+    "columns": "Colunas",
+    "brand": "IAM",
+    "home": "Início",
+    "help": "Ajuda",
+    "search": "Procurar por...",
+    "actions": "Ações",
+    "quickaccess": "Acesso Rápido",
+    "language": "Idioma",
+    "english": "Inglês",
+    "portuguese": "Português",
+    "logout": "Sair",
+    "customization":"Customizações",
+    "modules": {
+      "title": "Módulos",
+      "mgt": "Gestão",
+      "bi": "Relatórios"
+    },
+    "mgt": {
+      "register": "Cadastros",
+      "activity": "Atividade",
+      "systems": "Sistemas",
+      "region": "Region",
+      "applications": "Aplicações",
+      "person": "Usuários",
+      "roles": "Perfis / Papeis / Cargos",
+      "permissions": "Permissões / Recursos",
+      "tokens_active": "Aparelhos conectados",
+      "logins": "Logins realizados"
+    }
+  },
+  "actions": {
+    "showall": "Exibir tudo",
+    "new": "Novo",
+    "add": "Adicionar",
+    "back": "Voltar",
+    "save": "Salvar",
+    "clear": "Limpar",
+    "close": "Fechar",
+    "change": "Trocar",
+    "reset": "Resetar",
+    "open": "Abrir",
+    "cancel": "Cancelar",
+    "select": "Selectionar",
+    "search": "Buscar",
+    "applyfilter":"Aplicar filters",
+    "findfileupload": "Procurar arquivo",
+    "import": "Importar"
+  },
+  "person": {
+    "list.title": "Usuários",
+    "edit.title": "Editar Usuário",
+    "new.title": "Novo Usuário",
+    "edit": {
+      "about.title": "Sobre a Pessoa/Usuário",
+      "about.description": "",
+      "auth.title": "Autenticação",
+      "auth.description": "",
+      "roles.title": "Perfis / Papeis / Cargos",
+      "roles.description": "Um usuário pode ter um ou mais perfis."
+    }
+  }
+}

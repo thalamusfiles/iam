@@ -1,0 +1,82 @@
+{
+  "login": {
+    "title":"Thalamus IAM",
+    "subtitle":"Identity and Access Management.",
+    "system": "System",
+    "username": "User, code or e-mail",
+    "password": "Password",
+    "action": {
+      "login": "Login"
+    }
+  },
+  "menu": {
+    "messages": "Messages",
+    "both":"Both",
+    "about": "About",
+    "all": "All",
+    "list": "List",
+    "filters": "Filters",
+    "sort": "Sort",
+    "save-list": "Save List",
+    "columns": "Columns",
+    "brand": "IAM",
+    "home": "Home",
+    "help": "Help",
+    "search": "Search for...",
+    "actions": "Actions",
+    "quickaccess": "Quick Access",
+    "language": "Language",
+    "english": "English",
+    "portuguese": "Portuguese",
+    "logout": "Logout",
+    "customization":"Customization",
+    "modules": {
+      "title": "Modules",
+      "mgt": "Management",
+      "bi": "Reports"
+    },
+    "mgt": {
+      "register": "Register",
+      "activity": "Activity",
+      "systems": "Systems",
+      "region": "Região",
+      "applications": "Applications",
+      "person": "Users",
+      "roles": "Roles / Profiles / Positions",
+      "permissions": "Permissions / Resources",
+      "tokens_active": "Connected Devices",
+      "logins": "Logins performed"
+    }
+  },
+  "actions": {
+    "showall": "Show All",
+    "new": "New",
+    "add": "Add",
+    "back": "Back",
+    "save": "Save",
+    "clear": "Clear",
+    "close": "Close",
+    "change": "Change",
+    "reset": "Reset",
+    "open": "Open",
+    "cancel": "Cancel",
+    "select": "Select",
+    "search": "Search",
+    "applyfilter":"Apply filters",
+    "findfileupload": "Find file",
+    "import": "Import"
+  },
+  "person": {
+    "list.title": "Users",
+    "edit.title": "Edit User",
+    "new.title": "New User",
+    "edit": {
+      "about.title": "About Person/User",
+      "about.description": "",
+      "auth.title": "Authentication",
+      "auth.description": "",
+      "roles.title": "Roles / Profiles / Positions",
+      "roles.description": "A user can have one or more roles in the system"
+    }
+  }
+}
