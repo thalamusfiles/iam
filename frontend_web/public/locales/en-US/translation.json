@@ -66,6 +66,10 @@
     "findfileupload": "Find file",
     "import": "Import"
   },
+  "generic" :{
+    "actions.addcol": "Add Columns",
+    "actions.applycolumns": "Apply Columns"
+  },
   "person": {
     "list.title": "Users",
     "edit.title": "Edit User",

@@ -5,7 +5,7 @@ export const ColorsDef = {
   defaultBadgeVariant: 'info',
   // Cadastros
   personVariant: 'info',
-  rolesVariant: 'warning',
+  rolesVariant: 'success',
   permissionsVariant: 'outline-dark',
   // Sistemas
   regionVariant: 'outline-warning',

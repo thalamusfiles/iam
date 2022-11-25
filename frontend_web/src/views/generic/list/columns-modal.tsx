@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import Button from 'react-bootstrap/Button';
@@ -6,6 +7,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
+import { IconsDef } from '../../../commons/consts';
 import { WMSI18N } from '../../../commons/i18';
 import { CommonListStore } from './ctrl';
 import { TableHeadSeparator } from './types/TableHead';
@@ -59,13 +61,13 @@ export class ColumnsModal extends React.Component<{ ctrl?: CommonListStore; __?:
         </Modal.Body>
         <Modal.Footer>
           <Button variant="warning" onClick={ctrl!.clearColumns} className="pull-left">
-            {__!('actions.clear')}
+            <FontAwesomeIcon icon={IconsDef.clear} /> {__!('actions.clear')}
           </Button>
           <Button variant="secondary" onClick={() => ctrl!.toggleShowColumns()}>
-            {__!('actions.close')}
+            <FontAwesomeIcon icon={IconsDef.close} /> {__!('actions.close')}
           </Button>
           <Button variant="primary" onClick={() => ctrl!.applyColumns()}>
-            {__!('generic.actions.applycolumns')}
+            <FontAwesomeIcon icon={IconsDef.save} /> {__!('generic.actions.applycolumns')}
           </Button>
         </Modal.Footer>
       </Modal>

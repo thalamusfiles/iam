@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import Button from 'react-bootstrap/Button';
@@ -6,9 +7,9 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
+import { IconsDef } from '../../../commons/consts';
 import { WMSI18N } from '../../../commons/i18';
 import { CommonListStore } from './ctrl';
-
 
 /***
  * Modal para aplicação da ordenação da listagem.
@@ -47,7 +48,7 @@ export class SortModal extends React.Component<{ ctrl?: CommonListStore; __?: Fu
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => ctrl!.toggleShowSort()}>
-            {__!('actions.close')}
+            <FontAwesomeIcon icon={IconsDef.close} /> {__!('actions.close')}
           </Button>
         </Modal.Footer>
       </Modal>
