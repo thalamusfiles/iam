@@ -125,9 +125,9 @@ export class CommonListStore {
       const defs = await this.datasource.listUserDefs();
       this.customListDefs = defs.customLists;
       this.defaultListDefs = defs.defaultList;
-      this.activeListDefs = this.defaultListDefs.name;
       this.fastFilters = defs.fastFilters;
       */
+      this.activeListDefs = this.defaultListDefs.name;
 
       this.filtersDefs = (this.defaultListDefs.filters || []).map((j) => {
         const applied = this.filtersApplied.find((a) => a.name === j.name);

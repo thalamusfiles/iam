@@ -67,11 +67,10 @@ export default abstract class GenericList<S extends CommonListStore> extends Rea
   render() {
     return (
       <Provider ctrl={this.ctrl}>
-        <div className="fixed zi1">
+        <div className="zi1">
           <TopTabsBar />
           <FunctionsTabBar />
         </div>
-        <div style={{ height: 57 }}></div>
         <List />
         <FastFilters />
       </Provider>

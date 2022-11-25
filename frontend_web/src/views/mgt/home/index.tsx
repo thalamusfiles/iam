@@ -11,7 +11,7 @@ import { ColorsDef, IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 import { historyPush } from '../../../commons/route';
 import ListTile from '../../../components/listtile';
-import SideBar from './sidebar';
+import SideBarHome from './sidebarhome';
 
 function Home() {
   return (
@@ -19,7 +19,7 @@ function Home() {
       <Container fluid>
         <Row>
           <Col md={{ span: 3, offset: 1 }}>
-            <SideBar />
+            <SideBarHome />
           </Col>
           <Col md={8} className="dashboard-content">
             <QuickAccess />

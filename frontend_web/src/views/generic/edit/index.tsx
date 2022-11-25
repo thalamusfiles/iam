@@ -10,6 +10,7 @@ import { IconsDef } from '../../../commons/consts';
 import { useI18N, WMSI18N } from '../../../commons/i18';
 import { getHistory, historySearch } from '../../../commons/route';
 import Loader from '../../../components/Loader';
+import SideBar from '../../../components/SideBar';
 import { CommonEditStore } from './ctrl';
 
 type GenericEditProps<S extends CommonEditStore> = {
@@ -44,7 +45,7 @@ export default abstract class GenericEdit<S extends CommonEditStore> extends Rea
     this.ctrl.close();
   }
 
-  sideBar = (<SideBar />);
+  sideBar = (<SideBarEdit />);
 
   render() {
     const __ = useI18N();
@@ -98,22 +99,20 @@ class Body extends React.Component<{ ctrl?: CommonEditStore }> {
 @WMSI18N()
 @inject('ctrl')
 @observer
-class SideBar extends React.Component<{ ctrl?: CommonEditStore; __?: Function }> {
+class SideBarEdit extends React.Component<{ ctrl?: CommonEditStore; __?: Function }> {
   render() {
     const { __, ctrl } = this.props;
     return (
-      <div className="sidebar fixed">
-        <Col md={{ span: 2 }}>
-          <div className="title">{__!('menu.actions')}</div>
-          <SideBarAction faicon={IconsDef.save} title={__!('actions.save')} variant="outline-success" onClick={ctrl!.onSave} />
-          <SideBarAction faicon={IconsDef.goBack} title={__!('actions.back')} variant="outline-secondary" onClick={ctrl!.onBack} />
+      <SideBar span={2}>
+        <div className="title">{__!('menu.actions')}</div>
+        <SideBarAction faicon={IconsDef.save} title={__!('actions.save')} variant="outline-success" onClick={ctrl!.onSave} />
+        <SideBarAction faicon={IconsDef.goBack} title={__!('actions.back')} variant="outline-secondary" onClick={ctrl!.onBack} />
 
-          <div className="title">{__!('menu.quickaccess')}</div>
-          {ctrl!.componentsLoaded.map((comp) => (
-            <SideBarAction title={comp.sidebarTitle} link={'#' + comp.name} key={comp.name} />
-          ))}
-        </Col>
-      </div>
+        <div className="title">{__!('menu.quickaccess')}</div>
+        {ctrl!.componentsLoaded.map((comp) => (
+          <SideBarAction title={comp.sidebarTitle} link={'#' + comp.name} key={comp.name} />
+        ))}
+      </SideBar>
     );
   }
 }

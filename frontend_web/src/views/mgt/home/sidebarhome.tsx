@@ -10,7 +10,7 @@ import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 import modules from '../../modules.config';
 
-function SideBar() {
+function SideBarHome() {
   const __ = useI18N();
   return (
     <div className="sidebar fixed">
@@ -57,4 +57,4 @@ function SideBarAction(props: any) {
   );
 }
 
-export default SideBar;
+export default SideBarHome;

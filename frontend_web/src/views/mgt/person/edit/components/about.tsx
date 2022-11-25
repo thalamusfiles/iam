@@ -21,7 +21,7 @@ import { PersonEditStore } from '../ctrl';
 @WMSI18N()
 @inject('ctrl')
 @observer
-export default class AboutComp extends CustomComponentA<{}, PersonEditStore>  {
+export default class AboutComp extends CustomComponentA<{}, PersonEditStore> {
   assignAttribute = (assign: any) => {
     const { content, assignContent } = this.props!.ctrl;
     assignContent({
@@ -40,14 +40,10 @@ export default class AboutComp extends CustomComponentA<{}, PersonEditStore>  {
           ))}
           &nbsp; {__!('person.edit.about.title')}: {content.name}
         </h1>
-        <Row>
-          <Col>
-            <p>{__!('person.edit.about.description')}</p>
-          </Col>{' '}
-        </Row>
+        <p>{__!('person.edit.about.description')}</p>
         <Form>
           <Row>
-            <Col >
+            <Col>
               <Form.Row>
                 <WmsFormGroup
                   groupAs={Col}

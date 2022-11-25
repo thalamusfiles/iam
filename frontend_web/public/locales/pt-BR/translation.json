@@ -71,12 +71,15 @@
     "actions.applycolumns": "Exibir estas colunas"
   },
   "person": {
-    "list.title": "Usuários",
-    "edit.title": "Editar Usuário",
     "new.title": "Novo Usuário",
+    "list": {
+      "title": "Usuários",
+      "about.description": "Usuários"
+    },
     "edit": {
-      "about.title": "Sobre a Pessoa/Usuário",
-      "about.description": "",
+      "title": "Editar Usuário",
+      "about.title": "Sobre a Usuário/Pessoa",
+      "about.description": "Sobre a Usuário/Pessoa",
       "auth.title": "Autenticação",
       "auth.description": "",
       "roles.title": "Perfis / Papeis / Cargos",

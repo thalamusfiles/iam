@@ -71,12 +71,15 @@
     "actions.applycolumns": "Apply Columns"
   },
   "person": {
-    "list.title": "Users",
-    "edit.title": "Edit User",
     "new.title": "New User",
+    "list": {
+      "title": "Users",
+      "about.description": "Users"
+    },
     "edit": {
-      "about.title": "About Person/User",
-      "about.description": "",
+      "title": "Edit User",
+      "about.title": "About User/Person",
+      "about.description": "About User/Person",
       "auth.title": "Authentication",
       "auth.description": "",
       "roles.title": "Roles / Profiles / Positions",

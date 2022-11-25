@@ -11,10 +11,11 @@ $form-group-margin-bottom: .5rem;
 $label-margin-bottom: .05rem;
 
 $gray-800: #333333 !default;
-$gray-900: #1b1b1b !default;
-$input-color: #111;
+$gray-900: #2F2F2F !default;
+$input-color: #0F0F0F;
 
 $red:     #d84251 !default;
+
 /*
 $blue:    #007bff !default;
 $indigo:  #6610f2 !default;
@@ -72,7 +73,7 @@ $theme-colors: (
 }
 
 .topSpace {
-  margin-top: $nav-link-height + $navbar-padding-x + 0.1;
+  margin-top: $nav-link-height + $navbar-padding-x + 1;
 }
 
 .header {

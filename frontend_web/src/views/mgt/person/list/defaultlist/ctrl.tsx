@@ -14,8 +14,8 @@ export class PersonListStore extends CommonListStore {
       { name: 'name', title: 'Name', type: AttributeType.Text },
     ],
     columns: [
-      { colname: 'username', title: 'Username', type: AttributeType.Text },
-      { colname: 'name', title: 'Name', type: AttributeType.Text },
+      { colname: 'username', title: 'Username', type: AttributeType.Text, show: true },
+      { colname: 'name', title: 'Name', type: AttributeType.Text, show: true },
       { colname: 'roles', title: 'Roles', type: AttributeType.Text },
     ],
     sort: { colname: 'name', title: '', type: AttributeType.Text },
