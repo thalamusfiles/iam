@@ -45,7 +45,7 @@ class Header extends React.Component<HeaderProps> {
                 <strong>
                   {icon &&
                     (isArray ? (
-                      (icon as Array<IconName>).map((icon: IconName, idx: any) => <FontAwesomeIcon size="sm" icon={icon} />)
+                      (icon as Array<IconName>).map((icon: IconName, idx: any) => <FontAwesomeIcon key={idx} size="sm" icon={icon} />)
                     ) : (
                       <FontAwesomeIcon icon={icon as IconName} />
                     ))}

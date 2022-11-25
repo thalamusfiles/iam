@@ -1,7 +1,4 @@
-import PersonList from './list';
 import PersonEdit from './edit';
+import PersonList from './list';
 
-export {
-  PersonList,
-  PersonEdit
-};
+export { PersonList, PersonEdit };

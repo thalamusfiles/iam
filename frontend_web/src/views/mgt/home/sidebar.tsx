@@ -37,8 +37,8 @@ function SideBar() {
       <SideBarAction faicon={IconsDef.history} title={__('menu.mgt.logins')} />
 
       <div className="title">{__('menu.modules.title')}</div>
-      {modules.routes.map((route: any) => (
-        <SideBarAction facolor={route.color} faicon={route.icon} title={__(route.title)} link={route.link} />
+      {modules.routes.map((route: any, idx) => (
+        <SideBarAction key={idx} facolor={route.color} faicon={route.icon} title={__(route.title)} link={route.link} />
       ))}
     </div>
   );
@@ -51,7 +51,7 @@ function SideBarAction(props: any) {
         <FontAwesomeIcon color={props.facolor} size="xs" icon={props.faicon} />
       </Col>
       <Col>
-        <Link to={props.link}>{props.title}</Link>
+        <Link to={props.link || '/'}>{props.title}</Link>
       </Col>
     </Row>
   );

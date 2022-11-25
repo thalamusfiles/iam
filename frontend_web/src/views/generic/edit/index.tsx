@@ -53,7 +53,7 @@ export default abstract class GenericEdit<S extends CommonEditStore> extends Rea
 
     return (
       <Provider ctrl={this.ctrl}>
-        <Container>
+        <Container fluid>
           <Row>
             {!inModal && <Col md={{ span: sideBarSpan || 2 }}>{this.sideBar}</Col>}
             <Col md={inModal ? 12 : 12 - (sideBarSpan || 2)}>

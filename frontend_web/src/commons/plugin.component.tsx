@@ -11,6 +11,7 @@ import { IReactClassComponent } from './types/IReactComponent';
 export enum TargetForm {
   //management
   person_edit,
+  person_list,
 }
 
 /**
