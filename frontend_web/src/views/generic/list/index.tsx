@@ -137,7 +137,7 @@ class List extends React.Component<{ ctrl?: CommonListStore; __?: Function }> {
                     onDrop={() => this.onDrop(head)}
                   >
                     {head.title} {/* ilustração da ordem da listagem*/}
-                    {head.sortable &&
+                    {(head.sortable || head.sortable === undefined) &&
                       ctrl!.sort?.colname === head.colname &&
                       (ctrl!.sortOrder === SortOrder.Down ? (
                         <FontAwesomeIcon size="xs" icon="sort-amount-down" />

@@ -14,6 +14,7 @@
     "both":"Both",
     "about": "About",
     "all": "All",
+    "lists": "Lists",
     "list": "List",
     "filters": "Filters",
     "sort": "Sort",
@@ -73,8 +74,11 @@
   "person": {
     "new.title": "New User",
     "list": {
-      "title": "Users",
+      "title": "User listing",
       "about.description": "Users"
+    },
+    "permissions.list": {
+      "title": "List of users and permissions"
     },
     "edit": {
       "title": "Edit User",

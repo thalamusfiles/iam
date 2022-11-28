@@ -5,12 +5,12 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { Link } from 'react-router-dom';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N, WMSI18N } from '../../../commons/i18';
 import { getHistory, historySearch } from '../../../commons/route';
 import Loader from '../../../components/Loader';
 import SideBar from '../../../components/SideBar';
+import { SideBarAction } from '../../../components/SideBar/SideBarAction';
 import { CommonEditStore } from './ctrl';
 
 type GenericEditProps<S extends CommonEditStore> = {
@@ -115,20 +115,4 @@ class SideBarEdit extends React.Component<{ ctrl?: CommonEditStore; __?: Functio
       </SideBar>
     );
   }
-}
-
-function SideBarAction(props: any) {
-  return (
-    <Row className="action">
-      <Col xs={1} />
-      <Col>
-        {props.onClick && (
-          <Button variant={props.variant} size="sm" onClick={props.onClick}>
-            {props.faicon && <FontAwesomeIcon color={props.facolor} size="xs" icon={props.faicon} />} {props.title}
-          </Button>
-        )}
-        {props.link && <Link to={props.link}>{props.title}</Link>}
-      </Col>
-    </Row>
-  );
 }

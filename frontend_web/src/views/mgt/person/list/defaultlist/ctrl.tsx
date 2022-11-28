@@ -5,7 +5,6 @@ import { CommonListStore } from '../../../../generic/list/ctrl';
 import { ListDefinition } from '../../../../generic/list/types/ListDefinition';
 
 export class PersonListStore extends CommonListStore {
-  //datasource: GraphQLInterface = new PersonCRUDDatasource();
   defaultListDefs: ListDefinition = {
     id: 'users_list',
     name: 'users_list',
@@ -16,7 +15,7 @@ export class PersonListStore extends CommonListStore {
     columns: [
       { colname: 'username', title: 'Username', type: AttributeType.Text, show: true },
       { colname: 'name', title: 'Name', type: AttributeType.Text, show: true },
-      { colname: 'roles', title: 'Roles', type: AttributeType.Text },
+      { colname: 'roles', title: 'Roles', type: AttributeType.Text, sortable: false },
     ],
     sort: { colname: 'name', title: '', type: AttributeType.Text },
     sortOrder: SortOrder.Up,

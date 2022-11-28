@@ -41,7 +41,7 @@ export class CommonListStore {
 
   //Todas as colunas ordenáveis
   @computed get sortableHeader() {
-    return this.columnsDefs.filter((head) => head.sortable);
+    return this.columnsDefs.filter((head) => head.sortable || head.sortable === undefined);
   }
   //Informação da listagem
   @observable sort: TableHead | null = null;
@@ -301,7 +301,7 @@ export class CommonListStore {
    * e a ordem da listagem
    */
   @action toggleSortOrder = (head: TableHead) => {
-    if (!head.sortable) {
+    if (!head.sortable && head.sortable !== undefined) {
       notify.info(`${head.title} column not sortable`);
       return;
     }
