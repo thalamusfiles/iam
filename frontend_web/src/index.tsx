@@ -21,8 +21,8 @@ ReactDOM.render(
       <Provider context={UserContext}>
         <Router history={history}>
           <Switch>
-            <Route path={'/public/login'} component={Login} />
-            <PrivateRoutes redirect="/public/login">
+            <Route path={'/public/:region/:app/login'} component={Login} />
+            <PrivateRoutes redirect="/public/global/root/login">
               <Route path={'/mgt'} component={Mgt} />
               <Route path={'/'} exact render={() => <Redirect to="/mgt" />} />
             </PrivateRoutes>

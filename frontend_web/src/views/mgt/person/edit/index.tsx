@@ -5,6 +5,7 @@ import { PersonEditStore } from './ctrl';
 
 export * from './components/about';
 export * from './components/authorization';
+export * from './components/permissions';
 export * from './components/profiles';
 
 export default class PersonEdit extends GenericEdit<PersonEditStore> {

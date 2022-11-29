@@ -28,7 +28,7 @@ export function historyPush(
       break;
     //PUBLIC
     case 'login':
-      push = '/public/login';
+      push = '/public/:region/:app/login'.replace(':region', options.region).replace(':app', options.app);
       break;
     //MGT
     case 'roles_list':

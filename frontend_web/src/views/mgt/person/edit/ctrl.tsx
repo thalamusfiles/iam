@@ -10,7 +10,27 @@ export class PersonEditStore extends CommonEditStore {
 
   //Conteudo da tela
   @observable content: any = {};
-  @observable configPersonRoles: [] = [];
+  @observable roles: any[] = [
+    { id: 0, name: 'Global Super User' },
+    { id: 1, name: 'Global Super Viewer' },
+  ];
+  @observable permissions: any[] = [
+    { id: '0', on: 'User', action: 'View', name: 'User_View' },
+    { id: '1', on: 'User', action: 'Update', name: 'User_Update' },
+    { id: '2', on: 'User', action: 'Delete', name: 'User_Delete' },
+    { id: '3', on: 'Roles', action: 'View', name: 'Roles_View' },
+    { id: '4', on: 'Roles', action: 'Update', name: 'Roles_Update' },
+    { id: '5', on: 'Roles', action: 'Delete', name: 'Roles_Delete' },
+    { id: '6', on: 'Permission', action: 'View', name: 'Permission_View' },
+    { id: '7', on: 'Permission', action: 'Update', name: 'Permission_Update' },
+    { id: '8', on: 'Permission', action: 'Delete', name: 'Permission_Delete' },
+    { id: '9', on: 'Region', action: 'View', name: 'Region_View' },
+    { id: '10', on: 'Region', action: 'Update', name: 'Region_Update' },
+    { id: '11', on: 'Region', action: 'Delete', name: 'Region_Delete' },
+    { id: '12', on: 'Application', action: 'View', name: 'Application_View' },
+    { id: '13', on: 'Application', action: 'Update', name: 'Application_Update' },
+    { id: '14', on: 'Application', action: 'Delete', name: 'Application_Delete' },
+  ];
 
   constructor(...props: any) {
     super(props[0], false);
@@ -34,6 +54,7 @@ export class PersonEditStore extends CommonEditStore {
     try {
       //Carrega o conteudo
       this.content = await this.datasource.findById(id);
+      this.loadProfileRoles();
 
       //Dispara listener informando que o conteu foi carregado
       this.componentsClassesRefs.forEach((comp) => comp.onLoadContent && comp.onLoadContent());
@@ -86,5 +107,13 @@ export class PersonEditStore extends CommonEditStore {
       this.content = Object.assign({}, this.content, values);
     }
     this.componentsClassesRefs.forEach((comp) => comp.onAssignContent && comp.onAssignContent(values));
+  };
+
+  loadProfileRoles = () => {
+    /*const { roles } = this.props!.ctrl;
+    new ConfigPersonRoleCRUDDatasource().findAll().then((response) => {
+      if (response)
+        roles = response
+    });*/
   };
 }

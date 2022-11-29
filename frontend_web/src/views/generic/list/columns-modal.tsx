@@ -24,13 +24,7 @@ export class ColumnsModal extends React.Component<{ ctrl?: CommonListStore; __?:
     return (
       <Modal size="lg" animation={false} show={ctrl!.showColumns} onHide={() => ctrl!.toggleShowColumns()}>
         <Modal.Header closeButton>
-          <Modal.Title>
-            {__!('menu.columns')}
-            <small>
-              {' - '}
-              {__!('generic.msg.columnsmodaldesc')}
-            </small>
-          </Modal.Title>
+          <Modal.Title>{__!('menu.columns')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container>

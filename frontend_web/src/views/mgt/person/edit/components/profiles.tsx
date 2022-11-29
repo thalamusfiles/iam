@@ -18,26 +18,14 @@ import { PersonEditStore } from '../ctrl';
 @inject('ctrl')
 @observer
 export default class ProfilesComp extends CustomComponentA<{}, PersonEditStore> {
-  componentDidMount = () => {
-    this.loadProfileRoles();
-  };
-
-  loadProfileRoles = () => {
-    /*const { configPersonRoles } = this.props!.ctrl;
-    new ConfigPersonRoleCRUDDatasource().findAll().then((response) => {
-      if (response)
-        configPersonRoles = response
-    });*/
-  };
-
-  togglePersonRole = (configPersonRole: any) => {
+  togglePersonRole = (role: any) => {
     const { content, assignContent } = this.props!.ctrl;
     const personRoles = content.personRoles || [];
-    const idx = personRoles.findIndex((personRole: number) => personRole === configPersonRole.id);
+    const idx = personRoles.findIndex((personRole: number) => personRole === role.id);
     if (idx > -1) {
       personRoles.splice(idx, 1);
     } else {
-      personRoles.push(configPersonRole.id);
+      personRoles.push(role.id);
     }
     assignContent({
       personRoles: personRoles,
@@ -46,25 +34,23 @@ export default class ProfilesComp extends CustomComponentA<{}, PersonEditStore> 
 
   render() {
     const { __, ctrl } = this.props;
-    const { content, configPersonRoles } = ctrl;
+    const { content, roles } = ctrl;
 
     return (
       <>
-        <h2 id="person_roles">
-          {__!('person.edit.roles.title')}: {content.name}
-        </h2>
+        <h2 id="person_roles">{__!('person.edit.roles.title')}:</h2>
         <p>{__!('person.edit.roles.description')}</p>
         <Form>
           <Form.Row>
-            {configPersonRoles.map((configPersonRole: any, idx) => (
+            {roles.map((role: any, idx) => (
               <WmsFormGroup
                 groupAs={Col}
                 key={idx}
-                name={configPersonRole.name}
-                title={configPersonRole.name}
-                value={configPersonRole.id}
-                checked={content.personRoles?.includes(configPersonRole.id)}
-                onChange={() => this.togglePersonRole(configPersonRole)}
+                name={role.name}
+                title={role.name}
+                value={role.id}
+                checked={content.personRoles?.includes(role.id)}
+                onChange={() => this.togglePersonRole(role)}
                 type={AttributeType.Boolean}
               />
             ))}

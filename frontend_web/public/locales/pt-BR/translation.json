@@ -3,10 +3,12 @@
     "title":"Thalamus IAM",
     "subtitle":"Gerenciamento de identidades e acesso.",
     "system": "Sistema",
+    "region": "Região",
     "username": "Usuário, code ou e-mail",
     "password": "Senha",
     "action": {
-      "login": "Login"
+      "login": "Login",
+      "register": "Registrar"
     }
   },
   "menu": {
