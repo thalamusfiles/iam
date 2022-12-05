@@ -9,3 +9,21 @@ export class PersonCRUDDatasource extends CRUDDatasource {
     super(EndpointsDef.apiCRUDPerson);
   }
 }
+
+/**
+ * Role
+ */
+export class RoleCRUDDatasource extends CRUDDatasource {
+  constructor() {
+    super(EndpointsDef.apiCRUDRole);
+  }
+}
+
+/**
+ * Permission
+ */
+export class PermissionCRUDDatasource extends CRUDDatasource {
+  constructor() {
+    super(EndpointsDef.apiCRUDPermission);
+  }
+}

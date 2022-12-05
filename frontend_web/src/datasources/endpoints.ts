@@ -21,7 +21,15 @@ export const EndpointsDef = {
   //API CRUD Urls
   apiCRUD: apiCRUD,
   apiCRUDPerson: `/person`,
+  apiCRUDRole: `/role`,
+  apiCRUDPermission: `/permission`,
+  apiCRUDRegion: `/region`,
+  apiCRUDApplication: `/application`,
   //API GraphQL UrlS
   apiGraphQL: apiGraphQL,
   apiGraphQLPerson: `person`,
+  apiGraphQLRole: `role`,
+  apiGraphQLPermission: `permission`,
+  apiGraphQLRegion: `region`,
+  apiGraphQLApplication: `application`,
 };

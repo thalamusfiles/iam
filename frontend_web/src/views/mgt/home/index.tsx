@@ -80,7 +80,7 @@ function Register() {
           />
         </Col>
         <Col sm={6}>
-          <ListTile variant={ColorsDef.rolesVariant} faicon={IconsDef.roles} title={__('menu.mgt.roles')} onClick={() => historyPush('roles_list')} />
+          <ListTile variant={ColorsDef.rolesVariant} faicon={IconsDef.roles} title={__('menu.mgt.roles')} onClick={() => historyPush('role_list')} />
         </Col>
       </Row>
     </>

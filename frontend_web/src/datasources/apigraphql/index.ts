@@ -15,7 +15,7 @@ export class PersonGraphQLDatasource extends GraphQLDatasource {
  */
 export class RoleGraphQLDatasource extends GraphQLDatasource {
   constructor() {
-    super(EndpointsDef.apiGraphQLPerson);
+    super(EndpointsDef.apiGraphQLRole);
   }
 }
 
@@ -24,6 +24,6 @@ export class RoleGraphQLDatasource extends GraphQLDatasource {
  */
 export class PermissionGraphQLDatasource extends GraphQLDatasource {
   constructor() {
-    super(EndpointsDef.apiGraphQLPerson);
+    super(EndpointsDef.apiGraphQLPermission);
   }
 }

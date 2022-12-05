@@ -4,7 +4,7 @@ import { IconsDef } from '../../commons/consts';
 import { RouteDefinition, RouteDefinitions } from '../../commons/route';
 import Home from './home';
 import { PersonEdit, PersonList } from './person';
-import { RoleList } from './roles';
+import { RoleEdit, RoleList } from './roles';
 
 /**
  * Definições das rotas.
@@ -19,8 +19,8 @@ export const routes: RouteDefinitions = {
   person_new: { title: 'person.new.title', path: '*/person/new', component: PersonEdit },
   // Role
   role_list: { title: 'roles.list.title', icon: IconsDef.roles, path: '*/role/list', component: RoleList },
-  role_edit: { title: 'roles.edit.title', path: '*/role/edit/:id(\\d+)*', component: PersonEdit },
-  role_new: { title: 'roles.new.title', path: '*/role/new', component: PersonEdit },
+  role_edit: { title: 'roles.edit.title', path: '*/role/edit/:id(\\d+)*', component: RoleEdit },
+  role_new: { title: 'roles.new.title', path: '*/role/new', component: RoleEdit },
   // Permissions
   permissions_list: { title: 'permissions.list.title', icon: IconsDef.permissions, path: '*/permissions/list', component: PersonList },
   permissions_edit: { title: 'permissions.edit.title', path: '*/permissions/edit/:id(\\d+)*', component: PersonEdit },

@@ -12,6 +12,8 @@ export enum TargetForm {
   //management
   person_edit,
   person_list,
+  role_edit,
+  role_list,
 }
 
 /**
