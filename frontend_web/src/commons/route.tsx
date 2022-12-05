@@ -31,9 +31,6 @@ export function historyPush(
       push = '/public/:region/:app/login'.replace(':region', options.region).replace(':app', options.app);
       break;
     //MGT
-    case 'roles_list':
-    case 'roles_edit':
-    case 'roles_new':
     case 'permissions_list':
     case 'permissions_edit':
     case 'permissions_new':
@@ -49,6 +46,15 @@ export function historyPush(
       break;
     case 'person_new':
       push = '/mgt/person/new';
+      break;
+    case 'role_list':
+      push = '/mgt/role/list';
+      break;
+    case 'role_edit':
+      push = '/mgt/role/edit/:id'.replace(':id', options.id);
+      break;
+    case 'role_new':
+      push = '/mgt/role/new';
       break;
     default:
       push = owner;

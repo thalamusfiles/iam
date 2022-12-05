@@ -4,6 +4,7 @@ import { IconsDef } from '../../commons/consts';
 import { RouteDefinition, RouteDefinitions } from '../../commons/route';
 import Home from './home';
 import { PersonEdit, PersonList } from './person';
+import { RoleList } from './roles';
 
 /**
  * Definições das rotas.
@@ -16,10 +17,10 @@ export const routes: RouteDefinitions = {
   person_list: { title: 'person.list.title', icon: IconsDef.person, path: '*/person/list', component: PersonList },
   person_edit: { title: 'person.edit.title', path: '*/person/edit/:id(\\d+)*', component: PersonEdit },
   person_new: { title: 'person.new.title', path: '*/person/new', component: PersonEdit },
-  // Roles
-  roles_list: { title: 'roles.list.title', icon: IconsDef.roles, path: '*/roles/list', component: PersonList },
-  roles_edit: { title: 'roles.edit.title', path: '*/roles/edit/:id(\\d+)*', component: PersonEdit },
-  roles_new: { title: 'roles.new.title', path: '*/roles/new/:owner/:ownerId', component: PersonEdit },
+  // Role
+  role_list: { title: 'roles.list.title', icon: IconsDef.roles, path: '*/role/list', component: RoleList },
+  role_edit: { title: 'roles.edit.title', path: '*/role/edit/:id(\\d+)*', component: PersonEdit },
+  role_new: { title: 'roles.new.title', path: '*/role/new', component: PersonEdit },
   // Permissions
   permissions_list: { title: 'permissions.list.title', icon: IconsDef.permissions, path: '*/permissions/list', component: PersonList },
   permissions_edit: { title: 'permissions.edit.title', path: '*/permissions/edit/:id(\\d+)*', component: PersonEdit },

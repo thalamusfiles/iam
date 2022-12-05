@@ -10,6 +10,7 @@ import bgRotate03 from '../../../assets/bg_rotate_03.jpeg';
 import bgRotate04 from '../../../assets/bg_rotate_04.jpeg';
 import { IconsDef } from '../../../commons/consts';
 import { WMSI18N } from '../../../commons/i18';
+import { historySearch } from '../../../commons/route';
 import UserContext from '../../../store/userContext';
 
 const bgImg = [bgRotate01, bgRotate02, bgRotate03, bgRotate04][Math.floor(Math.random() * 4)];
@@ -21,9 +22,17 @@ class LoginPage extends React.Component<{ __: Function }> {
       username: null,
       password: null,
     },
+    redirectTo: null as null | string,
     username: '',
     password: '',
   };
+
+  constructor(props: any) {
+    super(props);
+
+    const urlSearch = historySearch();
+    this.state.redirectTo = urlSearch.redirectTo as string;
+  }
 
   onKeyUpFilter = (e: any) => {
     if (e.charCode === 13) {
@@ -52,7 +61,7 @@ class LoginPage extends React.Component<{ __: Function }> {
 
   render() {
     const { __ } = this.props;
-    const { erros } = this.state;
+    const { redirectTo, erros } = this.state;
 
     return (
       <div style={{ backgroundImage: `url(${bgImg})` }} className="bgImageCover">
@@ -65,20 +74,22 @@ class LoginPage extends React.Component<{ __: Function }> {
             <Col md={{ span: 4, offset: 4 }} sm={{ span: 6, offset: 3 }}>
               <Card border="info" className="cdShadow">
                 <Card.Body>
-                  <Row>
-                    <Col>
-                      <Form.Group controlId="validationCustom01">
-                        <Form.Label>{__('login.region')}</Form.Label>
-                        <Form.Control type="text" value="Global System" disabled />
-                      </Form.Group>
-                    </Col>
-                    <Col>
-                      <Form.Group controlId="validationCustom01">
-                        <Form.Label>{__('login.system')}</Form.Label>
-                        <Form.Control type="text" value="Root" disabled />
-                      </Form.Group>
-                    </Col>
-                  </Row>
+                  {!redirectTo && (
+                    <Row>
+                      <Col>
+                        <Form.Group controlId="validationCustom01">
+                          <Form.Label>{__('login.region')}</Form.Label>
+                          <Form.Control type="text" value="Global System" disabled />
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group controlId="validationCustom01">
+                          <Form.Label>{__('login.system')}</Form.Label>
+                          <Form.Control type="text" value="Root" disabled />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  )}
                   <Form.Group controlId="validationCustom01">
                     <Form.Label>{__('login.username')}</Form.Label>
                     <Form.Control
@@ -104,7 +115,7 @@ class LoginPage extends React.Component<{ __: Function }> {
                     <Form.Control.Feedback type="invalid">{erros.password}</Form.Control.Feedback>
                   </Form.Group>
 
-                  <Row >
+                  <Row>
                     <Col>
                       <Card.Link color="primary" onClick={this.login}>
                         <FontAwesomeIcon icon={IconsDef.save} /> {__('login.action.login')}
