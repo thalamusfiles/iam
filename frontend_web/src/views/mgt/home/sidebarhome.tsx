@@ -33,8 +33,8 @@ function SideBarHome() {
       </Form>
 
       <div className="title">{__('menu.mgt.activity')}</div>
-      <SideBarAction faicon={IconsDef.tokensActive} title={__('menu.mgt.tokens_active')} />
-      <SideBarAction faicon={IconsDef.history} title={__('menu.mgt.logins')} />
+      <SideBarAction faicon={IconsDef.tokensActive} title={__('menu.mgt.my_tokens_active')} />
+      <SideBarAction faicon={IconsDef.history} title={__('menu.mgt.my_logins')} />
 
       <div className="title">{__('menu.modules.title')}</div>
       {modules.routes.map((route: any, idx) => (

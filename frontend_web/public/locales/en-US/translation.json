@@ -47,8 +47,8 @@
       "person": "Users",
       "roles": "Roles / Profiles / Positions",
       "permissions": "Permissions / Resources",
-      "tokens_active": "Connected Devices",
-      "logins": "Logins performed"
+      "my_tokens_active": "My connected devices",
+      "my_logins": "My logins performed"
     }
   },
   "actions": {

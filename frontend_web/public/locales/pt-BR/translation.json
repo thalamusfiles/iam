@@ -47,8 +47,8 @@
       "person": "Usuários",
       "roles": "Perfis / Papeis / Cargos",
       "permissions": "Permissões / Recursos",
-      "tokens_active": "Aparelhos conectados",
-      "logins": "Logins realizados"
+      "my_tokens_active": "Meus aparelhos conectados",
+      "my_logins": "Meus logins realizados"
     }
   },
   "actions": {

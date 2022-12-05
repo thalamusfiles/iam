@@ -36,19 +36,19 @@ function QuickAccess() {
   const __ = useI18N();
   return (
     <>
-      <OverlayTrigger placement={'left'} overlay={<Tooltip id={`importtt`}>{__('menu.mgt.tokens_active')}</Tooltip>}>
+      <OverlayTrigger placement={'left'} overlay={<Tooltip id={`importtt`}>{__('menu.mgt.my_tokens_active')}</Tooltip>}>
         <Button variant="primary" onClick={() => historyPush('tokens_active', { inModal: true, showSave: true })}>
           <FontAwesomeIcon icon={IconsDef.tokensActive} />
           &nbsp;
-          {__('menu.mgt.tokens_active')}
+          {__('menu.mgt.my_tokens_active')}
         </Button>
       </OverlayTrigger>
       &nbsp;
-      <OverlayTrigger placement={'left'} overlay={<Tooltip id={`emptycntrtt`}>{__('menu.mgt.logins')}</Tooltip>}>
+      <OverlayTrigger placement={'left'} overlay={<Tooltip id={`emptycntrtt`}>{__('menu.mgt.my_logins')}</Tooltip>}>
         <Button variant="warning" onClick={() => historyPush('login_history', { inModal: true, showSave: true })}>
           <FontAwesomeIcon icon={IconsDef.history} />
           &nbsp;
-          {__('menu.mgt.logins')}
+          {__('menu.mgt.my_logins')}
         </Button>
       </OverlayTrigger>
       <br />
