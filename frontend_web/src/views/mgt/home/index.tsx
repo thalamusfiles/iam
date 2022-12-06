@@ -37,7 +37,7 @@ function QuickAccess() {
   return (
     <>
       <OverlayTrigger placement={'left'} overlay={<Tooltip id={`importtt`}>{__('menu.mgt.my_tokens_active')}</Tooltip>}>
-        <Button variant="primary" onClick={() => historyPush('tokens_active', { inModal: true, showSave: true })}>
+        <Button variant="primary" onClick={() => historyPush('tokens_active', { inModal: true })}>
           <FontAwesomeIcon icon={IconsDef.tokensActive} />
           &nbsp;
           {__('menu.mgt.my_tokens_active')}
