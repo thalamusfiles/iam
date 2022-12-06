@@ -10,6 +10,11 @@ export class RegionEditStore extends CommonEditStore {
 
   //Conteudo da tela
   @observable content: any = {};
+  @observable applications: any[] = [
+    { id: 0, name: 'Application 01', description: 'Description 01' },
+    { id: 1, name: 'Application 02', description: 'Description 02' },
+    { id: 2, name: 'Application 03', description: 'Description 03' },
+  ];
 
   constructor(...props: any) {
     super(props[0], false);

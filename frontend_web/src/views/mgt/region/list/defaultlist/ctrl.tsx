@@ -8,12 +8,14 @@ export class RegionListStore extends CommonListStore {
   defaultListDefs: ListDefinition = {
     id: 'regions_list',
     name: 'regions_list',
-    filters: [{ name: 'name', title: 'Name', type: AttributeType.Text }],
+    filters: [
+      { name: 'initials', title: 'Initials', type: AttributeType.Text },
+      { name: 'name', title: 'Name', type: AttributeType.Text },
+    ],
     columns: [
+      { colname: 'initials', title: 'initials', type: AttributeType.Text, show: true },
       { colname: 'name', title: 'Name', type: AttributeType.Text, show: true },
       { colname: 'description', title: 'Description', type: AttributeType.Text, show: true },
-      { colname: 'application.name', title: 'Application', type: AttributeType.Text, sortable: false },
-      { colname: 'region.name', title: 'Region', type: AttributeType.Text, sortable: false },
     ],
     sort: { colname: 'name', title: '', type: AttributeType.Text },
     sortOrder: SortOrder.Up,
