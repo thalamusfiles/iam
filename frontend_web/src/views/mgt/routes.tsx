@@ -2,9 +2,11 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { IconsDef } from '../../commons/consts';
 import { RouteDefinition, RouteDefinitions } from '../../commons/route';
+import { ApplicationEdit, ApplicationList } from './application';
 import Home from './home';
 import { PermissionEdit, PermissionList } from './permission';
 import { PersonEdit, PersonList } from './person';
+import { RegionEdit, RegionList } from './region';
 import { RoleEdit, RoleList } from './roles';
 
 /**
@@ -26,6 +28,14 @@ export const routes: RouteDefinitions = {
   permission_list: { title: 'permissions.list.title', icon: IconsDef.permissions, path: '*/permission/list', component: PermissionList },
   permission_edit: { title: 'permissions.edit.title', path: '*/permission/edit/:id(\\d+)*', component: PermissionEdit },
   permission_new: { title: 'permissions.new.title', path: '*/permission/new', component: PermissionEdit },
+  // Region
+  region_list: { title: 'regions.list.title', icon: IconsDef.region, path: '*/region/list', component: RegionList },
+  region_edit: { title: 'regions.edit.title', path: '*/region/edit/:id(\\d+)*', component: RegionEdit },
+  region_new: { title: 'regions.new.title', path: '*/region/new', component: RegionEdit },
+  // Application
+  application_list: { title: 'applications.list.title', icon: IconsDef.applications, path: '*/application/list', component: ApplicationList },
+  application_edit: { title: 'applications.edit.title', path: '*/application/edit/:id(\\d+)*', component: ApplicationEdit },
+  application_new: { title: 'applications.new.title', path: '*/application/new', component: ApplicationEdit },
 };
 
 /**

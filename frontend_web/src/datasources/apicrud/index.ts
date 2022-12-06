@@ -27,3 +27,21 @@ export class PermissionCRUDDatasource extends CRUDDatasource {
     super(EndpointsDef.apiCRUDPermission);
   }
 }
+
+/**
+ * Region
+ */
+export class RegionCRUDDatasource extends CRUDDatasource {
+  constructor() {
+    super(EndpointsDef.apiCRUDRegion);
+  }
+}
+
+/**
+ * Application
+ */
+export class ApplicationCRUDDatasource extends CRUDDatasource {
+  constructor() {
+    super(EndpointsDef.apiCRUDApplication);
+  }
+}

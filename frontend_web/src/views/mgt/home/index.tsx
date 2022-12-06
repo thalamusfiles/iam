@@ -98,7 +98,7 @@ function Systems() {
             variant={ColorsDef.regionVariant}
             faicon={IconsDef.region}
             title={__('menu.mgt.region')}
-            onClick={() => historyPush('/mgt/gate/view')}
+            onClick={() => historyPush('region_list')}
           />
         </Col>
         <Col sm={6}>
@@ -106,7 +106,7 @@ function Systems() {
             variant={ColorsDef.applicationsVariant}
             faicon={IconsDef.applications}
             title={__('menu.mgt.applications')}
-            onClick={() => historyPush('service_calendar')}
+            onClick={() => historyPush('application_list')}
           />
         </Col>
       </Row>

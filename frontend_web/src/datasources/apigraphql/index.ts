@@ -27,3 +27,21 @@ export class PermissionGraphQLDatasource extends GraphQLDatasource {
     super(EndpointsDef.apiGraphQLPermission);
   }
 }
+
+/**
+ * Region
+ */
+export class RegionGraphQLDatasource extends GraphQLDatasource {
+  constructor() {
+    super(EndpointsDef.apiGraphQLRegion);
+  }
+}
+
+/**
+ * Application
+ */
+export class ApplicationGraphQLDatasource extends GraphQLDatasource {
+  constructor() {
+    super(EndpointsDef.apiGraphQLApplication);
+  }
+}

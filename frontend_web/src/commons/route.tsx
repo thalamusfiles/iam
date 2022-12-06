@@ -18,7 +18,7 @@ export function getHistory() {
 }
 
 export function historyPush(
-  owner: RoutesName | string,
+  owner: RoutesName & string,
   options: { id?: any; inModal?: boolean; showSave?: boolean; open?: boolean; absolute?: boolean; search?: boolean } & any = {},
 ) {
   let push;
@@ -59,6 +59,24 @@ export function historyPush(
       break;
     case 'permission_new':
       push = '/mgt/permission/new';
+      break;
+    case 'region_list':
+      push = '/mgt/region/list';
+      break;
+    case 'region_edit':
+      push = '/mgt/region/edit/:id'.replace(':id', options.id);
+      break;
+    case 'region_new':
+      push = '/mgt/region/new';
+      break;
+    case 'application_list':
+      push = '/mgt/application/list';
+      break;
+    case 'application_edit':
+      push = '/mgt/application/edit/:id'.replace(':id', options.id);
+      break;
+    case 'application_new':
+      push = '/mgt/application/new';
       break;
     default:
       push = owner;
