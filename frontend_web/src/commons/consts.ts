@@ -25,6 +25,7 @@ export const IconsDef = {
   close: 'times' as IconName,
   clear: 'broom' as IconName,
   reset: 'undo' as IconName,
+  filter: 'filter' as IconName,
   // Modules
   reports: 'chart-line' as IconName,
   management: 'tasks' as IconName,

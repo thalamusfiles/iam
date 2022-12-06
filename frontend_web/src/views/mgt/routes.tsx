@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { IconsDef } from '../../commons/consts';
 import { RouteDefinition, RouteDefinitions } from '../../commons/route';
 import Home from './home';
+import { PermissionEdit, PermissionList } from './permission';
 import { PersonEdit, PersonList } from './person';
 import { RoleEdit, RoleList } from './roles';
 
@@ -22,9 +23,9 @@ export const routes: RouteDefinitions = {
   role_edit: { title: 'roles.edit.title', path: '*/role/edit/:id(\\d+)*', component: RoleEdit },
   role_new: { title: 'roles.new.title', path: '*/role/new', component: RoleEdit },
   // Permissions
-  permissions_list: { title: 'permissions.list.title', icon: IconsDef.permissions, path: '*/permissions/list', component: PersonList },
-  permissions_edit: { title: 'permissions.edit.title', path: '*/permissions/edit/:id(\\d+)*', component: PersonEdit },
-  permissions_new: { title: 'permissions.new.title', path: '*/permissions/new', component: PersonEdit },
+  permission_list: { title: 'permissions.list.title', icon: IconsDef.permissions, path: '*/permission/list', component: PermissionList },
+  permission_edit: { title: 'permissions.edit.title', path: '*/permission/edit/:id(\\d+)*', component: PermissionEdit },
+  permission_new: { title: 'permissions.new.title', path: '*/permission/new', component: PermissionEdit },
 };
 
 /**

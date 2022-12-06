@@ -4,13 +4,15 @@ import { SortOrder } from '../../../../../commons/enums/sort-order.enum';
 import { CommonListStore } from '../../../../generic/list/ctrl';
 import { ListDefinition } from '../../../../generic/list/types/ListDefinition';
 
-export class RoleListStore extends CommonListStore {
+export class PermissionListStore extends CommonListStore {
   defaultListDefs: ListDefinition = {
-    id: 'roles_list',
-    name: 'roles_list',
+    id: 'permissions_list',
+    name: 'permissions_list',
     filters: [{ name: 'name', title: 'Name', type: AttributeType.Text }],
     columns: [
       { colname: 'name', title: 'Name', type: AttributeType.Text, show: true },
+      { colname: 'on', title: 'On', type: AttributeType.Text, show: true },
+      { colname: 'action', title: 'Action', type: AttributeType.Text, show: true },
       { colname: 'description', title: 'Description', type: AttributeType.Text, show: true },
       { colname: 'application.name', title: 'Application', type: AttributeType.Text, sortable: false },
       { colname: 'region.name', title: 'Region', type: AttributeType.Text, sortable: false },

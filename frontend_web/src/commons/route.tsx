@@ -23,6 +23,8 @@ export function historyPush(
 ) {
   let push;
   switch (owner as RoutesName) {
+    case 'tokens_active':
+    case 'login_history':
     case 'home':
       push = '/mgt/home';
       break;
@@ -31,13 +33,6 @@ export function historyPush(
       push = '/public/:region/:app/login'.replace(':region', options.region).replace(':app', options.app);
       break;
     //MGT
-    case 'permissions_list':
-    case 'permissions_edit':
-    case 'permissions_new':
-    case 'tokens_active':
-    case 'login_history':
-      push = '/mgt/home';
-      break;
     case 'person_list':
       push = '/mgt/person/list';
       break;
@@ -55,6 +50,15 @@ export function historyPush(
       break;
     case 'role_new':
       push = '/mgt/role/new';
+      break;
+    case 'permission_list':
+      push = '/mgt/permission/list';
+      break;
+    case 'permission_edit':
+      push = '/mgt/permission/edit/:id'.replace(':id', options.id);
+      break;
+    case 'permission_new':
+      push = '/mgt/permission/new';
       break;
     default:
       push = owner;

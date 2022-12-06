@@ -57,7 +57,7 @@ export class FiltersModal extends React.Component<{ ctrl?: CommonListStore; __?:
             <FontAwesomeIcon icon={IconsDef.close} /> {__!('actions.close')}
           </Button>
           <Button variant="primary" onClick={() => ctrl!.applyFilters()}>
-            <FontAwesomeIcon icon={IconsDef.save} /> {__!('actions.applyfilter')}
+            <FontAwesomeIcon icon={IconsDef.filter} /> {__!('actions.applyfilter')}
           </Button>
         </Modal.Footer>
       </Modal>

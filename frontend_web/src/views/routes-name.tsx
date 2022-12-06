@@ -9,8 +9,8 @@ export type RoutesName =
   | 'role_list'
   | 'role_edit'
   | 'role_new'
-  | 'permissions_list'
-  | 'permissions_edit'
-  | 'permissions_new'
+  | 'permission_list'
+  | 'permission_edit'
+  | 'permission_new'
   | 'tokens_active'
   | 'login_history';

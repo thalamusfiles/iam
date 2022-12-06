@@ -76,7 +76,7 @@ function Register() {
             variant={ColorsDef.permissionsVariant}
             faicon={IconsDef.permissions}
             title={__('menu.mgt.permissions')}
-            onClick={() => historyPush('permissions_list')}
+            onClick={() => historyPush('permission_list')}
           />
         </Col>
         <Col sm={6}>
