@@ -8,7 +8,6 @@ import { AttributeType } from '../../../../../commons/attribute-type';
 import { IconsDef } from '../../../../../commons/consts';
 import { WMSI18N } from '../../../../../commons/i18';
 import { CustomComponentA, TargetForm, WMSPagePlugin } from '../../../../../commons/plugin.component';
-import ApplicationInfo from '../../../../../components/ApplicationInfo';
 import { WmsFormGroup } from '../../../../../components/Form';
 import { ApplicationEditStore } from '../ctrl';
 
@@ -40,11 +39,22 @@ export default class AboutComp extends CustomComponentA<{}, ApplicationEditStore
             <FontAwesomeIcon icon={icon} />
           ))}
           &nbsp; {__!('application.edit.about.title')}: {content.name}
-          <ApplicationInfo />
         </h1>
         <p>{__!('application.edit.about.description')}</p>
         <Form>
           <Row>
+            <Col>
+              <Form.Row>
+                <WmsFormGroup
+                  groupAs={Col}
+                  name="initials"
+                  title="Initials"
+                  type={AttributeType.Text}
+                  value={content.name}
+                  onChange={(value) => assignContent({ name: value })}
+                />
+              </Form.Row>
+            </Col>
             <Col>
               <Form.Row>
                 <WmsFormGroup
@@ -57,6 +67,8 @@ export default class AboutComp extends CustomComponentA<{}, ApplicationEditStore
                 />
               </Form.Row>
             </Col>
+          </Row>
+          <Row>
             <Col>
               <Form.Row>
                 <WmsFormGroup
@@ -66,6 +78,46 @@ export default class AboutComp extends CustomComponentA<{}, ApplicationEditStore
                   type={AttributeType.Text}
                   value={content.name}
                   onChange={(value) => assignContent({ name: value })}
+                />
+              </Form.Row>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Form.Row>
+                <WmsFormGroup
+                  groupAs={Col}
+                  name="region"
+                  title="Region"
+                  type={AttributeType.Text}
+                  value={content.name}
+                  onChange={(value) => assignContent({ name: value })}
+                />
+              </Form.Row>
+            </Col>
+            <Col>
+              <Form.Row>
+                <WmsFormGroup
+                  groupAs={Col}
+                  name="public"
+                  title="With Public Access?"
+                  value={'1'}
+                  checked={content.public}
+                  onChange={() => assignContent({ public: !content.public })}
+                  type={AttributeType.Boolean}
+                />
+              </Form.Row>
+            </Col>
+            <Col>
+              <Form.Row>
+                <WmsFormGroup
+                  groupAs={Col}
+                  name="noSSO"
+                  title="Without SSO"
+                  value={'1'}
+                  checked={content.noSSO}
+                  onChange={() => assignContent({ noSSO: !content.noSSO })}
+                  type={AttributeType.Boolean}
                 />
               </Form.Row>
             </Col>

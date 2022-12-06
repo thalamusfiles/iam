@@ -8,12 +8,15 @@ export class ApplicationListStore extends CommonListStore {
   defaultListDefs: ListDefinition = {
     id: 'applications_list',
     name: 'applications_list',
-    filters: [{ name: 'name', title: 'Name', type: AttributeType.Text }],
+    filters: [
+      { name: 'initials', title: 'Initials', type: AttributeType.Text },
+      { name: 'name', title: 'Name', type: AttributeType.Text },
+    ],
     columns: [
+      { colname: 'initials', title: 'Initials', type: AttributeType.Text, show: true },
       { colname: 'name', title: 'Name', type: AttributeType.Text, show: true },
-      { colname: 'description', title: 'Description', type: AttributeType.Text, show: true },
-      { colname: 'application.name', title: 'Application', type: AttributeType.Text, sortable: false },
-      { colname: 'region.name', title: 'Region', type: AttributeType.Text, sortable: false },
+      { colname: 'description', title: 'Description', type: AttributeType.Text },
+      { colname: 'region.name', title: 'Region', type: AttributeType.Text, show: true, sortable: false },
     ],
     sort: { colname: 'name', title: '', type: AttributeType.Text },
     sortOrder: SortOrder.Up,
