@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { IconsDef } from '../../commons/consts';
 import { RouteDefinition, RouteDefinitions } from '../../commons/route';
+import LoginsPage from '../account/logins';
 import { ApplicationEdit, ApplicationList } from './application';
 import Home from './home';
 import { PermissionEdit, PermissionList } from './permission';
@@ -16,6 +17,8 @@ import { RoleEdit, RoleList } from './roles';
 export const routes: RouteDefinitions = {
   // Home
   home: { title: 'menu.home', path: '*/home', component: Home },
+  //
+  logins_history: { title: '', path: '*/logins/history', component: LoginsPage },
   // Person
   person_list: { title: 'person.list.title', icon: IconsDef.person, path: '*/person/list', component: PersonList },
   person_edit: { title: 'person.edit.title', path: '*/person/edit/:id(\\d+)*', component: PersonEdit },

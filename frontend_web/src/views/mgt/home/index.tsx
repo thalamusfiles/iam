@@ -45,7 +45,7 @@ function QuickAccess() {
       </OverlayTrigger>
       &nbsp;
       <OverlayTrigger placement={'left'} overlay={<Tooltip id={`emptycntrtt`}>{__('menu.mgt.my_logins')}</Tooltip>}>
-        <Button variant="warning" onClick={() => historyPush('login_history', { inModal: true, showSave: true })}>
+        <Button variant="warning" onClick={() => historyPush('logins_history', { inModal: true })}>
           <FontAwesomeIcon icon={IconsDef.history} />
           &nbsp;
           {__('menu.mgt.my_logins')}

@@ -18,21 +18,24 @@ export function getHistory() {
 }
 
 export function historyPush(
-  owner: RoutesName & string,
+  owner: RoutesName | string,
   options: { id?: any; inModal?: boolean; showSave?: boolean; open?: boolean; absolute?: boolean; search?: boolean } & any = {},
 ) {
   let push;
   switch (owner as RoutesName) {
     case 'tokens_active':
-    case 'login_history':
     case 'home':
       push = '/mgt/home';
       break;
-    //PUBLIC
+    // PUBLIC
     case 'login':
       push = '/public/:region/:app/login'.replace(':region', options.region).replace(':app', options.app);
       break;
-    //MGT
+    //
+    case 'logins_history':
+      push = '/mgt/logins/history';
+      break;
+    // MGT
     case 'person_list':
       push = '/mgt/person/list';
       break;

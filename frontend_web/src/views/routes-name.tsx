@@ -19,4 +19,6 @@ export type RoutesName =
   | 'application_edit'
   | 'application_new'
   | 'tokens_active'
-  | 'login_history';
+  | 'login_history'
+  //
+  | 'logins_history';
