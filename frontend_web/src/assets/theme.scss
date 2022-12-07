@@ -72,6 +72,12 @@ $theme-colors: (
   margin-top: -3px;
 }
 
+.navbar-spacer {
+  border-left: 1px solid $gray-600 ; 
+  margin: 8px 12px;
+  opacity: 0.5;
+}
+
 .topSpace {
   margin-top: $nav-link-height + $navbar-padding-x + 1;
 }

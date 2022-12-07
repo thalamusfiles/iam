@@ -23,8 +23,8 @@ export const routes: RouteDefinitions = {
   logins_history: { title: '', path: '*/logins/history', component: LoginsPage },
   // Person
   person_list: { title: 'person.list.title', icon: IconsDef.person, path: '*/person/list', component: PersonList },
-  person_edit: { title: 'person.edit.title', path: '*/person/edit/:id(\\d+)*', component: PersonEdit },
-  person_new: { title: 'person.new.title', path: '*/person/new', component: PersonEdit },
+  person_edit: { title: 'person.edit.title', icon: IconsDef.person, path: '*/person/edit/:id(\\d+)*', component: PersonEdit },
+  person_new: { title: 'person.new.title', icon: IconsDef.person, path: '*/person/new', component: PersonEdit },
   // Role
   role_list: { title: 'roles.list.title', icon: IconsDef.roles, path: '*/role/list', component: RoleList },
   role_edit: { title: 'roles.edit.title', path: '*/role/edit/:id(\\d+)*', component: RoleEdit },

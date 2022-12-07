@@ -10,6 +10,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { WMSI18N } from '../../commons/i18';
 import UserContext, { Ctx } from '../../store/userContext';
+import ApplicationInfo from '../ApplicationInfo';
 import { NotificationCtrl, notify } from '../Notification';
 
 type HeaderProps = {
@@ -63,12 +64,20 @@ class Header extends React.Component<HeaderProps> {
           )}
 
           <Nav>
+            <ApplicationInfo />
+
+            <div className="navbar-spacer" />
+
             <Nav.Link href="https://docs.iam.thalamus.digital/" target="_blanck">
               {__!('menu.help')} <FontAwesomeIcon icon={'question-circle'} />
             </Nav.Link>
+
             <Provider notify={notify}>
               <NotificationBell />
             </Provider>
+
+            <div className="navbar-spacer" />
+
             <NavDropdown title={<FontAwesomeIcon icon={'user-circle'} />} id="user-dd">
               <NavDropdown.Item>{context?.user.name}</NavDropdown.Item>
               <NavDropdown title={__!('menu.language')} bsPrefix="dropdown-item" id="i18n-dd">
