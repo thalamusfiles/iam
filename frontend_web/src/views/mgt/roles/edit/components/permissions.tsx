@@ -10,18 +10,19 @@ import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 import { WMSI18N } from '../../../../../commons/i18';
 import { CustomComponentA, TargetForm, WMSPagePlugin } from '../../../../../commons/plugin.component';
-import { PersonEditStore } from '../ctrl';
+import { RoleEditStore } from '../ctrl';
 
 @WMSPagePlugin({
   name: 'person_permissions',
   sidebarTitle: 'Permissions',
-  target: TargetForm.person_edit,
+  target: TargetForm.role_edit,
   order: 30,
+  displayInModal: true,  
 })
 @WMSI18N()
 @inject('ctrl')
 @observer
-export default class PermissionComp extends CustomComponentA<{}, PersonEditStore> {
+export default class PermissionComp extends CustomComponentA<{}, RoleEditStore> {
   state: Readonly<{ view: string }> = {
     view: 'table',
   };
@@ -44,7 +45,7 @@ export default class PermissionComp extends CustomComponentA<{}, PersonEditStore
             <h2 id="person_permissions">{__!('person.edit.permissions.title')}:</h2>
             <p>{__!('person.edit.permissions.description')}</p>
           </Col>
-          <Col md={1}>
+          <Col md={2}>
             <ButtonGroup>
               <Button variant="light" active={showList} onClick={() => this.onChangeView('list')}>
                 <FontAwesomeIcon size="xs" icon={'list'} />
@@ -81,7 +82,7 @@ const ListView: React.FC<{ permissions: any[] }> = ({ permissions }) => {
             .filter((_, idx) => idx % 3 === 0)
             .map((perm) => (
               <ListGroup.Item>
-                <Form.Check type="checkbox" readOnly checked={false} name={perm.name} label={perm.on + ' ' + perm.action} disabled />
+                <Form.Check type="checkbox" readOnly checked={false} name={perm.name} label={perm.on + ' ' + perm.action} />
               </ListGroup.Item>
             ))}
         </Col>
@@ -90,7 +91,7 @@ const ListView: React.FC<{ permissions: any[] }> = ({ permissions }) => {
             .filter((_, idx) => idx % 3 === 1)
             .map((perm) => (
               <ListGroup.Item>
-                <Form.Check type="checkbox" readOnly checked={false} name={perm.name} label={perm.on + ' ' + perm.action} disabled />
+                <Form.Check type="checkbox" readOnly checked={false} name={perm.name} label={perm.on + ' ' + perm.action} />
               </ListGroup.Item>
             ))}
         </Col>
@@ -99,7 +100,7 @@ const ListView: React.FC<{ permissions: any[] }> = ({ permissions }) => {
             .filter((_, idx) => idx % 3 === 2)
             .map((perm) => (
               <ListGroup.Item>
-                <Form.Check type="checkbox" readOnly checked={false} name={perm.name} label={perm.on + ' ' + perm.action} disabled />
+                <Form.Check type="checkbox" readOnly checked={false} name={perm.name} label={perm.on + ' ' + perm.action} />
               </ListGroup.Item>
             ))}
         </Col>
@@ -136,7 +137,7 @@ const ListTable: React.FC<{ permissions: any[] }> = ({ permissions }) => {
             <td>{on}</td>
             {acts.map((act) => (
               <td>
-                <Form.Check type="checkbox" readOnly checked={false} name={on + '_' + act} disabled />
+                <Form.Check type="checkbox" readOnly checked={false} name={on + '_' + act} />
               </td>
             ))}
           </tr>
@@ -158,7 +159,7 @@ const ListHierarchy: React.FC<{ permissions: any[] }> = ({ permissions }) => {
           <ul>
             {acts.map((act) => (
               <li>
-                <Form.Check type="checkbox" readOnly checked={false} name={on + '_' + act} label={act} disabled />
+                <Form.Check type="checkbox" readOnly checked={false} name={on + '_' + act} label={act} />
               </li>
             ))}
           </ul>

@@ -4,6 +4,7 @@ import ctrlInstance from '../../../generic/edit/ctrl';
 import { RoleEditStore } from './ctrl';
 
 export * from './components/about';
+export * from './components/permissions';
 
 export default class RoleEdit extends GenericEdit<RoleEditStore> {
   constructor(props: any) {

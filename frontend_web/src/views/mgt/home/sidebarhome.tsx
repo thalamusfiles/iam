@@ -33,7 +33,7 @@ function SideBarHome() {
       </Form>
 
       <div className="title">{__('menu.mgt.activity')}</div>
-      <SideBarAction faicon={IconsDef.tokensActive} title={__('menu.mgt.my_tokens_active')} />
+      <SideBarAction faicon={IconsDef.tokensActive} title={__('menu.mgt.my_devices_connected')} />
       <SideBarAction faicon={IconsDef.history} title={__('menu.mgt.my_logins')} />
 
       <div className="title">{__('menu.modules.title')}</div>

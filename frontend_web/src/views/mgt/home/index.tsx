@@ -36,11 +36,11 @@ function QuickAccess() {
   const __ = useI18N();
   return (
     <>
-      <OverlayTrigger placement={'left'} overlay={<Tooltip id={`importtt`}>{__('menu.mgt.my_tokens_active')}</Tooltip>}>
-        <Button variant="primary" onClick={() => historyPush('tokens_active', { inModal: true })}>
+      <OverlayTrigger placement={'left'} overlay={<Tooltip id={`importtt`}>{__('menu.mgt.my_devices_connected')}</Tooltip>}>
+        <Button variant="primary" onClick={() => historyPush('devices_connected', { inModal: true })}>
           <FontAwesomeIcon icon={IconsDef.tokensActive} />
           &nbsp;
-          {__('menu.mgt.my_tokens_active')}
+          {__('menu.mgt.my_devices_connected')}
         </Button>
       </OverlayTrigger>
       &nbsp;

@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { IconsDef } from '../../commons/consts';
 import { RouteDefinition, RouteDefinitions } from '../../commons/route';
+import DevicesConnectedPage from '../account/devices';
 import LoginsPage from '../account/logins';
 import { ApplicationEdit, ApplicationList } from './application';
 import Home from './home';
@@ -18,6 +19,7 @@ export const routes: RouteDefinitions = {
   // Home
   home: { title: 'menu.home', path: '*/home', component: Home },
   //
+  devices_connected: { title: '', path: '*/devices/connected', component: DevicesConnectedPage },
   logins_history: { title: '', path: '*/logins/history', component: LoginsPage },
   // Person
   person_list: { title: 'person.list.title', icon: IconsDef.person, path: '*/person/list', component: PersonList },

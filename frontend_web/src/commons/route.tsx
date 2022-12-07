@@ -23,7 +23,6 @@ export function historyPush(
 ) {
   let push;
   switch (owner as RoutesName) {
-    case 'tokens_active':
     case 'home':
       push = '/mgt/home';
       break;
@@ -32,8 +31,11 @@ export function historyPush(
       push = '/public/:region/:app/login'.replace(':region', options.region).replace(':app', options.app);
       break;
     //
+    case 'devices_connected':
+      push = '/devices/connected';
+      break;
     case 'logins_history':
-      push = '/mgt/logins/history';
+      push = '/logins/history';
       break;
     // MGT
     case 'person_list':
@@ -93,7 +95,7 @@ export function historyPush(
     }
   } else if (options?.inModal) {
     const search = history.location.search + qs.stringify(options.search);
-    let newLocation = history.location.pathname + push.replace(/\/mgt/, '/modal') + '?' + search;
+    let newLocation = history.location.pathname + '/modal' + push.replace(/\/mgt/, '') + '?' + search;
     if (options?.showSave) {
       newLocation = newLocation + '&show_save=show_save';
     }

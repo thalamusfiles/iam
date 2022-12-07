@@ -18,7 +18,6 @@ export type RoutesName =
   | 'application_list'
   | 'application_edit'
   | 'application_new'
-  | 'tokens_active'
-  | 'login_history'
   //
+  | 'devices_connected'
   | 'logins_history';
