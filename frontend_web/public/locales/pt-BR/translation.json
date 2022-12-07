@@ -2,13 +2,15 @@
   "login": {
     "title":"Thalamus IAM",
     "subtitle":"Gerenciamento de identidades e acesso.",
+    "cardindo":"Informe seu usuário e senha para entrar no sistema",
     "system": "Sistema",
     "region": "Região",
     "username": "Usuário, code ou e-mail",
     "password": "Senha",
     "action": {
-      "login": "Login",
-      "register": "Registrar"
+      "login": "Entrar",
+      "register": "Criar conta",
+      "forgotpass": "Esqueceu sua senha?"
     }
   },
   "menu": {

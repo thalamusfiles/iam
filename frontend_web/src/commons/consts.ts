@@ -16,6 +16,7 @@ export const ColorsDef = {
 
 export const IconsDef = {
   // Actions
+  login: 'door-open' as IconName,
   new: 'plus' as IconName,
   save: 'save' as IconName,
   goBack: 'arrow-left' as IconName,

@@ -12,6 +12,7 @@ import {
   faCogs,
   faColumns,
   faDesktop,
+  faDoorOpen,
   faEdit,
   faEye,
   faFile,
@@ -93,4 +94,5 @@ library.add(
   faSitemap,
   faList,
   faTable,
+  faDoorOpen,
 );

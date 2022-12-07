@@ -2,13 +2,15 @@
   "login": {
     "title":"Thalamus IAM",
     "subtitle":"Identity and Access Management.",
+    "cardindo":"Type your username and password to enter the system.",
     "system": "System",
     "region": "Region",
     "username": "User, code or e-mail",
     "password": "Password",
     "action": {
       "login": "Login",
-      "register": "Register"
+      "register": "Register",
+      "forgotpass": "forgot password"
     }
   },
   "menu": {
