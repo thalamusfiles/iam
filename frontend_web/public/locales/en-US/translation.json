@@ -13,6 +13,11 @@
       "forgotpass": "forgot password"
     }
   },
+  "register": {
+    "action": {
+      "tologin":"Login with existing account"
+    }
+  },
   "menu": {
     "messages": "Messages",
     "both":"Both",

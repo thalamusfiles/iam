@@ -2,6 +2,7 @@ export type RoutesName =
   | 'home'
   //PUBLIC
   | 'login'
+  | 'register'
   //MGT
   | 'person_list'
   | 'person_edit'

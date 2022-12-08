@@ -13,6 +13,11 @@
       "forgotpass": "Esqueceu sua senha?"
     }
   },
+  "register": {
+    "action": {
+      "tologin":"Entrar com conta existente"
+    }
+  },
   "menu": {
     "messages": "Mensagens",
     "both":"Ambos",

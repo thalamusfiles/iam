@@ -30,6 +30,9 @@ export function historyPush(
     case 'login':
       push = '/public/:region/:app/login'.replace(':region', options.region).replace(':app', options.app);
       break;
+    case 'register':
+      push = '/public/:region/:app/register'.replace(':region', options.region).replace(':app', options.app);
+      break;
     //
     case 'devices_connected':
       push = '/devices/connected';

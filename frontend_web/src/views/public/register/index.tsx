@@ -17,7 +17,7 @@ import UserContext from '../../../store/userContext';
 const bgImg = [bgRotate01, bgRotate02, bgRotate03, bgRotate04][Math.floor(Math.random() * 4)];
 
 @WMSI18N()
-class LoginPage extends React.Component<{ __: Function; match: any }> {
+class RegisterPage extends React.Component<{ __: Function; match: any }> {
   state = {
     erros: {
       username: null,
@@ -37,7 +37,7 @@ class LoginPage extends React.Component<{ __: Function; match: any }> {
 
   onKeyUpFilter = (e: any) => {
     if (e.charCode === 13) {
-      this.login();
+      this.register();
     }
   };
 
@@ -49,7 +49,12 @@ class LoginPage extends React.Component<{ __: Function; match: any }> {
     this.setState({ password: e.target.value });
   };
 
-  login = () => {
+  toLogin = () => {
+    const { region, app } = this.props.match.params;
+    historyPush('login', { region, app });
+  };
+
+  register = () => {
     UserContext.login(this.state.username, this.state.password).catch((error) => {
       this.setState({
         erros: {
@@ -58,11 +63,6 @@ class LoginPage extends React.Component<{ __: Function; match: any }> {
         },
       });
     });
-  };
-
-  register = () => {
-    const { region, app } = this.props.match.params;
-    historyPush('register', { region, app });
   };
 
   render() {
@@ -128,15 +128,15 @@ class LoginPage extends React.Component<{ __: Function; match: any }> {
                   </Card.Body>
                   <Card.Footer>
                     <Row>
-                      <Col sm={4}>
-                        <Button variant="ligth" onClick={this.register} block>
-                          {__('login.action.register')}
+                      <Col sm={6}>
+                        <Button size="sm" variant="ligth" onClick={this.toLogin} block>
+                          {__('register.action.tologin')}
                         </Button>
                       </Col>
                       <Col></Col>
-                      <Col sm={4}>
-                        <Button variant="primary" onClick={this.login} block>
-                          <FontAwesomeIcon icon={IconsDef.login} /> {__('login.action.login')}
+                      <Col sm={5}>
+                        <Button variant="primary" onClick={this.register} block>
+                          <FontAwesomeIcon icon={IconsDef.save} /> {__('login.action.register')}
                         </Button>
                       </Col>
                     </Row>
@@ -150,4 +150,4 @@ class LoginPage extends React.Component<{ __: Function; match: any }> {
     );
   }
 }
-export default LoginPage;
+export default RegisterPage;
