@@ -81,7 +81,10 @@ class LoginPage extends React.Component<{ __: Function; match: any }> {
               <Col xs={{ span: 10, offset: 1 }}>
                 <Card id="login_card" border="info" className="cdShadow">
                   <Card.Body>
-                    <p>{__('login.cardindo')}</p>
+                    <p>
+                      <img src="/logo.png" alt="logo" id="logo" />
+                      {__('login.cardindo')}
+                    </p>
 
                     {!redirectTo && (
                       <Row>

@@ -14,6 +14,13 @@
     }
   },
   "register": {
+    "title":"Thalamus IAM",
+    "subtitle":"Cadastro de novo usuário.",
+    "cardindo":"Úm unico cadastro para todas as aplicações Thalamus.",
+    "username": "Usuário ou code de acesso",
+    "email": "e-mail",
+    "password": "Senha",
+    "passwordcheck": "Confirme a senha",
     "action": {
       "tologin":"Entrar com conta existente"
     }
