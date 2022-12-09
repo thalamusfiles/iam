@@ -12,7 +12,6 @@ import bgRotate04 from '../../../assets/bg_rotate_04.jpeg';
 import { IconsDef } from '../../../commons/consts';
 import { WMSI18N } from '../../../commons/i18';
 import { historyPush, historySearch } from '../../../commons/route';
-import UserContext from '../../../store/userContext';
 
 const bgImg = [bgRotate01, bgRotate02, bgRotate03, bgRotate04][Math.floor(Math.random() * 4)];
 
@@ -55,14 +54,7 @@ class RegisterPage extends React.Component<{ __: Function; match: any }> {
   };
 
   register = () => {
-    UserContext.login(this.state.username, this.state.password).catch((error) => {
-      this.setState({
-        erros: {
-          username: 'User not found',
-          password: 'Invalid pass',
-        },
-      });
-    });
+    historyPush('home_account');
   };
 
   render() {

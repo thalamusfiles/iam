@@ -23,15 +23,16 @@ export function historyPush(
 ) {
   let push;
   switch (owner as RoutesName) {
-    case 'home':
-      push = '/mgt/home';
-      break;
     // PUBLIC
     case 'login':
       push = '/public/:region/:app/login'.replace(':region', options.region).replace(':app', options.app);
       break;
     case 'register':
       push = '/public/:region/:app/register'.replace(':region', options.region).replace(':app', options.app);
+      break;
+    // ACCOUNT
+    case 'home_account':
+      push = '/account/home';
       break;
     //
     case 'devices_connected':
@@ -41,6 +42,9 @@ export function historyPush(
       push = '/logins/history';
       break;
     // MGT
+    case 'home':
+      push = '/mgt/home';
+      break;
     case 'person_list':
       push = '/mgt/person/list';
       break;

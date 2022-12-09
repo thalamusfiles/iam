@@ -1,9 +1,11 @@
 export type RoutesName =
-  | 'home'
-  //PUBLIC
+  // PUBLIC
   | 'login'
   | 'register'
-  //MGT
+  // ACCOUNT
+  | 'home_account'
+  // MGT
+  | 'home'
   | 'person_list'
   | 'person_edit'
   | 'person_new'

@@ -35,7 +35,7 @@ export class Ctx {
   }
   @action logout() {
     this.saveUser({}, null);
-    historyPush('login');
+    historyPush('login', { region: 'global', app: 'root' });
   }
 
   //Retorna se usuário esta logado

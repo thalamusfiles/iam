@@ -13,6 +13,7 @@ import { MgtModalRoutes } from './views/mgt/routes';
 //Lazy Loading
 const LoginPage = React.lazy(() => import('./views/public/login'));
 const RegisterPage = React.lazy(() => import('./views/public/register'));
+const Account = React.lazy(() => import('./views/account'));
 const Mgt = React.lazy(() => import('./views/mgt'));
 const InModal = React.lazy(() => import('./components/Modal').then((module) => ({ default: module.InModal })));
 
@@ -25,6 +26,7 @@ ReactDOM.render(
             <Route path={'/public/:region/:app/login'} component={LoginPage} />
             <Route path={'/public/:region/:app/register'} component={RegisterPage} />
             <PrivateRoutes redirect="/public/global/root/login">
+              <Route path={'/account'} component={Account} />
               <Route path={'/mgt'} component={Mgt} />
               <Route path={'/'} exact render={() => <Redirect to="/mgt" />} />
             </PrivateRoutes>
