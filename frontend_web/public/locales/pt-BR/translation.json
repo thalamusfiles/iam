@@ -25,6 +25,13 @@
       "tologin":"Entrar com conta existente"
     }
   },
+  "account" : {
+    "home": {
+      "title": "Bem vindo {{name}}!",
+      "subtitle": "Sua conta esta pronta para ser utilizada nas aplicações Thalamus.",
+      "accessmsg": "Sua identidade de acesso é {{username}} e seu e-mail {{email}}."
+    }
+  },
   "menu": {
     "messages": "Mensagens",
     "both":"Ambos",

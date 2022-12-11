@@ -20,9 +20,9 @@ export default class DevicesConnectedPage extends React.Component<any> {
     const { __ } = this.props;
     return (
       <Provider ctrl={this.ctrl}>
-        <h1 id="devices_about">
-          <FontAwesomeIcon icon={IconsDef.region} /> {__!('devices.title')}
-        </h1>
+        <h2 id="devices_about">
+          <FontAwesomeIcon icon={IconsDef.applications[1]} /> {__!('devices.title')}
+        </h2>
         <p>{__!('devices.description')}</p>
         <DevicesConnectedTable />
       </Provider>
@@ -44,8 +44,8 @@ class DevicesConnectedTable extends React.Component<{ ctrl?: DevicesConnectedSto
           </tr>
         </thead>
         <tbody>
-          {ctrl?.devices.map((on) => (
-            <tr key={on.id}>
+          {ctrl?.devices.map((on, idx) => (
+            <tr key={idx}>
               <td>{on.device}</td>
               <td>{on.loginAt}</td>
             </tr>

@@ -20,9 +20,9 @@ export default class LoginsPage extends React.Component<any> {
     const { __ } = this.props;
     return (
       <Provider ctrl={this.ctrl}>
-        <h1 id="logins_about">
-          <FontAwesomeIcon icon={IconsDef.region} /> {__!('logins.title')}
-        </h1>
+        <h2 id="logins_about">
+          <FontAwesomeIcon icon={IconsDef.login} /> {__!('logins.title')}
+        </h2>
         <p>{__!('logins.description')}</p>
         <LoginsTable />
       </Provider>
@@ -44,8 +44,8 @@ class LoginsTable extends React.Component<{ ctrl?: LoginStore }> {
           </tr>
         </thead>
         <tbody>
-          {ctrl?.logins.map((on) => (
-            <tr key={on.id}>
+          {ctrl?.logins.map((on, idx) => (
+            <tr key={idx}>
               <td>{on.loginAt}</td>
               <td>{on.applicationName}</td>
             </tr>

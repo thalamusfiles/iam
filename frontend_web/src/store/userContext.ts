@@ -22,7 +22,7 @@ export class Ctx {
 
   //Realiza autenticação do usuário
   @action login(username: string, password: string): Promise<any> {
-    this.saveUser({ name: 'Test user', id: '' }, 'token');
+    this.saveUser({ name: 'Test user', id: '', username: 'testuser', email: 'teste@email.com.br' }, 'token');
     historyPush('home');
 
     return Promise.resolve();
