@@ -1,5 +1,4 @@
 {
-
   "name": "iam_api",
   "version": "0.1.2",
   "description": "IAM Frontend Web",
@@ -20,6 +19,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@mikro-orm/core": "^5.6.8",
+    "@mikro-orm/nestjs": "^5.1.6",
+    "@mikro-orm/postgresql": "^5.6.8",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",

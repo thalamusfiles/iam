@@ -1,0 +1,50 @@
+version: "3.2"
+services:
+  post_db:
+    container_name: iam_postgres
+    image: postgres/postgres:15.1
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASS}
+      - TZ=GMT
+    volumes:
+      - type: bind
+        source: "../tmp/${DATABASE_LOCAL_FOLDER}"
+        target: /var/lib/postgresql/data
+        volume:
+          nocopy: true
+    networks:
+      - iam_backend-net
+    ports:
+      - ${DATABASE_PORT}:5432
+
+  iam_backend:
+    container_name: iam_backend_server
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASS: ${DATABASE_PASS}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+    volumes:
+      - "../:/usr/src/app"
+      - "/usr/src/app/node_modules"
+    networks:
+      - iam_backend-net
+    depends_on:
+      - post_db
+    ports:
+      - ${SYSTEM_PORT}:3000
+      - 9229:9229
+    command: 
+      ${COMMAND_START}
+
+networks:
+  iam_backend-net:
+    driver: bridge
