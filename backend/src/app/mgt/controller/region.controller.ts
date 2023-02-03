@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Logger, Post, Put, Request } from '@nestjs/common';
+import { Controller, Delete, Get, Logger, Param, Post, Put, Request } from '@nestjs/common';
 import { Region } from 'src/model/System/Region';
 import { RegionService } from '../service/region.service';
 import { CRUDController, EntityProps, FindProps } from '../types/crud.controller';
@@ -16,8 +16,10 @@ export class RegionController implements CRUDController<Region> {
     return this.regionService.find(query);
   }
 
-  @Get(':id')
-  async findById(uuid: string, query?: FindProps<Region>): Promise<Region> {
+  @Get(':uuid')
+  async findById(@Param('uuid') uuid: string, query?: FindProps<Region>): Promise<Region> {
+    this.logger.log(`Find By Id ${uuid}`);
+
     return this.regionService.findById(uuid, query);
   }
 
@@ -32,8 +34,8 @@ export class RegionController implements CRUDController<Region> {
     return this.save(props);
   }
 
-  @Put(':id')
-  async update(uuid: string, props: EntityProps<Region>, request: any): Promise<EntityProps<Region>> {
+  @Put(':uuid')
+  async update(@Param('uuid') uuid: string, props: EntityProps<Region>, request: any): Promise<EntityProps<Region>> {
     this.logger.log('Update Region');
 
     if (props.entity.uuid !== uuid) {
@@ -58,8 +60,8 @@ export class RegionController implements CRUDController<Region> {
     return updated;
   }
 
-  @Delete(':id')
-  async delete(uuid: string, element: EntityProps<Region>): Promise<void> {
+  @Delete(':uuid')
+  async delete(@Param('uuid') uuid: string, element: EntityProps<Region>): Promise<void> {
     this.logger.log('Delete Region');
 
     if (uuid !== undefined) {

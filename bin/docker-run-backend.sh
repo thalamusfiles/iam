@@ -6,14 +6,8 @@ FILE=config.env
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd "$parent_path"
 
-# Carrega configurações
-if [ -f "$FILE" ]; then
-    export $(grep -v '^#' $FILE | xargs -d '\n')
-else
-  echo "Arquivo $FILE inexistente."
-  exit 1
-fi
-
+# Criandos pastas configurações
+mkdir -p ../backend/tmp/postgres
 
 # Troca para a pasta docs
 cd ../backend/docker

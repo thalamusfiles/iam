@@ -1,8 +1,8 @@
 version: "3.2"
 services:
-  post_db:
+  iam_db:
     container_name: iam_postgres
-    image: postgres/postgres:15.1
+    image: postgres:14-alpine
     environment:
       - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_USER=${DATABASE_USER}
@@ -33,12 +33,12 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
     volumes:
-      - "../:/usr/src/app"
-      - "/usr/src/app/node_modules"
+      - "../:/var/www/app"
+      - "/var/www/app/node_modules"
     networks:
       - iam_backend-net
     depends_on:
-      - post_db
+      - iam_db
     ports:
       - ${SYSTEM_PORT}:3000
       - 9229:9229

@@ -17,7 +17,7 @@ export class RegionService implements CRUDService<Region> {
   find(query?: FindProps<Region>): Promise<Region[]> {
     this.logger.verbose('Find all');
 
-    return this.regionRepository.find(query.where);
+    return this.regionRepository.find(query?.where);
   }
 
   async findById(id: string, _query?: FindProps<Region>): Promise<Region> {

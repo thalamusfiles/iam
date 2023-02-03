@@ -1,16 +1,18 @@
+#############################################
+# Este dockerfile deve ser utilizado apenas #
+# para o desenvolvimento do projeto         #
+#############################################
+
 FROM node:18.12.0-alpine
 
-RUN mkdir -p /var/www/backend
-WORKDIR /var/www/backend
+RUN mkdir -p /var/www/app
+WORKDIR /var/www/app
 
 # Copias as pastas do projeto
-COPY dist dist/
 COPY package.json .
 COPY yarn.lock .
-COPY . .
-#COPY public public/ lincado durante a execucao
 
-RUN ls
-
-# Instala os pacotes para rodar o servidor
+# Instala os pacotes para rodar o servidor e os testes
+RUN npm install -g ts-node
 RUN yarn
+
