@@ -10,6 +10,9 @@ const defaultModelConfig = {
 };
 
 const modelConfig: MikroOrmModuleSyncOptions = {
+  entities: ['./dist/model'],
+  entitiesTs: ['./src/model'],
+  type: 'postgresql',
   host: process.env.DATABASE_HOST || defaultModelConfig.host,
   port: parseInt(process.env.DATABASE_PORT, 10) || defaultModelConfig.port,
   dbName: process.env.DATABASE_NAME || defaultModelConfig.dbName,
