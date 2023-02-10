@@ -1,4 +1,4 @@
-import { IamBaseEntity } from 'src/model/Base/IamBaseEntity';
+import { IamBaseEntity } from '../../../model/Base/IamBaseEntity';
 import { EntityProps, FindProps } from './crud.controller';
 
 /***

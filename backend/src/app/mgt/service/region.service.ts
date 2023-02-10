@@ -31,9 +31,9 @@ export class RegionService implements CRUDService<Region> {
 
     const entity = element.entity;
     if (entity.uuid) {
-      return this.regionRepository.create(entity);
-    } else {
       return this.regionRepository.merge(entity);
+    } else {
+      return this.regionRepository.create(entity);
     }
   }
 

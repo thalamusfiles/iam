@@ -1,4 +1,4 @@
-import { IamBaseEntity } from 'src/model/Base/IamBaseEntity';
+import { IamBaseEntity } from '../../../model/Base/IamBaseEntity';
 
 export type FindProps<Type extends IamBaseEntity> = {
   //FindManyOptions<Type>;
@@ -46,20 +46,13 @@ export interface CRUDController<Type extends IamBaseEntity> {
    * @param entity
    * @param request Requisição NestJs
    */
-  update(
-    uuid: string,
-    props: EntityProps<Type>,
-    request: any,
-  ): Promise<EntityProps<Type>>;
+  update(uuid: string, props: EntityProps<Type>, request: any): Promise<EntityProps<Type>>;
   /**
    * Criar e Atualizar lista de registros
    * @param entities
    * @param request Requisição NestJs
    */
-  saveAll(
-    props: EntityProps<Type>[],
-    request: any,
-  ): Promise<EntityProps<Type>[]>;
+  saveAll(props: EntityProps<Type>[], request: any): Promise<EntityProps<Type>[]>;
   /**
    * Remover um único registro
    * @param uuid
