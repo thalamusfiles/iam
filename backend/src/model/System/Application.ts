@@ -1,9 +1,9 @@
 import { Check, Entity, ManyToOne, Property } from '@mikro-orm/core';
-import { IamBaseEntityWithUser } from '../Base/IamBaseEntityWithUser';
+import { IamBaseEntityWithDelete } from '../Base/IamBaseEntityWithDelete';
 import { Region } from './Region';
 
-@Entity()
-export class Application extends IamBaseEntityWithUser {
+@Entity({ schema: 'system' })
+export class Application extends IamBaseEntityWithDelete {
   @ManyToOne(() => Region, { nullable: false })
   region?: Region;
 

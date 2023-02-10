@@ -1,0 +1,483 @@
+{
+  "namespaces": [
+    "public",
+    "system"
+  ],
+  "name": "public",
+  "tables": [
+    {
+      "columns": {
+        "uuid": {
+          "name": "uuid",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "deleted_by_uuid": {
+          "name": "deleted_by_uuid",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        }
+      },
+      "name": "user",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "user_pkey",
+          "columnNames": [
+            "uuid"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [
+        {
+          "name": "user_name_check",
+          "expression": "LENGTH(name) >= 4",
+          "definition": "check ((LENGTH(name) >= 4))",
+          "columnName": "name"
+        }
+      ],
+      "foreignKeys": {
+        "user_deleted_by_uuid_foreign": {
+          "constraintName": "user_deleted_by_uuid_foreign",
+          "columnNames": [
+            "deleted_by_uuid"
+          ],
+          "localTableName": "public.user",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "uuid": {
+          "name": "uuid",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "created_by_uuid": {
+          "name": "created_by_uuid",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "updated_by_uuid": {
+          "name": "updated_by_uuid",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "deleted_by_uuid": {
+          "name": "deleted_by_uuid",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "initials": {
+          "name": "initials",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "region",
+      "schema": "system",
+      "indexes": [
+        {
+          "keyName": "region_pkey",
+          "columnNames": [
+            "uuid"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [
+        {
+          "name": "region_initials_check",
+          "expression": "LENGTH(initials) >= 4",
+          "definition": "check ((LENGTH(initials) >= 4))",
+          "columnName": "initials"
+        },
+        {
+          "name": "region_name_check",
+          "expression": "LENGTH(initials) >= 4",
+          "definition": "check ((LENGTH(initials) >= 4))",
+          "columnName": "name"
+        },
+        {
+          "name": "region_description_check",
+          "expression": "LENGTH(initials) >= 10",
+          "definition": "check ((LENGTH(initials) >= 10))",
+          "columnName": "description"
+        }
+      ],
+      "foreignKeys": {
+        "region_created_by_uuid_foreign": {
+          "constraintName": "region_created_by_uuid_foreign",
+          "columnNames": [
+            "created_by_uuid"
+          ],
+          "localTableName": "system.region",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "region_updated_by_uuid_foreign": {
+          "constraintName": "region_updated_by_uuid_foreign",
+          "columnNames": [
+            "updated_by_uuid"
+          ],
+          "localTableName": "system.region",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "region_deleted_by_uuid_foreign": {
+          "constraintName": "region_deleted_by_uuid_foreign",
+          "columnNames": [
+            "deleted_by_uuid"
+          ],
+          "localTableName": "system.region",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "uuid": {
+          "name": "uuid",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "created_by_uuid": {
+          "name": "created_by_uuid",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "updated_by_uuid": {
+          "name": "updated_by_uuid",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "deleted_by_uuid": {
+          "name": "deleted_by_uuid",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "region_uuid": {
+          "name": "region_uuid",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "initials": {
+          "name": "initials",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "private_sso": {
+          "name": "private_sso",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        },
+        "one_role_required": {
+          "name": "one_role_required",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "boolean"
+        }
+      },
+      "name": "application",
+      "schema": "system",
+      "indexes": [
+        {
+          "keyName": "application_pkey",
+          "columnNames": [
+            "uuid"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [
+        {
+          "name": "application_initials_check",
+          "expression": "LENGTH(initials) >= 4",
+          "definition": "check ((LENGTH(initials) >= 4))",
+          "columnName": "initials"
+        },
+        {
+          "name": "application_name_check",
+          "expression": "LENGTH(initials) >= 4",
+          "definition": "check ((LENGTH(initials) >= 4))",
+          "columnName": "name"
+        },
+        {
+          "name": "application_description_check",
+          "expression": "LENGTH(initials) >= 10",
+          "definition": "check ((LENGTH(initials) >= 10))",
+          "columnName": "description"
+        }
+      ],
+      "foreignKeys": {
+        "application_created_by_uuid_foreign": {
+          "constraintName": "application_created_by_uuid_foreign",
+          "columnNames": [
+            "created_by_uuid"
+          ],
+          "localTableName": "system.application",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "application_updated_by_uuid_foreign": {
+          "constraintName": "application_updated_by_uuid_foreign",
+          "columnNames": [
+            "updated_by_uuid"
+          ],
+          "localTableName": "system.application",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "application_deleted_by_uuid_foreign": {
+          "constraintName": "application_deleted_by_uuid_foreign",
+          "columnNames": [
+            "deleted_by_uuid"
+          ],
+          "localTableName": "system.application",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "application_region_uuid_foreign": {
+          "constraintName": "application_region_uuid_foreign",
+          "columnNames": [
+            "region_uuid"
+          ],
+          "localTableName": "system.application",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "system.region",
+          "updateRule": "cascade"
+        }
+      }
+    }
+  ]
+}

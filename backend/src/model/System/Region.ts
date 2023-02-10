@@ -1,9 +1,9 @@
 import { Check, Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
-import { IamBaseEntityWithUser } from '../Base/IamBaseEntityWithUser';
+import { IamBaseEntityWithDelete } from '../Base/IamBaseEntityWithDelete';
 import { Application } from './Application';
 
-@Entity()
-export class Region extends IamBaseEntityWithUser {
+@Entity({ schema: 'system' })
+export class Region extends IamBaseEntityWithDelete {
   @Check({ expression: 'LENGTH(initials) >= 4' })
   @Property({ nullable: false })
   initials!: string;
