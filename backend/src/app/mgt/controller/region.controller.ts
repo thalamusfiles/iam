@@ -50,12 +50,16 @@ export class RegionController implements CRUDController<Region> {
    * @returns
    */
   @Put(':uuid')
-  async update(@Param('uuid') uuid: string, @Body() props: EntityProps<Region>, request: any): Promise<EntityProps<Region>> {
+  async update(@Param('uuid') uuid: string, @Body() props: EntityProps<Region>, @Request() request: any): Promise<EntityProps<Region>> {
     this.logger.log('Update Region');
 
-    if (props.entity.uuid !== uuid) {
+    if (!uuid) {
       this.logger.error('Tentativa de alteração de registro sem uuid informado');
     }
+    if (props.entity.uuid !== uuid) {
+      this.logger.error('Tentativa de alteração de registro com uuid diferente');
+    }
+
     props.user = request.user;
 
     return this.save(props);

@@ -14,7 +14,7 @@ export class RegionService implements CRUDService<Region> {
     private readonly regionRepository: EntityRepository<Region>,
   ) {}
 
-  find(query?: FindProps<Region>): Promise<Region[]> {
+  async find(query?: FindProps<Region>): Promise<Region[]> {
     this.logger.verbose('Find all');
 
     return this.regionRepository.find(query?.where);
@@ -28,13 +28,17 @@ export class RegionService implements CRUDService<Region> {
 
   async save(element: EntityProps<Region>): Promise<Region> {
     this.logger.verbose('Save');
-
     const entity = element.entity;
+
+    let result;
     if (entity.uuid) {
-      return this.regionRepository.merge(entity);
+      result = this.regionRepository.merge(entity);
     } else {
-      return this.regionRepository.create(entity);
+      result = this.regionRepository.create(entity);
     }
+    await this.regionRepository.persistAndFlush(result);
+
+    return result;
   }
 
   async delete(uuid: string, _element: EntityProps<Region>): Promise<void> {

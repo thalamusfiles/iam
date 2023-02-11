@@ -1,5 +1,4 @@
 import { Check, Collection, Entity, ManyToMany, Property, Unique } from '@mikro-orm/core';
-import { application } from 'express';
 import { IamBaseEntityWithDelete } from '../Base/IamBaseEntityWithDelete';
 import { Application } from './Application';
 
