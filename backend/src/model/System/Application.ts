@@ -1,12 +1,10 @@
-import { Check, Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { Check, Collection, Entity, ManyToMany, Property, Unique } from '@mikro-orm/core';
 import { IamBaseEntityWithDelete } from '../Base/IamBaseEntityWithDelete';
 import { Region } from './Region';
 
 @Entity({ schema: 'system' })
+@Unique({ properties: ['initials'] })
 export class Application extends IamBaseEntityWithDelete {
-  @ManyToOne(() => Region, { nullable: false })
-  region?: Region;
-
   @Check({ expression: 'LENGTH(initials) >= 4' })
   @Property({ nullable: false })
   initials!: string;
@@ -24,4 +22,7 @@ export class Application extends IamBaseEntityWithDelete {
 
   @Property({ nullable: false })
   oneRoleRequired!: boolean;
+
+  @ManyToMany(() => Region, (region) => region.applications)
+  regions = new Collection<Region>(this);
 }

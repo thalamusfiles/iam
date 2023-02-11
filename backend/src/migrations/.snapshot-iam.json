@@ -202,6 +202,15 @@
       "schema": "system",
       "indexes": [
         {
+          "keyName": "region_initials_unique",
+          "columnNames": [
+            "initials"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": true
+        },
+        {
           "keyName": "region_pkey",
           "columnNames": [
             "uuid"
@@ -339,15 +348,6 @@
           "nullable": true,
           "mappedType": "string"
         },
-        "region_uuid": {
-          "name": "region_uuid",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
         "initials": {
           "name": "initials",
           "type": "varchar(255)",
@@ -397,6 +397,15 @@
       "name": "application",
       "schema": "system",
       "indexes": [
+        {
+          "keyName": "application_initials_unique",
+          "columnNames": [
+            "initials"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": true
+        },
         {
           "keyName": "application_pkey",
           "columnNames": [
@@ -464,17 +473,70 @@
           "referencedTableName": "public.user",
           "deleteRule": "set null",
           "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "region_uuid": {
+          "name": "region_uuid",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         },
-        "application_region_uuid_foreign": {
-          "constraintName": "application_region_uuid_foreign",
+        "application_uuid": {
+          "name": "application_uuid",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "region_application",
+      "schema": "system",
+      "indexes": [
+        {
+          "keyName": "region_application_pkey",
+          "columnNames": [
+            "region_uuid",
+            "application_uuid"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "region_application_region_uuid_foreign": {
+          "constraintName": "region_application_region_uuid_foreign",
           "columnNames": [
             "region_uuid"
           ],
-          "localTableName": "system.application",
+          "localTableName": "system.region_application",
           "referencedColumnNames": [
             "uuid"
           ],
           "referencedTableName": "system.region",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "region_application_application_uuid_foreign": {
+          "constraintName": "region_application_application_uuid_foreign",
+          "columnNames": [
+            "application_uuid"
+          ],
+          "localTableName": "system.region_application",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "system.application",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

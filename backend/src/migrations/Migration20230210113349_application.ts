@@ -11,7 +11,6 @@ export class Migration20230210113349_application extends Migration {
         "updated_by_uuid" varchar(255) not null, 
         "deleted_at" timestamptz(0) null, 
         "deleted_by_uuid" varchar(255) null, 
-        "region_uuid" varchar(255) not null, 
         "initials" varchar(255) not null, 
         "name" varchar(255) not null, 
         "description" varchar(255) not null, 
@@ -34,12 +33,9 @@ export class Migration20230210113349_application extends Migration {
     this.addSql(
       'alter table "system"."application" add constraint "application_deleted_by_uuid_foreign" foreign key ("deleted_by_uuid") references "user" ("uuid") on update cascade on delete set null;',
     );
-    this.addSql(
-      'alter table "system"."application" add constraint "application_region_uuid_foreign" foreign key ("region_uuid") references "system"."region" ("uuid") on update cascade;',
-    );
+
+    this.addSql('alter table "system"."application" add constraint "application_initials_unique" unique ("initials");');
   }
 
-  async down(): Promise<void> {
-    this.addSql('alter table "system"."application" drop constraint "application_region_uuid_foreign";');
-  }
+  async down(): Promise<void> {}
 }

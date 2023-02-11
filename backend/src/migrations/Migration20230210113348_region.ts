@@ -31,6 +31,8 @@ export class Migration20230210113347_region extends Migration {
     this.addSql(
       'alter table "system"."region" add constraint "region_deleted_by_uuid_foreign" foreign key ("deleted_by_uuid") references "user" ("uuid") on update cascade on delete set null;',
     );
+
+    this.addSql('alter table "system"."region" add constraint "region_initials_unique" unique ("initials");');
   }
 
   async down(): Promise<void> {
