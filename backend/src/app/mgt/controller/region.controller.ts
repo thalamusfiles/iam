@@ -83,7 +83,7 @@ export class RegionController implements CRUDController<Region> {
   async delete(@Param('uuid') uuid: string, @Body() props: EntityProps<Region>): Promise<void> {
     this.logger.log('Delete Region');
 
-    if (uuid !== undefined) {
+    if (!uuid) {
       this.logger.error('Tentativa de remoção de registro sem uuid informado');
     }
     return this.regionService.delete(uuid, props);

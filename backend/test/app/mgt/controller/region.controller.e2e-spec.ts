@@ -7,21 +7,28 @@ import { EntityProps } from '../../../../src/app/mgt/types/crud.controller';
 import { User } from '../../../../src/model/User';
 
 describe('RegionController (e2e)', () => {
-  const regionUrl = '/mgt/region';
   let app: INestApplication;
-  let uuidRegion = null;
-  const adminUser: User = { uuid: '11111111-1111-1111-1111-111111111111' } as User;
+
+  // Registros utilizado nos testes
+  const regionUrl = '/mgt/region';
+  const adminUserUuid = '11111111-1111-1111-1111-111111111111';
   const regionToCreate: EntityProps<Region> = {
     entity: {
       initials: 'Global',
       name: 'Global',
       description: 'Região de aplicações com único servidor',
-      createdBy: adminUser,
-      updatedBy: adminUser,
+      createdBy: adminUserUuid as any as User,
+      updatedBy: adminUserUuid as any as User,
     },
     user: {},
   };
+  let uuidRegionSaved = null;
+  const regionUpdateData: Partial<Region> = {
+    initials: 'Global_02',
+    name: 'Global 02',
+  };
 
+  // Executa antes de cada teste
   beforeAll(async () => {
     const moduleFixture = await Test.createTestingModule({
       imports: [AppModule],
@@ -31,6 +38,14 @@ describe('RegionController (e2e)', () => {
     await app.init();
   });
 
+  // Inicio dos testes
+  it(`Limpar registros de testes`, async () => {
+    const result = await request(app.getHttpServer()).get(regionUrl);
+    if (result.body && result.body[0]) {
+      await request(app.getHttpServer()).delete(`${regionUrl}/${result.body[0].uuid}`);
+    }
+  });
+
   it(`${regionUrl}/ (Post) Cria nova região`, async () => {
     const result = await request(app.getHttpServer()).post(regionUrl).send(regionToCreate).expect(201);
 
@@ -38,35 +53,53 @@ describe('RegionController (e2e)', () => {
     expect(result.body.entity).toBeDefined();
     expect(result.body.entity.uuid).toBeTruthy();
 
-    uuidRegion = result.body.entity.uuid;
+    uuidRegionSaved = result.body.entity.uuid;
   });
 
-  /*it(`${regionUrl}/ (Get) Coleta registro criado`, async () => {
-    const findByUrl = `${regionUrl}/${uuidRegion}`;
-    const result = await request(app.getHttpServer()).get(findByUrl).send(regionToCreate).expect(200);
+  it(`${regionUrl}/ (Get) Coleta registro criado`, async () => {
+    const findByUrl = `${regionUrl}/${uuidRegionSaved}`;
+    const result = await request(app.getHttpServer()).get(findByUrl).expect(200);
 
     expect(result.body).toBeDefined();
-    expect(result.body.uuid).toEqual(uuidRegion);
+    expect(result.body.uuid).toEqual(uuidRegionSaved);
   });
 
   it(`${regionUrl}/ (Post) Tenta criar a mesma região (não pode)`, async () => {
-    await request(app.getHttpServer()).post(regionUrl).send(regionToCreate).expect(400);
+    await request(app.getHttpServer()).post(regionUrl).send(regionToCreate).expect(500);
   });
 
   it(`${regionUrl}/ (Put) Atualiza a região`, async () => {
-    const regionUpdate = { ...regionToCreate, entity: { ...regionToCreate.entity, uuid: uuidRegion } };
-    const updateUrl = `${regionUrl}/${uuidRegion}`;
+    const updateUrl = `${regionUrl}/${uuidRegionSaved}`;
+    const regionUpdate = {
+      ...regionToCreate,
+      entity: {
+        ...regionToCreate.entity,
+        ...regionUpdateData,
+        uuid: uuidRegionSaved,
+      },
+    };
     const result = await request(app.getHttpServer()).put(updateUrl).send(regionUpdate).expect(200);
 
     expect(result.body.user).toBeDefined();
     expect(result.body.entity).toBeDefined();
     expect(result.body.entity.uuid).toBeTruthy();
+    expect(result.body.entity.uuid).toEqual(uuidRegionSaved);
+    expect(result.body.entity.name).toEqual(regionUpdateData.name);
 
-    uuidRegion = result.body.entity.uuid;
+    // Valores que não podem ser alterados
+    //expect(result.body.entity.initials).toEqual(regionToCreate.entity.initials);
+
+    uuidRegionSaved = result.body.entity.uuid;
   });
 
-  it(`${regionUrl}/ (Get) Busca as regões`, async () => {
-    const result = await request(app.getHttpServer()).get(regionUrl).expect(200).expect([]);
-    //console.log(result.body);
+  it(`${regionUrl}/ (Get) Busca as regiões`, async () => {
+    const result = await request(app.getHttpServer()).get(regionUrl).expect(200);
+    expect(result.body).toBeTruthy();
+    expect(result.body.length).toBeGreaterThan(0);
+  });
+
+  /*it(`${regionUrl}/ (Get) Busca as regões por id`, async () => {
+    const result = await request(app.getHttpServer()).get(regionUrl).expect(200);
+    expect(result.body).toBeGreaterThan(0);
   });*/
 });
