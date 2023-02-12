@@ -3,8 +3,8 @@ import { Migration } from '@mikro-orm/migrations';
 export class Migration20230211134133 extends Migration {
   async up(): Promise<void> {
     this.addSql(`create table "system"."region_application" (
-      "region_uuid" varchar(255) not null, 
-      "application_uuid" varchar(255) not null, 
+      "region_uuid" uuid not null, 
+      "application_uuid" uuid not null, 
       
       constraint "region_application_pkey" primary key ("region_uuid", "application_uuid")
     );`);

@@ -1,4 +1,4 @@
-import { EntityRepository } from '@mikro-orm/core';
+import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, Logger } from '@nestjs/common';
 import { Region } from '../../../model/System/Region';
@@ -28,17 +28,21 @@ export class RegionService implements CRUDService<Region> {
 
   async save(element: EntityProps<Region>): Promise<Region> {
     this.logger.verbose('Save');
-    const entity = element.entity;
+    //const entity = element.entity;
+    const entity = this.regionRepository.create(element.entity);
 
-    let result;
+    console.log(entity);
+    console.log(entity.createdBy);
+    console.log(wrap(entity.createdBy).isInitialized());
+
     if (entity.uuid) {
-      result = this.regionRepository.merge(entity);
+      element.entity = this.regionRepository.merge(entity);
     } else {
-      result = this.regionRepository.create(entity);
+      element.entity = this.regionRepository.create(entity);
     }
-    await this.regionRepository.persistAndFlush(result);
+    await this.regionRepository.flush();
 
-    return result;
+    return element.entity as Region;
   }
 
   async delete(uuid: string, _element: EntityProps<Region>): Promise<void> {

@@ -1,13 +1,14 @@
 import { PrimaryKey, Property } from '@mikro-orm/core';
-import { v4 } from 'uuid';
 
 export abstract class IamBaseEntity {
-  @PrimaryKey()
-  uuid: string = v4();
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()', nullable: false })
+  uuid: string;
+  //@PrimaryKey()
+  //uuid: string = v4();
 
-  @Property()
-  createdAt: Date = new Date();
+  @Property({ onCreate: () => new Date() })
+  createdAt: Date;
 
-  @Property({ onUpdate: () => new Date() })
-  updatedAt: Date = new Date();
+  @Property({ onCreate: () => new Date(), onUpdate: () => new Date() })
+  updatedAt: Date;
 }

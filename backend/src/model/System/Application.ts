@@ -9,11 +9,11 @@ export class Application extends IamBaseEntityWithDelete {
   @Property({ nullable: false })
   initials!: string;
 
-  @Check({ expression: 'LENGTH(initials) >= 4' })
+  @Check({ expression: 'LENGTH(name) >= 4' })
   @Property({ nullable: false })
   name!: string;
 
-  @Check({ expression: 'LENGTH(initials) >= 10' })
+  @Check({ expression: 'LENGTH(description) >= 10' })
   @Property({ nullable: false })
   description!: string;
 

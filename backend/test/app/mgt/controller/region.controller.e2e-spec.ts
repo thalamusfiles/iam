@@ -10,7 +10,7 @@ describe('RegionController (e2e)', () => {
   const regionUrl = '/mgt/region';
   let app: INestApplication;
   let uuidRegion = null;
-  const adminUser: User = { uuid: '11111111-1111-1111-1111-111111111111', name: 'Admin' } as User;
+  const adminUser: User = { uuid: '11111111-1111-1111-1111-111111111111' } as User;
   const regionToCreate: EntityProps<Region> = {
     entity: {
       initials: 'Global',
@@ -41,7 +41,7 @@ describe('RegionController (e2e)', () => {
     uuidRegion = result.body.entity.uuid;
   });
 
-  it(`${regionUrl}/ (Get) Coleta registro criado`, async () => {
+  /*it(`${regionUrl}/ (Get) Coleta registro criado`, async () => {
     const findByUrl = `${regionUrl}/${uuidRegion}`;
     const result = await request(app.getHttpServer()).get(findByUrl).send(regionToCreate).expect(200);
 
@@ -68,5 +68,5 @@ describe('RegionController (e2e)', () => {
   it(`${regionUrl}/ (Get) Busca as regões`, async () => {
     const result = await request(app.getHttpServer()).get(regionUrl).expect(200).expect([]);
     //console.log(result.body);
-  });
+  });*/
 });

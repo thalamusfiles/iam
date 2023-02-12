@@ -9,12 +9,13 @@
       "columns": {
         "uuid": {
           "name": "uuid",
-          "type": "varchar(255)",
+          "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "default": "uuid_generate_v4()",
+          "mappedType": "uuid"
         },
         "created_at": {
           "name": "created_at",
@@ -57,12 +58,12 @@
         },
         "deleted_by_uuid": {
           "name": "deleted_by_uuid",
-          "type": "varchar(255)",
+          "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "string"
+          "mappedType": "uuid"
         }
       },
       "name": "user",
@@ -106,12 +107,13 @@
       "columns": {
         "uuid": {
           "name": "uuid",
-          "type": "varchar(255)",
+          "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "default": "uuid_generate_v4()",
+          "mappedType": "uuid"
         },
         "created_at": {
           "name": "created_at",
@@ -135,21 +137,21 @@
         },
         "created_by_uuid": {
           "name": "created_by_uuid",
-          "type": "varchar(255)",
+          "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "mappedType": "uuid"
         },
         "updated_by_uuid": {
           "name": "updated_by_uuid",
-          "type": "varchar(255)",
+          "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "mappedType": "uuid"
         },
         "deleted_at": {
           "name": "deleted_at",
@@ -163,12 +165,12 @@
         },
         "deleted_by_uuid": {
           "name": "deleted_by_uuid",
-          "type": "varchar(255)",
+          "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "string"
+          "mappedType": "uuid"
         },
         "initials": {
           "name": "initials",
@@ -284,12 +286,13 @@
       "columns": {
         "uuid": {
           "name": "uuid",
-          "type": "varchar(255)",
+          "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "default": "uuid_generate_v4()",
+          "mappedType": "uuid"
         },
         "created_at": {
           "name": "created_at",
@@ -313,21 +316,21 @@
         },
         "created_by_uuid": {
           "name": "created_by_uuid",
-          "type": "varchar(255)",
+          "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "mappedType": "uuid"
         },
         "updated_by_uuid": {
           "name": "updated_by_uuid",
-          "type": "varchar(255)",
+          "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "mappedType": "uuid"
         },
         "deleted_at": {
           "name": "deleted_at",
@@ -341,12 +344,12 @@
         },
         "deleted_by_uuid": {
           "name": "deleted_by_uuid",
-          "type": "varchar(255)",
+          "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "string"
+          "mappedType": "uuid"
         },
         "initials": {
           "name": "initials",
@@ -480,21 +483,21 @@
       "columns": {
         "region_uuid": {
           "name": "region_uuid",
-          "type": "varchar(255)",
+          "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "mappedType": "uuid"
         },
         "application_uuid": {
           "name": "application_uuid",
-          "type": "varchar(255)",
+          "type": "uuid",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "mappedType": "uuid"
         }
       },
       "name": "region_application",

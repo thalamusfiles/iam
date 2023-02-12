@@ -4,21 +4,21 @@ export class Migration20230210113347_region extends Migration {
   async up(): Promise<void> {
     this.addSql(
       `create table "system"."region" (
-        "uuid" varchar(255) not null, 
+        "uuid" uuid default uuid_generate_v4() not null, 
         "created_at" timestamptz(0) not null, 
         "updated_at" timestamptz(0) not null, 
-        "created_by_uuid" varchar(255) not null, 
-        "updated_by_uuid" varchar(255) not null, 
+        "created_by_uuid" uuid not null, 
+        "updated_by_uuid" uuid not null, 
         "deleted_at" timestamptz(0) null, 
-        "deleted_by_uuid" varchar(255) null, 
+        "deleted_by_uuid" uuid null, 
         "initials" varchar(255) not null, 
         "name" varchar(255) not null, 
         "description" varchar(255) not null, 
         
         constraint "region_pkey" primary key ("uuid"), 
         constraint region_initials_check check (LENGTH(initials) >= 4), 
-        constraint region_name_check check (LENGTH(initials) >= 4), 
-        constraint region_description_check check (LENGTH(initials) >= 10)
+        constraint region_name_check check (LENGTH(name) >= 4), 
+        constraint region_description_check check (LENGTH(description) >= 10)
       );`,
     );
 
