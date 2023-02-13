@@ -1,11 +1,12 @@
+import { IsNotEmpty, IsObject, isObject, IsOptional } from 'class-validator';
 import { IamBaseEntity } from '../../../model/Base/IamBaseEntity';
 
-export type FindProps<Type extends IamBaseEntity> = {
+export type FindProps<Type> = {
   //FindManyOptions<Type>;
   /**
    * Indica quais relações de entidade devem ser carregadas.
    */
-  where?: Partial<Type>;
+  where?: Partial<Type> | any;
   populate?: string[];
 };
 
@@ -13,11 +14,17 @@ type EntityPropsOptions = {
   loadBeforSave?: true;
 };
 
-export type EntityProps<Type extends IamBaseEntity> = {
+export class EntityProps<Type> {
+  @IsObject()
+  @IsOptional()
   options?: EntityPropsOptions;
+
+  @IsObject()
+  @IsNotEmpty()
   entity: Partial<Type>;
-  user: any;
-};
+
+  user?: any;
+}
 
 /***
  * Métodos obrigatórios a serem implementados nos controladores

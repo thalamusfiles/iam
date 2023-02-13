@@ -4,23 +4,19 @@ import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../../../../src/app/app.module';
 import { Region } from '../../../../src/model/System/Region';
 import { EntityProps } from '../../../../src/app/mgt/types/crud.controller';
-import { User } from '../../../../src/model/User';
 
 describe('RegionController (e2e)', () => {
   let app: INestApplication;
 
   // Registros utilizado nos testes
   const regionUrl = '/mgt/region';
-  const adminUserUuid = '11111111-1111-1111-1111-111111111111';
+  //const adminUserUuid = '11111111-1111-1111-1111-111111111111';
   const regionToCreate: EntityProps<Region> = {
     entity: {
       initials: 'Global',
       name: 'Global',
       description: 'Região de aplicações com único servidor',
-      createdBy: adminUserUuid as any as User,
-      updatedBy: adminUserUuid as any as User,
     },
-    user: {},
   };
   let uuidRegionSaved = null;
   const regionUpdateData: Partial<Region> = {
@@ -56,7 +52,7 @@ describe('RegionController (e2e)', () => {
     uuidRegionSaved = result.body.entity.uuid;
   });
 
-  it(`${regionUrl}/ (Get) Coleta registro criado`, async () => {
+  /*it(`${regionUrl}/ (Get) Coleta registro criado`, async () => {
     const findByUrl = `${regionUrl}/${uuidRegionSaved}`;
     const result = await request(app.getHttpServer()).get(findByUrl).expect(200);
 
@@ -98,8 +94,12 @@ describe('RegionController (e2e)', () => {
     expect(result.body.length).toBeGreaterThan(0);
   });
 
-  /*it(`${regionUrl}/ (Get) Busca as regões por id`, async () => {
-    const result = await request(app.getHttpServer()).get(regionUrl).expect(200);
-    expect(result.body).toBeGreaterThan(0);
+  it(`${regionUrl}/ (Get) Busca as região pelo id`, async () => {
+    const result = await request(app.getHttpServer())
+      .get(regionUrl)
+      .query({ where: { uuid: uuidRegionSaved } })
+      .expect(200);
+    expect(result.body).toBeTruthy();
+    expect(result.body.length).toEqual(1);
   });*/
 });

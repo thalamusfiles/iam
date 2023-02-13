@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Region } from '../../../model/System/Region';
 import { RegionService } from '../service/region.service';
 import { CRUDController, EntityProps, FindProps } from '../types/crud.controller';
+import { RegionDto } from './dto/region.dto';
 
 //@UseGuards(JWTGuard)
 @Controller('mgt/region')
@@ -10,6 +11,11 @@ export class RegionController implements CRUDController<Region> {
 
   constructor(private readonly regionService: RegionService) {}
 
+  /**
+   * Buscar por várias regiões
+   * @param query
+   * @returns
+   */
   @Get()
   find(@Query() query?: FindProps<Region>): Promise<Region[]> {
     this.logger.log('Find all');
@@ -17,6 +23,9 @@ export class RegionController implements CRUDController<Region> {
     return this.regionService.find(query);
   }
 
+  /**
+   * Busca a Região pelo identificador
+   */
   @Get(':uuid')
   async findById(@Param('uuid') uuid: string, @Query() query?: FindProps<Region>): Promise<Region> {
     this.logger.log(`Find By Id ${uuid}`);
@@ -25,16 +34,17 @@ export class RegionController implements CRUDController<Region> {
   }
 
   /**
-   * Valida e criar uma nova Região
+   * Valida e cria uma nova Região
    * @param props
    * @param request
    * @returns
    */
   @Post()
-  async create(@Body() props: EntityProps<Region>, @Request() request: { user: any }): Promise<EntityProps<Region>> {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async create(@Body() props: EntityProps<RegionDto>, @Request() request: { user: any }): Promise<EntityProps<Region>> {
     this.logger.log('Create Region');
 
-    if (props.entity.uuid !== undefined) {
+    if ((props.entity as any).uuid !== undefined) {
       this.logger.error('Tentativa de criação de registro com uuid informado');
     }
 
@@ -65,6 +75,12 @@ export class RegionController implements CRUDController<Region> {
     return this.save(props);
   }
 
+  /**
+   * Bulk Save, valida, cria ou atualiza os registros
+   * @param propss
+   * @param request
+   * @returns
+   */
   @Put()
   async saveAll(@Body() propss: EntityProps<Region>[], request: any): Promise<EntityProps<Region>[]> {
     this.logger.log('Save All Regions');
@@ -79,6 +95,12 @@ export class RegionController implements CRUDController<Region> {
     return updated;
   }
 
+  /**
+   * Remove a região a partir do identificador único
+   * @param uuid
+   * @param props
+   * @returns
+   */
   @Delete(':uuid')
   async delete(@Param('uuid') uuid: string, @Body() props: EntityProps<Region>): Promise<void> {
     this.logger.log('Delete Region');

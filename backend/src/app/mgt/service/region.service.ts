@@ -1,8 +1,7 @@
-import { EntityRepository, wrap } from '@mikro-orm/core';
+import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, Logger } from '@nestjs/common';
 import { Region } from '../../../model/System/Region';
-import { User } from '../../../model/User';
 import { EntityProps, FindProps } from '../types/crud.controller';
 import { CRUDService } from '../types/crud.service';
 
@@ -13,22 +12,36 @@ export class RegionService implements CRUDService<Region> {
   constructor(
     @InjectRepository(Region)
     private readonly regionRepository: EntityRepository<Region>,
-    @InjectRepository(User)
-    private readonly userRepository: EntityRepository<User>,
   ) {}
 
+  /**
+   * Busca por vários registros
+   * @param query
+   * @returns
+   */
   async find(query?: FindProps<Region>): Promise<Region[]> {
     this.logger.verbose('Find all');
 
     return this.regionRepository.find(query?.where);
   }
 
+  /**
+   * Busca o registro pelo seu identificador
+   * @param id
+   * @param _query
+   * @returns
+   */
   async findById(id: string, _query?: FindProps<Region>): Promise<Region> {
     this.logger.verbose('Find by Id');
 
     return this.regionRepository.getReference(id);
   }
 
+  /**
+   * Cria ou atualiza o registro
+   * @param element
+   * @returns
+   */
   async save(element: EntityProps<Region>): Promise<Region> {
     this.logger.verbose('Save');
 
@@ -43,6 +56,12 @@ export class RegionService implements CRUDService<Region> {
     return element.entity as Region;
   }
 
+  /**
+   * Remove o Registro
+   * @param uuid
+   * @param _element
+   * @returns
+   */
   async delete(uuid: string, _element: EntityProps<Region>): Promise<void> {
     this.logger.verbose('Delete');
 
