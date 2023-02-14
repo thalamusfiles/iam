@@ -45,11 +45,13 @@ export class RegionService implements CRUDService<Region> {
   async save(element: EntityProps<Region>): Promise<Region> {
     this.logger.verbose('Save');
 
-    const entity = this.regionRepository.create(element.entity);
-    if (entity.uuid) {
-      element.entity = this.regionRepository.merge(entity);
+    if (element.entity.uuid) {
+      element.entity = this.regionRepository.merge(element.entity);
+      element.entity.createdBy = element.user.uuid;
+      element.entity.updatedBy = element.user.uuid;
     } else {
-      element.entity = this.regionRepository.create(entity);
+      element.entity = this.regionRepository.create(element.entity);
+      element.entity.updatedBy = element.user.uuid;
     }
     await this.regionRepository.flush();
 

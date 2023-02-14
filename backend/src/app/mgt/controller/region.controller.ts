@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Region } from '../../../model/System/Region';
+import { JWTGuard } from '../../iam/jwt/jwt.guard';
 import { RegionService } from '../service/region.service';
 import { CRUDController, EntityProps, FindProps } from '../types/crud.controller';
 import { RegionDto } from './dto/region.dto';
@@ -40,6 +41,7 @@ export class RegionController implements CRUDController<Region> {
    * @returns
    */
   @Post()
+  @UseGuards(JWTGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
   async create(@Body() props: EntityProps<RegionDto>, @Request() request: { user: any }): Promise<EntityProps<Region>> {
     this.logger.log('Create Region');
