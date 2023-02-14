@@ -47,11 +47,8 @@ export class RegionService implements CRUDService<Region> {
 
     if (element.entity.uuid) {
       element.entity = this.regionRepository.merge(element.entity);
-      element.entity.createdBy = element.user.uuid;
-      element.entity.updatedBy = element.user.uuid;
     } else {
       element.entity = this.regionRepository.create(element.entity);
-      element.entity.updatedBy = element.user.uuid;
     }
     await this.regionRepository.flush();
 

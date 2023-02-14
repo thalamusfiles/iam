@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Region } from '../../../model/System/Region';
-import { JWTGuard } from '../../iam/jwt/jwt.guard';
+import { JWTGuard } from '../../auth/jwt/jwt.guard';
 import { RegionService } from '../service/region.service';
 import { CRUDController, EntityProps, FindProps } from '../types/crud.controller';
 import { RegionDto } from './dto/region.dto';
@@ -116,10 +116,15 @@ export class RegionController implements CRUDController<Region> {
   private async save(props: EntityProps<Region>): Promise<EntityProps<Region>> {
     const rs: EntityProps<Region> = {
       entity: {},
-      user: {
-        /*id: props.user.id*/
-      },
+      user: { uuid: props.user.uuid },
     };
+
+    if (props.entity.uuid) {
+      props.entity.createdBy = props.user.uuid;
+      props.entity.updatedBy = props.user.uuid;
+    } else {
+      props.entity.updatedBy = props.user.uuid;
+    }
 
     rs.entity = await this.regionService.save(props);
 

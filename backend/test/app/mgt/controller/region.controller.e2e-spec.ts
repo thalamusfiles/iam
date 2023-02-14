@@ -4,6 +4,8 @@ import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../../../../src/app/app.module';
 import { Region } from '../../../../src/model/System/Region';
 import { EntityProps } from '../../../../src/app/mgt/types/crud.controller';
+import { JWTGuard } from '../../../../src/app/auth/jwt/jwt.guard';
+import { JTWGuardMockAdmin } from '../../../mocks/jwt.mock';
 
 describe('RegionController (e2e)', () => {
   let app: INestApplication;
@@ -28,7 +30,10 @@ describe('RegionController (e2e)', () => {
   beforeAll(async () => {
     const moduleFixture = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideGuard(JWTGuard)
+      .useClass(JTWGuardMockAdmin)
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
