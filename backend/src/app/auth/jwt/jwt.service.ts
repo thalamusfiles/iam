@@ -6,14 +6,14 @@ import { User } from '../../../model/User';
 export class JWTService {
   constructor(private readonly nestJwtService: NestJWTService) {}
 
-  userInfo(user: User): Partial<User> {
+  private userInfo(user: User): Partial<User> {
     return {
       uuid: user.uuid,
       name: user.name,
     };
   }
 
-  generate(user: Partial<User>): string {
-    return this.nestJwtService.sign(user);
+  generate(user: User): string {
+    return this.nestJwtService.sign(this.userInfo(user));
   }
 }

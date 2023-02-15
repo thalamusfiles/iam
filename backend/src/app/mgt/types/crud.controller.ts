@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsObject, isObject, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsObject, IsOptional, ValidateNested } from 'class-validator';
 import { IamBaseEntity } from '../../../model/Base/IamBaseEntity';
 
 export type FindProps<Type> = {
@@ -21,6 +21,7 @@ export class EntityProps<Type> {
 
   @IsObject()
   @IsNotEmpty()
+  @ValidateNested()
   entity: Partial<Type>;
 
   user?: any;

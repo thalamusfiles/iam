@@ -3,9 +3,9 @@ import { Region } from '../../../model/System/Region';
 import { JWTGuard } from '../../auth/jwt/jwt.guard';
 import { RegionService } from '../service/region.service';
 import { CRUDController, EntityProps, FindProps } from '../types/crud.controller';
-import { RegionDto } from './dto/region.dto';
+import { EntityRegionCreateDto, EntityRegionUpdateDto } from './dto/region.dto';
 
-//@UseGuards(JWTGuard)
+@UseGuards(JWTGuard)
 @Controller('mgt/region')
 export class RegionController implements CRUDController<Region> {
   private readonly logger = new Logger(RegionController.name);
@@ -28,6 +28,7 @@ export class RegionController implements CRUDController<Region> {
    * Busca a Região pelo identificador
    */
   @Get(':uuid')
+  @UseGuards(JWTGuard)
   async findById(@Param('uuid') uuid: string, @Query() query?: FindProps<Region>): Promise<Region> {
     this.logger.log(`Find By Id ${uuid}`);
 
@@ -41,9 +42,8 @@ export class RegionController implements CRUDController<Region> {
    * @returns
    */
   @Post()
-  @UseGuards(JWTGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
-  async create(@Body() props: EntityProps<RegionDto>, @Request() request: { user: any }): Promise<EntityProps<Region>> {
+  async create(@Body() props: EntityRegionCreateDto, @Request() request: { user: any }): Promise<EntityProps<Region>> {
     this.logger.log('Create Region');
 
     if ((props.entity as any).uuid !== undefined) {
@@ -62,7 +62,8 @@ export class RegionController implements CRUDController<Region> {
    * @returns
    */
   @Put(':uuid')
-  async update(@Param('uuid') uuid: string, @Body() props: EntityProps<Region>, @Request() request: any): Promise<EntityProps<Region>> {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async update(@Param('uuid') uuid: string, @Body() props: EntityRegionUpdateDto, @Request() request: any): Promise<EntityProps<Region>> {
     this.logger.log('Update Region');
 
     if (!uuid) {
@@ -73,7 +74,6 @@ export class RegionController implements CRUDController<Region> {
     }
 
     props.user = request.user;
-
     return this.save(props);
   }
 
@@ -114,20 +114,18 @@ export class RegionController implements CRUDController<Region> {
   }
 
   private async save(props: EntityProps<Region>): Promise<EntityProps<Region>> {
-    const rs: EntityProps<Region> = {
-      entity: {},
-      user: { uuid: props.user.uuid },
-    };
-
     if (props.entity.uuid) {
-      props.entity.createdBy = props.user.uuid;
       props.entity.updatedBy = props.user.uuid;
     } else {
+      props.entity.createdBy = props.user.uuid;
       props.entity.updatedBy = props.user.uuid;
     }
 
-    rs.entity = await this.regionService.save(props);
+    const entity = await this.regionService.save(props);
 
-    return rs;
+    return {
+      entity: entity,
+      user: { uuid: props.user.uuid },
+    };
   }
 }

@@ -12,7 +12,7 @@ describe('RegionController (e2e)', () => {
 
   // Registros utilizado nos testes
   const regionUrl = '/mgt/region';
-  //const adminUserUuid = '11111111-1111-1111-1111-111111111111';
+  let uuidRegionSaved = null;
   const regionToCreate: EntityProps<Region> = {
     entity: {
       initials: 'Global',
@@ -20,10 +20,13 @@ describe('RegionController (e2e)', () => {
       description: 'Região de aplicações com único servidor',
     },
   };
-  let uuidRegionSaved = null;
-  const regionUpdateData: Partial<Region> = {
+  const regionUpdateData2: Partial<Region> = {
     initials: 'Global_02',
     name: 'Global 02',
+  };
+  const regionUpdateData3: Partial<Region> = {
+    initials: 'Global_03',
+    name: 'Global 03',
   };
 
   // Executa antes de cada teste
@@ -41,7 +44,9 @@ describe('RegionController (e2e)', () => {
 
   // Inicio dos testes
   it(`Limpar registros de testes`, async () => {
-    const result = await request(app.getHttpServer()).get(regionUrl);
+    const result = await request(app.getHttpServer())
+      .get(regionUrl)
+      .query({ where: { initials: regionToCreate.entity.initials } });
     if (result.body && result.body[0]) {
       await request(app.getHttpServer()).delete(`${regionUrl}/${result.body[0].uuid}`);
     }
@@ -57,25 +62,27 @@ describe('RegionController (e2e)', () => {
     uuidRegionSaved = result.body.entity.uuid;
   });
 
-  /*it(`${regionUrl}/ (Get) Coleta registro criado`, async () => {
+  it(`${regionUrl}/ (Get) Coleta registro criado`, async () => {
     const findByUrl = `${regionUrl}/${uuidRegionSaved}`;
     const result = await request(app.getHttpServer()).get(findByUrl).expect(200);
 
     expect(result.body).toBeDefined();
     expect(result.body.uuid).toEqual(uuidRegionSaved);
+    expect(result.body.initials).toEqual(regionToCreate.entity.initials);
   });
 
   it(`${regionUrl}/ (Post) Tenta criar a mesma região (não pode)`, async () => {
     await request(app.getHttpServer()).post(regionUrl).send(regionToCreate).expect(500);
   });
 
-  it(`${regionUrl}/ (Put) Atualiza a região`, async () => {
+  it(`${regionUrl}/ (Put) Atualiza o "name" da região`, async () => {
     const updateUrl = `${regionUrl}/${uuidRegionSaved}`;
     const regionUpdate = {
       ...regionToCreate,
       entity: {
         ...regionToCreate.entity,
-        ...regionUpdateData,
+        initials: undefined,
+        name: regionUpdateData2.name,
         uuid: uuidRegionSaved,
       },
     };
@@ -85,12 +92,39 @@ describe('RegionController (e2e)', () => {
     expect(result.body.entity).toBeDefined();
     expect(result.body.entity.uuid).toBeTruthy();
     expect(result.body.entity.uuid).toEqual(uuidRegionSaved);
-    expect(result.body.entity.name).toEqual(regionUpdateData.name);
-
-    // Valores que não podem ser alterados
-    //expect(result.body.entity.initials).toEqual(regionToCreate.entity.initials);
+    expect(result.body.entity.initials).not.toBeTruthy();
+    expect(result.body.entity.name).toEqual(regionUpdateData2.name);
 
     uuidRegionSaved = result.body.entity.uuid;
+  });
+
+  it(`${regionUrl}/ (Put) Atualiza a "initials" da região (ignora novo valor)`, async () => {
+    const updateUrl = `${regionUrl}/${uuidRegionSaved}`;
+    const findByUrl = `${regionUrl}/${uuidRegionSaved}`;
+
+    const regionUpdate = {
+      ...regionToCreate,
+      entity: {
+        ...regionToCreate.entity,
+        initials: regionUpdateData3.initials,
+        name: regionUpdateData3.name,
+        uuid: uuidRegionSaved,
+      },
+    };
+    const result = await request(app.getHttpServer()).put(updateUrl).send(regionUpdate).expect(200);
+
+    expect(result.body.user).toBeDefined();
+    expect(result.body.entity).toBeDefined();
+    expect(result.body.entity.uuid).toBeTruthy();
+    expect(result.body.entity.uuid).toEqual(uuidRegionSaved);
+    expect(result.body.entity.name).toEqual(regionUpdateData3.name);
+
+    const result2 = await request(app.getHttpServer()).get(findByUrl).expect(200);
+    expect(result2.body).toBeDefined();
+    expect(result2.body.uuid).toEqual(uuidRegionSaved);
+    expect(result2.body.name).toEqual(regionUpdateData3.name);
+    // Valores que não podem ser alterados
+    expect(result2.body.initials).toEqual(regionToCreate.entity.initials);
   });
 
   it(`${regionUrl}/ (Get) Busca as regiões`, async () => {
@@ -99,12 +133,23 @@ describe('RegionController (e2e)', () => {
     expect(result.body.length).toBeGreaterThan(0);
   });
 
-  it(`${regionUrl}/ (Get) Busca as região pelo id`, async () => {
+  it(`${regionUrl}/ (Get) Busca as regiões pelo id`, async () => {
     const result = await request(app.getHttpServer())
       .get(regionUrl)
       .query({ where: { uuid: uuidRegionSaved } })
       .expect(200);
     expect(result.body).toBeTruthy();
     expect(result.body.length).toEqual(1);
-  });*/
+    expect(result.body[0].uuid).toEqual(uuidRegionSaved);
+  });
+
+  it(`${regionUrl}/ (Get) Busca as regiões pelo initials`, async () => {
+    const result = await request(app.getHttpServer())
+      .get(regionUrl)
+      .query({ where: { initials: regionToCreate.entity.initials } })
+      .expect(200);
+    expect(result.body).toBeTruthy();
+    expect(result.body.length).toEqual(1);
+    expect(result.body[0].initials).toEqual(regionToCreate.entity.initials);
+  });
 });

@@ -1,4 +1,4 @@
-import { EntityRepository } from '@mikro-orm/core';
+import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, Logger } from '@nestjs/common';
 import { Region } from '../../../model/System/Region';
@@ -34,7 +34,7 @@ export class RegionService implements CRUDService<Region> {
   async findById(id: string, _query?: FindProps<Region>): Promise<Region> {
     this.logger.verbose('Find by Id');
 
-    return this.regionRepository.getReference(id);
+    return this.regionRepository.findOne(id);
   }
 
   /**
@@ -45,8 +45,10 @@ export class RegionService implements CRUDService<Region> {
   async save(element: EntityProps<Region>): Promise<Region> {
     this.logger.verbose('Save');
 
-    if (element.entity.uuid) {
-      element.entity = this.regionRepository.merge(element.entity);
+    const uuid = element.entity.uuid;
+    if (uuid) {
+      const ref = this.regionRepository.getReference(uuid);
+      element.entity = wrap(ref).assign(element.entity);
     } else {
       element.entity = this.regionRepository.create(element.entity);
     }
