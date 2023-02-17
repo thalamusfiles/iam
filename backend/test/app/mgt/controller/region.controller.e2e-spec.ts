@@ -15,7 +15,7 @@ describe('RegionController (e2e)', () => {
   let uuidRegionSaved = null;
   const regionToCreate: EntityProps<Region> = {
     entity: {
-      initials: 'Global',
+      initials: 'Global'.toLocaleUpperCase(),
       name: 'Global',
       description: 'Região de aplicações com único servidor',
     },
@@ -46,7 +46,7 @@ describe('RegionController (e2e)', () => {
   it(`Limpar registros de testes`, async () => {
     const result = await request(app.getHttpServer())
       .get(regionUrl)
-      .query({ where: { initials: regionToCreate.entity.initials } });
+      .query({ where: { initials: regionToCreate.entity.initials.toLowerCase() } });
     if (result.body && result.body[0]) {
       await request(app.getHttpServer()).delete(`${regionUrl}/${result.body[0].uuid}`);
     }
@@ -58,6 +58,8 @@ describe('RegionController (e2e)', () => {
     expect(result.body.user).toBeDefined();
     expect(result.body.entity).toBeDefined();
     expect(result.body.entity.uuid).toBeTruthy();
+    // Verifica se initials foi registrada com o nome em minusculo
+    expect(result.body.entity.initials).toEqual(regionToCreate.entity.initials.toLowerCase());
 
     uuidRegionSaved = result.body.entity.uuid;
   });
@@ -68,7 +70,7 @@ describe('RegionController (e2e)', () => {
 
     expect(result.body).toBeDefined();
     expect(result.body.uuid).toEqual(uuidRegionSaved);
-    expect(result.body.initials).toEqual(regionToCreate.entity.initials);
+    expect(result.body.initials).toEqual(regionToCreate.entity.initials.toLowerCase());
   });
 
   it(`${regionUrl}/ (Post) Tenta criar a mesma região (não pode)`, async () => {
@@ -124,7 +126,7 @@ describe('RegionController (e2e)', () => {
     expect(result2.body.uuid).toEqual(uuidRegionSaved);
     expect(result2.body.name).toEqual(regionUpdateData3.name);
     // Valores que não podem ser alterados
-    expect(result2.body.initials).toEqual(regionToCreate.entity.initials);
+    expect(result2.body.initials).toEqual(regionToCreate.entity.initials.toLowerCase());
   });
 
   it(`${regionUrl}/ (Get) Busca as regiões`, async () => {
@@ -144,12 +146,13 @@ describe('RegionController (e2e)', () => {
   });
 
   it(`${regionUrl}/ (Get) Busca as regiões pelo initials`, async () => {
+    const initials = regionToCreate.entity.initials.toLowerCase();
     const result = await request(app.getHttpServer())
       .get(regionUrl)
-      .query({ where: { initials: regionToCreate.entity.initials } })
+      .query({ where: { initials: initials } })
       .expect(200);
     expect(result.body).toBeTruthy();
     expect(result.body.length).toEqual(1);
-    expect(result.body[0].initials).toEqual(regionToCreate.entity.initials);
+    expect(result.body[0].initials).toEqual(initials);
   });
 });

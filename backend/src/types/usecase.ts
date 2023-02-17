@@ -1,15 +1,24 @@
+import { EntityProps } from '../app/mgt/types/crud.controller';
 import { FormExceptionError } from './form.exception';
 
 export type UseCasePluginMetadata<T = any> = {
-  //Conteudo a ser alterado
-  entity: T;
   //Nome da relação do banco
   name: any;
   //Transaction utilizada para salvar o registro
   //transaction?: Transaction;
-  //Usuário logado
-  user?: any;
-};
+} & EntityProps<T>;
+
+export enum UseCaseMethod {
+  preValidate,
+  prePersist,
+  postPersist,
+  preUpdate,
+  postUpdate,
+  preSave,
+  postSave,
+  preRemove,
+  postRemove,
+}
 
 /**
  * Definição de funcionalidades dos casos de uso

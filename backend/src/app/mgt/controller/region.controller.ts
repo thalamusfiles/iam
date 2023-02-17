@@ -115,15 +115,25 @@ export class RegionController implements CRUDController<Region> {
   }
 
   private async save(props: EntityProps<Region>): Promise<EntityProps<Region>> {
-    if (props.entity.uuid) {
-      props.entity.updatedBy = props.user.uuid;
+    const isUpdate = !!props.entity.uuid;
+
+    this.useCaseService.preValidate(Region, props);
+
+    if (isUpdate) {
+      this.useCaseService.preUpdate(Region, props);
     } else {
-      props.entity.createdBy = props.user.uuid;
-      props.entity.updatedBy = props.user.uuid;
+      this.useCaseService.prePersist(Region, props);
     }
-    this.useCaseService.execute();
+    this.useCaseService.preSave(Region, props);
 
     const entity = await this.regionService.save(props);
+
+    if (isUpdate) {
+      this.useCaseService.postUpdate(Region, props);
+    } else {
+      this.useCaseService.postPersist(Region, props);
+    }
+    this.useCaseService.postSave(Region, props);
 
     return {
       entity: entity,
