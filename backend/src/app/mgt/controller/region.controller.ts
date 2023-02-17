@@ -3,6 +3,7 @@ import { Region } from '../../../model/System/Region';
 import { JWTGuard } from '../../auth/jwt/jwt.guard';
 import { RegionService } from '../service/region.service';
 import { CRUDController, EntityProps, FindProps } from '../types/crud.controller';
+import { UseCaseMGTService } from '../usecases/usecasemgt.service';
 import { EntityRegionCreateDto, EntityRegionUpdateDto } from './dto/region.dto';
 
 @UseGuards(JWTGuard)
@@ -10,7 +11,7 @@ import { EntityRegionCreateDto, EntityRegionUpdateDto } from './dto/region.dto';
 export class RegionController implements CRUDController<Region> {
   private readonly logger = new Logger(RegionController.name);
 
-  constructor(private readonly regionService: RegionService) {}
+  constructor(private readonly regionService: RegionService, private readonly useCaseService: UseCaseMGTService) {}
 
   /**
    * Buscar por várias regiões
@@ -120,6 +121,7 @@ export class RegionController implements CRUDController<Region> {
       props.entity.createdBy = props.user.uuid;
       props.entity.updatedBy = props.user.uuid;
     }
+    this.useCaseService.execute();
 
     const entity = await this.regionService.save(props);
 

@@ -8,9 +8,10 @@ import { ApplicationController } from './controller/application.controller';
 import { RegionController } from './controller/region.controller';
 import { UserController } from './controller/user.controller';
 import { RegionService } from './service/region.service';
+import { UseCaseMgtModule } from './usecases/usecasemgt.module';
 
 @Module({
-  imports: [AuthModule, MikroOrmModule.forFeature([Region, Application, User])],
+  imports: [AuthModule, UseCaseMgtModule, MikroOrmModule.forFeature([Region, Application, User])],
   controllers: [RegionController, ApplicationController, UserController],
   providers: [RegionService],
 })

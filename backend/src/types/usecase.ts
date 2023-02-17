@@ -1,0 +1,73 @@
+import { FormExceptionError } from './form.exception';
+
+export type UseCasePluginMetadata<T = any> = {
+  //Conteudo a ser alterado
+  entity: T;
+  //Nome da relação do banco
+  name: any;
+  //Transaction utilizada para salvar o registro
+  //transaction?: Transaction;
+  //Usuário logado
+  user?: any;
+};
+
+/**
+ * Definição de funcionalidades dos casos de uso
+ * Os casos de são vinculados aos controladores da apicrud
+ */
+interface UseCasePluginI {
+  //Chamado no inicio, processado antes de qualquer ação de persistência
+  preValidate(data: UseCasePluginMetadata): Promise<Array<FormExceptionError>>;
+
+  //Chamado antes de cadastrar o registro
+  prePersist(data: UseCasePluginMetadata): Promise<void>;
+  //Chamado após cadastrar o registro
+  postPersist(data: UseCasePluginMetadata): Promise<void>;
+
+  //Chamado antes de atualizar o registro
+  preUpdate(data: UseCasePluginMetadata): Promise<void>;
+  //Chamado após atualizar o registro
+  postUpdate(data: UseCasePluginMetadata): Promise<void>;
+
+  //Chamado antes de cadastrar ou atualizar o registro
+  preSave(data: UseCasePluginMetadata): Promise<void>;
+  //Chamado após cadastrar ou atualizar o registro
+  postSave(data: UseCasePluginMetadata): Promise<void>;
+
+  //Chamado antes de remover o registro
+  preRemove(data: UseCasePluginMetadata): Promise<void>;
+  //Chamado após remover o registro
+  postRemove(data: UseCasePluginMetadata): Promise<void>;
+}
+
+/**
+ * Implementação parcial (abstrata) da interface de caso de usos.
+ */
+export abstract class UseCasePlugin<T = any> implements UseCasePluginI {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  preValidate = async (data: UseCasePluginMetadata<T>): Promise<Array<FormExceptionError>> => null;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  prePersist = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  postPersist = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  preUpdate = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  postUpdate = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  preSave = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  postSave = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  preRemove = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  postRemove = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+}

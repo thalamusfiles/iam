@@ -19,6 +19,7 @@ class RegionCreateDto {
   description!: string;
 }
 
+// DTO create Region
 export class EntityRegionCreateDto extends EntityProps<RegionCreateDto> {
   @Type(() => RegionCreateDto)
   entity: Partial<RegionCreateDto>;
@@ -41,6 +42,7 @@ class RegionUpdateDto {
   description!: string;
 }
 
+// DTO update Region
 export class EntityRegionUpdateDto extends EntityProps<RegionUpdateDto> {
   @Type(() => RegionUpdateDto)
   entity: Partial<RegionUpdateDto>;
