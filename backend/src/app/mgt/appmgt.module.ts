@@ -1,5 +1,5 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { Application } from '../../model/System/Application';
 import { Region } from '../../model/System/Region';
 import { User } from '../../model/User';
@@ -7,6 +7,7 @@ import { AuthModule } from '../auth/auth.module';
 import { ApplicationController } from './controller/application.controller';
 import { RegionController } from './controller/region.controller';
 import { UserController } from './controller/user.controller';
+import { GlobalAppHeadersCheckMiddleware } from './middleware/headers-check.middleware';
 import { RegionService } from './service/region.service';
 import { UseCaseMgtModule } from './usecases/usecasemgt.module';
 
@@ -15,4 +16,8 @@ import { UseCaseMgtModule } from './usecases/usecasemgt.module';
   controllers: [RegionController, ApplicationController, UserController],
   providers: [RegionService],
 })
-export class AppMgtModule {}
+export class AppMgtModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(GlobalAppHeadersCheckMiddleware).forRoutes(RegionController, ApplicationController);
+  }
+}

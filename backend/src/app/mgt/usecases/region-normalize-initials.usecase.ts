@@ -6,6 +6,6 @@ import { UseCasePlugin, UseCasePluginMetadata } from '../../../types/usecase';
  */
 export class RegionNormalizeInitialsUseCase extends UseCasePlugin<Region> {
   prePersist = async (data: UseCasePluginMetadata<Region>): Promise<void> => {
-    data.entity.initials = data.entity.initials.toLocaleLowerCase();
+    data.entity.initials = data.entity.initials.toLocaleLowerCase().replace(/[\ \^\"]/g, '_');
   };
 }

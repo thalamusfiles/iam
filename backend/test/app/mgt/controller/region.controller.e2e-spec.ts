@@ -6,17 +6,23 @@ import { Region } from '../../../../src/model/System/Region';
 import { EntityProps } from '../../../../src/app/mgt/types/crud.controller';
 import { JWTGuard } from '../../../../src/app/auth/jwt/jwt.guard';
 import { JTWGuardMockAdmin } from '../../../mocks/jwt.mock';
+import { faker } from '@faker-js/faker';
+import { setGlobalRequestHeader } from '../../../utils/setheader.utils';
 
 describe('RegionController (e2e)', () => {
   let app: INestApplication;
 
   // Registros utilizado nos testes
   const regionUrl = '/mgt/region';
+
+  // Cadastros de testes
   let uuidRegionSaved = null;
+  const regionNameCheck = 'Reg Tst' + faker.address.country();
+  const initialsRegionCheck = regionNameCheck.toLocaleLowerCase().replace(/[\ \^\"]/g, '_');
   const regionToCreate: EntityProps<Region> = {
     entity: {
-      initials: 'Global'.toLocaleUpperCase(),
-      name: 'Global',
+      initials: regionNameCheck.toLocaleUpperCase(),
+      name: regionNameCheck,
       description: 'Região de aplicações com único servidor',
     },
   };
@@ -46,35 +52,35 @@ describe('RegionController (e2e)', () => {
   it(`Limpar registros de testes`, async () => {
     const result = await request(app.getHttpServer())
       .get(regionUrl)
-      .query({ where: { initials: regionToCreate.entity.initials.toLowerCase() } });
+      .query({ where: { initials: initialsRegionCheck } });
     if (result.body && result.body[0]) {
       await request(app.getHttpServer()).delete(`${regionUrl}/${result.body[0].uuid}`);
     }
   });
 
   it(`${regionUrl}/ (Post) Cria nova região`, async () => {
-    const result = await request(app.getHttpServer()).post(regionUrl).send(regionToCreate).expect(201);
+    const result = await setGlobalRequestHeader(request(app.getHttpServer()).post(regionUrl)).send(regionToCreate).expect(201);
 
     expect(result.body.user).toBeDefined();
     expect(result.body.entity).toBeDefined();
     expect(result.body.entity.uuid).toBeTruthy();
     // Verifica se initials foi registrada com o nome em minusculo
-    expect(result.body.entity.initials).toEqual(regionToCreate.entity.initials.toLowerCase());
+    expect(result.body.entity.initials).toEqual(initialsRegionCheck);
 
     uuidRegionSaved = result.body.entity.uuid;
   });
 
   it(`${regionUrl}/ (Get) Coleta registro criado`, async () => {
     const findByUrl = `${regionUrl}/${uuidRegionSaved}`;
-    const result = await request(app.getHttpServer()).get(findByUrl).expect(200);
+    const result = await setGlobalRequestHeader(request(app.getHttpServer()).get(findByUrl)).expect(200);
 
     expect(result.body).toBeDefined();
     expect(result.body.uuid).toEqual(uuidRegionSaved);
-    expect(result.body.initials).toEqual(regionToCreate.entity.initials.toLowerCase());
+    expect(result.body.initials).toEqual(initialsRegionCheck);
   });
 
   it(`${regionUrl}/ (Post) Tenta criar a mesma região (não pode)`, async () => {
-    await request(app.getHttpServer()).post(regionUrl).send(regionToCreate).expect(500);
+    await setGlobalRequestHeader(request(app.getHttpServer()).post(regionUrl).send(regionToCreate)).expect(500);
   });
 
   it(`${regionUrl}/ (Put) Atualiza o "name" da região`, async () => {
@@ -88,7 +94,7 @@ describe('RegionController (e2e)', () => {
         uuid: uuidRegionSaved,
       },
     };
-    const result = await request(app.getHttpServer()).put(updateUrl).send(regionUpdate).expect(200);
+    const result = await setGlobalRequestHeader(request(app.getHttpServer()).put(updateUrl)).send(regionUpdate).expect(200);
 
     expect(result.body.user).toBeDefined();
     expect(result.body.entity).toBeDefined();
@@ -113,7 +119,7 @@ describe('RegionController (e2e)', () => {
         uuid: uuidRegionSaved,
       },
     };
-    const result = await request(app.getHttpServer()).put(updateUrl).send(regionUpdate).expect(200);
+    const result = await setGlobalRequestHeader(request(app.getHttpServer()).put(updateUrl)).send(regionUpdate).expect(200);
 
     expect(result.body.user).toBeDefined();
     expect(result.body.entity).toBeDefined();
@@ -121,23 +127,22 @@ describe('RegionController (e2e)', () => {
     expect(result.body.entity.uuid).toEqual(uuidRegionSaved);
     expect(result.body.entity.name).toEqual(regionUpdateData3.name);
 
-    const result2 = await request(app.getHttpServer()).get(findByUrl).expect(200);
+    const result2 = await setGlobalRequestHeader(request(app.getHttpServer()).get(findByUrl)).expect(200);
     expect(result2.body).toBeDefined();
     expect(result2.body.uuid).toEqual(uuidRegionSaved);
     expect(result2.body.name).toEqual(regionUpdateData3.name);
     // Valores que não podem ser alterados
-    expect(result2.body.initials).toEqual(regionToCreate.entity.initials.toLowerCase());
+    expect(result2.body.initials).toEqual(initialsRegionCheck);
   });
 
   it(`${regionUrl}/ (Get) Busca as regiões`, async () => {
-    const result = await request(app.getHttpServer()).get(regionUrl).expect(200);
+    const result = await setGlobalRequestHeader(request(app.getHttpServer()).get(regionUrl)).expect(200);
     expect(result.body).toBeTruthy();
     expect(result.body.length).toBeGreaterThan(0);
   });
 
   it(`${regionUrl}/ (Get) Busca as regiões pelo id`, async () => {
-    const result = await request(app.getHttpServer())
-      .get(regionUrl)
+    const result = await setGlobalRequestHeader(setGlobalRequestHeader(request(app.getHttpServer()).get(regionUrl)))
       .query({ where: { uuid: uuidRegionSaved } })
       .expect(200);
     expect(result.body).toBeTruthy();
@@ -146,13 +151,18 @@ describe('RegionController (e2e)', () => {
   });
 
   it(`${regionUrl}/ (Get) Busca as regiões pelo initials`, async () => {
-    const initials = regionToCreate.entity.initials.toLowerCase();
-    const result = await request(app.getHttpServer())
-      .get(regionUrl)
+    const initials = initialsRegionCheck;
+    const result = await setGlobalRequestHeader(request(app.getHttpServer()).get(regionUrl))
       .query({ where: { initials: initials } })
       .expect(200);
     expect(result.body).toBeTruthy();
     expect(result.body.length).toEqual(1);
     expect(result.body[0].initials).toEqual(initials);
+  });
+
+  it(`${regionUrl}/ (Delete) Remover registro`, async () => {
+    const deleteUrl = `${regionUrl}/${uuidRegionSaved}`;
+
+    await setGlobalRequestHeader(request(app.getHttpServer()).delete(deleteUrl)).expect(200);
   });
 });
