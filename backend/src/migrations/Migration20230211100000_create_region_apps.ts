@@ -1,7 +1,7 @@
 import { Migration } from '@mikro-orm/migrations';
 import iamConfig from '../config/iam.config';
 
-export class Migration20230210113347_user extends Migration {
+export class Migration20230211100000_create_region_apps extends Migration {
   async up(): Promise<void> {
     // Região Principal
     this.addSql(
@@ -11,8 +11,8 @@ export class Migration20230210113347_user extends Migration {
         "initials", "name", "description") 
       values (
         '11111111-1111-1111-1111-111111111111', CURRENT_DATE, CURRENT_DATE, 
-        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'
-        '${iamConfig.MAIN_REGION}', '${iamConfig.MAIN_REGION}', '${iamConfig.MAIN_REGION}');`,
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111',
+        '${iamConfig.MAIN_REGION}', '${iamConfig.MAIN_REGION}', 'Description by ${iamConfig.MAIN_REGION}');`,
     );
 
     // Aplicação Principal (SSO)
@@ -23,8 +23,8 @@ export class Migration20230210113347_user extends Migration {
         "initials", "name", "description", "private_sso", "one_role_required") 
       values (
         '11111111-1111-1111-1111-111111111111', CURRENT_DATE, CURRENT_DATE, 
-        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'
-        '${iamConfig.MAIN_APP_IAM}', '${iamConfig.MAIN_APP_IAM}', '${iamConfig.MAIN_APP_IAM}', false, false);`,
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111',
+        '${iamConfig.MAIN_APP_IAM}', '${iamConfig.MAIN_APP_IAM}', 'Description by ${iamConfig.MAIN_APP_IAM}', false, false);`,
     );
 
     // Aplicação de gestão do IAM SSO
@@ -35,8 +35,8 @@ export class Migration20230210113347_user extends Migration {
         "initials", "name", "description", "private_sso", "one_role_required") 
       values (
         '22222222-2222-2222-2222-222222222222', CURRENT_DATE, CURRENT_DATE, 
-        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'
-        '${iamConfig.MAIN_APP_IAM_MGT}', '${iamConfig.MAIN_APP_IAM_MGT}', '${iamConfig.MAIN_APP_IAM_MGT}', false, false);`,
+        '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111',
+        '${iamConfig.MAIN_APP_IAM_MGT}', '${iamConfig.MAIN_APP_IAM_MGT}', 'Description by ${iamConfig.MAIN_APP_IAM_MGT}', true, true);`,
     );
 
     // Cria o vínculo da região com a aplicação

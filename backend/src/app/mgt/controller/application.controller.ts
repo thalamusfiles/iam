@@ -2,9 +2,9 @@ import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request
 import { Application } from '../../../model/System/Application';
 import { JWTGuard } from '../../auth/jwt/jwt.guard';
 import { ApplicationService } from '../service/application.service';
-import { CRUDController, EntityProps, FindProps } from '../types/crud.controller';
+import { CRUDController, EntityProps } from '../types/crud.controller';
 import { UseCaseMGTService } from '../usecases/usecasemgt.service';
-import { EntityApplicationCreateDto, EntityApplicationUpdateDto } from './dto/application.dto';
+import { EntityApplicationCreateDto, EntityApplicationUpdateDto, FindApplicationPropsDto } from './dto/application.dto';
 
 @UseGuards(JWTGuard)
 @Controller('mgt/application')
@@ -19,7 +19,8 @@ export class ApplicationController implements CRUDController<Application> {
    * @returns
    */
   @Get()
-  find(@Query() query?: FindProps<Application>): Promise<Application[]> {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  find(@Query() query?: FindApplicationPropsDto): Promise<Application[]> {
     this.logger.log('Find all');
 
     return this.applicationService.find(query);
@@ -29,8 +30,8 @@ export class ApplicationController implements CRUDController<Application> {
    * Busca a Região pelo identificador
    */
   @Get(':uuid')
-  @UseGuards(JWTGuard)
-  async findById(@Param('uuid') uuid: string, @Query() query?: FindProps<Application>): Promise<Application> {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async findById(@Param('uuid') uuid: string, @Query() query?: FindApplicationPropsDto): Promise<Application> {
     this.logger.log(`Find By Id ${uuid}`);
 
     return this.applicationService.findById(uuid, query);
@@ -76,26 +77,6 @@ export class ApplicationController implements CRUDController<Application> {
 
     props.user = request.user;
     return this.save(props);
-  }
-
-  /**
-   * Bulk Save, valida, cria ou atualiza os registros
-   * @param propss
-   * @param request
-   * @returns
-   */
-  @Put()
-  async saveAll(@Body() propss: EntityProps<Application>[], request: any): Promise<EntityProps<Application>[]> {
-    this.logger.log('Save All Applications');
-
-    const updated: EntityProps<Application>[] = [];
-
-    for (const props of propss) {
-      props.user = request.user;
-      updated.push(await this.save(props));
-    }
-
-    return updated;
   }
 
   /**

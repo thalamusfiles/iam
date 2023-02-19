@@ -2,9 +2,9 @@ import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request
 import { Region } from '../../../model/System/Region';
 import { JWTGuard } from '../../auth/jwt/jwt.guard';
 import { RegionService } from '../service/region.service';
-import { CRUDController, EntityProps, FindProps } from '../types/crud.controller';
+import { CRUDController, EntityProps } from '../types/crud.controller';
 import { UseCaseMGTService } from '../usecases/usecasemgt.service';
-import { EntityRegionCreateDto, EntityRegionUpdateDto } from './dto/region.dto';
+import { EntityRegionCreateDto, EntityRegionUpdateDto, FindRegionPropsDto } from './dto/region.dto';
 
 @UseGuards(JWTGuard)
 @Controller('mgt/region')
@@ -19,7 +19,8 @@ export class RegionController implements CRUDController<Region> {
    * @returns
    */
   @Get()
-  find(@Query() query?: FindProps<Region>): Promise<Region[]> {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  find(@Query() query?: FindRegionPropsDto): Promise<Region[]> {
     this.logger.log('Find all');
 
     return this.regionService.find(query);
@@ -29,8 +30,8 @@ export class RegionController implements CRUDController<Region> {
    * Busca a Região pelo identificador
    */
   @Get(':uuid')
-  @UseGuards(JWTGuard)
-  async findById(@Param('uuid') uuid: string, @Query() query?: FindProps<Region>): Promise<Region> {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async findById(@Param('uuid') uuid: string, @Query() query?: FindRegionPropsDto): Promise<Region> {
     this.logger.log(`Find By Id ${uuid}`);
 
     return this.regionService.findById(uuid, query);
@@ -76,26 +77,6 @@ export class RegionController implements CRUDController<Region> {
 
     props.user = request.user;
     return this.save(props);
-  }
-
-  /**
-   * Bulk Save, valida, cria ou atualiza os registros
-   * @param propss
-   * @param request
-   * @returns
-   */
-  @Put()
-  async saveAll(@Body() propss: EntityProps<Region>[], request: any): Promise<EntityProps<Region>[]> {
-    this.logger.log('Save All Regions');
-
-    const updated: EntityProps<Region>[] = [];
-
-    for (const props of propss) {
-      props.user = request.user;
-      updated.push(await this.save(props));
-    }
-
-    return updated;
   }
 
   /**

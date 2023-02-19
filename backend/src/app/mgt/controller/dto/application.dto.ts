@@ -1,6 +1,19 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { IsUUID, IsString, IsNotEmpty, IsBooleanString } from 'class-validator';
-import { EntityProps } from '../../types/crud.controller';
+import { IsUUID, IsString, IsNotEmpty, IsBooleanString, IsIn } from 'class-validator';
+import { Application } from '../../../../model/System/Application';
+import { EntityProps, FindProps } from '../../types/crud.controller';
+
+// DTO find Application
+@Exclude()
+export class FindApplicationPropsDto extends FindProps<Application> {
+  @Expose()
+  where?: Partial<Application> | any;
+
+  @Expose()
+  @Type(() => String)
+  @IsIn(['applications'], { each: true })
+  populate?: Array<string>;
+}
 
 @Exclude()
 class ApplicationCreateDto {

@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20230210113349_application extends Migration {
+export class Migration20230210300000_application extends Migration {
   async up(): Promise<void> {
     this.addSql(
       `create table "system"."application" (
@@ -18,8 +18,8 @@ export class Migration20230210113349_application extends Migration {
         "one_role_required" boolean not null, 
         
         constraint "application_pkey" primary key ("uuid"), 
-        constraint application_initials_check check (LENGTH(initials) >= 4), 
-        constraint application_name_check check (LENGTH(name) >= 4), 
+        constraint application_initials_check check (LENGTH(initials) >= 3), 
+        constraint application_name_check check (LENGTH(name) >= 3), 
         constraint application_description_check check (LENGTH(description) >= 10)
       );`,
     );

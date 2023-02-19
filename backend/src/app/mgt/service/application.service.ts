@@ -1,4 +1,4 @@
-import { EntityRepository, wrap } from '@mikro-orm/core';
+import { EntityRepository, FindOptions, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, Logger } from '@nestjs/common';
 import { Application } from '../../../model/System/Application';
@@ -22,7 +22,12 @@ export class ApplicationService implements CRUDService<Application> {
   async find(query?: FindProps<Application>): Promise<Application[]> {
     this.logger.verbose('Find all');
 
-    return this.applicationRepository.find(query?.where);
+    const options: FindOptions<Application> = {};
+    if (query.populate) {
+      Object.assign(options, { populate: query.populate });
+    }
+
+    return this.applicationRepository.find(query?.where, options);
   }
 
   /**
@@ -31,8 +36,13 @@ export class ApplicationService implements CRUDService<Application> {
    * @param _query
    * @returns
    */
-  async findById(id: string, _query?: FindProps<Application>): Promise<Application> {
+  async findById(id: string, query?: FindProps<Application>): Promise<Application> {
     this.logger.verbose('Find by Id');
+
+    const options: FindOptions<Application> = {};
+    if (query.populate) {
+      Object.assign(options, { populate: query.populate });
+    }
 
     return this.applicationRepository.findOne(id);
   }

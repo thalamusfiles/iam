@@ -5,11 +5,11 @@ import { Application } from './Application';
 @Entity({ schema: 'system' })
 @Unique({ properties: ['initials'] })
 export class Region extends IamBaseEntityWithDelete {
-  @Check({ expression: 'LENGTH(initials) >= 4' })
+  @Check({ expression: 'LENGTH(initials) >= 3' })
   @Property({ nullable: false })
   initials!: string;
 
-  @Check({ expression: 'LENGTH(name) >= 4' })
+  @Check({ expression: 'LENGTH(name) >= 3' })
   @Property({ nullable: false })
   name!: string;
 

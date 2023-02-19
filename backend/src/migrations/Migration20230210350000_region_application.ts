@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20230211134133 extends Migration {
+export class Migration20230210350000_region_application extends Migration {
   async up(): Promise<void> {
     this.addSql(`create table "system"."region_application" (
       "region_uuid" uuid not null, 

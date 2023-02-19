@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20230210113347 extends Migration {
+export class Migration20230200000000_extension extends Migration {
   async up(): Promise<void> {
     this.addSql('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
   }

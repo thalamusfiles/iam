@@ -1,14 +1,19 @@
-import { IsNotEmpty, IsObject, IsOptional, ValidateNested } from 'class-validator';
+import { IsArray, IsNotEmpty, IsObject, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { IamBaseEntity } from '../../../model/Base/IamBaseEntity';
 
-export type FindProps<Type> = {
-  //FindManyOptions<Type>;
+export class FindProps<Type> {
   /**
    * Indica quais relações de entidade devem ser carregadas.
    */
+  @IsOptional()
+  @IsObject()
   where?: Partial<Type> | any;
-  populate?: string[];
-};
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  populate?: Array<string>;
+}
 
 type EntityPropsOptions = {
   loadBeforSave?: true;
@@ -60,7 +65,7 @@ export interface CRUDController<Type extends IamBaseEntity> {
    * @param entities
    * @param request Requisição NestJs
    */
-  saveAll(props: EntityProps<Type>[], request: any): Promise<EntityProps<Type>[]>;
+  //saveAll(props: EntityProps<Type>[], request: any): Promise<EntityProps<Type>[]>;
   /**
    * Remover um único registro
    * @param uuid

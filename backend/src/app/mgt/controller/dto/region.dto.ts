@@ -1,6 +1,19 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { IsUUID, IsString, IsNotEmpty } from 'class-validator';
-import { EntityProps } from '../../types/crud.controller';
+import { IsUUID, IsString, IsNotEmpty, IsIn } from 'class-validator';
+import { Region } from '../../../../model/System/Region';
+import { EntityProps, FindProps } from '../../types/crud.controller';
+
+// DTO find Region
+@Exclude()
+export class FindRegionPropsDto extends FindProps<Region> {
+  @Expose()
+  where?: Partial<Region> | any;
+
+  @Expose()
+  @Type(() => String)
+  @IsIn(['applications'], { each: true })
+  populate?: Array<string>;
+}
 
 @Exclude()
 class RegionCreateDto {

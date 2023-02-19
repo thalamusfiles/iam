@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20230210113347_region extends Migration {
+export class Migration20230210200000_region extends Migration {
   async up(): Promise<void> {
     this.addSql(
       `create table "system"."region" (
@@ -16,8 +16,8 @@ export class Migration20230210113347_region extends Migration {
         "description" varchar(255) not null, 
         
         constraint "region_pkey" primary key ("uuid"), 
-        constraint region_initials_check check (LENGTH(initials) >= 4), 
-        constraint region_name_check check (LENGTH(name) >= 4), 
+        constraint region_initials_check check (LENGTH(initials) >= 3), 
+        constraint region_name_check check (LENGTH(name) >= 3), 
         constraint region_description_check check (LENGTH(description) >= 10)
       );`,
     );

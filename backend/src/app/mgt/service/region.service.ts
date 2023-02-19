@@ -1,4 +1,4 @@
-import { EntityRepository, wrap } from '@mikro-orm/core';
+import { EntityRepository, FindOptions, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, Logger } from '@nestjs/common';
 import { Region } from '../../../model/System/Region';
@@ -22,7 +22,12 @@ export class RegionService implements CRUDService<Region> {
   async find(query?: FindProps<Region>): Promise<Region[]> {
     this.logger.verbose('Find all');
 
-    return this.regionRepository.find(query?.where);
+    const options: FindOptions<Region> = {};
+    if (query.populate) {
+      Object.assign(options, { populate: query.populate });
+    }
+
+    return this.regionRepository.find(query?.where, options);
   }
 
   /**
@@ -31,10 +36,15 @@ export class RegionService implements CRUDService<Region> {
    * @param _query
    * @returns
    */
-  async findById(id: string, _query?: FindProps<Region>): Promise<Region> {
+  async findById(id: string, query?: FindProps<Region>): Promise<Region> {
     this.logger.verbose('Find by Id');
 
-    return this.regionRepository.findOne(id);
+    const options: FindOptions<Region> = {};
+    if (query.populate) {
+      Object.assign(options, { populate: query.populate });
+    }
+
+    return this.regionRepository.findOne(id, options);
   }
 
   /**

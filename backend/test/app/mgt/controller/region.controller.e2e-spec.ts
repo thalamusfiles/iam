@@ -8,6 +8,7 @@ import { JWTGuard } from '../../../../src/app/auth/jwt/jwt.guard';
 import { JTWGuardMockAdmin } from '../../../mocks/jwt.mock';
 import { faker } from '@faker-js/faker';
 import { addGlobalIAMMgtRequestHeader } from '../../../utils/setheader.utils';
+import iamConfig from '../../../../src/config/iam.config';
 
 describe('RegionController (e2e)', () => {
   let app: INestApplication;
@@ -49,15 +50,6 @@ describe('RegionController (e2e)', () => {
   });
 
   // Inicio dos testes
-  it(`Limpar registros de testes`, async () => {
-    const result = await request(app.getHttpServer())
-      .get(regionUrl)
-      .query({ where: { initials: initialsRegionCheck } });
-    if (result.body && result.body[0]) {
-      await request(app.getHttpServer()).delete(`${regionUrl}/${result.body[0].uuid}`);
-    }
-  });
-
   it(`${regionUrl}/ (Post) Cria nova região`, async () => {
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(regionUrl)).send(regionToCreate).expect(201);
 
@@ -164,5 +156,32 @@ describe('RegionController (e2e)', () => {
     const deleteUrl = `${regionUrl}/${uuidRegionSaved}`;
 
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).delete(deleteUrl)).expect(200);
+  });
+
+  it(`${regionUrl}/ (Get) Busca região (principal) com "applications"`, async () => {
+    const initials = iamConfig.MAIN_REGION;
+    const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(regionUrl))
+      .query({
+        where: { initials: initials },
+        'populate[]': 'applications',
+      })
+      .expect(200);
+
+    expect(result.body).toBeTruthy();
+    expect(result.body.length).toEqual(1);
+    expect(result.body[0].initials).toEqual(initials);
+    expect(result.body[0].applications.length).toBeGreaterThanOrEqual(2);
+    expect(result.body[0].applications).toContainEqual(expect.objectContaining({ initials: iamConfig.MAIN_APP_IAM }));
+    expect(result.body[0].applications).toContainEqual(expect.objectContaining({ initials: iamConfig.MAIN_APP_IAM_MGT }));
+  });
+
+  it(`${regionUrl}/ (Get) Busca região (principal) com "applications" e "applications.regions" (não pode)`, async () => {
+    const initials = iamConfig.MAIN_REGION;
+    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(regionUrl))
+      .query({
+        where: { initials: initials },
+        populate: ['applications', 'applications.regions'],
+      })
+      .expect(400);
   });
 });
