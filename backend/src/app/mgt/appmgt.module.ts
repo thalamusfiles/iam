@@ -7,7 +7,7 @@ import { AuthModule } from '../auth/auth.module';
 import { ApplicationController } from './controller/application.controller';
 import { RegionController } from './controller/region.controller';
 import { UserController } from './controller/user.controller';
-import { GlobalAppHeadersCheckMiddleware } from './middleware/headers-check.middleware';
+import { GlobalIamHeadersCheckMiddleware, RegionAppHeadersCheckMiddleware } from './middleware/headers-check.middleware';
 import { RegionService } from './service/region.service';
 import { UseCaseMgtModule } from './usecases/usecasemgt.module';
 
@@ -18,6 +18,7 @@ import { UseCaseMgtModule } from './usecases/usecasemgt.module';
 })
 export class AppMgtModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(GlobalAppHeadersCheckMiddleware).forRoutes(RegionController, ApplicationController);
+    consumer.apply(GlobalIamHeadersCheckMiddleware).forRoutes(RegionController, ApplicationController);
+    consumer.apply(RegionAppHeadersCheckMiddleware).forRoutes(UserController);
   }
 }
