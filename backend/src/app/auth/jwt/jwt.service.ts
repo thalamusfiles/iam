@@ -7,7 +7,7 @@ import { JwtUserInfo } from './jwt-user-info';
 export class JWTService {
   constructor(private readonly nestJwtService: NestJWTService) {}
 
-  private userInfo(user: User): JwtUserInfo {
+  userInfo(user: User): JwtUserInfo {
     return {
       uuid: user.uuid,
       name: user.name,
