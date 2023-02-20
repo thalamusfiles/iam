@@ -163,7 +163,7 @@ describe('RegionController (e2e)', () => {
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(regionUrl))
       .query({
         where: { initials: initials },
-        'populate[]': 'applications',
+        populate: ['applications', 'createdBy', 'updatedBy'],
       })
       .expect(200);
 
@@ -173,6 +173,8 @@ describe('RegionController (e2e)', () => {
     expect(result.body[0].applications.length).toBeGreaterThanOrEqual(2);
     expect(result.body[0].applications).toContainEqual(expect.objectContaining({ initials: iamConfig.MAIN_APP_IAM }));
     expect(result.body[0].applications).toContainEqual(expect.objectContaining({ initials: iamConfig.MAIN_APP_IAM_MGT }));
+    expect(result.body[0].createdBy).toBeTruthy();
+    expect(result.body[0].updatedBy).toBeTruthy();
   });
 
   it(`${regionUrl}/ (Get) Busca região (principal) com "applications" e "applications.regions" (não pode)`, async () => {

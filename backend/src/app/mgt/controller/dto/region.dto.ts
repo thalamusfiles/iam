@@ -11,7 +11,7 @@ export class FindRegionPropsDto extends FindProps<Region> {
 
   @Expose()
   @Type(() => String)
-  @IsIn(['applications'], { each: true })
+  @IsIn(['applications', 'createdBy', 'updatedBy'], { each: true })
   populate?: Array<string>;
 }
 
@@ -19,17 +19,17 @@ export class FindRegionPropsDto extends FindProps<Region> {
 class RegionCreateDto {
   @Expose()
   @IsString()
-  initials!: string;
+  initials: string;
 
   @Expose()
   @IsString()
   @IsNotEmpty()
-  name!: string;
+  name: string;
 
   @Expose()
   @IsString()
   @IsNotEmpty()
-  description!: string;
+  description: string;
 }
 
 // DTO create Region

@@ -44,7 +44,7 @@ export class ApplicationController implements CRUDController<Application> {
    * @returns
    */
   @Post()
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
   async create(@Body() props: EntityApplicationCreateDto, @Request() request: { user: any }): Promise<EntityProps<Application>> {
     this.logger.log('Create Application');
 
@@ -64,7 +64,7 @@ export class ApplicationController implements CRUDController<Application> {
    * @returns
    */
   @Put(':uuid')
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
   async update(@Param('uuid') uuid: string, @Body() props: EntityApplicationUpdateDto, @Request() request: any): Promise<EntityProps<Application>> {
     this.logger.log('Update Application');
 

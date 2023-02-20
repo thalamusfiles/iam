@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { IsUUID, IsString, IsNotEmpty, IsBooleanString, IsIn } from 'class-validator';
+import { IsUUID, IsString, IsNotEmpty, IsIn, IsOptional } from 'class-validator';
 import { Application } from '../../../../model/System/Application';
 import { EntityProps, FindProps } from '../../types/crud.controller';
 
@@ -11,7 +11,7 @@ export class FindApplicationPropsDto extends FindProps<Application> {
 
   @Expose()
   @Type(() => String)
-  @IsIn(['applications'], { each: true })
+  @IsIn(['regions', 'createdBy', 'updatedBy'], { each: true })
   populate?: Array<string>;
 }
 
@@ -19,27 +19,29 @@ export class FindApplicationPropsDto extends FindProps<Application> {
 class ApplicationCreateDto {
   @Expose()
   @IsString()
-  initials!: string;
+  initials: string;
 
   @Expose()
   @IsString()
   @IsNotEmpty()
-  name!: string;
+  name: string;
 
   @Expose()
   @IsString()
   @IsNotEmpty()
-  description!: string;
+  description: string;
 
   @Expose()
-  @IsBooleanString()
   @IsNotEmpty()
-  privateSSO!: boolean;
+  privateSSO: boolean;
 
   @Expose()
-  @IsBooleanString()
   @IsNotEmpty()
-  oneRoleRequired!: boolean;
+  oneRoleRequired: boolean;
+
+  /*@Expose()
+  @IsArray()
+  regions: Array<{ uuid: string }> | Array<string>;*/
 }
 
 // DTO create Application
@@ -65,14 +67,12 @@ class ApplicationUpdateDto {
   description!: string;
 
   @Expose()
-  @IsBooleanString()
-  @IsNotEmpty()
-  privateSSO!: boolean;
+  @IsOptional()
+  privateSSO?: boolean;
 
   @Expose()
-  @IsBooleanString()
-  @IsNotEmpty()
-  oneRoleRequired!: boolean;
+  @IsOptional()
+  oneRoleRequired?: boolean;
 }
 
 // DTO update Application

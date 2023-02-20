@@ -44,7 +44,7 @@ export class RegionController implements CRUDController<Region> {
    * @returns
    */
   @Post()
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
   async create(@Body() props: EntityRegionCreateDto, @Request() request: { user: any }): Promise<EntityProps<Region>> {
     this.logger.log('Create Region');
 
@@ -64,7 +64,7 @@ export class RegionController implements CRUDController<Region> {
    * @returns
    */
   @Put(':uuid')
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
   async update(@Param('uuid') uuid: string, @Body() props: EntityRegionUpdateDto, @Request() request: any): Promise<EntityProps<Region>> {
     this.logger.log('Update Region');
 
