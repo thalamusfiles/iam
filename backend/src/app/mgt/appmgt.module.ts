@@ -10,12 +10,13 @@ import { UserController } from './controller/user.controller';
 import { GlobalIamHeadersCheckMiddleware, RegionAppHeadersCheckMiddleware } from './middleware/headers-check.middleware';
 import { ApplicationService } from './service/application.service';
 import { RegionService } from './service/region.service';
+import { UserService } from './service/user.service';
 import { UseCaseMgtModule } from './usecases/usecasemgt.module';
 
 @Module({
   imports: [AuthModule, UseCaseMgtModule, MikroOrmModule.forFeature([Region, Application, User])],
   controllers: [RegionController, ApplicationController, UserController],
-  providers: [RegionService, ApplicationService],
+  providers: [RegionService, ApplicationService, UserService],
 })
 export class AppMgtModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -94,8 +94,6 @@ describe('RegionController (e2e)', () => {
     expect(result.body.entity.uuid).toEqual(uuidRegionSaved);
     expect(result.body.entity.initials).not.toBeTruthy();
     expect(result.body.entity.name).toEqual(regionUpdateData2.name);
-
-    uuidRegionSaved = result.body.entity.uuid;
   });
 
   it(`${regionUrl}/ (Put) Atualiza a "initials" da região (ignora novo valor)`, async () => {
