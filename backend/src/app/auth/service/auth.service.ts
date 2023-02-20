@@ -4,12 +4,16 @@ import { BadRequestException, Injectable, Logger, NotFoundException } from '@nes
 import { createHmac, randomBytes } from 'crypto';
 import iamConfig from '../../../config/iam.config';
 import { User } from '../../../model/User';
+import { UserLogin } from '../../../model/UserLogin';
 
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
 
-  constructor(@InjectRepository(User) private readonly userRepository: EntityRepository<User>) {}
+  constructor(
+    @InjectRepository(User) private readonly userRepository: EntityRepository<User>,
+    @InjectRepository(UserLogin) private readonly userLoginRepository: EntityRepository<UserLogin>,
+  ) {}
 
   /*
   async save({ password, ...auth }: PartOf<Auth>): Promise<Auth> {
@@ -31,18 +35,18 @@ export class AuthService {
   }
   */
 
-  async getByLogin(username: string, password: string): Promise<User> {
-    const user = this.userRepository.findOne(null);
-    if (!user) {
+  async getUserByLogin(username: string, password: string): Promise<User> {
+    const userLogin = await this.userLoginRepository.findOne({ username }, { populate: ['user'] });
+    if (!userLogin) {
       throw new NotFoundException('User does not exist.');
     }
 
-    const encrypted = AuthService.encrypt(user.salt, password);
+    const encrypted = AuthService.encrypt(userLogin._salt, password);
 
-    if (encrypted === user.password) {
-      delete user.password;
-      delete user.salt;
-      return user;
+    if (encrypted === userLogin._password) {
+      delete userLogin._password;
+      delete userLogin._salt;
+      return userLogin.user;
     } else {
       throw new BadRequestException('Password incorrect.');
     }

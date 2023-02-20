@@ -10,7 +10,7 @@ export class AuthController {
 
   @Post('login/local')
   async loginLocal(@Body() body: AuthLoginDto): Promise<{ access_token: string; userInfo: JwtUserInfo }> {
-    const user = await this.authService.getByLogin(body.username, body.password);
+    const user = await this.authService.getUserByLogin(body.username, body.password);
 
     return {
       access_token: this.jwtService.generate(user),

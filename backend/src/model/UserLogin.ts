@@ -1,26 +1,32 @@
 import { Check, Entity, Enum, Index, ManyToOne, Property } from '@mikro-orm/core';
+import { Exclude } from 'class-transformer';
 import { IamBaseEntity } from './Base/IamBaseEntity';
 import { User } from './User';
 
 @Entity({ schema: 'public' })
 @Index({
-  properties: ['user', 'type', 'deletedAt'],
-  name: 'user_login_user_type_deleted_unique',
-  expression:
-    'ALTER TABLE "user_login" add constraint "user_login_user_type_deleted_unique" UNIQUE NULLS NOT DISTINCT ("user", "type", "deletedAt") ',
+  properties: ['user', 'type', 'username', 'deletedAt'],
+  name: 'user_login_unique',
+  expression: 'ALTER TABLE "user_login" add constraint "user_login_unique" UNIQUE NULLS NOT DISTINCT ("user", "type", "username", "deletedAt") ',
 })
 export class UserLogin extends IamBaseEntity {
   @ManyToOne(() => User, { nullable: true })
-  user?: User;
+  user!: User;
 
   @Enum({ items: ['local', 'facebook', 'google'] })
   @Property({ nullable: false })
   type!: string;
 
+  @Check({ expression: 'LENGTH(name) >= 4' })
+  @Property({ nullable: true, length: 128 })
+  username!: string;
+
+  @Exclude()
   @Check({ expression: 'LENGTH(name) = 64' })
   @Property({ nullable: true, length: 64 })
   _salt!: string;
 
+  @Exclude()
   @Check({ expression: 'LENGTH(name) >= 128' })
   @Property({ nullable: false, length: 512 })
   _password!: string;
