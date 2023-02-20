@@ -32,7 +32,7 @@ export class EntityUserCreateDto extends EntityProps<UserCreateDto> {
 @Exclude()
 class UserUpdateDto {
   @Expose()
-  @IsUUID('4')
+  @IsUUID()
   uuid: string;
 
   @Expose()

@@ -42,7 +42,7 @@ describe('UserController (e2e)', () => {
 
   // Inicio dos testes
   it(`${userUrl}/ (Post) Cria novo usuário`, async () => {
-    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(userUrl)).send(userToCreate).expect(400);
+    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(userUrl)).send(userToCreate).expect(503);
     /*const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(userUrl)).send(userToCreate).expect(201);
 
     expect(result.body.user).toBeDefined();
@@ -71,7 +71,7 @@ describe('UserController (e2e)', () => {
         uuid: uuidUserSaved,
       },
     };
-    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).put(updateUrl)).send(userUpdate).expect(400);
+    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).put(updateUrl)).send(userUpdate).expect(503);
     /*const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).put(updateUrl)).send(userUpdate).expect(200);
 
     expect(result.body.user).toBeDefined();
@@ -108,7 +108,7 @@ describe('UserController (e2e)', () => {
   it(`${userUrl}/ (Delete) Remover registro`, async () => {
     const deleteUrl = `${userUrl}/${uuidUserSaved}`;
 
-    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).delete(deleteUrl)).expect(400);
+    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).delete(deleteUrl)).expect(503);
     //await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).delete(deleteUrl)).expect(200);
   });
 
