@@ -1,6 +1,7 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { Application } from '../../../model/System/Application';
 import { Region } from '../../../model/System/Region';
+import { User } from '../../../model/User';
 import { ApplicationNormalizeInitialsUseCase } from './application-normalize-initials.usecase';
 import { BaseAddCreatedByUseCase } from './base-addcreatedby.usecase';
 import { BaseAddUpdatedByUseCase } from './base-addupdatedby.usecase';
@@ -22,6 +23,7 @@ export class UseCaseMgtModule implements OnModuleInit {
     // Registros dos casos de uso. Como são poucos, eles foram mantidos aqui.
     this.registerRegionUseCases();
     this.registerApplicationUseCases();
+    this.registerUserUseCases();
   }
 
   registerRegionUseCases() {
@@ -34,5 +36,10 @@ export class UseCaseMgtModule implements OnModuleInit {
     this.useCaseService.register(Application, BaseAddCreatedByUseCase);
     this.useCaseService.register(Application, BaseAddUpdatedByUseCase);
     this.useCaseService.register(Application, ApplicationNormalizeInitialsUseCase);
+  }
+
+  registerUserUseCases() {
+    this.useCaseService.register(User, BaseAddCreatedByUseCase);
+    this.useCaseService.register(User, BaseAddUpdatedByUseCase);
   }
 }
