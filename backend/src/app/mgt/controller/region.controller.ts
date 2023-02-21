@@ -3,7 +3,7 @@ import { Region } from '../../../model/System/Region';
 import { JWTGuard } from '../../auth/jwt/jwt.guard';
 import { RegionService } from '../service/region.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
-import { UseCaseMGTService } from '../usecases/usecasemgt.service';
+import { UseCaseMGTService } from '../usecase/usecasemgt.service';
 import { EntityRegionCreateDto, EntityRegionUpdateDto, FindRegionPropsDto } from './dto/region.dto';
 
 @UseGuards(JWTGuard)

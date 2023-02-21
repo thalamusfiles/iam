@@ -13,7 +13,7 @@ export class UserLogin extends IamBaseEntity {
   @ManyToOne(() => User, { nullable: true })
   user!: User;
 
-  @Enum({ items: ['local', 'facebook', 'google'] })
+  @Enum(() => UserLoginType)
   @Property({ nullable: false })
   type!: string;
 
@@ -36,4 +36,10 @@ export class UserLogin extends IamBaseEntity {
 
   @ManyToOne(() => User, { nullable: true })
   deletedBy?: User;
+}
+
+export enum UserLoginType {
+  LOCAL = 'local',
+  FACEBOOK = 'facebook',
+  GOOGLE = 'google',
 }

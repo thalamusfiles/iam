@@ -3,7 +3,7 @@ import { User } from '../../../model/User';
 import { JWTGuard } from '../../auth/jwt/jwt.guard';
 import { UserService } from '../service/user.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
-import { UseCaseMGTService } from '../usecases/usecasemgt.service';
+import { UseCaseMGTService } from '../usecase/usecasemgt.service';
 import { EntityUserCreateDto, EntityUserUpdateDto, FindUserPropsDto } from './dto/user.dto';
 
 @UseGuards(JWTGuard)

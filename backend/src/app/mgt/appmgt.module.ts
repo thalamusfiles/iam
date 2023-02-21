@@ -11,7 +11,7 @@ import { GlobalIamHeadersCheckMiddleware, RegionAppHeadersCheckMiddleware } from
 import { ApplicationService } from './service/application.service';
 import { RegionService } from './service/region.service';
 import { UserService } from './service/user.service';
-import { UseCaseMgtModule } from './usecases/usecasemgt.module';
+import { UseCaseMgtModule } from './usecase/usecasemgt.module';
 
 @Module({
   imports: [AuthModule, UseCaseMgtModule, MikroOrmModule.forFeature([Region, Application, User])],
