@@ -1,15 +1,38 @@
 import { FormExceptionError } from '../../../types/form.exception';
 
 export class AuthRegisterPasswordUseCase {
-  static execute = async ({ password }: { password: string }): Promise<Array<FormExceptionError>> => {
-    const erros = [];
-    if (!password || password.length < 6) {
-      const error = 'A senha deve ter no mínimo 6 caracteres.';
-      erros.push({ kind: 'password', error: error });
-    } else if (password.length > 128) {
-      const error = 'A senha deve ter no máximo 128 caracteres.';
-      erros.push({ kind: 'password', error: error });
+  static execute = async ({ password, password_confirmed }: { password: string; password_confirmed: string }): Promise<Array<FormExceptionError>> => {
+    const errors = [];
+    if (!password) {
+      errors.push({ kind: 'password', error: 'O campo senha é obrigatório.' });
+    } else {
+      if (password.length < 6) {
+        errors.push({ kind: 'password', error: 'A senha deve possuir no mínimo 6 caracteres.' });
+      }
+      if (password.length > 128) {
+        errors.push({ kind: 'password', error: 'A senha deve possuir no máximo 128 caracteres.' });
+      }
+      if (!/[a-z]/.test(password.trim())) {
+        errors.push({ kind: 'password', error: 'A senha deve possuir uma letra maiúscula' });
+      }
+      if (!/[A-Z]/.test(password.trim())) {
+        errors.push({ kind: 'password', error: 'A senha deve possuir uma letra minuscula' });
+      }
+      if (!/\d/.test(password.trim())) {
+        errors.push({ kind: 'password', error: 'A senha deve possuir uma número' });
+      }
     }
-    return erros;
+    if (!password_confirmed || password_confirmed.trim().length === 0) {
+      errors.push({
+        kind: 'password_confirmed',
+        message: 'O campo confirmar senha é obrigatório',
+      });
+    } else if (password_confirmed !== password) {
+      errors.push({
+        kind: 'password_confirmed',
+        message: 'O campo confirmar senha é diferente da senha',
+      });
+    }
+    return errors;
   };
 }

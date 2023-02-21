@@ -17,6 +17,10 @@ export class AuthRegisterDto {
   @Expose()
   @IsString()
   password: string;
+
+  @Expose()
+  @IsString()
+  password_confirmed: string;
 }
 
 /**

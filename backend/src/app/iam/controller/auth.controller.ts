@@ -10,10 +10,16 @@ import { AuthLoginDto, AuthRegisterDto } from './dto/auth.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  /**
+   * Registra um novo usuário.
+   * As validações são realizadas por meio de casos de uso
+   * @param body
+   * @returns
+   */
   @Post('local/register')
   @UsePipes(new ValidationPipe({ transform: true }))
   async localRegister(@Body() body: AuthRegisterDto): Promise<AuthLoginResp> {
-    //Executa os casos de uso
+    //Executa os casos de uso com validações
     const allErros = [].concat(
       AuthRegisterNameUseCase.execute(body),
       AuthRegisterUsernameUseCase.execute(body),
@@ -28,13 +34,14 @@ export class AuthController {
     return this.authService.localLogin(body.username, body.password);
   }
 
+  /**
+   * Realiza o login do usuário
+   * @param body
+   * @returns
+   */
   @Post('local/login')
   @UsePipes(new ValidationPipe({ transform: true }))
   async localLogin(@Body() body: AuthLoginDto): Promise<AuthLoginResp> {
     return await this.authService.localLogin(body.username, body.password);
-  }
-
-  private async validate(props: AuthRegisterDto): Promise<void> {
-    console.log(props);
   }
 }
