@@ -17,7 +17,7 @@ export class UserLogin extends IamBaseEntity {
   @Property({ nullable: false })
   type!: string;
 
-  @Check({ expression: 'LENGTH(name) >= 4' })
+  @Check({ expression: 'LENGTH(name) >= 6' })
   @Property({ nullable: true, length: 128 })
   username!: string;
 
