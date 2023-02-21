@@ -25,6 +25,8 @@ export class AuthService {
   ) {}
 
   async localRegister(props: { name: string; username: string; password: string }): Promise<UserLogin> {
+    this.logger.verbose('Registro Local de Usuários');
+
     const _salt = this.generateRandomString(32);
     const _password = this.encrypt(_salt, props.password);
 
@@ -43,6 +45,8 @@ export class AuthService {
   }
 
   async localLogin(username: string, password: string): Promise<AuthLoginResp> {
+    this.logger.verbose('Login Local');
+
     const user = await this.validateLocalUser(username, password);
 
     const userInfo = this.userInfo(user);
@@ -57,6 +61,8 @@ export class AuthService {
    * @returns
    */
   private async validateLocalUser(username: string, password: string): Promise<User> {
+    this.logger.verbose('Valida login Local');
+
     const userLogin = await this.userLoginRepository.findOne({ username }, { populate: ['user'] });
     if (!userLogin) {
       throw new NotFoundException('User does not exist.');
