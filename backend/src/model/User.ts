@@ -3,8 +3,8 @@ import { IamBaseEntity } from './Base/IamBaseEntity';
 
 @Entity({ schema: 'public' })
 export class User extends IamBaseEntity {
-  @Check({ expression: 'LENGTH(name) >= 4' })
-  @Property({ nullable: false })
+  @Check({ expression: 'LENGTH(name) >= 6' })
+  @Property({ nullable: false, length: 255 })
   name!: string;
 
   @Property({ nullable: true })

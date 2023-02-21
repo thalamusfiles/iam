@@ -1,7 +1,7 @@
 import { FormExceptionError } from '../../../types/form.exception';
 
-export class AuthRegisterUsername {
-  static preValidate = async ({ username }: { username: string }): Promise<Array<FormExceptionError>> => {
+export class AuthRegisterUsernameUseCase {
+  static execute = async ({ username }: { username: string }): Promise<Array<FormExceptionError>> => {
     const erros = [];
     if (!username || username.length < 6) {
       const error = 'O usuário deve ter no mínimo 6 caracteres.';
