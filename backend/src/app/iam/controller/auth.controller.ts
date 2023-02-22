@@ -25,10 +25,11 @@ export class AuthController {
 
     //Executa os casos de uso com validações
     const allErros = [].concat(
-      AuthRegisterNameUseCase.execute(body),
-      AuthRegisterUsernameUseCase.execute(body),
-      AuthRegisterPasswordUseCase.execute(body),
+      await AuthRegisterNameUseCase.execute(body),
+      await AuthRegisterUsernameUseCase.execute(body),
+      await AuthRegisterPasswordUseCase.execute(body),
     );
+
     if (allErros.length) {
       throw new FormException(allErros);
     }

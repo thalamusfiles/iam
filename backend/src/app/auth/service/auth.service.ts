@@ -19,7 +19,7 @@ export class AuthService {
   private readonly logger = new Logger(AuthService.name);
 
   constructor(
-    @InjectRepository(UserLogin) private readonly userRepository: EntityRepository<User>,
+    @InjectRepository(User) private readonly userRepository: EntityRepository<User>,
     @InjectRepository(UserLogin) private readonly userLoginRepository: EntityRepository<UserLogin>,
     private readonly jwtService: JwtService,
   ) {}
@@ -27,10 +27,15 @@ export class AuthService {
   async localRegister(props: { name: string; username: string; password: string }): Promise<UserLogin> {
     this.logger.verbose('Registro Local de Usuários');
 
+    // Gera o Salta e o Hash da ssenha
     const _salt = this.generateRandomString(32);
     const _password = this.encrypt(_salt, props.password);
 
+    // Registra o Usuário
     const user = this.userRepository.create({ name: props.name });
+    await this.userLoginRepository.flush();
+
+    // Registrao o login de acesso
     const userLogin = this.userLoginRepository.create({
       user,
       type: UserLoginType.LOCAL,
@@ -38,8 +43,7 @@ export class AuthService {
       _salt,
       _password,
     });
-
-    this.userLoginRepository.flush();
+    await this.userLoginRepository.flush();
 
     return userLogin;
   }
