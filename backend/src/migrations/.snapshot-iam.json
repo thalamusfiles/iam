@@ -44,6 +44,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 255,
           "mappedType": "string"
         },
         "deleted_at": {
@@ -225,20 +226,20 @@
       "checks": [
         {
           "name": "region_initials_check",
-          "expression": "LENGTH(initials) >= 4",
-          "definition": "check ((LENGTH(initials) >= 4))",
+          "expression": "LENGTH(initials) >= 3",
+          "definition": "check ((LENGTH(initials) >= 3))",
           "columnName": "initials"
         },
         {
           "name": "region_name_check",
-          "expression": "LENGTH(initials) >= 4",
-          "definition": "check ((LENGTH(initials) >= 4))",
+          "expression": "LENGTH(name) >= 3",
+          "definition": "check ((LENGTH(name) >= 3))",
           "columnName": "name"
         },
         {
           "name": "region_description_check",
-          "expression": "LENGTH(initials) >= 10",
-          "definition": "check ((LENGTH(initials) >= 10))",
+          "expression": "LENGTH(description) >= 10",
+          "definition": "check ((LENGTH(description) >= 10))",
           "columnName": "description"
         }
       ],
@@ -422,20 +423,20 @@
       "checks": [
         {
           "name": "application_initials_check",
-          "expression": "LENGTH(initials) >= 4",
-          "definition": "check ((LENGTH(initials) >= 4))",
+          "expression": "LENGTH(initials) >= 3",
+          "definition": "check ((LENGTH(initials) >= 3))",
           "columnName": "initials"
         },
         {
           "name": "application_name_check",
-          "expression": "LENGTH(initials) >= 4",
-          "definition": "check ((LENGTH(initials) >= 4))",
+          "expression": "LENGTH(name) >= 3",
+          "definition": "check ((LENGTH(name) >= 3))",
           "columnName": "name"
         },
         {
           "name": "application_description_check",
-          "expression": "LENGTH(initials) >= 10",
-          "definition": "check ((LENGTH(initials) >= 10))",
+          "expression": "LENGTH(description) >= 10",
+          "definition": "check ((LENGTH(description) >= 10))",
           "columnName": "description"
         }
       ],
@@ -540,6 +541,186 @@
           ],
           "referencedTableName": "system.application",
           "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "uuid": {
+          "name": "uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "uuid_generate_v4()",
+          "mappedType": "uuid"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "user_uuid": {
+          "name": "user_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "uuid"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "local",
+            "facebook",
+            "google"
+          ],
+          "mappedType": "enum"
+        },
+        "username": {
+          "name": "username",
+          "type": "varchar(128)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 128,
+          "mappedType": "string"
+        },
+        "_salt": {
+          "name": "_salt",
+          "type": "varchar(64)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 64,
+          "mappedType": "string"
+        },
+        "_password": {
+          "name": "_password",
+          "type": "varchar(512)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 512,
+          "mappedType": "string"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "deleted_by_uuid": {
+          "name": "deleted_by_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "uuid"
+        }
+      },
+      "name": "user_login",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "user_login_unique",
+          "columnNames": [
+            "user_uuid",
+            "type",
+            "username",
+            "deleted_at"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": false,
+          "expression": "ALTER TABLE \"user_login\" add constraint \"user_login_unique\" UNIQUE NULLS NOT DISTINCT (\"user\", \"type\", \"username\", \"deletedAt\") "
+        },
+        {
+          "keyName": "user_login_pkey",
+          "columnNames": [
+            "uuid"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [
+        {
+          "name": "user_login_username_check",
+          "expression": "LENGTH(name) >= 6",
+          "definition": "check ((LENGTH(name) >= 6))",
+          "columnName": "username"
+        },
+        {
+          "name": "user_login__salt_check",
+          "expression": "LENGTH(name) = 64",
+          "definition": "check ((LENGTH(name) = 64))",
+          "columnName": "_salt"
+        },
+        {
+          "name": "user_login__password_check",
+          "expression": "LENGTH(name) >= 128",
+          "definition": "check ((LENGTH(name) >= 128))",
+          "columnName": "_password"
+        }
+      ],
+      "foreignKeys": {
+        "user_login_user_uuid_foreign": {
+          "constraintName": "user_login_user_uuid_foreign",
+          "columnNames": [
+            "user_uuid"
+          ],
+          "localTableName": "public.user_login",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "user_login_deleted_by_uuid_foreign": {
+          "constraintName": "user_login_deleted_by_uuid_foreign",
+          "columnNames": [
+            "deleted_by_uuid"
+          ],
+          "localTableName": "public.user_login",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }

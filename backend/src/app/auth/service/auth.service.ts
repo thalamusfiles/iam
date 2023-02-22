@@ -27,7 +27,7 @@ export class AuthService {
   async localRegister(props: { name: string; username: string; password: string }): Promise<UserLogin> {
     this.logger.verbose('Registro Local de Usuários');
 
-    // Gera o Salta e o Hash da ssenha
+    // Gera o Salta e o Hash da senha
     const _salt = this.generateRandomString(32);
     const _password = this.encrypt(_salt, props.password);
 

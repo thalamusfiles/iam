@@ -17,17 +17,17 @@ export class UserLogin extends IamBaseEntity {
   @Property({ nullable: false })
   type!: string;
 
-  @Check({ expression: 'LENGTH(name) >= 6' })
+  @Check({ expression: 'LENGTH(username) >= 6' })
   @Property({ nullable: true, length: 128 })
   username!: string;
 
   @Exclude()
-  @Check({ expression: 'LENGTH(name) = 64' })
+  @Check({ expression: 'LENGTH(_salt) = 64' })
   @Property({ nullable: true, length: 64 })
   _salt!: string;
 
   @Exclude()
-  @Check({ expression: 'LENGTH(name) >= 128' })
+  @Check({ expression: 'LENGTH(_password) >= 128' })
   @Property({ nullable: false, length: 512 })
   _password!: string;
 
