@@ -4,7 +4,7 @@ export class Migration20230222001543 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       `create table "user_login" (
-        uuid" uuid not null default uuid_generate_v4(), 
+        "uuid" uuid not null default uuid_generate_v4(), 
         "created_at" timestamptz(0) not null, 
         "updated_at" timestamptz(0) not null, 
         "user_uuid" uuid null, 
@@ -21,7 +21,9 @@ export class Migration20230222001543 extends Migration {
         constraint user_login__password_check check (LENGTH(_password) >= 128)
       );`,
     );
-    this.addSql('ALTER TABLE "user_login" add constraint "user_login_unique" UNIQUE NULLS NOT DISTINCT ("user", "type", "username", "deletedAt") ;');
+    this.addSql(
+      'ALTER TABLE "user_login" add constraint "user_login_unique" UNIQUE NULLS NOT DISTINCT ("user_uuid", "type", "username", "deleted_at");',
+    );
 
     this.addSql(
       'alter table "user_login" add constraint "user_login_user_uuid_foreign" foreign key ("user_uuid") references "user" ("uuid") on update cascade on delete set null;',

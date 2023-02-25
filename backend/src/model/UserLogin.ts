@@ -7,7 +7,7 @@ import { User } from './User';
 @Index({
   properties: ['user', 'type', 'username', 'deletedAt'],
   name: 'user_login_unique',
-  expression: 'ALTER TABLE "user_login" add constraint "user_login_unique" UNIQUE NULLS NOT DISTINCT ("user", "type", "username", "deletedAt") ',
+  expression: 'ALTER TABLE "user_login" add constraint "user_login_unique" UNIQUE NULLS NOT DISTINCT ("user_uuid", "type", "username", "deleted_at") ',
 })
 export class UserLogin extends IamBaseEntity {
   @ManyToOne(() => User, { nullable: true })

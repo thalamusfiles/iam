@@ -664,7 +664,7 @@
           "composite": true,
           "primary": false,
           "unique": false,
-          "expression": "ALTER TABLE \"user_login\" add constraint \"user_login_unique\" UNIQUE NULLS NOT DISTINCT (\"user\", \"type\", \"username\", \"deletedAt\") "
+          "expression": "ALTER TABLE \"user_login\" add constraint \"user_login_unique\" UNIQUE NULLS NOT DISTINCT (\"user_uuid\", \"type\", \"username\", \"deleted_at\") "
         },
         {
           "keyName": "user_login_pkey",
