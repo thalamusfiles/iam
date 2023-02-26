@@ -10,7 +10,7 @@ import { JwtUserInfo } from '../jwt/jwt-user-info';
 
 // TODO: Colocar esse tipo em local apropriado
 export type AuthLoginResp = {
-  access_token: string;
+  accessToken: string;
   userInfo: JwtUserInfo;
 };
 
@@ -28,7 +28,7 @@ export class AuthService {
     this.logger.verbose('Registro Local de Usuários');
 
     // Gera o Salta e o Hash da senha
-    const _salt = this.generateRandomString(32);
+    const _salt = this.generateRandomString(64);
     const _password = this.encrypt(_salt, props.password);
 
     // Registra o Usuário
@@ -43,19 +43,27 @@ export class AuthService {
       _salt,
       _password,
     });
+
     await this.userLoginRepository.flush();
 
     return userLogin;
   }
 
+  /**
+   * Valida o login e gera o token jwt de acesso
+   * @param username
+   * @param password
+   * @returns
+   */
   async localLogin(username: string, password: string): Promise<AuthLoginResp> {
     this.logger.verbose('Login Local');
 
     const user = await this.validateLocalUser(username, password);
 
     const userInfo = this.userInfo(user);
-    const access_token = this.generate(userInfo);
-    return { access_token, userInfo };
+    const accessToken = this.generate(userInfo);
+
+    return { accessToken, userInfo };
   }
 
   /**
@@ -72,9 +80,9 @@ export class AuthService {
       throw new NotFoundException('User does not exist.');
     }
 
-    const encrypted = this.encrypt(userLogin._salt, password);
+    const _password = this.encrypt(userLogin._salt, password);
 
-    if (encrypted === userLogin._password) {
+    if (_password === userLogin._password) {
       return userLogin.user;
     } else {
       throw new BadRequestException('Password incorrect.');
@@ -91,7 +99,12 @@ export class AuthService {
   }
 
   private generate(user: JwtUserInfo): string {
-    return this.jwtService.sign(user);
+    try {
+      return this.jwtService.sign(user);
+    } catch (ex) {
+      console.log(ex);
+      throw ex;
+    }
   }
 
   /**

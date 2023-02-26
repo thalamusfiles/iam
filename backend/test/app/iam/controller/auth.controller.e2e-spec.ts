@@ -5,14 +5,14 @@ import { AppModule } from '../../../../src/app/app.module';
 import { JWTGuard } from '../../../../src/app/auth/jwt/jwt.guard';
 import { JTWGuardMockAdmin } from '../../../mocks/jwt.mock';
 import { addGlobalIAMMgtRequestHeader } from '../../../utils/setheader.utils';
-import { AuthRegisterDto } from '../../../../src/app/iam/controller/dto/auth.dto';
+import { AuthRegisterDto } from '../../../../src/app/auth/controller/dto/auth.dto';
 import { faker } from '@faker-js/faker';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
 
   // Registros utilizado nos testes
-  const authUrl = '/iam/auth';
+  const authUrl = '/auth';
 
   // Cadastros de testes
   const password = faker.internet.password(16);

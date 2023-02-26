@@ -1,12 +1,12 @@
 import { Body, Controller, Logger, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { FormException } from '../../../types/form.exception';
-import { AuthService, AuthLoginResp } from '../../auth/service/auth.service';
-import { AuthRegisterNameUseCase } from '../usecase/auth-register-name.usecase';
-import { AuthRegisterPasswordUseCase } from '../usecase/auth-register-password.usecase';
-import { AuthRegisterUsernameUseCase } from '../usecase/auth-register-username.usecase';
+import { AuthService, AuthLoginResp } from '../service/auth.service';
+import { AuthRegisterNameUseCase } from '../../iam/usecase/auth-register-name.usecase';
+import { AuthRegisterPasswordUseCase } from '../../iam/usecase/auth-register-password.usecase';
+import { AuthRegisterUsernameUseCase } from '../../iam/usecase/auth-register-username.usecase';
 import { AuthLoginDto, AuthRegisterDto } from './dto/auth.dto';
 
-@Controller('iam/auth')
+@Controller('auth')
 export class AuthController {
   private readonly logger = new Logger(AuthController.name);
 

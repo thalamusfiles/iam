@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import jwtConfig from '../../../config/jwt.config';
-import { User } from '../../../model/User';
+import { JwtUserInfo } from './jwt-user-info';
 
 @Injectable()
 export class JWTStrategy extends PassportStrategy(Strategy) {
@@ -14,7 +14,7 @@ export class JWTStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(auth: User): Partial<User> {
+  validate(auth: JwtUserInfo): Partial<JwtUserInfo> {
     return { uuid: auth.uuid, name: auth.name };
   }
 }
