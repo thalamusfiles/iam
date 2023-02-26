@@ -22,8 +22,9 @@ export class Migration20230222001543 extends Migration {
       );`,
     );
     this.addSql(
-      'ALTER TABLE "user_login" add constraint "user_login_unique" UNIQUE NULLS NOT DISTINCT ("user_uuid", "type", "username", "deleted_at");',
+      'ALTER TABLE "user_login" add constraint "user_login_unique_type_by_user" UNIQUE NULLS NOT DISTINCT ("user_uuid", "type", "deleted_at");',
     );
+    this.addSql('ALTER TABLE "user_login" add constraint "user_login_unique_username" UNIQUE NULLS NOT DISTINCT ("type", "username", "deleted_at");');
 
     this.addSql(
       'alter table "user_login" add constraint "user_login_user_uuid_foreign" foreign key ("user_uuid") references "user" ("uuid") on update cascade on delete set null;',

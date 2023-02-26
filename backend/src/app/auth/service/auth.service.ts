@@ -24,6 +24,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
+  /**
+   * Registra um novo usuário no sistema
+   * @param props
+   * @returns
+   */
   async localRegister(props: { name: string; username: string; password: string }): Promise<UserLogin> {
     this.logger.verbose('Registro Local de Usuários');
 
@@ -99,12 +104,7 @@ export class AuthService {
   }
 
   private generate(user: JwtUserInfo): string {
-    try {
-      return this.jwtService.sign(user);
-    } catch (ex) {
-      console.log(ex);
-      throw ex;
-    }
+    return this.jwtService.sign(user);
   }
 
   /**

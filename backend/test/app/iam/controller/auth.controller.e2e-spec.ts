@@ -40,16 +40,26 @@ describe('UserController (e2e)', () => {
   it(`${authUrl}/ (Post) Registra um novo usuário no sistema`, async () => {
     const registerUrl = `${authUrl}/local/register`;
 
-    console.log(registerDto01);
-
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(registerDto01).expect(201);
 
     expect(result.body).toBeDefined();
-    expect(result.body).toHaveProperty('access_token');
+    expect(result.body).toHaveProperty('accessToken');
     expect(result.body).toHaveProperty('userInfo');
-    expect(result.body.userInfo).toHaveProperty('uuid');
-    expect(result.body.userInfo).toHaveProperty('name');
-    expect(result.body.userInfo).toHaveProperty('regionLogged');
-    expect(result.body.userInfo).toHaveProperty('applicationLogged');
+    expect(result.body).toMatchObject(
+      expect.objectContaining({
+        accessToken: expect.any(String),
+        userInfo: {
+          uuid: expect.any(String),
+          name: expect.any(String),
+          regionLogged: expect.any(String),
+          applicationLogged: expect.any(String),
+        },
+      }),
+    );
+  });
+
+  it(`${authUrl}/ (Post) Tentar registrar o mesmo usuário (não pode)`, async () => {
+    const registerUrl = `${authUrl}/local/register`;
+    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(registerDto01).expect(500);
   });
 });

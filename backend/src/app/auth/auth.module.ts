@@ -17,9 +17,9 @@ import { AuthController } from './controller/auth.controller';
     JwtModule.register({ secret: jwtConfig.SECRET }),
     MikroOrmModule.forFeature([User, UserLogin]),
   ],
-  controllers: [AuthController],
-  providers: [JWTStrategy, JwtService, AuthService],
+  providers: [AuthService, JWTStrategy],
   exports: [AuthService],
+  controllers: [AuthController],
 })
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

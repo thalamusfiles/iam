@@ -49,6 +49,6 @@ export class AuthController {
   async localLogin(@Body() body: AuthLoginDto): Promise<AuthLoginResp> {
     this.logger.log('Login Local');
 
-    return await this.authService.localLogin(body.username, body.password);
+    return this.authService.localLogin(body.username, body.password);
   }
 }
