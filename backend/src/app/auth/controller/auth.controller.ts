@@ -20,7 +20,7 @@ export class AuthController {
    * @param body
    * @returns
    */
-  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_REST_TIME)
+  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   @Post('local/register')
   @UsePipes(new ValidationPipe({ transform: true }))
   async localRegister(@Body() body: AuthRegisterDto): Promise<AuthLoginResp> {
@@ -47,7 +47,7 @@ export class AuthController {
    * @param body
    * @returns
    */
-  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_REST_TIME)
+  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   @Post('local/login')
   @UsePipes(new ValidationPipe({ transform: true }))
   async localLogin(@Body() body: AuthLoginDto): Promise<AuthLoginResp> {

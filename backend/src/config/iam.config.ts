@@ -14,7 +14,7 @@ const iamConfig = {
   // Máximo de tentativa de registros por IP
   REGISTER_RATE_LIMITE: 3,
   // Tempo que registra
-  REGISTER_RATE_LIMITE_REST_TIME: 60,
+  REGISTER_RATE_LIMITE_RESET_TIME: 60,
 };
 
 export default iamConfig;
