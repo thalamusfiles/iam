@@ -62,4 +62,31 @@ describe('UserController (e2e)', () => {
     const registerUrl = `${authUrl}/local/register`;
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(registerDto01).expect(500);
   });
+
+  it(`${authUrl}/ (Post) Tenta realizar o login`, async () => {
+    const registerUrl = `${authUrl}/local/login`;
+
+    const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl))
+      .send({
+        uuid: registerDto01.username,
+        username: registerDto01.username,
+        password: registerDto01.password,
+      })
+      .expect(201);
+
+    expect(result.body).toBeDefined();
+    expect(result.body).toHaveProperty('accessToken');
+    expect(result.body).toHaveProperty('userInfo');
+    expect(result.body).toMatchObject(
+      expect.objectContaining({
+        accessToken: expect.any(String),
+        userInfo: {
+          uuid: expect.any(String),
+          name: expect.any(String),
+          regionLogged: expect.any(String),
+          applicationLogged: expect.any(String),
+        },
+      }),
+    );
+  });
 });

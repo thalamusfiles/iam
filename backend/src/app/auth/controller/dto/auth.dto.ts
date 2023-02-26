@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 /**
  * Dados necessários para registrar um novo usuário
@@ -29,10 +29,12 @@ export class AuthRegisterDto {
 @Exclude()
 export class AuthLoginDto {
   @Expose()
+  @IsNotEmpty()
   @IsString()
   username: string;
 
   @Expose()
+  @IsNotEmpty()
   @IsString()
   password: string;
 }
