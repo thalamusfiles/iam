@@ -5,6 +5,8 @@ import { AuthRegisterNameUseCase } from '../../iam/usecase/auth-register-name.us
 import { AuthRegisterPasswordUseCase } from '../../iam/usecase/auth-register-password.usecase';
 import { AuthRegisterUsernameUseCase } from '../../iam/usecase/auth-register-username.usecase';
 import { AuthLoginDto, AuthRegisterDto } from './dto/auth.dto';
+import { Throttle } from '@nestjs/throttler';
+import iamConfig from '../../../config/iam.config';
 
 @Controller('auth')
 export class AuthController {
@@ -18,6 +20,7 @@ export class AuthController {
    * @param body
    * @returns
    */
+  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_REST_TIME)
   @Post('local/register')
   @UsePipes(new ValidationPipe({ transform: true }))
   async localRegister(@Body() body: AuthRegisterDto): Promise<AuthLoginResp> {
@@ -44,6 +47,7 @@ export class AuthController {
    * @param body
    * @returns
    */
+  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_REST_TIME)
   @Post('local/login')
   @UsePipes(new ValidationPipe({ transform: true }))
   async localLogin(@Body() body: AuthLoginDto): Promise<AuthLoginResp> {

@@ -7,6 +7,7 @@ import { JTWGuardMockAdmin } from '../../../mocks/jwt.mock';
 import { addGlobalIAMMgtRequestHeader } from '../../../utils/setheader.utils';
 import { AuthRegisterDto } from '../../../../src/app/auth/controller/dto/auth.dto';
 import { faker } from '@faker-js/faker';
+import iamConfig from '../../../../src/config/iam.config';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
@@ -18,7 +19,7 @@ describe('UserController (e2e)', () => {
   const password = faker.internet.password(16);
   const registerDto01: AuthRegisterDto = {
     name: faker.name.fullName(),
-    username: faker.internet.userName(),
+    username: 'u_' + faker.internet.userName(),
     password: password,
     password_confirmed: password,
   };
@@ -65,14 +66,12 @@ describe('UserController (e2e)', () => {
 
   it(`${authUrl}/ (Post) Tenta realizar o login`, async () => {
     const registerUrl = `${authUrl}/local/login`;
+    const loginDto = {
+      username: registerDto01.username,
+      password: registerDto01.password,
+    };
 
-    const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl))
-      .send({
-        uuid: registerDto01.username,
-        username: registerDto01.username,
-        password: registerDto01.password,
-      })
-      .expect(201);
+    const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(loginDto).expect(201);
 
     expect(result.body).toBeDefined();
     expect(result.body).toHaveProperty('accessToken');
@@ -88,5 +87,45 @@ describe('UserController (e2e)', () => {
         },
       }),
     );
+  });
+
+  // Inicio dos testes
+  it(`${authUrl}/ (Post) Testa limite de registros por ip por minuto`, async () => {
+    const registerUrl = `${authUrl}/local/register`;
+
+    for (let j = 0; j < iamConfig.REGISTER_RATE_LIMITE - 2; j++) {
+      const registerDto02: AuthRegisterDto = {
+        name: faker.name.fullName(),
+        username: 'u_' + faker.internet.userName(),
+        password: password,
+        password_confirmed: password,
+      };
+
+      await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(registerDto02).expect(201);
+    }
+
+    const registerDto02: AuthRegisterDto = {
+      name: faker.name.fullName(),
+      username: 'u_' + faker.internet.userName(),
+      password: password,
+      password_confirmed: password,
+    };
+    // Verifica se a trava de limite de tentativas de registros funciona
+    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(registerDto02).expect(429);
+  });
+
+  it(`${authUrl}/ (Post) Testa limite de logins por ip por minuto`, async () => {
+    const registerUrl = `${authUrl}/local/login`;
+    const loginDto = {
+      username: registerDto01.username,
+      password: registerDto01.password,
+    };
+
+    for (let j = 0; j < iamConfig.REGISTER_RATE_LIMITE - 1; j++) {
+      await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(loginDto).expect(201);
+    }
+
+    // Verifica se a trava de limite de tentativas de logins funciona
+    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(loginDto).expect(429);
   });
 });
