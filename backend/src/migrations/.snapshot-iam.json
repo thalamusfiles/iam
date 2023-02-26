@@ -654,18 +654,6 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "user_login_unique_type_by_user",
-          "columnNames": [
-            "user_uuid",
-            "type",
-            "deleted_at"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": false,
-          "expression": "ALTER TABLE \"user_login\" add constraint \"user_login_unique_type_by_user\" UNIQUE NULLS NOT DISTINCT (\"user_uuid\", \"type\", \"deleted_at\")"
-        },
-        {
           "keyName": "user_login_unique_username",
           "columnNames": [
             "type",
@@ -676,6 +664,18 @@
           "primary": false,
           "unique": false,
           "expression": "ALTER TABLE \"user_login\" add constraint \"user_login_unique_username\" UNIQUE NULLS NOT DISTINCT (\"type\", \"username\", \"deleted_at\")"
+        },
+        {
+          "keyName": "user_login_unique_type_by_user",
+          "columnNames": [
+            "user_uuid",
+            "type",
+            "deleted_at"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": false,
+          "expression": "ALTER TABLE \"user_login\" add constraint \"user_login_unique_type_by_user\" UNIQUE NULLS NOT DISTINCT (\"user_uuid\", \"type\", \"deleted_at\")"
         },
         {
           "keyName": "user_login_pkey",
@@ -690,20 +690,20 @@
       "checks": [
         {
           "name": "user_login_username_check",
-          "expression": "LENGTH(name) >= 6",
-          "definition": "check ((LENGTH(name) >= 6))",
+          "expression": "LENGTH(username) >= 6",
+          "definition": "check ((LENGTH(username) >= 6))",
           "columnName": "username"
         },
         {
           "name": "user_login__salt_check",
-          "expression": "LENGTH(name) = 64",
-          "definition": "check ((LENGTH(name) = 64))",
+          "expression": "LENGTH(_salt) = 64",
+          "definition": "check ((LENGTH(_salt) = 64))",
           "columnName": "_salt"
         },
         {
           "name": "user_login__password_check",
-          "expression": "LENGTH(name) >= 128",
-          "definition": "check ((LENGTH(name) >= 128))",
+          "expression": "LENGTH(_password) >= 128",
+          "definition": "check ((LENGTH(_password) >= 128))",
           "columnName": "_password"
         }
       ],

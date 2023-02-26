@@ -16,9 +16,9 @@ export class Migration20230222001543 extends Migration {
         "deleted_by_uuid" uuid null, 
         
         constraint "user_login_pkey" primary key ("uuid"), 
-        constraint user_login_username_check check (LENGTH(username) >= 6), 
-        constraint user_login__salt_check check (LENGTH(_salt) = 64), 
-        constraint user_login__password_check check (LENGTH(_password) >= 128)
+        constraint user_login_username_check check(LENGTH(username) >= 6), 
+        constraint user_login__salt_check check(LENGTH(_salt) = 64), 
+        constraint user_login__password_check check(LENGTH(_password) >= 128)
       );`,
     );
     this.addSql(
