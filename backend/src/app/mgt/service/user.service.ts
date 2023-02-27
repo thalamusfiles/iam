@@ -12,7 +12,9 @@ export class UserService implements CRUDService<User> {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: EntityRepository<User>,
-  ) {}
+  ) {
+    this.logger.log('initialized');
+  }
 
   /**
    * Busca por vários registros

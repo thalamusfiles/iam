@@ -12,7 +12,9 @@ export class RegionService implements CRUDService<Region> {
   constructor(
     @InjectRepository(Region)
     private readonly regionRepository: EntityRepository<Region>,
-  ) {}
+  ) {
+    this.logger.log('RegionService initialized');
+  }
 
   /**
    * Busca por vários registros

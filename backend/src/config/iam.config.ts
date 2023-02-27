@@ -10,7 +10,7 @@ const iamConfig = {
   // Aplicação de gestão do IAM SSO
   MAIN_APP_IAM_MGT: 'iam_mgt',
   // Salt adicional na gerão do password
-  IAM_PASS_SECRET_SALT: process.env.DATABASE_HOST || defaultIamConfig.IAM_PASS_SECRET_SALT,
+  IAM_PASS_SECRET_SALT: process.env.IAM_PASS_SECRET_SALT || defaultIamConfig.IAM_PASS_SECRET_SALT,
   // Máximo de tentativa de registros por IP
   REGISTER_RATE_LIMITE: 5,
   // Tempo que registra

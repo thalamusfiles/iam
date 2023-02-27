@@ -23,7 +23,9 @@ export class AuthService {
     @InjectRepository(User) private readonly userRepository: EntityRepository<User>,
     @InjectRepository(UserLogin) private readonly userLoginRepository: EntityRepository<UserLogin>,
     private readonly jwtService: JwtService,
-  ) {}
+  ) {
+    this.logger.log('initialized');
+  }
 
   /**
    * Registra um novo usuário no sistema

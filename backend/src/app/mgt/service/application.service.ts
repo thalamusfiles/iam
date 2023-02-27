@@ -12,7 +12,9 @@ export class ApplicationService implements CRUDService<Application> {
   constructor(
     @InjectRepository(Application)
     private readonly applicationRepository: EntityRepository<Application>,
-  ) {}
+  ) {
+    this.logger.log('initialized');
+  }
 
   /**
    * Busca por vários registros

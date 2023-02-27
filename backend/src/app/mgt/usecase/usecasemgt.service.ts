@@ -11,7 +11,13 @@ export class UseCaseMGTService {
 
   private useCases: { [key: string]: Array<Class<UseCasePlugin>> } = {};
 
+  constructor() {
+    this.logger.log('initialized');
+  }
+
   register(modelClass: Class<any>, useCase: Class<UseCasePlugin>): void {
+    this.logger.log(`Registering ${useCase.name} use case On ${modelClass.name}`);
+
     const className = modelClass.name;
     if (!this.useCases[className]) {
       this.useCases[className] = [];
