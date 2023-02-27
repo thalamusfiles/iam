@@ -15,6 +15,12 @@ export class JWTStrategy extends PassportStrategy(Strategy) {
   }
 
   validate(auth: JwtUserInfo): Partial<JwtUserInfo> {
-    return { uuid: auth.uuid, name: auth.name };
+    // TODO: Realizar validação no banco de dados do token ou em serviço redis ou em sessão
+    return {
+      uuid: auth.uuid,
+      name: auth.name,
+      regionLogged: auth.regionLogged,
+      applicationLogged: auth.applicationLogged,
+    };
   }
 }

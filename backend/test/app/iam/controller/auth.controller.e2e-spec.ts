@@ -2,9 +2,7 @@ import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../../../../src/app/app.module';
-import { JWTGuard } from '../../../../src/app/auth/jwt/jwt.guard';
-import { JTWGuardMockAdmin } from '../../../mocks/jwt.mock';
-import { addGlobalIAMMgtRequestHeader } from '../../../utils/setheader.utils';
+import { addBearerAuthorization, addGlobalIAMMgtRequestHeader } from '../../../utils/setheader.utils';
 import { AuthRegisterDto } from '../../../../src/app/auth/controller/dto/auth.dto';
 import { faker } from '@faker-js/faker';
 import iamConfig from '../../../../src/config/iam.config';
@@ -23,15 +21,14 @@ describe('UserController (e2e)', () => {
     password: password,
     password_confirmed: password,
   };
+  let accessToken;
+  let userInfo;
 
   // Executa antes de cada teste
   beforeAll(async () => {
     const moduleFixture = await Test.createTestingModule({
       imports: [AppModule],
-    })
-      .overrideGuard(JWTGuard)
-      .useClass(JTWGuardMockAdmin)
-      .compile();
+    }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
@@ -66,7 +63,7 @@ describe('UserController (e2e)', () => {
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(registerDto01).expect(500);
   });
 
-  it(`${authUrl}/ (Post) Tenta realizar o login`, async () => {
+  it(`${authUrl}/ (Post) Realiza o login`, async () => {
     const registerUrl = `${authUrl}/local/login`;
     const loginDto = {
       username: registerDto01.username,
@@ -91,9 +88,47 @@ describe('UserController (e2e)', () => {
     );
     expect(result.body.userInfo.regionLogged.length).toBeGreaterThan(3);
     expect(result.body.userInfo.applicationLogged.length).toBeGreaterThan(3);
+
+    accessToken = result.body.accessToken;
+    userInfo = result.body.userInfo;
   });
 
-  // Inicio dos testes
+  it(`${authUrl}/ (Get) Refresca o token/sessão de acesso`, async () => {
+    const registerUrl = `${authUrl}/refresh`;
+
+    const getRequest = request(app.getHttpServer()).get(registerUrl);
+    const getRequestWithAuth = addBearerAuthorization(getRequest, accessToken);
+    const getRequestWithApp = addGlobalIAMMgtRequestHeader(getRequestWithAuth);
+
+    const result = await getRequestWithApp.expect(200);
+
+    expect(result.body).toBeDefined();
+    expect(result.body).toEqual(userInfo);
+  });
+
+  it(`${authUrl}/ (Get) Tenta utilizar um token inválido`, async () => {
+    const registerUrl = `${authUrl}/refresh`;
+
+    const [header, payload, verify] = accessToken.split('.');
+
+    // Modifica conteudo do JTW
+    const payloadData = JSON.parse(Buffer.from(payload, 'base64').toString());
+    payloadData.regionLogged = 'xxxx';
+    payloadData.applicationLogged = 'xxxx';
+
+    // Gera novo conteúdo (Payload)
+    const newPayload = Buffer.from(JSON.stringify(payloadData)).toString('base64');
+
+    // Gera token corrompido
+    const corruptedAccessToken = `${header}${newPayload}.${verify}`;
+
+    const getRequest = request(app.getHttpServer()).get(registerUrl);
+    const getRequestWithAuth = addBearerAuthorization(getRequest, corruptedAccessToken);
+    const getRequestWithApp = addGlobalIAMMgtRequestHeader(getRequestWithAuth);
+
+    await getRequestWithApp.expect(401);
+  });
+
   it(`${authUrl}/ (Post) Testa limite de registros por ip por minuto`, async () => {
     const registerUrl = `${authUrl}/local/register`;
 

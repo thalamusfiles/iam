@@ -12,7 +12,7 @@ const iamConfig = {
   // Salt adicional na gerão do password
   IAM_PASS_SECRET_SALT: process.env.DATABASE_HOST || defaultIamConfig.IAM_PASS_SECRET_SALT,
   // Máximo de tentativa de registros por IP
-  REGISTER_RATE_LIMITE: 3,
+  REGISTER_RATE_LIMITE: 5,
   // Tempo que registra
   REGISTER_RATE_LIMITE_RESET_TIME: 60,
 };
