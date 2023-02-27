@@ -6,6 +6,7 @@ import { createHmac, randomBytes } from 'crypto';
 import iamConfig from '../../../config/iam.config';
 import { User } from '../../../model/User';
 import { UserLogin, UserLoginType } from '../../../model/UserLogin';
+import { ApplicationInfo } from '../../../types/application-info';
 import { JwtUserInfo } from '../jwt/jwt-user-info';
 
 // TODO: Colocar esse tipo em local apropriado
@@ -60,12 +61,12 @@ export class AuthService {
    * @param password
    * @returns
    */
-  async localLogin(username: string, password: string): Promise<AuthLoginResp> {
+  async localLogin(username: string, password: string, appInfo: ApplicationInfo): Promise<AuthLoginResp> {
     this.logger.verbose('Login Local');
 
     const user = await this.validateLocalUser(username, password);
 
-    const userInfo = this.userInfo(user);
+    const userInfo = this.userInfo(user, appInfo);
     const accessToken = this.generate(userInfo);
 
     return { accessToken, userInfo };
@@ -94,12 +95,12 @@ export class AuthService {
     }
   }
 
-  private userInfo(user: User): JwtUserInfo {
+  private userInfo(user: User, { region, application }: ApplicationInfo): JwtUserInfo {
     return {
       uuid: user.uuid,
       name: user.name,
-      regionLogged: '',
-      applicationLogged: '',
+      regionLogged: region,
+      applicationLogged: application,
     };
   }
 

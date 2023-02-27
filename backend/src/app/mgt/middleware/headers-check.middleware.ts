@@ -29,8 +29,12 @@ export class RegionAppHeadersCheckMiddleware implements NestMiddleware {
     const region = req.header('region');
     const application = req.header('application');
     if (!region || !application) {
-      this.logger.error('Tentativa de sem informar a região ou aplicação');
+      this.logger.error('Tentativa de acesso sem informar a região ou aplicação');
       throw new UnauthorizedException('Region and application required');
+    }
+    if (typeof region !== 'string' || typeof application !== 'string') {
+      this.logger.error('Tentativa de acesso com região ou aplicação malformado');
+      throw new UnauthorizedException('Region and application malformed');
     }
     next();
   }

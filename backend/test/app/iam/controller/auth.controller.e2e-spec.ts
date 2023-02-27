@@ -57,6 +57,8 @@ describe('UserController (e2e)', () => {
         },
       }),
     );
+    expect(result.body.userInfo.regionLogged.length).toBeGreaterThan(3);
+    expect(result.body.userInfo.applicationLogged.length).toBeGreaterThan(3);
   });
 
   it(`${authUrl}/ (Post) Tentar registrar o mesmo usuário (não pode)`, async () => {
@@ -87,6 +89,8 @@ describe('UserController (e2e)', () => {
         },
       }),
     );
+    expect(result.body.userInfo.regionLogged.length).toBeGreaterThan(3);
+    expect(result.body.userInfo.applicationLogged.length).toBeGreaterThan(3);
   });
 
   // Inicio dos testes
