@@ -11,7 +11,9 @@ import { EntityRegionCreateDto, EntityRegionUpdateDto, FindRegionPropsDto } from
 export class RegionController implements CRUDController<Region> {
   private readonly logger = new Logger(RegionController.name);
 
-  constructor(private readonly regionService: RegionService, private readonly useCaseService: UseCaseMGTService) {}
+  constructor(private readonly regionService: RegionService, private readonly useCaseService: UseCaseMGTService) {
+    this.logger.log('initialized');
+  }
 
   /**
    * Buscar por várias regiões

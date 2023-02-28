@@ -11,7 +11,9 @@ import { EntityUserCreateDto, EntityUserUpdateDto, FindUserPropsDto } from './dt
 export class UserController implements CRUDController<User> {
   private readonly logger = new Logger(UserController.name);
 
-  constructor(private readonly userService: UserService, private readonly useCaseService: UseCaseMGTService) {}
+  constructor(private readonly userService: UserService, private readonly useCaseService: UseCaseMGTService) {
+    this.logger.log('initialized');
+  }
 
   /**
    * Buscar por várias regiões

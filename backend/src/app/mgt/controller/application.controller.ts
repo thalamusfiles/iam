@@ -11,7 +11,9 @@ import { EntityApplicationCreateDto, EntityApplicationUpdateDto, FindApplication
 export class ApplicationController implements CRUDController<Application> {
   private readonly logger = new Logger(ApplicationController.name);
 
-  constructor(private readonly applicationService: ApplicationService, private readonly useCaseService: UseCaseMGTService) {}
+  constructor(private readonly applicationService: ApplicationService, private readonly useCaseService: UseCaseMGTService) {
+    this.logger.log('initialized');
+  }
 
   /**
    * Buscar por várias regiões

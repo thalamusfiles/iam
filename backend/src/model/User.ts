@@ -1,5 +1,6 @@
-import { Check, Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { Check, Collection, Entity, ManyToMany, ManyToOne, Property } from '@mikro-orm/core';
 import { IamBaseEntity } from './Base/IamBaseEntity';
+import { Role } from './Role';
 
 @Entity({ schema: 'public' })
 export class User extends IamBaseEntity {
@@ -12,4 +13,7 @@ export class User extends IamBaseEntity {
 
   @ManyToOne(() => User, { nullable: true })
   deletedBy?: User;
+
+  @ManyToMany(() => Role, 'users', { owner: true, pivotTable: 'user_role' })
+  roles = new Collection<Role>(this);
 }

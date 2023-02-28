@@ -10,9 +10,11 @@ import { loggerFormat, loggerFormatConsole } from './logger-format';
 const createWinstonLogger = (name: string) => {
   const transps = [];
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (logConfig.CONSOLE_LOG) {
     transps.push(new transports.Console({ format: loggerFormatConsole(name) }));
-  } else {
+  }
+
+  if (logConfig.FILE_LOG) {
     transps.push(
       new transports.File({
         maxsize: logConfig.MAX_FILE_SIZE,
