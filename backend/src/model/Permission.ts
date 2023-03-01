@@ -10,9 +10,11 @@ export class Permission extends IamBaseEntityWithDelete {
   @Property({ nullable: false })
   initials!: string;
 
+  @Check({ expression: 'LENGTH(initials) >= 1' })
   @Property({ nullable: false })
   on!: string;
 
+  @Check({ expression: 'LENGTH(initials) >= 1' })
   @Property({ nullable: false })
   action!: string;
 

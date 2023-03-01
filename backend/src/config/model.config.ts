@@ -1,4 +1,11 @@
 import { MikroOrmModuleSyncOptions } from '@mikro-orm/nestjs';
+// Carregar neste ordem para não gerar erro de dependência cíclica
+import { User } from '../model/User';
+import { UserLogin } from '../model/UserLogin';
+import { Permission } from '../model/Permission';
+import { Role } from '../model/Role';
+import { Region } from '../model/System/Region';
+import { Application } from '../model/System/Application';
 
 const defaultModelConfig = {
   host: 'localhost',
@@ -10,7 +17,17 @@ const defaultModelConfig = {
 };
 
 const modelConfig: MikroOrmModuleSyncOptions = {
-  entities: ['./dist/model'],
+  entities: [
+    // System
+    Region,
+    Application,
+    // Base
+    User,
+    UserLogin,
+    // Mgt
+    Role,
+    Permission,
+  ],
   entitiesTs: ['./src/model'],
   type: 'postgresql',
   host: process.env.DATABASE_HOST || defaultModelConfig.host,

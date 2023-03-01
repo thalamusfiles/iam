@@ -582,12 +582,12 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "uuid"
         }
       },
       "name": "role",
-      "schema": "system",
+      "schema": "public",
       "indexes": [
         {
           "keyName": "role_application_uuid_initials_unique",
@@ -635,7 +635,7 @@
           "columnNames": [
             "created_by_uuid"
           ],
-          "localTableName": "system.role",
+          "localTableName": "public.role",
           "referencedColumnNames": [
             "uuid"
           ],
@@ -647,7 +647,7 @@
           "columnNames": [
             "updated_by_uuid"
           ],
-          "localTableName": "system.role",
+          "localTableName": "public.role",
           "referencedColumnNames": [
             "uuid"
           ],
@@ -659,7 +659,7 @@
           "columnNames": [
             "deleted_by_uuid"
           ],
-          "localTableName": "system.role",
+          "localTableName": "public.role",
           "referencedColumnNames": [
             "uuid"
           ],
@@ -672,12 +672,11 @@
           "columnNames": [
             "application_uuid"
           ],
-          "localTableName": "system.role",
+          "localTableName": "public.role",
           "referencedColumnNames": [
             "uuid"
           ],
           "referencedTableName": "system.application",
-          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }
@@ -749,6 +748,287 @@
     },
     {
       "columns": {
+        "uuid": {
+          "name": "uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "uuid_generate_v4()",
+          "mappedType": "uuid"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "created_by_uuid": {
+          "name": "created_by_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "updated_by_uuid": {
+          "name": "updated_by_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "deleted_by_uuid": {
+          "name": "deleted_by_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "uuid"
+        },
+        "initials": {
+          "name": "initials",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "on": {
+          "name": "on",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "action": {
+          "name": "action",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "application_uuid": {
+          "name": "application_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        }
+      },
+      "name": "permission",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "permission_application_uuid_initials_unique",
+          "columnNames": [
+            "application_uuid",
+            "initials"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "permission_pkey",
+          "columnNames": [
+            "uuid"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [
+        {
+          "name": "permission_initials_check",
+          "expression": "LENGTH(initials) >= 3",
+          "definition": "check ((LENGTH(initials) >= 3))",
+          "columnName": "initials"
+        },
+        {
+          "name": "permission_on_check",
+          "expression": "LENGTH(initials) >= 1",
+          "definition": "check ((LENGTH(initials) >= 1))",
+          "columnName": "on"
+        },
+        {
+          "name": "permission_action_check",
+          "expression": "LENGTH(initials) >= 1",
+          "definition": "check ((LENGTH(initials) >= 1))",
+          "columnName": "action"
+        },
+        {
+          "name": "permission_description_check",
+          "expression": "LENGTH(description) >= 10",
+          "definition": "check ((LENGTH(description) >= 10))",
+          "columnName": "description"
+        }
+      ],
+      "foreignKeys": {
+        "permission_created_by_uuid_foreign": {
+          "constraintName": "permission_created_by_uuid_foreign",
+          "columnNames": [
+            "created_by_uuid"
+          ],
+          "localTableName": "public.permission",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "permission_updated_by_uuid_foreign": {
+          "constraintName": "permission_updated_by_uuid_foreign",
+          "columnNames": [
+            "updated_by_uuid"
+          ],
+          "localTableName": "public.permission",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "permission_deleted_by_uuid_foreign": {
+          "constraintName": "permission_deleted_by_uuid_foreign",
+          "columnNames": [
+            "deleted_by_uuid"
+          ],
+          "localTableName": "public.permission",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "permission_application_uuid_foreign": {
+          "constraintName": "permission_application_uuid_foreign",
+          "columnNames": [
+            "application_uuid"
+          ],
+          "localTableName": "public.permission",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "system.application",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "role_uuid": {
+          "name": "role_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "permission_uuid": {
+          "name": "permission_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        }
+      },
+      "name": "role_permission",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "role_permission_pkey",
+          "columnNames": [
+            "role_uuid",
+            "permission_uuid"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "role_permission_role_uuid_foreign": {
+          "constraintName": "role_permission_role_uuid_foreign",
+          "columnNames": [
+            "role_uuid"
+          ],
+          "localTableName": "public.role_permission",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.role",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "role_permission_permission_uuid_foreign": {
+          "constraintName": "role_permission_permission_uuid_foreign",
+          "columnNames": [
+            "permission_uuid"
+          ],
+          "localTableName": "public.role_permission",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.permission",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
         "user_uuid": {
           "name": "user_uuid",
           "type": "uuid",
@@ -806,7 +1086,7 @@
           "referencedColumnNames": [
             "uuid"
           ],
-          "referencedTableName": "system.role",
+          "referencedTableName": "public.role",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
