@@ -482,6 +482,208 @@
     },
     {
       "columns": {
+        "uuid": {
+          "name": "uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "uuid_generate_v4()",
+          "mappedType": "uuid"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "created_by_uuid": {
+          "name": "created_by_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "updated_by_uuid": {
+          "name": "updated_by_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "deleted_by_uuid": {
+          "name": "deleted_by_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "uuid"
+        },
+        "initials": {
+          "name": "initials",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "application_uuid": {
+          "name": "application_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "uuid"
+        }
+      },
+      "name": "role",
+      "schema": "system",
+      "indexes": [
+        {
+          "keyName": "role_application_uuid_initials_unique",
+          "columnNames": [
+            "application_uuid",
+            "initials"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "role_pkey",
+          "columnNames": [
+            "uuid"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [
+        {
+          "name": "role_initials_check",
+          "expression": "LENGTH(initials) >= 3",
+          "definition": "check ((LENGTH(initials) >= 3))",
+          "columnName": "initials"
+        },
+        {
+          "name": "role_name_check",
+          "expression": "LENGTH(name) >= 3",
+          "definition": "check ((LENGTH(name) >= 3))",
+          "columnName": "name"
+        },
+        {
+          "name": "role_description_check",
+          "expression": "LENGTH(description) >= 10",
+          "definition": "check ((LENGTH(description) >= 10))",
+          "columnName": "description"
+        }
+      ],
+      "foreignKeys": {
+        "role_created_by_uuid_foreign": {
+          "constraintName": "role_created_by_uuid_foreign",
+          "columnNames": [
+            "created_by_uuid"
+          ],
+          "localTableName": "system.role",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "role_updated_by_uuid_foreign": {
+          "constraintName": "role_updated_by_uuid_foreign",
+          "columnNames": [
+            "updated_by_uuid"
+          ],
+          "localTableName": "system.role",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "role_deleted_by_uuid_foreign": {
+          "constraintName": "role_deleted_by_uuid_foreign",
+          "columnNames": [
+            "deleted_by_uuid"
+          ],
+          "localTableName": "system.role",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "role_application_uuid_foreign": {
+          "constraintName": "role_application_uuid_foreign",
+          "columnNames": [
+            "application_uuid"
+          ],
+          "localTableName": "system.role",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "system.application",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
         "region_uuid": {
           "name": "region_uuid",
           "type": "uuid",
@@ -540,6 +742,71 @@
             "uuid"
           ],
           "referencedTableName": "system.application",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "user_uuid": {
+          "name": "user_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "role_uuid": {
+          "name": "role_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        }
+      },
+      "name": "user_role",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "user_role_pkey",
+          "columnNames": [
+            "user_uuid",
+            "role_uuid"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "user_role_user_uuid_foreign": {
+          "constraintName": "user_role_user_uuid_foreign",
+          "columnNames": [
+            "user_uuid"
+          ],
+          "localTableName": "public.user_role",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "user_role_role_uuid_foreign": {
+          "constraintName": "user_role_role_uuid_foreign",
+          "columnNames": [
+            "role_uuid"
+          ],
+          "localTableName": "public.user_role",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "system.role",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
