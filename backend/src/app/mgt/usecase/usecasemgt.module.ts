@@ -1,4 +1,6 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
+import { Permission } from '../../../model/Permission';
+import { Role } from '../../../model/Role';
 import { Application } from '../../../model/System/Application';
 import { Region } from '../../../model/System/Region';
 import { User } from '../../../model/User';
@@ -24,6 +26,8 @@ export class UseCaseMgtModule implements OnModuleInit {
     this.registerRegionUseCases();
     this.registerApplicationUseCases();
     this.registerUserUseCases();
+    this.registerRoleUseCases();
+    this.registerPermissionUseCases();
   }
 
   registerRegionUseCases() {
@@ -41,5 +45,15 @@ export class UseCaseMgtModule implements OnModuleInit {
   registerUserUseCases() {
     this.useCaseService.register(User, BaseAddCreatedByUseCase);
     this.useCaseService.register(User, BaseAddUpdatedByUseCase);
+  }
+
+  registerRoleUseCases() {
+    this.useCaseService.register(Role, BaseAddCreatedByUseCase);
+    this.useCaseService.register(Role, BaseAddUpdatedByUseCase);
+  }
+
+  registerPermissionUseCases() {
+    this.useCaseService.register(Permission, BaseAddCreatedByUseCase);
+    this.useCaseService.register(Permission, BaseAddUpdatedByUseCase);
   }
 }

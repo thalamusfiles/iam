@@ -1,17 +1,17 @@
 import { EntityRepository, FindOptions, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, Logger } from '@nestjs/common';
-import { Region } from '../../../model/System/Region';
+import { Role } from '../../../model/Role';
 import { EntityProps, FindProps } from '../types/crud.controller';
 import { CRUDService } from '../types/crud.service';
 
 @Injectable()
-export class RegionService implements CRUDService<Region> {
-  private readonly logger = new Logger(RegionService.name);
+export class RoleService implements CRUDService<Role> {
+  private readonly logger = new Logger(RoleService.name);
 
   constructor(
-    @InjectRepository(Region)
-    private readonly regionRepository: EntityRepository<Region>,
+    @InjectRepository(Role)
+    private readonly roleRepository: EntityRepository<Role>,
   ) {
     this.logger.log('initialized');
   }
@@ -21,15 +21,15 @@ export class RegionService implements CRUDService<Region> {
    * @param query
    * @returns
    */
-  async find(query?: FindProps<Region>): Promise<Region[]> {
+  async find(query?: FindProps<Role>): Promise<Role[]> {
     this.logger.verbose('Find all');
 
-    const options: FindOptions<Region> = {};
+    const options: FindOptions<Role> = {};
     if (query.populate) {
       Object.assign(options, { populate: query.populate });
     }
 
-    return this.regionRepository.find(query?.where, options);
+    return this.roleRepository.find(query?.where, options);
   }
 
   /**
@@ -38,15 +38,15 @@ export class RegionService implements CRUDService<Region> {
    * @param _query
    * @returns
    */
-  async findById(id: string, query?: FindProps<Region>): Promise<Region> {
+  async findById(id: string, query?: FindProps<Role>): Promise<Role> {
     this.logger.verbose('Find by Id');
 
-    const options: FindOptions<Region> = {};
+    const options: FindOptions<Role> = {};
     if (query.populate) {
       Object.assign(options, { populate: query.populate });
     }
 
-    return this.regionRepository.findOne(id, options);
+    return this.roleRepository.findOne(id, options);
   }
 
   /**
@@ -54,19 +54,19 @@ export class RegionService implements CRUDService<Region> {
    * @param element
    * @returns
    */
-  async save(element: EntityProps<Region>): Promise<Region> {
+  async save(element: EntityProps<Role>): Promise<Role> {
     this.logger.verbose('Save');
 
     const uuid = element.entity.uuid;
     if (uuid) {
-      const ref = this.regionRepository.getReference(uuid);
+      const ref = this.roleRepository.getReference(uuid);
       element.entity = wrap(ref).assign(element.entity);
     } else {
-      element.entity = this.regionRepository.create(element.entity);
+      element.entity = this.roleRepository.create(element.entity);
     }
-    await this.regionRepository.flush();
+    await this.roleRepository.flush();
 
-    return element.entity as Region;
+    return element.entity as Role;
   }
 
   /**
@@ -75,10 +75,10 @@ export class RegionService implements CRUDService<Region> {
    * @param _element
    * @returns
    */
-  async delete(uuid: string, _element: EntityProps<Region>): Promise<void> {
+  async delete(uuid: string, _element: EntityProps<Role>): Promise<void> {
     this.logger.verbose('Delete');
 
-    const entity = this.regionRepository.getReference(uuid);
-    return this.regionRepository.removeAndFlush(entity);
+    const entity = this.roleRepository.getReference(uuid);
+    return this.roleRepository.removeAndFlush(entity);
   }
 }

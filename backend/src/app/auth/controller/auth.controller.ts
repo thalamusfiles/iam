@@ -1,13 +1,13 @@
 import { Body, Controller, Get, Headers, Ip, Logger, Post, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { FormException } from '../../../types/form.exception';
 import { AuthService, AuthLoginResp } from '../service/auth.service';
-import { AuthRegisterNameUseCase } from '../../iam/usecase/auth-register-name.usecase';
-import { AuthRegisterPasswordUseCase } from '../../iam/usecase/auth-register-password.usecase';
-import { AuthRegisterUsernameUseCase } from '../../iam/usecase/auth-register-username.usecase';
+import { AuthRegisterNameUseCase } from '../usecase/auth-register-name.usecase';
+import { AuthRegisterPasswordUseCase } from '../usecase/auth-register-password.usecase';
+import { AuthRegisterUsernameUseCase } from '../usecase/auth-register-username.usecase';
 import { AuthLoginDto, AuthRegisterDto } from './dto/auth.dto';
 import { Throttle } from '@nestjs/throttler';
 import iamConfig from '../../../config/iam.config';
-import { AuthRegisterMaxRegisterIpUseCase } from '../../iam/usecase/auth-register-max-register-ip';
+import { AuthRegisterMaxRegisterIpUseCase } from '../usecase/auth-register-max-register-ip';
 import { JWTGuard } from '../jwt/jwt.guard';
 import { JwtUserInfo } from '../jwt/jwt-user-info';
 

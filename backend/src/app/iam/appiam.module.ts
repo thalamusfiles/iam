@@ -1,10 +1,18 @@
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+
+import { User } from '../../model/User';
+import { Application } from '../../model/System/Application';
 import { AuthModule } from '../auth/auth.module';
-import { RegionAppHeadersCheckMiddleware } from '../mgt/middleware/headers-check.middleware';
 import { MeController } from './controller/me.controller';
+import { RegionAppHeadersCheckMiddleware } from '../auth/middleware/headers-check.middleware';
 
 @Module({
-  imports: [AuthModule],
+  imports: [
+    //
+    AuthModule,
+    MikroOrmModule.forFeature([Application, User]),
+  ],
   controllers: [MeController],
 })
 export class AppIamModule implements NestModule {

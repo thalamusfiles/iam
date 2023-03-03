@@ -1,12 +1,18 @@
 import { Injectable, Logger, NestMiddleware, UnauthorizedException } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import iamConfig from '../../../config/iam.config';
+import { RequestInfo } from '../../mgt/types/request-info';
+import { RequestService } from '../service/request.service';
 
 @Injectable()
 export class GlobalIamHeadersCheckMiddleware implements NestMiddleware {
   private readonly logger = new Logger(GlobalIamHeadersCheckMiddleware.name);
 
-  use(req: Request, res: Response, next: NextFunction) {
+  constructor(private readonly requestService: RequestService) {
+    this.logger.log('initialized');
+  }
+
+  async use(req: RequestInfo, res: Response, next: NextFunction) {
     const region = req.header('region');
     const application = req.header('application');
     if (!region || !application) {
@@ -17,15 +23,22 @@ export class GlobalIamHeadersCheckMiddleware implements NestMiddleware {
       this.logger.error('Tentativa de uso de área restrita');
       throw new UnauthorizedException('Region and application not allowed');
     }
+
+    req.applicationUuid = await this.requestService.getApplicationUuid(iamConfig.MAIN_APP_IAM_MGT);
+
     next();
   }
 }
 
 @Injectable()
 export class RegionAppHeadersCheckMiddleware implements NestMiddleware {
-  private readonly logger = new Logger(GlobalIamHeadersCheckMiddleware.name);
+  private readonly logger = new Logger(RegionAppHeadersCheckMiddleware.name);
 
-  use(req: Request, res: Response, next: NextFunction) {
+  constructor(private readonly requestService: RequestService) {
+    this.logger.log('initialized');
+  }
+
+  async use(req: RequestInfo, res: Response, next: NextFunction) {
     const region = req.header('region');
     const application = req.header('application');
     if (!region || !application) {
@@ -36,6 +49,12 @@ export class RegionAppHeadersCheckMiddleware implements NestMiddleware {
       this.logger.error('Tentativa de acesso com região ou aplicação malformado');
       throw new UnauthorizedException('Region and application malformed');
     }
+
+    req.applicationUuid = await this.requestService.getApplicationUuid(iamConfig.MAIN_APP_IAM_MGT);
+
+    console.log(req.applicationUuid);
+    console.log(req.applicationUuid);
+
     next();
   }
 }
