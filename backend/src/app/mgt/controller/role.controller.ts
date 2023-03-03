@@ -55,6 +55,9 @@ export class RoleController implements CRUDController<Role> {
       this.logger.error('Tentativa de criação de registro com uuid informado');
     }
 
+    //TODO: Mover para caso de uso.
+    (props.entity as any).application = request.applicationUuid;
+
     props.user = request.user;
     return this.save(props);
   }

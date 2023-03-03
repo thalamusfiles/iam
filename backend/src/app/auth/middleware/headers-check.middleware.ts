@@ -52,9 +52,6 @@ export class RegionAppHeadersCheckMiddleware implements NestMiddleware {
 
     req.applicationUuid = await this.requestService.getApplicationUuid(iamConfig.MAIN_APP_IAM_MGT);
 
-    console.log(req.applicationUuid);
-    console.log(req.applicationUuid);
-
     next();
   }
 }

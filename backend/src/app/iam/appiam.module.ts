@@ -4,8 +4,8 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { User } from '../../model/User';
 import { Application } from '../../model/System/Application';
 import { AuthModule } from '../auth/auth.module';
-import { MeController } from './controller/me.controller';
 import { RegionAppHeadersCheckMiddleware } from '../auth/middleware/headers-check.middleware';
+import { MeController } from './controller/me.controller';
 
 @Module({
   imports: [
