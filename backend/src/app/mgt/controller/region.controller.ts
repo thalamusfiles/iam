@@ -3,6 +3,10 @@ import { Region } from '../../../model/System/Region';
 import { JWTGuard } from '../../auth/jwt/jwt.guard';
 import { RegionService } from '../service/region.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
+import { RequestInfo } from '../types/request-info';
+import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
+import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
+import { RegionNormalizeInitialsUseCase } from '../usecase/region-normalize-initials.usecase';
 import { UseCaseMGTService } from '../usecase/usecasemgt.service';
 import { EntityRegionCreateDto, EntityRegionUpdateDto, FindRegionPropsDto } from './dto/region.dto';
 
@@ -12,6 +16,10 @@ export class RegionController implements CRUDController<Region> {
   private readonly logger = new Logger(RegionController.name);
 
   constructor(private readonly regionService: RegionService, private readonly useCaseService: UseCaseMGTService) {
+    this.useCaseService.register(Region, BaseAddCreatedByUseCase);
+    this.useCaseService.register(Region, BaseAddUpdatedByUseCase);
+    this.useCaseService.register(Region, RegionNormalizeInitialsUseCase);
+
     this.logger.log('initialized');
   }
 
@@ -47,15 +55,14 @@ export class RegionController implements CRUDController<Region> {
    */
   @Post()
   @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
-  async create(@Body() props: EntityRegionCreateDto, @Request() request: { user: any }): Promise<EntityProps<Region>> {
+  async create(@Body() props: EntityRegionCreateDto, @Request() request: RequestInfo): Promise<EntityProps<Region>> {
     this.logger.log('Create Region');
 
     if ((props.entity as any).uuid !== undefined) {
       this.logger.error('Tentativa de criação de registro com uuid informado');
     }
 
-    props.user = request.user;
-    return this.save(props);
+    return this.save(props, request);
   }
 
   /**
@@ -67,7 +74,7 @@ export class RegionController implements CRUDController<Region> {
    */
   @Put(':uuid')
   @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
-  async update(@Param('uuid') uuid: string, @Body() props: EntityRegionUpdateDto, @Request() request: any): Promise<EntityProps<Region>> {
+  async update(@Param('uuid') uuid: string, @Body() props: EntityRegionUpdateDto, @Request() request: RequestInfo): Promise<EntityProps<Region>> {
     this.logger.log('Update Region');
 
     if (!uuid) {
@@ -77,8 +84,7 @@ export class RegionController implements CRUDController<Region> {
       this.logger.error('Tentativa de alteração de registro com uuid diferente');
     }
 
-    props.user = request.user;
-    return this.save(props);
+    return this.save(props, request);
   }
 
   /**
@@ -97,26 +103,27 @@ export class RegionController implements CRUDController<Region> {
     return this.regionService.delete(uuid, props);
   }
 
-  private async save(props: EntityProps<Region>): Promise<EntityProps<Region>> {
+  private async save(props: EntityProps<Region>, request: RequestInfo): Promise<EntityProps<Region>> {
+    props.user = request.user;
     const isUpdate = !!props.entity.uuid;
 
-    this.useCaseService.preValidate(Region, props);
+    this.useCaseService.preValidate(Region, props, request);
 
     if (isUpdate) {
-      this.useCaseService.preUpdate(Region, props);
+      this.useCaseService.preUpdate(Region, props, request);
     } else {
-      this.useCaseService.prePersist(Region, props);
+      this.useCaseService.prePersist(Region, props, request);
     }
-    this.useCaseService.preSave(Region, props);
+    this.useCaseService.preSave(Region, props, request);
 
     const entity = await this.regionService.save(props);
 
     if (isUpdate) {
-      this.useCaseService.postUpdate(Region, props);
+      this.useCaseService.postUpdate(Region, props, request);
     } else {
-      this.useCaseService.postPersist(Region, props);
+      this.useCaseService.postPersist(Region, props, request);
     }
-    this.useCaseService.postSave(Region, props);
+    this.useCaseService.postSave(Region, props, request);
 
     return {
       entity: entity,

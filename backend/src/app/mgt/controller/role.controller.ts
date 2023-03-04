@@ -4,6 +4,10 @@ import { JWTGuard } from '../../auth/jwt/jwt.guard';
 import { RoleService } from '../service/role.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
 import { RequestInfo } from '../types/request-info';
+import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
+import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
+import { RoleAddAplicationUseCase } from '../usecase/role-addapplication.usecase';
+import { RoleNormalizeInitialsUseCase } from '../usecase/role-normalize-initials.usecase';
 import { UseCaseMGTService } from '../usecase/usecasemgt.service';
 import { EntityRoleCreateDto, EntityRoleUpdateDto, FindRolePropsDto } from './dto/role.dto';
 
@@ -13,6 +17,11 @@ export class RoleController implements CRUDController<Role> {
   private readonly logger = new Logger(RoleController.name);
 
   constructor(private readonly roleService: RoleService, private readonly useCaseService: UseCaseMGTService) {
+    this.useCaseService.register(Role, BaseAddCreatedByUseCase);
+    this.useCaseService.register(Role, BaseAddUpdatedByUseCase);
+    this.useCaseService.register(Role, RoleNormalizeInitialsUseCase);
+    this.useCaseService.register(Role, RoleAddAplicationUseCase);
+
     this.logger.log('initialized');
   }
 
@@ -55,11 +64,7 @@ export class RoleController implements CRUDController<Role> {
       this.logger.error('Tentativa de criação de registro com uuid informado');
     }
 
-    //TODO: Mover para caso de uso.
-    (props.entity as any).application = request.applicationUuid;
-
-    props.user = request.user;
-    return this.save(props);
+    return this.save(props, request);
   }
 
   /**
@@ -81,8 +86,7 @@ export class RoleController implements CRUDController<Role> {
       this.logger.error('Tentativa de alteração de registro com uuid diferente');
     }
 
-    props.user = request.user;
-    return this.save(props);
+    return this.save(props, request);
   }
 
   /**
@@ -101,26 +105,27 @@ export class RoleController implements CRUDController<Role> {
     return this.roleService.delete(uuid, props);
   }
 
-  private async save(props: EntityProps<Role>): Promise<EntityProps<Role>> {
+  private async save(props: EntityProps<Role>, request: RequestInfo): Promise<EntityProps<Role>> {
+    props.user = request.user;
     const isUpdate = !!props.entity.uuid;
 
-    this.useCaseService.preValidate(Role, props);
+    this.useCaseService.preValidate(Role, props, request);
 
     if (isUpdate) {
-      this.useCaseService.preUpdate(Role, props);
+      this.useCaseService.preUpdate(Role, props, request);
     } else {
-      this.useCaseService.prePersist(Role, props);
+      this.useCaseService.prePersist(Role, props, request);
     }
-    this.useCaseService.preSave(Role, props);
+    this.useCaseService.preSave(Role, props, request);
 
     const entity = await this.roleService.save(props);
 
     if (isUpdate) {
-      this.useCaseService.postUpdate(Role, props);
+      this.useCaseService.postUpdate(Role, props, request);
     } else {
-      this.useCaseService.postPersist(Role, props);
+      this.useCaseService.postPersist(Role, props, request);
     }
-    this.useCaseService.postSave(Role, props);
+    this.useCaseService.postSave(Role, props, request);
 
     return {
       entity: entity,

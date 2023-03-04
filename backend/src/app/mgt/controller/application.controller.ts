@@ -3,6 +3,10 @@ import { Application } from '../../../model/System/Application';
 import { JWTGuard } from '../../auth/jwt/jwt.guard';
 import { ApplicationService } from '../service/application.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
+import { RequestInfo } from '../types/request-info';
+import { ApplicationNormalizeInitialsUseCase } from '../usecase/application-normalize-initials.usecase';
+import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
+import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
 import { UseCaseMGTService } from '../usecase/usecasemgt.service';
 import { EntityApplicationCreateDto, EntityApplicationUpdateDto, FindApplicationPropsDto } from './dto/application.dto';
 
@@ -12,6 +16,10 @@ export class ApplicationController implements CRUDController<Application> {
   private readonly logger = new Logger(ApplicationController.name);
 
   constructor(private readonly applicationService: ApplicationService, private readonly useCaseService: UseCaseMGTService) {
+    this.useCaseService.register(Application, BaseAddCreatedByUseCase);
+    this.useCaseService.register(Application, BaseAddUpdatedByUseCase);
+    this.useCaseService.register(Application, ApplicationNormalizeInitialsUseCase);
+
     this.logger.log('initialized');
   }
 
@@ -47,15 +55,14 @@ export class ApplicationController implements CRUDController<Application> {
    */
   @Post()
   @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
-  async create(@Body() props: EntityApplicationCreateDto, @Request() request: { user: any }): Promise<EntityProps<Application>> {
+  async create(@Body() props: EntityApplicationCreateDto, @Request() request: RequestInfo): Promise<EntityProps<Application>> {
     this.logger.log('Create Application');
 
     if ((props.entity as any).uuid !== undefined) {
       this.logger.error('Tentativa de criação de registro com uuid informado');
     }
 
-    props.user = request.user;
-    return this.save(props);
+    return this.save(props, request);
   }
 
   /**
@@ -67,7 +74,11 @@ export class ApplicationController implements CRUDController<Application> {
    */
   @Put(':uuid')
   @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
-  async update(@Param('uuid') uuid: string, @Body() props: EntityApplicationUpdateDto, @Request() request: any): Promise<EntityProps<Application>> {
+  async update(
+    @Param('uuid') uuid: string,
+    @Body() props: EntityApplicationUpdateDto,
+    @Request() request: RequestInfo,
+  ): Promise<EntityProps<Application>> {
     this.logger.log('Update Application');
 
     if (!uuid) {
@@ -77,8 +88,7 @@ export class ApplicationController implements CRUDController<Application> {
       this.logger.error('Tentativa de alteração de registro com uuid diferente');
     }
 
-    props.user = request.user;
-    return this.save(props);
+    return this.save(props, request);
   }
 
   /**
@@ -97,26 +107,27 @@ export class ApplicationController implements CRUDController<Application> {
     return this.applicationService.delete(uuid, props);
   }
 
-  private async save(props: EntityProps<Application>): Promise<EntityProps<Application>> {
+  private async save(props: EntityProps<Application>, request: RequestInfo): Promise<EntityProps<Application>> {
+    props.user = request.user;
     const isUpdate = !!props.entity.uuid;
 
-    this.useCaseService.preValidate(Application, props);
+    this.useCaseService.preValidate(Application, props, request);
 
     if (isUpdate) {
-      this.useCaseService.preUpdate(Application, props);
+      this.useCaseService.preUpdate(Application, props, request);
     } else {
-      this.useCaseService.prePersist(Application, props);
+      this.useCaseService.prePersist(Application, props, request);
     }
-    this.useCaseService.preSave(Application, props);
+    this.useCaseService.preSave(Application, props, request);
 
     const entity = await this.applicationService.save(props);
 
     if (isUpdate) {
-      this.useCaseService.postUpdate(Application, props);
+      this.useCaseService.postUpdate(Application, props, request);
     } else {
-      this.useCaseService.postPersist(Application, props);
+      this.useCaseService.postPersist(Application, props, request);
     }
-    this.useCaseService.postSave(Application, props);
+    this.useCaseService.postSave(Application, props, request);
 
     return {
       entity: entity,

@@ -8,7 +8,6 @@ import { JWTGuard } from '../../../../src/app/auth/jwt/jwt.guard';
 import { JTWGuardMockAdmin } from '../../../mocks/jwt.mock';
 import { faker } from '@faker-js/faker';
 import { addGlobalIAMMgtRequestHeader } from '../../../utils/setheader.utils';
-import iamConfig from '../../../../src/config/iam.config';
 
 describe('RoleController (e2e)', () => {
   let app: INestApplication;
@@ -27,13 +26,12 @@ describe('RoleController (e2e)', () => {
       description: 'Perfil de aplicações com único servidor',
     },
   };
+  const roleName02Check = 'Reg Tst' + faker.internet.userName();
+  const initialsRole02Check = roleName02Check.toLocaleLowerCase().replace(/[\ \^\"]/g, '_');
   const roleUpdateData2: Partial<Role> = {
-    initials: 'Perfil_02',
-    name: 'Perfil 02',
-  };
-  const roleUpdateData3: Partial<Role> = {
-    initials: 'Perfil_03',
-    name: 'Perfil 03',
+    initials: roleName02Check.toLocaleUpperCase(),
+    name: roleName02Check,
+    description: 'Perfil de aplicações com único servidor 02',
   };
 
   // Executa antes de cada teste
@@ -50,7 +48,7 @@ describe('RoleController (e2e)', () => {
   });
 
   // Inicio dos testes
-  it(`${roleUrl}/ (Post) Cria nova região`, async () => {
+  it(`${roleUrl}/ (Post) Cria nova role`, async () => {
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(roleUrl)).send(roleToCreate).expect(201);
 
     expect(result.body.user).toBeDefined();
@@ -62,7 +60,7 @@ describe('RoleController (e2e)', () => {
     uuidRoleSaved = result.body.entity.uuid;
   });
 
-  /*it(`${roleUrl}/ (Get) Coleta registro criado`, async () => {
+  it(`${roleUrl}/ (Get) Coleta registro criado`, async () => {
     const findByUrl = `${roleUrl}/${uuidRoleSaved}`;
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(findByUrl)).expect(200);
 
@@ -71,11 +69,11 @@ describe('RoleController (e2e)', () => {
     expect(result.body.initials).toEqual(initialsRoleCheck);
   });
 
-  it(`${roleUrl}/ (Post) Tenta criar a mesma região (não pode)`, async () => {
+  it(`${roleUrl}/ (Post) Tenta criar o mesmo registro (não pode)`, async () => {
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(roleUrl).send(roleToCreate)).expect(500);
   });
 
-  it(`${roleUrl}/ (Put) Atualiza o "name" da região`, async () => {
+  it(`${roleUrl}/ (Put) Atualiza o "name" e "description" do registro`, async () => {
     const updateUrl = `${roleUrl}/${uuidRoleSaved}`;
     const roleUpdate = {
       ...roleToCreate,
@@ -83,6 +81,7 @@ describe('RoleController (e2e)', () => {
         ...roleToCreate.entity,
         initials: undefined,
         name: roleUpdateData2.name,
+        description: roleUpdateData2.description,
         uuid: uuidRoleSaved,
       },
     };
@@ -96,16 +95,15 @@ describe('RoleController (e2e)', () => {
     expect(result.body.entity.name).toEqual(roleUpdateData2.name);
   });
 
-  it(`${roleUrl}/ (Put) Atualiza a "initials" da região (ignora novo valor)`, async () => {
+  it(`${roleUrl}/ (Put) Atualiza o "initials" da registro`, async () => {
     const updateUrl = `${roleUrl}/${uuidRoleSaved}`;
-    const findByUrl = `${roleUrl}/${uuidRoleSaved}`;
-
     const roleUpdate = {
       ...roleToCreate,
       entity: {
         ...roleToCreate.entity,
-        initials: roleUpdateData3.initials,
-        name: roleUpdateData3.name,
+        initials: roleUpdateData2.initials,
+        name: undefined,
+        description: undefined,
         uuid: uuidRoleSaved,
       },
     };
@@ -115,23 +113,18 @@ describe('RoleController (e2e)', () => {
     expect(result.body.entity).toBeDefined();
     expect(result.body.entity.uuid).toBeTruthy();
     expect(result.body.entity.uuid).toEqual(uuidRoleSaved);
-    expect(result.body.entity.name).toEqual(roleUpdateData3.name);
-
-    const result2 = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(findByUrl)).expect(200);
-    expect(result2.body).toBeDefined();
-    expect(result2.body.uuid).toEqual(uuidRoleSaved);
-    expect(result2.body.name).toEqual(roleUpdateData3.name);
-    // Valores que não podem ser alterados
-    expect(result2.body.initials).toEqual(initialsRoleCheck);
+    expect(result.body.entity.initials).toEqual(initialsRole02Check);
+    expect(result.body.entity.name).not.toBeTruthy();
+    expect(result.body.entity.name).not.toBeTruthy();
   });
 
-  it(`${roleUrl}/ (Get) Busca as regiões`, async () => {
+  it(`${roleUrl}/ (Get) Busca as registros`, async () => {
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(roleUrl)).expect(200);
     expect(result.body).toBeTruthy();
     expect(result.body.length).toBeGreaterThan(0);
   });
 
-  it(`${roleUrl}/ (Get) Busca as regiões pelo id`, async () => {
+  it(`${roleUrl}/ (Get) Busca as registros pelo id`, async () => {
     const result = await addGlobalIAMMgtRequestHeader(addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(roleUrl)))
       .query({ where: { uuid: uuidRoleSaved } })
       .expect(200);
@@ -140,8 +133,8 @@ describe('RoleController (e2e)', () => {
     expect(result.body[0].uuid).toEqual(uuidRoleSaved);
   });
 
-  it(`${roleUrl}/ (Get) Busca as regiões pelo initials`, async () => {
-    const initials = initialsRoleCheck;
+  it(`${roleUrl}/ (Get) Busca as registros pelo initials`, async () => {
+    const initials = initialsRole02Check;
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(roleUrl))
       .query({ where: { initials: initials } })
       .expect(200);
@@ -155,33 +148,4 @@ describe('RoleController (e2e)', () => {
 
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).delete(deleteUrl)).expect(200);
   });
-
-  it(`${roleUrl}/ (Get) Busca região (principal) com "applications"`, async () => {
-    const initials = iamConfig.MAIN_REGION;
-    const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(roleUrl))
-      .query({
-        where: { initials: initials },
-        populate: ['permissions', 'createdBy', 'updatedBy'],
-      })
-      .expect(200);
-
-    expect(result.body).toBeTruthy();
-    expect(result.body.length).toEqual(1);
-    expect(result.body[0].initials).toEqual(initials);
-    expect(result.body[0].permissions.length).toBeGreaterThanOrEqual(2);
-    expect(result.body[0].permissions).toContainEqual(expect.objectContaining({ initials: iamConfig.MAIN_APP_IAM }));
-    expect(result.body[0].permissions).toContainEqual(expect.objectContaining({ initials: iamConfig.MAIN_APP_IAM_MGT }));
-    expect(result.body[0].createdBy).toBeTruthy();
-    expect(result.body[0].updatedBy).toBeTruthy();
-  });
-
-  it(`${roleUrl}/ (Get) Busca região (principal) com "permissions" e "permissions.roles" (não pode)`, async () => {
-    const initials = iamConfig.MAIN_REGION;
-    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(roleUrl))
-      .query({
-        where: { initials: initials },
-        populate: ['permissions', 'permissions.roles'],
-      })
-      .expect(400);
-  });*/
 });

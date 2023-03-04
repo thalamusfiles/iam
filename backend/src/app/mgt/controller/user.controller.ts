@@ -3,6 +3,9 @@ import { User } from '../../../model/User';
 import { JWTGuard } from '../../auth/jwt/jwt.guard';
 import { UserService } from '../service/user.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
+import { RequestInfo } from '../types/request-info';
+import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
+import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
 import { UseCaseMGTService } from '../usecase/usecasemgt.service';
 import { EntityUserCreateDto, EntityUserUpdateDto, FindUserPropsDto } from './dto/user.dto';
 
@@ -12,6 +15,10 @@ export class UserController implements CRUDController<User> {
   private readonly logger = new Logger(UserController.name);
 
   constructor(private readonly userService: UserService, private readonly useCaseService: UseCaseMGTService) {
+
+    this.useCaseService.register(User, BaseAddCreatedByUseCase);
+    this.useCaseService.register(User, BaseAddUpdatedByUseCase);
+
     this.logger.log('initialized');
   }
 
@@ -47,15 +54,14 @@ export class UserController implements CRUDController<User> {
    */
   @Post()
   @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
-  async create(@Body() props: EntityUserCreateDto, @Request() request: { user: any }): Promise<EntityProps<User>> {
+  async create(@Body() props: EntityUserCreateDto, @Request() request: RequestInfo): Promise<EntityProps<User>> {
     this.logger.log('Create User');
 
     if ((props.entity as any).uuid !== undefined) {
       this.logger.error('Tentativa de criação de registro com uuid informado');
     }
 
-    props.user = request.user;
-    return this.save(props);
+    return this.save(props, request);
   }
 
   /**
@@ -67,7 +73,7 @@ export class UserController implements CRUDController<User> {
    */
   @Put(':uuid')
   @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
-  async update(@Param('uuid') uuid: string, @Body() props: EntityUserUpdateDto, @Request() request: any): Promise<EntityProps<User>> {
+  async update(@Param('uuid') uuid: string, @Body() props: EntityUserUpdateDto, @Request() request: RequestInfo): Promise<EntityProps<User>> {
     this.logger.log('Update User');
 
     if (!uuid) {
@@ -77,8 +83,7 @@ export class UserController implements CRUDController<User> {
       this.logger.error('Tentativa de alteração de registro com uuid diferente');
     }
 
-    props.user = request.user;
-    return this.save(props);
+    return this.save(props, request);
   }
 
   /**
@@ -94,29 +99,30 @@ export class UserController implements CRUDController<User> {
     if (!uuid) {
       this.logger.error('Tentativa de remoção de registro sem uuid informado');
     }
-    return this.userService.delete(/*uuid, props*/);
+    return this.userService.delete(uuid, props);
   }
 
-  private async save(props: EntityProps<User>): Promise<EntityProps<User>> {
+  private async save(props: EntityProps<User>, request: RequestInfo): Promise<EntityProps<User>> {
+    props.user = request.user;
     const isUpdate = !!props.entity.uuid;
 
-    this.useCaseService.preValidate(User, props);
+    this.useCaseService.preValidate(User, props, request);
 
     if (isUpdate) {
-      this.useCaseService.preUpdate(User, props);
+      this.useCaseService.preUpdate(User, props, request);
     } else {
-      this.useCaseService.prePersist(User, props);
+      this.useCaseService.prePersist(User, props, request);
     }
-    this.useCaseService.preSave(User, props);
+    this.useCaseService.preSave(User, props, request);
 
     const entity = await this.userService.save(/*props*/);
 
     if (isUpdate) {
-      this.useCaseService.postUpdate(User, props);
+      this.useCaseService.postUpdate(User, props, request);
     } else {
-      this.useCaseService.postPersist(User, props);
+      this.useCaseService.postPersist(User, props, request);
     }
-    this.useCaseService.postSave(User, props);
+    this.useCaseService.postSave(User, props, request);
 
     return {
       entity: entity,

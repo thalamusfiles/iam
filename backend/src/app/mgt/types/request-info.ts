@@ -4,5 +4,6 @@ import { Request } from 'express';
 export type RequestInfo = {
   //
   user: JwtUserInfo;
-  applicationUuid: string;
+  regionRef: { uuid: string };
+  applicationRef: { uuid: string };
 } & Request;

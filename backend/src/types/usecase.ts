@@ -1,4 +1,5 @@
 import { EntityProps } from '../app/mgt/types/crud.controller';
+import { RequestInfo } from '../app/mgt/types/request-info';
 import { FormExceptionError } from './form.exception';
 
 export type UseCasePluginMetadata<T = any> = {
@@ -26,27 +27,27 @@ export enum UseCaseMethod {
  */
 interface UseCasePluginI {
   //Chamado no inicio, processado antes de qualquer ação de persistência
-  preValidate(data: UseCasePluginMetadata): Promise<Array<FormExceptionError>>;
+  preValidate(data: UseCasePluginMetadata, request: RequestInfo): Promise<Array<FormExceptionError>>;
 
   //Chamado antes de cadastrar o registro
-  prePersist(data: UseCasePluginMetadata): Promise<void>;
+  prePersist(data: UseCasePluginMetadata, request: RequestInfo): Promise<void>;
   //Chamado após cadastrar o registro
-  postPersist(data: UseCasePluginMetadata): Promise<void>;
+  postPersist(data: UseCasePluginMetadata, request: RequestInfo): Promise<void>;
 
   //Chamado antes de atualizar o registro
-  preUpdate(data: UseCasePluginMetadata): Promise<void>;
+  preUpdate(data: UseCasePluginMetadata, request: RequestInfo): Promise<void>;
   //Chamado após atualizar o registro
-  postUpdate(data: UseCasePluginMetadata): Promise<void>;
+  postUpdate(data: UseCasePluginMetadata, request: RequestInfo): Promise<void>;
 
   //Chamado antes de cadastrar ou atualizar o registro
-  preSave(data: UseCasePluginMetadata): Promise<void>;
+  preSave(data: UseCasePluginMetadata, request: RequestInfo): Promise<void>;
   //Chamado após cadastrar ou atualizar o registro
-  postSave(data: UseCasePluginMetadata): Promise<void>;
+  postSave(data: UseCasePluginMetadata, request: RequestInfo): Promise<void>;
 
   //Chamado antes de remover o registro
-  preRemove(data: UseCasePluginMetadata): Promise<void>;
+  preRemove(data: UseCasePluginMetadata, request: RequestInfo): Promise<void>;
   //Chamado após remover o registro
-  postRemove(data: UseCasePluginMetadata): Promise<void>;
+  postRemove(data: UseCasePluginMetadata, request: RequestInfo): Promise<void>;
 }
 
 /**
@@ -54,29 +55,29 @@ interface UseCasePluginI {
  */
 export abstract class UseCasePlugin<T = any> implements UseCasePluginI {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  preValidate = async (data: UseCasePluginMetadata<T>): Promise<Array<FormExceptionError>> => null;
+  preValidate = async (data: UseCasePluginMetadata<T>, request: RequestInfo): Promise<Array<FormExceptionError>> => null;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  prePersist = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+  prePersist = async (data: UseCasePluginMetadata<T>, request: RequestInfo): Promise<void> => null;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  postPersist = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+  postPersist = async (data: UseCasePluginMetadata<T>, request: RequestInfo): Promise<void> => null;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  preUpdate = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+  preUpdate = async (data: UseCasePluginMetadata<T>, request: RequestInfo): Promise<void> => null;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  postUpdate = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+  postUpdate = async (data: UseCasePluginMetadata<T>, request: RequestInfo): Promise<void> => null;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  preSave = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+  preSave = async (data: UseCasePluginMetadata<T>, request: RequestInfo): Promise<void> => null;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  postSave = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+  postSave = async (data: UseCasePluginMetadata<T>, request: RequestInfo): Promise<void> => null;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  preRemove = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+  preRemove = async (data: UseCasePluginMetadata<T>, request: RequestInfo): Promise<void> => null;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  postRemove = async (data: UseCasePluginMetadata<T>): Promise<void> => null;
+  postRemove = async (data: UseCasePluginMetadata<T>, request: RequestInfo): Promise<void> => null;
 }

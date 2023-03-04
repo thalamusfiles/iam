@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { IsUUID, IsString, IsNotEmpty, IsIn } from 'class-validator';
+import { IsUUID, IsString, IsNotEmpty, IsIn, IsOptional } from 'class-validator';
 import { Role } from '../../../../model/Role';
 import { EntityProps, FindProps } from '../../types/crud.controller';
 
@@ -48,13 +48,18 @@ class RoleUpdateDto {
 
   @Expose()
   @IsString()
-  @IsNotEmpty()
-  name!: string;
+  @IsOptional()
+  initials?: string;
 
   @Expose()
   @IsString()
-  @IsNotEmpty()
-  description!: string;
+  @IsOptional()
+  name?: string;
+
+  @Expose()
+  @IsString()
+  @IsOptional()
+  description?: string;
 }
 
 // DTO update Role

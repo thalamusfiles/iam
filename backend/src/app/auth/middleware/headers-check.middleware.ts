@@ -24,7 +24,7 @@ export class GlobalIamHeadersCheckMiddleware implements NestMiddleware {
       throw new UnauthorizedException('Region and application not allowed');
     }
 
-    req.applicationUuid = await this.requestService.getApplicationUuid(iamConfig.MAIN_APP_IAM_MGT);
+    req.applicationRef = await this.requestService.getApplicationRef(iamConfig.MAIN_APP_IAM_MGT);
 
     next();
   }
@@ -50,7 +50,8 @@ export class RegionAppHeadersCheckMiddleware implements NestMiddleware {
       throw new UnauthorizedException('Region and application malformed');
     }
 
-    req.applicationUuid = await this.requestService.getApplicationUuid(iamConfig.MAIN_APP_IAM_MGT);
+    req.regionRef = await this.requestService.getRegionRef(region);
+    req.applicationRef = await this.requestService.getApplicationRef(application);
 
     next();
   }

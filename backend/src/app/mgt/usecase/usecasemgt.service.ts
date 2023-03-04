@@ -2,9 +2,13 @@ import { Injectable, Logger } from '@nestjs/common';
 import { FormException } from '../../../types/form.exception';
 import { UseCaseMethod, UseCasePlugin, UseCasePluginMetadata } from '../../../types/usecase';
 import { EntityProps } from '../types/crud.controller';
+import { RequestInfo } from '../types/request-info';
 
 type Class<T> = new (...args: any[]) => T;
 
+/**
+ * Processa os casos de uso vinculádos aos modelos de banco
+ */
 @Injectable()
 export class UseCaseMGTService {
   private readonly logger = new Logger(UseCaseMGTService.name);
@@ -25,7 +29,7 @@ export class UseCaseMGTService {
     this.useCases[className].push(useCase);
   }
 
-  async execute(modelClass: Class<any>, method: UseCaseMethod, props: EntityProps<any>): Promise<void> {
+  async execute(modelClass: Class<any>, method: UseCaseMethod, props: EntityProps<any>, request: RequestInfo): Promise<void> {
     const className = modelClass.name;
     const useCases = this.useCases[className];
     if (useCases) {
@@ -35,7 +39,7 @@ export class UseCaseMGTService {
         case UseCaseMethod.preValidate:
           let allErros = [];
           for (const useCase of useCases) {
-            const erros = await new useCase().preValidate(metadata);
+            const erros = await new useCase().preValidate(metadata, request);
             if (erros) allErros = allErros.concat(erros);
           }
           if (allErros.length) {
@@ -43,58 +47,58 @@ export class UseCaseMGTService {
           }
           break;
         case UseCaseMethod.prePersist:
-          for (const useCase of useCases) new useCase().prePersist(metadata);
+          for (const useCase of useCases) new useCase().prePersist(metadata, request);
           break;
         case UseCaseMethod.postPersist:
-          for (const useCase of useCases) new useCase().postPersist(metadata);
+          for (const useCase of useCases) new useCase().postPersist(metadata, request);
           break;
         case UseCaseMethod.preUpdate:
-          for (const useCase of useCases) new useCase().preUpdate(metadata);
+          for (const useCase of useCases) new useCase().preUpdate(metadata, request);
           break;
         case UseCaseMethod.postUpdate:
-          for (const useCase of useCases) new useCase().postUpdate(metadata);
+          for (const useCase of useCases) new useCase().postUpdate(metadata, request);
           break;
         case UseCaseMethod.preSave:
-          for (const useCase of useCases) new useCase().preSave(metadata);
+          for (const useCase of useCases) new useCase().preSave(metadata, request);
           break;
         case UseCaseMethod.postSave:
-          for (const useCase of useCases) new useCase().postSave(metadata);
+          for (const useCase of useCases) new useCase().postSave(metadata, request);
           break;
         case UseCaseMethod.preRemove:
-          for (const useCase of useCases) new useCase().preRemove(metadata);
+          for (const useCase of useCases) new useCase().preRemove(metadata, request);
           break;
         case UseCaseMethod.postRemove:
-          for (const useCase of useCases) new useCase().postRemove(metadata);
+          for (const useCase of useCases) new useCase().postRemove(metadata, request);
           break;
       }
     }
   }
 
-  preValidate(modelClass: Class<any>, props: EntityProps<any>): Promise<void> {
-    return this.execute(modelClass, UseCaseMethod.preValidate, props);
+  preValidate(modelClass: Class<any>, props: EntityProps<any>, request: RequestInfo): Promise<void> {
+    return this.execute(modelClass, UseCaseMethod.preValidate, props, request);
   }
-  prePersist(modelClass: Class<any>, props: EntityProps<any>): Promise<void> {
-    return this.execute(modelClass, UseCaseMethod.prePersist, props);
+  prePersist(modelClass: Class<any>, props: EntityProps<any>, request: RequestInfo): Promise<void> {
+    return this.execute(modelClass, UseCaseMethod.prePersist, props, request);
   }
-  postPersist(modelClass: Class<any>, props: EntityProps<any>): Promise<void> {
-    return this.execute(modelClass, UseCaseMethod.postPersist, props);
+  postPersist(modelClass: Class<any>, props: EntityProps<any>, request: RequestInfo): Promise<void> {
+    return this.execute(modelClass, UseCaseMethod.postPersist, props, request);
   }
-  preUpdate(modelClass: Class<any>, props: EntityProps<any>): Promise<void> {
-    return this.execute(modelClass, UseCaseMethod.preUpdate, props);
+  preUpdate(modelClass: Class<any>, props: EntityProps<any>, request: RequestInfo): Promise<void> {
+    return this.execute(modelClass, UseCaseMethod.preUpdate, props, request);
   }
-  postUpdate(modelClass: Class<any>, props: EntityProps<any>): Promise<void> {
-    return this.execute(modelClass, UseCaseMethod.postUpdate, props);
+  postUpdate(modelClass: Class<any>, props: EntityProps<any>, request: RequestInfo): Promise<void> {
+    return this.execute(modelClass, UseCaseMethod.postUpdate, props, request);
   }
-  preSave(modelClass: Class<any>, props: EntityProps<any>): Promise<void> {
-    return this.execute(modelClass, UseCaseMethod.preSave, props);
+  preSave(modelClass: Class<any>, props: EntityProps<any>, request: RequestInfo): Promise<void> {
+    return this.execute(modelClass, UseCaseMethod.preSave, props, request);
   }
-  postSave(modelClass: Class<any>, props: EntityProps<any>): Promise<void> {
-    return this.execute(modelClass, UseCaseMethod.postSave, props);
+  postSave(modelClass: Class<any>, props: EntityProps<any>, request: RequestInfo): Promise<void> {
+    return this.execute(modelClass, UseCaseMethod.postSave, props, request);
   }
-  preRemove(modelClass: Class<any>, props: EntityProps<any>): Promise<void> {
-    return this.execute(modelClass, UseCaseMethod.preRemove, props);
+  preRemove(modelClass: Class<any>, props: EntityProps<any>, request: RequestInfo): Promise<void> {
+    return this.execute(modelClass, UseCaseMethod.preRemove, props, request);
   }
-  postRemove(modelClass: Class<any>, props: EntityProps<any>): Promise<void> {
-    return this.execute(modelClass, UseCaseMethod.postRemove, props);
+  postRemove(modelClass: Class<any>, props: EntityProps<any>, request: RequestInfo): Promise<void> {
+    return this.execute(modelClass, UseCaseMethod.postRemove, props, request);
   }
 }

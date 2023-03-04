@@ -2,7 +2,7 @@ import { EntityRepository, FindOptions /*, wrap*/ } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, Logger, ServiceUnavailableException } from '@nestjs/common';
 import { User } from '../../../model/User';
-import { /*EntityProps,*/ FindProps } from '../types/crud.controller';
+import { /*EntityProps,*/ EntityProps, FindProps } from '../types/crud.controller';
 import { CRUDService } from '../types/crud.service';
 
 @Injectable()
@@ -77,9 +77,11 @@ export class UserService implements CRUDService<User> {
    * @param _element
    * @returns
    */
-  async delete(/*uuid: string, _element: EntityProps<User>*/): Promise<void> {
+  async delete(uuid: string, _element: EntityProps<User>): Promise<void> {
     this.logger.verbose('Delete');
 
+    this.logger.error(`Tentativa de remoção do usuário ${uuid}`);
+    this.logger.error(`Props ${_element}`);
     throw new ServiceUnavailableException('Este módulo não permite a remoção do usuário');
 
     /* Este módulo não permite a remoção do usuário
