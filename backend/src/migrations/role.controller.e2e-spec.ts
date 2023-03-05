@@ -17,21 +17,21 @@ describe('RoleController (e2e)', () => {
 
   // Cadastros de testes
   let uuidRoleSaved = null;
-  const roleNameCheck = 'Reg Tst' + faker.name.jobTitle();
+  const roleNameCheck = 'Reg Tst' + faker.internet.userName();
   const initialsRoleCheck = roleNameCheck.toLocaleLowerCase().replace(/[\ \^\"]/g, '_');
   const roleToCreate: EntityProps<Role> = {
     entity: {
       initials: roleNameCheck.toLocaleUpperCase(),
       name: roleNameCheck,
-      description: 'Role de aplicações com único servidor',
+      description: 'Perfil de aplicações com único servidor',
     },
   };
-  const roleName02Check = 'Reg Tst' + faker.name.jobTitle();
+  const roleName02Check = 'Reg Tst' + faker.internet.userName();
   const initialsRole02Check = roleName02Check.toLocaleLowerCase().replace(/[\ \^\"]/g, '_');
-  const roleUpdateData: Partial<Role> = {
+  const roleUpdateData2: Partial<Role> = {
     initials: roleName02Check.toLocaleUpperCase(),
     name: roleName02Check,
-    description: 'Role de aplicações com único servidor 02',
+    description: 'Perfil de aplicações com único servidor 02',
   };
 
   // Executa antes de cada teste
@@ -80,8 +80,8 @@ describe('RoleController (e2e)', () => {
       entity: {
         ...roleToCreate.entity,
         initials: undefined,
-        name: roleUpdateData.name,
-        description: roleUpdateData.description,
+        name: roleUpdateData2.name,
+        description: roleUpdateData2.description,
         uuid: uuidRoleSaved,
       },
     };
@@ -92,7 +92,7 @@ describe('RoleController (e2e)', () => {
     expect(result.body.entity.uuid).toBeTruthy();
     expect(result.body.entity.uuid).toEqual(uuidRoleSaved);
     expect(result.body.entity.initials).not.toBeTruthy();
-    expect(result.body.entity.name).toEqual(roleUpdateData.name);
+    expect(result.body.entity.name).toEqual(roleUpdateData2.name);
   });
 
   it(`${roleUrl}/ (Put) Atualiza o "initials" da registro`, async () => {
@@ -101,7 +101,7 @@ describe('RoleController (e2e)', () => {
       ...roleToCreate,
       entity: {
         ...roleToCreate.entity,
-        initials: roleUpdateData.initials,
+        initials: roleUpdateData2.initials,
         name: undefined,
         description: undefined,
         uuid: uuidRoleSaved,

@@ -76,7 +76,11 @@ export class PermissionController implements CRUDController<Permission> {
    */
   @Put(':uuid')
   @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
-  async update(@Param('uuid') uuid: string, @Body() props: EntityPermissionUpdateDto, @Request() request: RequestInfo): Promise<EntityProps<Permission>> {
+  async update(
+    @Param('uuid') uuid: string,
+    @Body() props: EntityPermissionUpdateDto,
+    @Request() request: RequestInfo,
+  ): Promise<EntityProps<Permission>> {
     this.logger.log('Update Permission');
 
     if (!uuid) {

@@ -20,12 +20,12 @@ class PermissionCreateDto {
   @Expose()
   @IsString()
   @IsNotEmpty()
-  initials: string;
+  on: string;
 
   @Expose()
   @IsString()
   @IsNotEmpty()
-  name: string;
+  action: string;
 
   @Expose()
   @IsString()
@@ -49,12 +49,12 @@ class PermissionUpdateDto {
   @Expose()
   @IsString()
   @IsOptional()
-  initials?: string;
+  on?: string;
 
   @Expose()
   @IsString()
   @IsOptional()
-  name?: string;
+  action?: string;
 
   @Expose()
   @IsString()
