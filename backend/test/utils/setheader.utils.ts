@@ -7,6 +7,12 @@ export const addGlobalIAMMgtRequestHeader = <T extends Request>(req: T): T => {
   return req;
 };
 
+// Header obrigatório para incluir região ou applicação
+export const addRegionAppRequestHeader = <T extends Request>(req: T): T => {
+  req.set('region', iamConfig.MAIN_REGION).set('application', iamConfig.MAIN_APP_IAM);
+  return req;
+};
+
 export const addBearerAuthorization = <T extends Request>(req: T, accessToken: string): T => {
   req.set('Authorization', `Bearer ${accessToken}`);
   return req;

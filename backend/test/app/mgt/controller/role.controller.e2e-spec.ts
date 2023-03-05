@@ -93,6 +93,7 @@ describe('RoleController (e2e)', () => {
     expect(result.body.entity.uuid).toEqual(uuidRoleSaved);
     expect(result.body.entity.initials).not.toBeTruthy();
     expect(result.body.entity.name).toEqual(roleUpdateData.name);
+    expect(result.body.entity.description).toEqual(roleUpdateData.description);
   });
 
   it(`${roleUrl}/ (Put) Atualiza o "initials" da registro`, async () => {
@@ -115,7 +116,7 @@ describe('RoleController (e2e)', () => {
     expect(result.body.entity.uuid).toEqual(uuidRoleSaved);
     expect(result.body.entity.initials).toEqual(initialsRole02Check);
     expect(result.body.entity.name).not.toBeTruthy();
-    expect(result.body.entity.name).not.toBeTruthy();
+    expect(result.body.entity.description).not.toBeTruthy();
   });
 
   it(`${roleUrl}/ (Get) Busca as registros`, async () => {

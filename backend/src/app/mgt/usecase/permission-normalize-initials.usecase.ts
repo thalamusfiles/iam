@@ -7,7 +7,11 @@ import { UseCasePlugin, UseCasePluginMetadata } from '../../../types/usecase';
 export class PermissionNormalizeInitialsUseCase extends UseCasePlugin<Permission> {
   preSave = async (data: UseCasePluginMetadata<Permission>): Promise<void> => {
     if (data.entity.initials) {
-      data.entity.initials = data.entity.initials.toLocaleLowerCase().replace(/[\ \^\"]/g, '_');
+      delete data.entity.initials;
+    }
+    const { on, action } = data.entity;
+    if (on && action) {
+      data.entity.initials = `${on}_${action}`.toLocaleLowerCase().replace(/[\ \^\"]/g, '_');
     }
   };
 }

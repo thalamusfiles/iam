@@ -7,13 +7,15 @@ import { EntityProps } from '../../../../src/app/mgt/types/crud.controller';
 import { JWTGuard } from '../../../../src/app/auth/jwt/jwt.guard';
 import { JTWGuardMockAdmin } from '../../../mocks/jwt.mock';
 import { faker } from '@faker-js/faker';
-import { addGlobalIAMMgtRequestHeader } from '../../../utils/setheader.utils';
+import { addGlobalIAMMgtRequestHeader, addRegionAppRequestHeader } from '../../../utils/setheader.utils';
+import iamConfig from '../../../../src/config/iam.config';
 
 describe('PermissionController (e2e)', () => {
   let app: INestApplication;
 
   // Registros utilizado nos testes
   const permissionUrl = '/mgt/permission';
+  const applicationUrl = '/mgt/application';
 
   // Cadastros de testes
   let uuidPermissionSaved = null;
@@ -30,12 +32,10 @@ describe('PermissionController (e2e)', () => {
   const on02Check = 'On Tst' + faker.name.jobTitle();
   const action02Check = 'Act Tst' + faker.name.jobArea();
   const initialsPermission02Check = `${on02Check}_${action02Check}`.toLocaleLowerCase().replace(/[\ \^\"]/g, '_');
-  const permissionUpdateData: EntityProps<Permission> = {
-    entity: {
-      on: onCheck,
-      action: actionCheck,
-      description: 'Permission de role com único servidor',
-    },
+  const permissionUpdateData: Partial<Permission> = {
+    on: on02Check,
+    action: action02Check,
+    description: 'Permission de role com único servidor',
   };
 
   // Executa antes de cada teste
@@ -77,14 +77,15 @@ describe('PermissionController (e2e)', () => {
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(permissionUrl).send(permissionToCreate)).expect(500);
   });
 
-  it(`${permissionUrl}/ (Put) Atualiza o "name" e "description" do registro`, async () => {
+  it(`${permissionUrl}/ (Put) Atualiza a "description" do registro`, async () => {
     const updateUrl = `${permissionUrl}/${uuidPermissionSaved}`;
     const permissionUpdate = {
       ...permissionToCreate,
       entity: {
         ...permissionToCreate.entity,
         initials: undefined,
-        name: permissionUpdateData.name,
+        on: undefined,
+        action: undefined,
         description: permissionUpdateData.description,
         uuid: uuidPermissionSaved,
       },
@@ -95,8 +96,10 @@ describe('PermissionController (e2e)', () => {
     expect(result.body.entity).toBeDefined();
     expect(result.body.entity.uuid).toBeTruthy();
     expect(result.body.entity.uuid).toEqual(uuidPermissionSaved);
+    expect(result.body.entity.on).not.toBeTruthy();
+    expect(result.body.entity.action).not.toBeTruthy();
     expect(result.body.entity.initials).not.toBeTruthy();
-    expect(result.body.entity.name).toEqual(permissionUpdateData.name);
+    expect(result.body.entity.description).toEqual(permissionUpdateData.description);
   });
 
   it(`${permissionUrl}/ (Put) Atualiza o "initials" da registro`, async () => {
@@ -105,8 +108,8 @@ describe('PermissionController (e2e)', () => {
       ...permissionToCreate,
       entity: {
         ...permissionToCreate.entity,
-        initials: permissionUpdateData.initials,
-        name: undefined,
+        on: permissionUpdateData.on,
+        action: permissionUpdateData.action,
         description: undefined,
         uuid: uuidPermissionSaved,
       },
@@ -117,9 +120,41 @@ describe('PermissionController (e2e)', () => {
     expect(result.body.entity).toBeDefined();
     expect(result.body.entity.uuid).toBeTruthy();
     expect(result.body.entity.uuid).toEqual(uuidPermissionSaved);
+    expect(result.body.entity.on).toBeTruthy();
+    expect(result.body.entity.action).toBeTruthy();
     expect(result.body.entity.initials).toEqual(initialsPermission02Check);
-    expect(result.body.entity.name).not.toBeTruthy();
-    expect(result.body.entity.name).not.toBeTruthy();
+    expect(result.body.entity.description).not.toBeTruthy();
+  });
+
+  it(`${permissionUrl}/ (Put) Tenta atualiza a aplicação do registro modificando header (não pode)`, async () => {
+    const updateUrl = `${permissionUrl}/${uuidPermissionSaved}`;
+    const findByUrl = `${permissionUrl}/${uuidPermissionSaved}`;
+    const permissionUpdate = {
+      ...permissionToCreate,
+      entity: {
+        uuid: uuidPermissionSaved,
+      },
+    };
+    // Informa o Header de outra aplicação
+    await addRegionAppRequestHeader(request(app.getHttpServer()).put(updateUrl)).send(permissionUpdate).expect(200);
+
+    const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(findByUrl)).expect(200);
+    expect(result.body).toBeDefined();
+    expect(result.body.uuid).toEqual(uuidPermissionSaved);
+    expect(result.body.application).toBeTruthy();
+
+    const permissionAppUuid = result.body.application;
+
+    const appResult = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(applicationUrl))
+      .query({ where: { initials: iamConfig.MAIN_APP_IAM_MGT } })
+      .expect(200);
+    expect(appResult.body).toBeTruthy();
+    expect(appResult.body.length).toEqual(1);
+    expect(appResult.body[0].uuid).toBeTruthy();
+
+    const appUuid = appResult.body[0].uuid;
+
+    expect(permissionAppUuid).toEqual(appUuid);
   });
 
   it(`${permissionUrl}/ (Get) Busca as registros`, async () => {
