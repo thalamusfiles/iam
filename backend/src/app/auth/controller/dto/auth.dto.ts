@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 /**
  * Dados necessários para registrar um novo usuário
@@ -21,6 +21,10 @@ export class AuthRegisterDto {
   @Expose()
   @IsString()
   password_confirmed: string;
+
+  @Expose()
+  @IsArray()
+  scopes?: Array<string>;
 }
 
 /**
@@ -37,4 +41,8 @@ export class AuthLoginDto {
   @IsNotEmpty()
   @IsString()
   password: string;
+
+  @Expose()
+  @IsArray()
+  scopes?: Array<string>;
 }

@@ -6,7 +6,8 @@ import { createHmac, randomBytes } from 'crypto';
 import iamConfig from '../../../config/iam.config';
 import { User } from '../../../model/User';
 import { UserLogin, UserLoginType } from '../../../model/UserLogin';
-import { ApplicationInfo } from '../../../types/application-info';
+import { UserToken } from '../../../model/UserToken';
+import { LoginInfo } from '../../../types/login-info';
 import { JwtUserInfo } from '../jwt/jwt-user-info';
 
 // TODO: Colocar esse tipo em local apropriado
@@ -22,6 +23,7 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: EntityRepository<User>,
     @InjectRepository(UserLogin) private readonly userLoginRepository: EntityRepository<UserLogin>,
+    @InjectRepository(UserToken) private readonly userTokenRepository: EntityRepository<UserToken>,
     private readonly jwtService: JwtService,
   ) {
     this.logger.log('initialized');
@@ -51,7 +53,6 @@ export class AuthService {
       _salt,
       _password,
     });
-
     await this.userLoginRepository.flush();
 
     return userLogin;
@@ -63,13 +64,26 @@ export class AuthService {
    * @param password
    * @returns
    */
-  async localLogin(username: string, password: string, appInfo: ApplicationInfo): Promise<AuthLoginResp> {
+  async localLogin(username: string, password: string, appInfo: LoginInfo): Promise<AuthLoginResp> {
     this.logger.verbose('Login Local');
 
-    const user = await this.validateLocalUser(username, password);
+    const userLogin = await this.validateLocalUser(username, password);
+    const user = userLogin.user;
 
     const userInfo = this.userInfo(user, appInfo);
     const accessToken = this.generate(userInfo);
+
+    /*this.userTokenRepository.create({
+      user: this.userRepository.getReference(user.uuid),
+      login: this.userLoginRepository.getReference(userLogin.uuid),
+      region: appInfo.regionRef,
+      application: appInfo.applicationRef,
+      ip: appInfo.ip,
+      scopes: appInfo.scopes,
+      userAgent: appInfo.userAgent,
+      jwtToken: accessToken,
+    });
+    await this.userTokenRepository.flush();*/
 
     return { accessToken, userInfo };
   }
@@ -80,7 +94,7 @@ export class AuthService {
    * @param password
    * @returns
    */
-  private async validateLocalUser(username: string, password: string): Promise<User> {
+  private async validateLocalUser(username: string, password: string): Promise<UserLogin> {
     this.logger.verbose('Valida login Local');
 
     const userLogin = await this.userLoginRepository.findOne({ username }, { populate: ['user'] });
@@ -91,13 +105,13 @@ export class AuthService {
     const _password = this.encrypt(userLogin._salt, password);
 
     if (_password === userLogin._password) {
-      return userLogin.user;
+      return userLogin;
     } else {
       throw new BadRequestException('Password incorrect.');
     }
   }
 
-  private userInfo(user: User, { region, application }: ApplicationInfo): JwtUserInfo {
+  private userInfo(user: User, { region, application }: LoginInfo): JwtUserInfo {
     return {
       uuid: user.uuid,
       name: user.name,

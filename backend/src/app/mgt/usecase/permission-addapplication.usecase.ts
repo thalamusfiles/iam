@@ -1,7 +1,7 @@
 import { Permission } from '../../../model/Permission';
 import { Application } from '../../../model/System/Application';
 import { UseCasePlugin, UseCasePluginMetadata } from '../../../types/usecase';
-import { RequestInfo } from '../types/request-info';
+import { RequestInfo } from '../../../types/request-info';
 
 /**
  * Padroniza a inicial da role para sempre estar em minúsculo

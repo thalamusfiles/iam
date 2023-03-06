@@ -10,6 +10,7 @@ import iamConfig from '../../../config/iam.config';
 import { AuthRegisterMaxRegisterIpUseCase } from '../usecase/auth-register-max-register-ip';
 import { JWTGuard } from '../jwt/jwt.guard';
 import { JwtUserInfo } from '../jwt/jwt-user-info';
+import { RequestInfo } from '../../../types/request-info';
 
 @Controller('auth')
 export class AuthController {
@@ -30,8 +31,10 @@ export class AuthController {
   @UsePipes(new ValidationPipe({ transform: true }))
   async localRegister(
     @Body() body: AuthRegisterDto,
+    @Request() request: RequestInfo,
     @Headers('region') region,
     @Headers('application') application,
+    @Headers('User-Agent') userAgent,
     @Ip() ip: string,
   ): Promise<AuthLoginResp> {
     this.logger.log('Registro Local de Usuários');
@@ -50,7 +53,15 @@ export class AuthController {
 
     await this.authService.localRegister(body);
 
-    return this.authService.localLogin(body.username, body.password, { region, application });
+    return this.authService.localLogin(body.username, body.password, {
+      ip,
+      region,
+      regionRef: request.regionRef,
+      application,
+      applicationRef: request.applicationRef,
+      userAgent,
+      scopes: body.scopes,
+    });
   }
 
   /**
@@ -61,10 +72,25 @@ export class AuthController {
   @Post('local/login')
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   @UsePipes(new ValidationPipe({ transform: true }))
-  async localLogin(@Body() body: AuthLoginDto, @Headers('region') region, @Headers('application') application): Promise<AuthLoginResp> {
+  async localLogin(
+    @Body() body: AuthLoginDto,
+    @Request() request: RequestInfo,
+    @Headers('region') region,
+    @Headers('application') application,
+    @Headers('User-Agent') userAgent,
+    @Ip() ip: string,
+  ): Promise<AuthLoginResp> {
     this.logger.log('Login Local');
 
-    return this.authService.localLogin(body.username, body.password, { region, application });
+    return this.authService.localLogin(body.username, body.password, {
+      ip,
+      region,
+      regionRef: request.regionRef,
+      application,
+      applicationRef: request.applicationRef,
+      userAgent,
+      scopes: body.scopes,
+    });
   }
 
   /**

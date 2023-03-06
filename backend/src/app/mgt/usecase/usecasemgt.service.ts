@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { FormException } from '../../../types/form.exception';
 import { UseCaseMethod, UseCasePlugin, UseCasePluginMetadata } from '../../../types/usecase';
 import { EntityProps } from '../types/crud.controller';
-import { RequestInfo } from '../types/request-info';
+import { RequestInfo } from '../../../types/request-info';
 
 type Class<T> = new (...args: any[]) => T;
 

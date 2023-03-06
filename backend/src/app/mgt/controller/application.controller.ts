@@ -3,7 +3,7 @@ import { Application } from '../../../model/System/Application';
 import { JWTGuard } from '../../auth/jwt/jwt.guard';
 import { ApplicationService } from '../service/application.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
-import { RequestInfo } from '../types/request-info';
+import { RequestInfo } from '../../../types/request-info';
 import { ApplicationNormalizeInitialsUseCase } from '../usecase/application-normalize-initials.usecase';
 import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
 import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';

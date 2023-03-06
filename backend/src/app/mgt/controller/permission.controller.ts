@@ -3,7 +3,7 @@ import { Permission } from '../../../model/Permission';
 import { JWTGuard } from '../../auth/jwt/jwt.guard';
 import { PermissionService } from '../service/permission.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
-import { RequestInfo } from '../types/request-info';
+import { RequestInfo } from '../../../types/request-info';
 import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
 import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
 import { PermissionAddAplicationUseCase } from '../usecase/permission-addapplication.usecase';

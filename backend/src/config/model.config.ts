@@ -6,6 +6,7 @@ import { Permission } from '../model/Permission';
 import { Role } from '../model/Role';
 import { Region } from '../model/System/Region';
 import { Application } from '../model/System/Application';
+import { UserToken } from '../model/UserToken';
 
 const defaultModelConfig = {
   host: 'localhost',
@@ -24,6 +25,8 @@ const modelConfig: MikroOrmModuleSyncOptions = {
     // Base
     User,
     UserLogin,
+    // Auth
+    UserToken,
     // Mgt
     Role,
     Permission,

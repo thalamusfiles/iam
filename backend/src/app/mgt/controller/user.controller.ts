@@ -3,7 +3,7 @@ import { User } from '../../../model/User';
 import { JWTGuard } from '../../auth/jwt/jwt.guard';
 import { UserService } from '../service/user.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
-import { RequestInfo } from '../types/request-info';
+import { RequestInfo } from '../../../types/request-info';
 import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
 import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
 import { UseCaseMGTService } from '../usecase/usecasemgt.service';

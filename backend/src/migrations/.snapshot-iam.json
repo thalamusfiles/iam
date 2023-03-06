@@ -1,7 +1,8 @@
 {
   "namespaces": [
     "public",
-    "system"
+    "system",
+    "auth"
   ],
   "name": "public",
   "tables": [
@@ -1279,6 +1280,250 @@
           ],
           "referencedTableName": "public.user",
           "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "uuid": {
+          "name": "uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "uuid_generate_v4()",
+          "mappedType": "uuid"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "user_uuid": {
+          "name": "user_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "login_uuid": {
+          "name": "login_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "region_uuid": {
+          "name": "region_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "application_uuid": {
+          "name": "application_uuid",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "uuid"
+        },
+        "ip": {
+          "name": "ip",
+          "type": "varchar(128)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 128,
+          "mappedType": "string"
+        },
+        "user_agent": {
+          "name": "user_agent",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "scopes": {
+          "name": "scopes",
+          "type": "text[]",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 1024,
+          "mappedType": "array"
+        },
+        "session_token": {
+          "name": "session_token",
+          "type": "varchar(512)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 512,
+          "mappedType": "string"
+        },
+        "jwt_token": {
+          "name": "jwt_token",
+          "type": "varchar(512)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 512,
+          "mappedType": "string"
+        },
+        "expires_in": {
+          "name": "expires_in",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "user_token",
+      "schema": "auth",
+      "indexes": [
+        {
+          "keyName": "user_token_unique_jwt_token",
+          "columnNames": [
+            "jwt_token",
+            "deleted_at"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": false,
+          "expression": "ALTER TABLE \"auth\".\"user_token\" add constraint \"user_token_unique_jwt_token\" UNIQUE NULLS NOT DISTINCT (\"jwt_token\", \"deleted_at\")"
+        },
+        {
+          "keyName": "user_token_unique_session_token",
+          "columnNames": [
+            "session_token",
+            "deleted_at"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": false,
+          "expression": "ALTER TABLE \"auth\".\"user_token\" add constraint \"user_token_unique_session_token\" UNIQUE NULLS NOT DISTINCT (\"session_token\", \"deleted_at\")"
+        },
+        {
+          "keyName": "user_token_pkey",
+          "columnNames": [
+            "uuid"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [
+        {
+          "name": "user_token_ip_check",
+          "expression": "(LENGTH(ip) >=8 AND LENGTH(ip) <= 15) OR LENGTH(ip) = 39",
+          "definition": "check (((LENGTH(ip) >=8 AND LENGTH(ip) <= 15) OR LENGTH(ip) = 39))",
+          "columnName": "ip"
+        },
+        {
+          "name": "user_token_session_token_check",
+          "expression": "LENGTH(session_token) > 64",
+          "definition": "check ((LENGTH(session_token) > 64))",
+          "columnName": "session_token"
+        },
+        {
+          "name": "user_token_jwt_token_check",
+          "expression": "LENGTH(jwt_token) > 64",
+          "definition": "check ((LENGTH(jwt_token) > 64))",
+          "columnName": "jwt_token"
+        }
+      ],
+      "foreignKeys": {
+        "user_token_user_uuid_foreign": {
+          "constraintName": "user_token_user_uuid_foreign",
+          "columnNames": [
+            "user_uuid"
+          ],
+          "localTableName": "auth.user_token",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user",
+          "updateRule": "cascade"
+        },
+        "user_token_login_uuid_foreign": {
+          "constraintName": "user_token_login_uuid_foreign",
+          "columnNames": [
+            "login_uuid"
+          ],
+          "localTableName": "auth.user_token",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "public.user_login",
+          "updateRule": "cascade"
+        },
+        "user_token_region_uuid_foreign": {
+          "constraintName": "user_token_region_uuid_foreign",
+          "columnNames": [
+            "region_uuid"
+          ],
+          "localTableName": "auth.user_token",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "system.region",
+          "updateRule": "cascade"
+        },
+        "user_token_application_uuid_foreign": {
+          "constraintName": "user_token_application_uuid_foreign",
+          "columnNames": [
+            "application_uuid"
+          ],
+          "localTableName": "auth.user_token",
+          "referencedColumnNames": [
+            "uuid"
+          ],
+          "referencedTableName": "system.application",
           "updateRule": "cascade"
         }
       }

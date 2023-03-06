@@ -1,7 +1,7 @@
 import { Injectable, Logger, NestMiddleware, UnauthorizedException } from '@nestjs/common';
 import { Response, NextFunction } from 'express';
 import iamConfig from '../../../config/iam.config';
-import { RequestInfo } from '../../mgt/types/request-info';
+import { RequestInfo } from '../../../types/request-info';
 import { RequestService } from '../service/request.service';
 
 @Injectable()

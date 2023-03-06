@@ -14,14 +14,15 @@ import { AuthController } from './controller/auth.controller';
 import { RegionAppHeadersCheckMiddleware } from './middleware/headers-check.middleware';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { UserToken } from '../../model/UserToken';
 
 @Module({
   imports: [
     //
-    PassportModule,
+    PassportModule.register({ session: true }),
     JwtModule.register({ secret: jwtConfig.SECRET }),
     ThrottlerModule.forRoot(/*{ limit: iamConfig.REGISTER_RATE_LIMITE, ttl: iamConfig.REGISTER_RATE_LIMITE_REST_TIME }*/),
-    MikroOrmModule.forFeature([Application, User, UserLogin]),
+    MikroOrmModule.forFeature([Application, User, UserLogin, UserToken]),
   ],
   providers: [
     AuthService,

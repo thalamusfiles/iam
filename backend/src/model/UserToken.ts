@@ -1,4 +1,4 @@
-import { Check, Entity, Enum, Index, ManyToOne, Property } from '@mikro-orm/core';
+import { Check, Entity, Index, ManyToOne, Property } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
 import { IamBaseEntity } from './Base/IamBaseEntity';
 import { Application } from './System/Application';
@@ -7,6 +7,17 @@ import { User } from './User';
 import { UserLogin } from './UserLogin';
 
 @Entity({ schema: 'auth' })
+@Index({
+  name: 'user_token_unique_session_token',
+  properties: ['sessionToken', 'deletedAt'],
+  expression:
+    'ALTER TABLE "auth"."user_token" add constraint "user_token_unique_session_token" UNIQUE NULLS NOT DISTINCT ("session_token", "deleted_at")',
+})
+@Index({
+  name: 'user_token_unique_jwt_token',
+  properties: ['jwtToken', 'deletedAt'],
+  expression: 'ALTER TABLE "auth"."user_token" add constraint "user_token_unique_jwt_token" UNIQUE NULLS NOT DISTINCT ("jwt_token", "deleted_at")',
+})
 export class UserToken extends IamBaseEntity {
   @ManyToOne(() => User, { nullable: false })
   user!: User;

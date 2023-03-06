@@ -1,5 +1,5 @@
 import { EntityProps } from '../app/mgt/types/crud.controller';
-import { RequestInfo } from '../app/mgt/types/request-info';
+import { RequestInfo } from './request-info';
 import { FormExceptionError } from './form.exception';
 
 export type UseCasePluginMetadata<T = any> = {

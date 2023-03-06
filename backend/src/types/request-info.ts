@@ -1,4 +1,4 @@
-import { JwtUserInfo } from '../../auth/jwt/jwt-user-info';
+import { JwtUserInfo } from '../app/auth/jwt/jwt-user-info';
 import { Request } from 'express';
 
 export type RequestInfo = {
