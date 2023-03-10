@@ -1334,15 +1334,6 @@
           "nullable": false,
           "mappedType": "uuid"
         },
-        "region_uuid": {
-          "name": "region_uuid",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
-        },
         "application_uuid": {
           "name": "application_uuid",
           "type": "uuid",
@@ -1358,7 +1349,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "length": 128,
           "mappedType": "string"
         },
@@ -1371,15 +1362,55 @@
           "nullable": false,
           "mappedType": "string"
         },
-        "scope": {
-          "name": "scope",
-          "type": "text[]",
+        "response_type": {
+          "name": "response_type",
+          "type": "varchar(256)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 1024,
-          "mappedType": "array"
+          "length": 256,
+          "mappedType": "string"
+        },
+        "redirect_uri": {
+          "name": "redirect_uri",
+          "type": "varchar(2048)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 2048,
+          "mappedType": "string"
+        },
+        "scope": {
+          "name": "scope",
+          "type": "varchar(2048)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 2048,
+          "mappedType": "string"
+        },
+        "code_challenge": {
+          "name": "code_challenge",
+          "type": "varchar(256)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 256,
+          "mappedType": "string"
+        },
+        "code_challenge_method": {
+          "name": "code_challenge_method",
+          "type": "varchar(16)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 16,
+          "mappedType": "string"
         },
         "session_token": {
           "name": "session_token",
@@ -1391,8 +1422,8 @@
           "length": 512,
           "mappedType": "string"
         },
-        "jwt_token": {
-          "name": "jwt_token",
+        "access_token": {
+          "name": "access_token",
           "type": "varchar(512)",
           "unsigned": false,
           "autoincrement": false,
@@ -1428,13 +1459,13 @@
         {
           "keyName": "user_token_unique_jwt_token",
           "columnNames": [
-            "jwt_token",
+            "access_token",
             "deleted_at"
           ],
           "composite": true,
           "primary": false,
           "unique": false,
-          "expression": "ALTER TABLE \"auth\".\"user_token\" add constraint \"user_token_unique_jwt_token\" UNIQUE NULLS NOT DISTINCT (\"jwt_token\", \"deleted_at\")"
+          "expression": "ALTER TABLE \"auth\".\"user_token\" add constraint \"user_token_unique_jwt_token\" UNIQUE NULLS NOT DISTINCT (\"access_token\", \"deleted_at\")"
         },
         {
           "keyName": "user_token_unique_session_token",
@@ -1460,9 +1491,15 @@
       "checks": [
         {
           "name": "user_token_ip_check",
-          "expression": "(LENGTH(ip) >=8 AND LENGTH(ip) <= 15) OR LENGTH(ip) = 39",
-          "definition": "check (((LENGTH(ip) >=8 AND LENGTH(ip) <= 15) OR LENGTH(ip) = 39))",
+          "expression": "LENGTH(ip) >=8",
+          "definition": "check ((LENGTH(ip) >=8))",
           "columnName": "ip"
+        },
+        {
+          "name": "user_token_code_challenge_method_check",
+          "expression": "code_challenge_method = 'plain' or code_challenge_method = 'S256'",
+          "definition": "check ((code_challenge_method = 'plain' or code_challenge_method = 'S256'))",
+          "columnName": "code_challenge_method"
         },
         {
           "name": "user_token_session_token_check",
@@ -1471,10 +1508,10 @@
           "columnName": "session_token"
         },
         {
-          "name": "user_token_jwt_token_check",
-          "expression": "LENGTH(jwt_token) > 64",
-          "definition": "check ((LENGTH(jwt_token) > 64))",
-          "columnName": "jwt_token"
+          "name": "user_token_access_token_check",
+          "expression": "LENGTH(access_token) > 64",
+          "definition": "check ((LENGTH(access_token) > 64))",
+          "columnName": "access_token"
         }
       ],
       "foreignKeys": {
@@ -1500,18 +1537,6 @@
             "uuid"
           ],
           "referencedTableName": "public.user_login",
-          "updateRule": "cascade"
-        },
-        "user_token_region_uuid_foreign": {
-          "constraintName": "user_token_region_uuid_foreign",
-          "columnNames": [
-            "region_uuid"
-          ],
-          "localTableName": "auth.user_token",
-          "referencedColumnNames": [
-            "uuid"
-          ],
-          "referencedTableName": "system.region",
           "updateRule": "cascade"
         },
         "user_token_application_uuid_foreign": {

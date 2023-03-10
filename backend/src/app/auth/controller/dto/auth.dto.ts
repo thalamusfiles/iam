@@ -3,11 +3,7 @@ import { IsNotEmpty, IsString, IsUrl, IsUUID } from 'class-validator';
 import iamConfig from '../../../../config/iam.config';
 import { JwtUserInfo } from '../../jwt/jwt-user-info';
 
-/**
- * Dados necessários para registrar um novo usuário
- */
-@Exclude()
-export class AuthRegisterDto {
+class OauthFieldsDto {
   @Expose()
   @IsUUID()
   cliente_id: string;
@@ -23,7 +19,13 @@ export class AuthRegisterDto {
   @Expose()
   @IsString()
   scope: string;
+}
 
+/**
+ * Dados necessários para registrar um novo usuário
+ */
+@Exclude()
+export class AuthRegisterDto extends OauthFieldsDto {
   @Expose()
   @IsString()
   name: string;
@@ -45,7 +47,7 @@ export class AuthRegisterDto {
  * Dados necessários pra realizar o login
  */
 @Exclude()
-export class AuthLoginDto {
+export class AuthLoginDto extends OauthFieldsDto {
   @Expose()
   @IsNotEmpty()
   @IsString()
@@ -55,18 +57,6 @@ export class AuthLoginDto {
   @IsNotEmpty()
   @IsString()
   password: string;
-
-  @Expose()
-  @IsString()
-  response_type: string;
-
-  @Expose()
-  @IsUrl({ require_tld: iamConfig.PRODCTION_MODE })
-  redirect_uri: string;
-
-  @Expose()
-  @IsString()
-  scope: string;
 }
 
 export type AuthLoginRespDto = {

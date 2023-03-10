@@ -13,9 +13,9 @@ import { UserLogin } from './UserLogin';
     'ALTER TABLE "auth"."user_token" add constraint "user_token_unique_session_token" UNIQUE NULLS NOT DISTINCT ("session_token", "deleted_at")',
 })
 @Index({
-  name: 'user_token_unique_jwt_token',
+  name: 'user_token_unique_access_token',
   properties: ['accessToken', 'deletedAt'],
-  expression: 'ALTER TABLE "auth"."user_token" add constraint "user_token_unique_jwt_token" UNIQUE NULLS NOT DISTINCT ("access_token", "deleted_at")',
+  expression: 'ALTER TABLE "auth"."user_token" add constraint "user_token_unique_access_token" UNIQUE NULLS NOT DISTINCT ("access_token", "deleted_at")',
 })
 export class UserToken extends IamBaseEntity {
   @ManyToOne(() => User, { nullable: false })
@@ -27,8 +27,8 @@ export class UserToken extends IamBaseEntity {
   @ManyToOne(() => Application, { nullable: false })
   application!: Application; //Oauth client_id
 
-  @Check({ expression: '(LENGTH(ip) >=8 AND LENGTH(ip) <= 15) OR LENGTH(ip) = 39' })
-  @Property({ nullable: true, length: 128 })
+  @Check({ expression: 'LENGTH(ip) >=8' })
+  @Property({ nullable: false, length: 128 })
   ip!: string;
 
   @Property({ nullable: false })
@@ -40,13 +40,13 @@ export class UserToken extends IamBaseEntity {
   @Property({ nullable: false, length: 2048 })
   redirectUri!: string;
 
-  @Property({ nullable: false, length: 1024 })
-  scope!: string[];
+  @Property({ nullable: false, length: 2048 })
+  scope!: string;
 
   @Property({ nullable: true, length: 256 })
   codeChallenge?: string;
 
-  @Check({ expression: "code_challenge_mfethod = 'plain' or code_challenge_mfethod = 'S256'" })
+  @Check({ expression: "code_challenge_method = 'plain' or code_challenge_method = 'S256'" })
   @Property({ nullable: true, length: 16 })
   codeChallengeMethod?: string;
 
@@ -56,7 +56,7 @@ export class UserToken extends IamBaseEntity {
   sessionToken!: string;
 
   @Exclude()
-  @Check({ expression: 'LENGTH(jwt_token) > 64' })
+  @Check({ expression: 'LENGTH(access_token) > 64' })
   @Property({ nullable: false, length: 512 })
   accessToken!: string;
 

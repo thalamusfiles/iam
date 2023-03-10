@@ -15,9 +15,9 @@ export class AuthRegisterUsernameUseCase {
       const error = 'O usuário deve ter no máximo 128 caracteres.';
       erros.push({ kind: 'password', error: error });
     } else {
-      const exists = this.authService.checkUsernameExists(username);
+      const exists = await this.authService.checkUsernameExists(username);
       if (exists) {
-        const error = 'O usuário ja esta sendo utilizado.';
+        const error = 'O usuário ja está sendo utilizado.';
         erros.push({ kind: 'password', error: error });
       }
     }

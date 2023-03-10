@@ -46,7 +46,6 @@ export class AuthController {
     @Body() body: AuthRegisterDto,
     @Req() request: RequestInfo,
     @Res({ passthrough: true }) response: ResponseInfo,
-    @Headers('application') application,
     @Headers('User-Agent') userAgent,
     @Ip() ip: string,
   ): Promise<AuthLoginRespDto> {
@@ -58,8 +57,6 @@ export class AuthController {
       await this.authRegisterNameUseCase.execute(body),
       await this.authRegisterUsernameUseCase.execute(body),
       await this.authRegisterPasswordUseCase.execute(body),
-      await this.authRegisterOauthFieldsUseCase.execute(body),
-      await this.authRegisterClienteId.execute(body),
     );
 
     if (allErros.length) {
@@ -68,7 +65,7 @@ export class AuthController {
 
     await this.authService.register(body);
 
-    return this.localLogin(body, request, response, application, userAgent, ip);
+    return this.localLogin(body, request, response, userAgent, ip);
   }
 
   /**
@@ -83,30 +80,46 @@ export class AuthController {
     @Body() body: AuthLoginDto,
     @Req() request: RequestInfo,
     @Res({ passthrough: true }) response: ResponseInfo,
-    @Headers('application') application,
     @Headers('User-Agent') userAgent,
     @Ip() ip: string,
   ): Promise<AuthLoginRespDto> {
     this.logger.log('Login Local');
 
+    //Executa os casos de uso com validações
+    const allErros = [].concat(
+      //
+      await this.authRegisterOauthFieldsUseCase.execute(body),
+      await this.authRegisterClienteId.execute(body),
+    );
+
+    if (allErros.length) {
+      throw new FormException(allErros);
+    }
+
     const appInfo: LoginInfo = {
       userUuid: null,
       userLoginUuid: null,
-      application,
-      applicationRef: request.applicationRef,
+      clientId: body.cliente_id,
       userAgent,
       ip,
+      responseType: body.response_type,
+      redirectUri: body.redirect_uri,
+      scope: body.scope,
       sessionToken: null,
       accessToken: null,
-      scope: body.scope,
+      expiresIn: null,
     };
 
+    /*const oldCookieId = this.cookieService.getSSOCookie(request);
+    if (oldCookieId) {
+      this.authService.invalidateSession(oldCookieId);
+    }*/
     const cookieId = this.cookieService.createOrRefreshSSOCookie(request, response, true);
-    const authResp = this.authService.loginJwt(body.username, body.password, appInfo);
 
+    const authResp = await this.authService.loginJwt(body.username, body.password, appInfo);
     appInfo.sessionToken = cookieId;
 
-    this.authService.createUserToken(appInfo);
+    await this.authService.createUserToken(appInfo);
 
     return authResp;
   }
@@ -136,7 +149,8 @@ export class AuthController {
    */
   @Get('refresh')
   @UseGuards(JWTGuard)
-  async refresh(@Req() request: { user: JwtUserInfo }): Promise<JwtUserInfo> {
+  async refresh(@Req() request: RequestInfo, @Res({ passthrough: true }) response: ResponseInfo): Promise<JwtUserInfo> {
+    this.cookieService.createOrRefreshSSOCookie(request, response);
     return request.user;
   }
 }

@@ -2,7 +2,9 @@ import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { DateTime } from 'luxon';
 import iamConfig from '../../../config/iam.config';
+import jwtConfig from '../../../config/jwt.config';
 import { User } from '../../../model/User';
 import { UserLogin, UserLoginType } from '../../../model/UserLogin';
 import { UserToken } from '../../../model/UserToken';
@@ -14,15 +16,16 @@ export type LoginInfo = {
   userUuid: string;
   userLoginUuid: string;
 
-  application: string;
-  applicationRef: { uuid: string };
-
+  clientId: string;
   userAgent: string;
   ip: string;
+  responseType: string;
+  redirectUri: string;
+  scope: string;
 
   sessionToken: string;
   accessToken: string;
-  scope: string;
+  expiresIn: Date;
 };
 
 @Injectable()
@@ -77,15 +80,17 @@ export class AuthService {
   async loginJwt(username: string, password: string, appInfo: LoginInfo): Promise<AuthLoginRespDto> {
     this.logger.verbose('Login Local');
 
+    const expiresIn = DateTime.now().plus({ seconds: jwtConfig.MAX_AGE }).toJSDate();
     const userLogin = await this.validateLocalUser(username, password);
     const user = userLogin.user;
 
     const info = this.userInfo(user, appInfo);
-    const access_token = this.generateJwt(info);
+    const access_token = this.generateJwt(info, jwtConfig.MAX_AGE);
 
     appInfo.userUuid = user.uuid;
     appInfo.userLoginUuid = userLogin.uuid;
     appInfo.accessToken = access_token;
+    appInfo.expiresIn = expiresIn;
 
     return {
       token_type: '',
@@ -96,23 +101,36 @@ export class AuthService {
   }
 
   async checkUsernameExists(username: string): Promise<boolean> {
-    const userLogin = await this.userLoginRepository.findOne({ username, type: UserLoginType.LOCAL }, { populate: ['user'] });
+    const userLogin = await this.userLoginRepository.findOne({ username, type: UserLoginType.LOCAL });
     return !!userLogin;
   }
 
   async createUserToken(appInfo: LoginInfo) {
     this.userTokenRepository.create({
+      // USER
       user: this.userRepository.getReference(appInfo.userUuid),
       login: this.userLoginRepository.getReference(appInfo.userLoginUuid),
-      application: appInfo.applicationRef,
+      // OAUTH
+      application: appInfo.clientId,
       ip: appInfo.ip,
-      scope: appInfo.scope,
       userAgent: appInfo.userAgent,
+      responseType: appInfo.responseType,
+      redirectUri: appInfo.redirectUri,
+      scope: appInfo.scope,
+      // TOKENS
       sessionToken: appInfo.sessionToken,
       accessToken: appInfo.accessToken,
+      expiresIn: appInfo.expiresIn,
     });
     await this.userTokenRepository.flush();
   }
+
+  /*async invalidateSession(sessionId: string): Promise<void> {
+    const expiresIn = DateTime.now().minus({ minutes: 30 }).toJSDate();
+
+    await this.userTokenRepository.nativeUpdate({ sessionToken: sessionId }, { expiresIn: expiresIn });
+    this.userTokenRepository.flush();
+  }*/
 
   /**
    * Carrega o usuário e verifica seu senha
@@ -137,7 +155,7 @@ export class AuthService {
     }
   }
 
-  private userInfo(user: User, { application }: LoginInfo): JwtUserInfo {
+  private userInfo(user: User, { clientId: application }: LoginInfo): JwtUserInfo {
     return {
       uuid: user.uuid,
       name: user.name,
@@ -145,7 +163,7 @@ export class AuthService {
     };
   }
 
-  private generateJwt(user: JwtUserInfo): string {
-    return this.jwtService.sign(user);
+  private generateJwt(user: JwtUserInfo, expiresInSeconds: number): string {
+    return this.jwtService.sign(user, { expiresIn: expiresInSeconds });
   }
 }
