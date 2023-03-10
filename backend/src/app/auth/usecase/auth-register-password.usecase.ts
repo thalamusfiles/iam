@@ -1,7 +1,9 @@
+import { Injectable, Scope } from '@nestjs/common';
 import { FormExceptionError } from '../../../types/form.exception';
 
+@Injectable({ scope: Scope.REQUEST })
 export class AuthRegisterPasswordUseCase {
-  static execute = async ({ password, password_confirmed }: { password: string; password_confirmed: string }): Promise<Array<FormExceptionError>> => {
+  execute = async ({ password, password_confirmed }: { password: string; password_confirmed: string }): Promise<Array<FormExceptionError>> => {
     const errors = [];
     if (!password) {
       errors.push({ kind: 'password', error: 'O campo senha é obrigatório.' });
@@ -23,15 +25,9 @@ export class AuthRegisterPasswordUseCase {
       }
     }
     if (!password_confirmed || password_confirmed.trim().length === 0) {
-      errors.push({
-        kind: 'password_confirmed',
-        message: 'O campo confirmar senha é obrigatório',
-      });
+      errors.push({ kind: 'password_confirmed', error: 'O campo confirmar senha é obrigatório' });
     } else if (password_confirmed !== password) {
-      errors.push({
-        kind: 'password_confirmed',
-        message: 'O campo confirmar senha é diferente da senha',
-      });
+      errors.push({ kind: 'password_confirmed', error: 'O campo confirmar senha é diferente da senha' });
     }
     return errors;
   };

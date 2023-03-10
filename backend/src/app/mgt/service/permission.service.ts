@@ -13,7 +13,7 @@ export class PermissionService implements CRUDService<Permission> {
     @InjectRepository(Permission)
     private readonly permissionRepository: EntityRepository<Permission>,
   ) {
-    this.logger.log('initialized');
+    this.logger.log('starting');
   }
 
   /**

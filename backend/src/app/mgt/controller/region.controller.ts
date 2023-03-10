@@ -7,7 +7,7 @@ import { RequestInfo } from '../../../types/request-info';
 import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
 import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
 import { RegionNormalizeInitialsUseCase } from '../usecase/region-normalize-initials.usecase';
-import { UseCaseMGTService } from '../usecase/usecasemgt.service';
+import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityRegionCreateDto, EntityRegionUpdateDto, FindRegionPropsDto } from './dto/region.dto';
 
 @UseGuards(JWTGuard)
@@ -20,7 +20,7 @@ export class RegionController implements CRUDController<Region> {
     this.useCaseService.register(Region, BaseAddUpdatedByUseCase);
     this.useCaseService.register(Region, RegionNormalizeInitialsUseCase);
 
-    this.logger.log('initialized');
+    this.logger.log('starting');
   }
 
   /**

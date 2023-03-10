@@ -1,7 +1,12 @@
+import { Injectable, Scope } from '@nestjs/common';
 import { FormExceptionError } from '../../../types/form.exception';
+import { AuthService } from '../service/auth.service';
 
+@Injectable({ scope: Scope.REQUEST })
 export class AuthRegisterUsernameUseCase {
-  static execute = async ({ username }: { username: string }): Promise<Array<FormExceptionError>> => {
+  constructor(private readonly authService: AuthService) {}
+
+  execute = async ({ username }: { username: string }): Promise<Array<FormExceptionError>> => {
     const erros = [];
     if (!username || username.length < 6) {
       const error = 'O usuário deve ter no mínimo 6 caracteres.';
@@ -9,6 +14,12 @@ export class AuthRegisterUsernameUseCase {
     } else if (username.length > 128) {
       const error = 'O usuário deve ter no máximo 128 caracteres.';
       erros.push({ kind: 'password', error: error });
+    } else {
+      const exists = this.authService.checkUsernameExists(username);
+      if (exists) {
+        const error = 'O usuário ja esta sendo utilizado.';
+        erros.push({ kind: 'password', error: error });
+      }
     }
     return erros;
   };

@@ -13,7 +13,7 @@ export class RegionService implements CRUDService<Region> {
     @InjectRepository(Region)
     private readonly regionRepository: EntityRepository<Region>,
   ) {
-    this.logger.log('initialized');
+    this.logger.log('starting');
   }
 
   /**

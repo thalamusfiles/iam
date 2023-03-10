@@ -2,9 +2,11 @@ const defaultConfig = {
   SECRET: 'IAM_SESSION_SECRET_NTWHAWUCAT',
 };
 
-const sessionConfig = {
+const cookieConfig = {
+  NAME: 'iam_sso',
+  PATH: 'auth',
   SECRET: process.env.SESSION_SECRET || defaultConfig.SECRET,
-  IGNORE_EXPIRATION: false,
+  MAX_AGE: 10, //60 * 60 * 24 * 2,
 };
 
-export default sessionConfig;
+export default cookieConfig;

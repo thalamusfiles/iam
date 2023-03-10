@@ -8,7 +8,7 @@ import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
 import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
 import { RoleAddAplicationUseCase } from '../usecase/role-addapplication.usecase';
 import { RoleNormalizeInitialsUseCase } from '../usecase/role-normalize-initials.usecase';
-import { UseCaseMGTService } from '../usecase/usecasemgt.service';
+import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityRoleCreateDto, EntityRoleUpdateDto, FindRolePropsDto } from './dto/role.dto';
 
 @UseGuards(JWTGuard)
@@ -17,12 +17,12 @@ export class RoleController implements CRUDController<Role> {
   private readonly logger = new Logger(RoleController.name);
 
   constructor(private readonly roleService: RoleService, private readonly useCaseService: UseCaseMGTService) {
+    this.logger.log('starting');
+    
     this.useCaseService.register(Role, BaseAddCreatedByUseCase);
     this.useCaseService.register(Role, BaseAddUpdatedByUseCase);
     this.useCaseService.register(Role, RoleNormalizeInitialsUseCase);
     this.useCaseService.register(Role, RoleAddAplicationUseCase);
-
-    this.logger.log('initialized');
   }
 
   /**

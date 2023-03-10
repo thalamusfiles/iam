@@ -1,5 +1,5 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Logger, Module, NestModule } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
@@ -11,10 +11,17 @@ import { JWTStrategy } from './jwt/jwt.strategy';
 import { AuthService } from './service/auth.service';
 import { RequestService } from './service/request.service';
 import { AuthController } from './controller/auth.controller';
-import { RegionAppHeadersCheckMiddleware } from './middleware/headers-check.middleware';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { UserToken } from '../../model/UserToken';
+import { CookieService } from './service/cookie.service';
+import { CryptService } from './service/crypt.service';
+import { AuthRegisterClientIdUseCase } from './usecase/auth-register-client_id.usecase';
+import { AuthRegisterNameUseCase } from './usecase/auth-register-name.usecase';
+import { AuthRegisterUsernameUseCase } from './usecase/auth-register-username.usecase';
+import { AuthRegisterPasswordUseCase } from './usecase/auth-register-password.usecase';
+import { AuthRegisterMaxRegisterIpUseCase } from './usecase/auth-register-max-register-ip';
+import { AuthRegisterOauthFieldsUseCase } from './usecase/auth-oauth-fields.usecase';
 
 @Module({
   imports: [
@@ -25,19 +32,30 @@ import { UserToken } from '../../model/UserToken';
     MikroOrmModule.forFeature([Application, User, UserLogin, UserToken]),
   ],
   providers: [
-    AuthService,
+    CryptService,
+    CookieService,
     RequestService,
+    AuthService,
     JWTStrategy,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
     },
+    //UseCases
+    AuthRegisterNameUseCase,
+    AuthRegisterUsernameUseCase,
+    AuthRegisterPasswordUseCase,
+    AuthRegisterMaxRegisterIpUseCase,
+    AuthRegisterOauthFieldsUseCase,
+    AuthRegisterClientIdUseCase,
   ],
   exports: [AuthService, RequestService],
   controllers: [AuthController],
 })
 export class AuthModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(RegionAppHeadersCheckMiddleware).forRoutes(AuthController);
+  private readonly logger = new Logger(AuthModule.name);
+
+  configure(/*consumer: MiddlewareConsumer*/) {
+    this.logger.log('configure');
   }
 }

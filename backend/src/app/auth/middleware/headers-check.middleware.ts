@@ -9,7 +9,7 @@ export class GlobalIamHeadersCheckMiddleware implements NestMiddleware {
   private readonly logger = new Logger(GlobalIamHeadersCheckMiddleware.name);
 
   constructor(private readonly requestService: RequestService) {
-    this.logger.log('initialized');
+    this.logger.log('starting');
   }
 
   async use(req: RequestInfo, res: Response, next: NextFunction) {
@@ -35,7 +35,7 @@ export class RegionAppHeadersCheckMiddleware implements NestMiddleware {
   private readonly logger = new Logger(RegionAppHeadersCheckMiddleware.name);
 
   constructor(private readonly requestService: RequestService) {
-    this.logger.log('initialized');
+    this.logger.log('starting');
   }
 
   async use(req: RequestInfo, res: Response, next: NextFunction) {

@@ -13,7 +13,7 @@ export class RoleService implements CRUDService<Role> {
     @InjectRepository(Role)
     private readonly roleRepository: EntityRepository<Role>,
   ) {
-    this.logger.log('initialized');
+    this.logger.log('starting');
   }
 
   /**

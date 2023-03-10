@@ -1,7 +1,9 @@
+import { Injectable, Scope } from '@nestjs/common';
 import { FormExceptionError } from '../../../types/form.exception';
 
+@Injectable({ scope: Scope.REQUEST })
 export class AuthRegisterNameUseCase {
-  static execute = async ({ name }: { name: string }): Promise<Array<FormExceptionError>> => {
+  execute = async ({ name }: { name: string }): Promise<Array<FormExceptionError>> => {
     const erros = [];
     if (!name || name.length < 6) {
       const error = 'O nome deve ter no mínimo 6 caracteres.';

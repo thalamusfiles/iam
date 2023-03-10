@@ -15,7 +15,7 @@ export class Migration20230223000000_user_token extends Migration {
         "application_uuid" uuid not null, 
         "ip" varchar(128) null, 
         "user_agent" varchar(255) not null, 
-        "scopes" text[] not null, 
+        "scope" text[] not null, 
         "session_token" varchar(512) not null, 
         "jwt_token" varchar(512) not null, 
         "expires_in" timestamptz(0) null, 

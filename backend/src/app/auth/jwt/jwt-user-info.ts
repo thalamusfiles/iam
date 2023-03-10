@@ -3,7 +3,5 @@ export class JwtUserInfo {
 
   name: string;
 
-  regionLogged: string;
-
   applicationLogged: string;
 }

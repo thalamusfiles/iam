@@ -1371,8 +1371,8 @@
           "nullable": false,
           "mappedType": "string"
         },
-        "scopes": {
-          "name": "scopes",
+        "scope": {
+          "name": "scope",
           "type": "text[]",
           "unsigned": false,
           "autoincrement": false,

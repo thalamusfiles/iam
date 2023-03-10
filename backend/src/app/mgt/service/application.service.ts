@@ -13,7 +13,7 @@ export class ApplicationService implements CRUDService<Application> {
     @InjectRepository(Application)
     private readonly applicationRepository: EntityRepository<Application>,
   ) {
-    this.logger.log('initialized');
+    this.logger.log('starting');
   }
 
   /**

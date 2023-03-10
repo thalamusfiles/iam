@@ -7,7 +7,7 @@ import { RequestInfo } from '../../../types/request-info';
 import { ApplicationNormalizeInitialsUseCase } from '../usecase/application-normalize-initials.usecase';
 import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
 import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
-import { UseCaseMGTService } from '../usecase/usecasemgt.service';
+import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityApplicationCreateDto, EntityApplicationUpdateDto, FindApplicationPropsDto } from './dto/application.dto';
 
 @UseGuards(JWTGuard)
@@ -16,11 +16,11 @@ export class ApplicationController implements CRUDController<Application> {
   private readonly logger = new Logger(ApplicationController.name);
 
   constructor(private readonly applicationService: ApplicationService, private readonly useCaseService: UseCaseMGTService) {
+    this.logger.log('starting');
+
     this.useCaseService.register(Application, BaseAddCreatedByUseCase);
     this.useCaseService.register(Application, BaseAddUpdatedByUseCase);
     this.useCaseService.register(Application, ApplicationNormalizeInitialsUseCase);
-
-    this.logger.log('initialized');
   }
 
   /**

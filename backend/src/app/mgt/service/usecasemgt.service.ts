@@ -16,7 +16,7 @@ export class UseCaseMGTService {
   private useCases: { [key: string]: Array<Class<UseCasePlugin>> } = {};
 
   constructor() {
-    this.logger.log('initialized');
+    this.logger.log('starting');
   }
 
   register(modelClass: Class<any>, useCase: Class<UseCasePlugin>): void {

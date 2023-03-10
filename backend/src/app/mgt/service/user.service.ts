@@ -13,7 +13,7 @@ export class UserService implements CRUDService<User> {
     @InjectRepository(User)
     private readonly userRepository: EntityRepository<User>,
   ) {
-    this.logger.log('initialized');
+    this.logger.log('starting');
   }
 
   /**

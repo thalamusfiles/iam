@@ -6,7 +6,7 @@ import { CRUDController, EntityProps } from '../types/crud.controller';
 import { RequestInfo } from '../../../types/request-info';
 import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
 import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
-import { UseCaseMGTService } from '../usecase/usecasemgt.service';
+import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityUserCreateDto, EntityUserUpdateDto, FindUserPropsDto } from './dto/user.dto';
 
 @UseGuards(JWTGuard)
@@ -19,7 +19,7 @@ export class UserController implements CRUDController<User> {
     this.useCaseService.register(User, BaseAddCreatedByUseCase);
     this.useCaseService.register(User, BaseAddUpdatedByUseCase);
 
-    this.logger.log('initialized');
+    this.logger.log('starting');
   }
 
   /**

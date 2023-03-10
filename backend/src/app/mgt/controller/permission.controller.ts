@@ -8,7 +8,7 @@ import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
 import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
 import { PermissionAddAplicationUseCase } from '../usecase/permission-addapplication.usecase';
 import { PermissionNormalizeInitialsUseCase } from '../usecase/permission-normalize-initials.usecase';
-import { UseCaseMGTService } from '../usecase/usecasemgt.service';
+import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityPermissionCreateDto, EntityPermissionUpdateDto, FindPermissionPropsDto } from './dto/permission.dto';
 
 @UseGuards(JWTGuard)
@@ -17,12 +17,12 @@ export class PermissionController implements CRUDController<Permission> {
   private readonly logger = new Logger(PermissionController.name);
 
   constructor(private readonly permissionService: PermissionService, private readonly useCaseService: UseCaseMGTService) {
+    this.logger.log('starting');
+
     this.useCaseService.register(Permission, BaseAddCreatedByUseCase);
     this.useCaseService.register(Permission, BaseAddUpdatedByUseCase);
     this.useCaseService.register(Permission, PermissionNormalizeInitialsUseCase);
     this.useCaseService.register(Permission, PermissionAddAplicationUseCase);
-
-    this.logger.log('initialized');
   }
 
   /**

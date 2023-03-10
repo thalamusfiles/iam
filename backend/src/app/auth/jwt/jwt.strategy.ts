@@ -19,7 +19,6 @@ export class JWTStrategy extends PassportStrategy(Strategy) {
     return {
       uuid: auth.uuid,
       name: auth.name,
-      regionLogged: auth.regionLogged,
       applicationLogged: auth.applicationLogged,
     };
   }

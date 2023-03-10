@@ -2,18 +2,27 @@ import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { createHmac, randomBytes } from 'crypto';
 import iamConfig from '../../../config/iam.config';
 import { User } from '../../../model/User';
 import { UserLogin, UserLoginType } from '../../../model/UserLogin';
 import { UserToken } from '../../../model/UserToken';
-import { LoginInfo } from '../../../types/login-info';
+import { AuthLoginRespDto } from '../controller/dto/auth.dto';
 import { JwtUserInfo } from '../jwt/jwt-user-info';
+import { CryptService } from './crypt.service';
 
-// TODO: Colocar esse tipo em local apropriado
-export type AuthLoginResp = {
+export type LoginInfo = {
+  userUuid: string;
+  userLoginUuid: string;
+
+  application: string;
+  applicationRef: { uuid: string };
+
+  userAgent: string;
+  ip: string;
+
+  sessionToken: string;
   accessToken: string;
-  userInfo: JwtUserInfo;
+  scope: string;
 };
 
 @Injectable()
@@ -25,8 +34,9 @@ export class AuthService {
     @InjectRepository(UserLogin) private readonly userLoginRepository: EntityRepository<UserLogin>,
     @InjectRepository(UserToken) private readonly userTokenRepository: EntityRepository<UserToken>,
     private readonly jwtService: JwtService,
+    private readonly cryptService: CryptService,
   ) {
-    this.logger.log('initialized');
+    this.logger.log('starting');
   }
 
   /**
@@ -34,22 +44,22 @@ export class AuthService {
    * @param props
    * @returns
    */
-  async localRegister(props: { name: string; username: string; password: string }): Promise<UserLogin> {
+  async register({ name, username, password }: { name: string; username: string; password: string }): Promise<UserLogin> {
     this.logger.verbose('Registro Local de Usuários');
 
     // Gera o Salta e o Hash da senha
-    const _salt = this.generateRandomString(64);
-    const _password = this.encrypt(_salt, props.password);
+    const _salt = this.cryptService.generateRandomString(64);
+    const _password = this.cryptService.encrypt(iamConfig.IAM_PASS_SECRET_SALT, _salt, password);
 
     // Registra o Usuário
-    const user = this.userRepository.create({ name: props.name });
+    const user = this.userRepository.create({ name });
     await this.userLoginRepository.flush();
 
     // Registrao o login de acesso
     const userLogin = this.userLoginRepository.create({
       user,
       type: UserLoginType.LOCAL,
-      username: props.username,
+      username,
       _salt,
       _password,
     });
@@ -64,28 +74,44 @@ export class AuthService {
    * @param password
    * @returns
    */
-  async localLogin(username: string, password: string, appInfo: LoginInfo): Promise<AuthLoginResp> {
+  async loginJwt(username: string, password: string, appInfo: LoginInfo): Promise<AuthLoginRespDto> {
     this.logger.verbose('Login Local');
 
     const userLogin = await this.validateLocalUser(username, password);
     const user = userLogin.user;
 
-    const userInfo = this.userInfo(user, appInfo);
-    const accessToken = this.generate(userInfo);
+    const info = this.userInfo(user, appInfo);
+    const access_token = this.generateJwt(info);
 
-    /*this.userTokenRepository.create({
-      user: this.userRepository.getReference(user.uuid),
-      login: this.userLoginRepository.getReference(userLogin.uuid),
-      region: appInfo.regionRef,
+    appInfo.userUuid = user.uuid;
+    appInfo.userLoginUuid = userLogin.uuid;
+    appInfo.accessToken = access_token;
+
+    return {
+      token_type: '',
+      scope: ['appInfo.scope'].join(' '),
+      access_token,
+      info,
+    };
+  }
+
+  async checkUsernameExists(username: string): Promise<boolean> {
+    const userLogin = await this.userLoginRepository.findOne({ username, type: UserLoginType.LOCAL }, { populate: ['user'] });
+    return !!userLogin;
+  }
+
+  async createUserToken(appInfo: LoginInfo) {
+    this.userTokenRepository.create({
+      user: this.userRepository.getReference(appInfo.userUuid),
+      login: this.userLoginRepository.getReference(appInfo.userLoginUuid),
       application: appInfo.applicationRef,
       ip: appInfo.ip,
-      scopes: appInfo.scopes,
+      scope: appInfo.scope,
       userAgent: appInfo.userAgent,
-      jwtToken: accessToken,
+      sessionToken: appInfo.sessionToken,
+      accessToken: appInfo.accessToken,
     });
-    await this.userTokenRepository.flush();*/
-
-    return { accessToken, userInfo };
+    await this.userTokenRepository.flush();
   }
 
   /**
@@ -97,12 +123,12 @@ export class AuthService {
   private async validateLocalUser(username: string, password: string): Promise<UserLogin> {
     this.logger.verbose('Valida login Local');
 
-    const userLogin = await this.userLoginRepository.findOne({ username }, { populate: ['user'] });
+    const userLogin = await this.userLoginRepository.findOne({ username, type: UserLoginType.LOCAL }, { populate: ['user'] });
     if (!userLogin) {
       throw new NotFoundException('User does not exist.');
     }
 
-    const _password = this.encrypt(userLogin._salt, password);
+    const _password = this.cryptService.encrypt(iamConfig.IAM_PASS_SECRET_SALT, userLogin._salt, password);
 
     if (_password === userLogin._password) {
       return userLogin;
@@ -111,39 +137,15 @@ export class AuthService {
     }
   }
 
-  private userInfo(user: User, { region, application }: LoginInfo): JwtUserInfo {
+  private userInfo(user: User, { application }: LoginInfo): JwtUserInfo {
     return {
       uuid: user.uuid,
       name: user.name,
-      regionLogged: region,
       applicationLogged: application,
     };
   }
 
-  private generate(user: JwtUserInfo): string {
+  private generateJwt(user: JwtUserInfo): string {
     return this.jwtService.sign(user);
-  }
-
-  /**
-   * Gera o Hash da senha a partir de 2 salt e a senha, um aleatório gerado no cadastro e outro fixo e secreto.
-   * @param salt
-   * @param password
-   * @returns
-   */
-  private encrypt(salt: string, password: string): string {
-    const hash = createHmac('sha512', salt + iamConfig.IAM_PASS_SECRET_SALT);
-    hash.update(password);
-    return hash.digest('hex');
-  }
-
-  /**
-   * Gera um valor aleatório para ser utilizado como "salt" de senha.
-   * @param length
-   * @returns
-   */
-  private generateRandomString(length: number): string {
-    return randomBytes(Math.ceil(length / 2))
-      .toString('hex')
-      .slice(0, length);
   }
 }

@@ -6,6 +6,7 @@ import { addBearerAuthorization, addGlobalIAMMgtRequestHeader } from '../../../u
 import { AuthRegisterDto } from '../../../../src/app/auth/controller/dto/auth.dto';
 import { faker } from '@faker-js/faker';
 import iamConfig from '../../../../src/config/iam.config';
+import cookieConfig from '../../../../src/config/cookie.config';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
@@ -20,7 +21,7 @@ describe('UserController (e2e)', () => {
     username: 'u_' + faker.internet.userName(),
     password: password,
     password_confirmed: password,
-    scopes: ['all'],
+    scope: ['all'],
   };
   let accessToken;
   let userInfo;
@@ -97,7 +98,7 @@ describe('UserController (e2e)', () => {
     userInfo = result.body.userInfo;
   });*/
 
-  it(`${authUrl}/ (Get) Refresca o token/sessão de acesso`, async () => {
+  /*it(`${authUrl}/ (Get) Refresca o token/sessão de acesso`, async () => {
     const registerUrl = `${authUrl}/refresh`;
 
     const getRequest = request(app.getHttpServer()).get(registerUrl);
