@@ -1,3 +1,4 @@
+import * as cookieParser from 'cookie-parser';
 import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
@@ -6,7 +7,6 @@ import { addBearerAuthorization, addGlobalIAMMgtRequestHeader } from '../../../u
 import { AuthRegisterDto } from '../../../../src/app/auth/controller/dto/auth.dto';
 import { faker } from '@faker-js/faker';
 import iamConfig from '../../../../src/config/iam.config';
-import cookieConfig from '../../../../src/config/cookie.config';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
@@ -40,6 +40,7 @@ describe('UserController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.use(cookieParser());
     await app.init();
   });
 
@@ -191,5 +192,42 @@ describe('UserController (e2e)', () => {
 
     // Verifica se a trava de limite de tentativas de logins funciona
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(loginDto).expect(429);
+  });
+
+  it(`${authUrl}/ (GET) Tenta realizar login oauth sem cookie. Redireciona para o login`, async () => {
+    const oauthUrl = `${authUrl}/oauth2/authorize`;
+
+    const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(oauthUrl)).send(oauth).expect(302);
+    expect(result.headers.location).toEqual('/login');
+  });
+
+  it(`${authUrl}/ (GET) Tenta realizar login oauth com cookie. Redireciona para url informada.`, async () => {
+    const oauthUrl = `${authUrl}/oauth2/authorize`;
+
+    const getRequest = request(app.getHttpServer()).get(oauthUrl);
+    const getRequestWithApp = addGlobalIAMMgtRequestHeader(getRequest);
+
+    const result = await getRequestWithApp.set('Cookie', coockies.join(' ')).send(oauth).expect(302);
+    expect(result.headers.location).toEqual(oauth.redirect_uri);
+  });
+
+  it(`${authUrl}/ (GET) Tenta realizar login oauth con cookien inválido (não pode)`, async () => {
+    const oauthUrl = `${authUrl}/oauth2/authorize`;
+
+    const getRequest = request(app.getHttpServer()).get(oauthUrl);
+    const getRequestWithApp = addGlobalIAMMgtRequestHeader(getRequest);
+
+    const result = await getRequestWithApp.set('Cookie', 'cookie teste').send(oauth).expect(302);
+
+    expect(result.headers.location).toEqual('/login');
+  });
+
+  it(`${authUrl}/ (GET) Tenta realizar login oauth não informando nada (não pode)`, async () => {
+    const oauthUrl = `${authUrl}/oauth2/authorize`;
+
+    const getRequest = request(app.getHttpServer()).get(oauthUrl);
+    const getRequestWithApp = addGlobalIAMMgtRequestHeader(getRequest);
+
+    await getRequestWithApp.set('Cookie', 'cookie teste').expect(400);
   });
 });

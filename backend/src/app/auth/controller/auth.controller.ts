@@ -163,11 +163,31 @@ export class AuthController {
   }
 
   @Get('oauth2/authorize')
-  async oauth2Authorize(@Req() request: RequestInfo): Promise<string> {
-    return '';
+  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
+  async oauth2Authorize(@Req() request: RequestInfo, @Res() res, @Body() body: AuthRegisterDto): Promise<string> {
+    this.logger.log('Oauth2 authorize');
+
+    //Executa os casos de uso com validações
+    const allErros = [].concat(
+      //
+      await this.authRegisterOauthFieldsUseCase.execute(body),
+      await this.authRegisterClienteId.execute(body),
+    );
+
+    if (allErros.length) {
+      throw new FormException(allErros);
+    }
+
+    const cookieId = this.cookieService.getSSOCookie(request);
+    if (cookieId) {
+      return res.redirect(body.redirect_uri);
+    } else {
+      return res.redirect('/login');
+    }
   }
 
   @Get('oauth2/token')
+  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   async oauth2Token(@Req() request: RequestInfo): Promise<string> {
     return '';
   }
