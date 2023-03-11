@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Region } from '../../../model/System/Region';
-import { JWTGuard } from '../../auth/jwt/jwt.guard';
+import { AccessGuard } from '../../auth/passaport/access.guard';
 import { RegionService } from '../service/region.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
 import { RequestInfo } from '../../../types/request-info';
@@ -10,7 +10,7 @@ import { RegionNormalizeInitialsUseCase } from '../usecase/region-normalize-init
 import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityRegionCreateDto, EntityRegionUpdateDto, FindRegionPropsDto } from './dto/region.dto';
 
-@UseGuards(JWTGuard)
+@UseGuards(AccessGuard)
 @Controller('mgt/region')
 export class RegionController implements CRUDController<Region> {
   private readonly logger = new Logger(RegionController.name);

@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { User } from '../../../model/User';
-import { JWTGuard } from '../../auth/jwt/jwt.guard';
+import { AccessGuard } from '../../auth/passaport/access.guard';
 import { UserService } from '../service/user.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
 import { RequestInfo } from '../../../types/request-info';
@@ -9,7 +9,7 @@ import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
 import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityUserCreateDto, EntityUserUpdateDto, FindUserPropsDto } from './dto/user.dto';
 
-@UseGuards(JWTGuard)
+@UseGuards(AccessGuard)
 @Controller('mgt/user')
 export class UserController implements CRUDController<User> {
   private readonly logger = new Logger(UserController.name);

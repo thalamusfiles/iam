@@ -8,8 +8,7 @@ import { AuthLoginDto, AuthLoginRespDto, AuthRegisterDto } from './dto/auth.dto'
 import { Throttle } from '@nestjs/throttler';
 import iamConfig from '../../../config/iam.config';
 import { AuthRegisterMaxRegisterIpUseCase } from '../usecase/auth-register-max-register-ip';
-import { JWTGuard } from '../jwt/jwt.guard';
-import { JwtUserInfo } from '../jwt/jwt-user-info';
+import { AccessGuard } from '../passaport/access.guard';
 import { RequestInfo } from '../../../types/request-info';
 import { ResponseInfo } from '../../../types/response-info';
 import { CookieService } from '../service/cookie.service';
@@ -40,7 +39,7 @@ export class AuthController {
    * @returns
    */
   @Post('register')
-  //@Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
+  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   @UsePipes(new ValidationPipe({ transform: true }))
   async localRegister(
     @Body() body: AuthRegisterDto,
@@ -115,13 +114,52 @@ export class AuthController {
       this.authService.invalidateSession(oldCookieId);
     }*/
     const cookieId = this.cookieService.createOrRefreshSSOCookie(request, response, true);
-
-    const authResp = await this.authService.loginJwt(body.username, body.password, appInfo);
     appInfo.sessionToken = cookieId;
 
-    await this.authService.createUserToken(appInfo);
+    const authResp = await this.authService.findAndCreateAccessToken(body.username, body.password, appInfo);
+
+    await this.authService.saveUserToken(appInfo);
 
     return authResp;
+  }
+
+  /**
+   * Refresca o token, inviabiliza o access token anterior e gera um novo.
+   */
+  @Get('refresh')
+  @UseGuards(AccessGuard)
+  async refresh(@Req() request: RequestInfo, @Ip() ip: string): Promise<AuthLoginRespDto> {
+    const token = request.headers.authorization.substring(7);
+
+    const appInfo: LoginInfo = {
+      userUuid: null,
+      userLoginUuid: null,
+      clientId: null,
+      userAgent: null,
+      ip,
+      responseType: 'token',
+      redirectUri: null,
+      scope: null,
+      sessionToken: null,
+      accessToken: null,
+      expiresIn: null,
+    };
+
+    const authResp = await this.authService.refreshAccessToken(token, appInfo);
+
+    await this.authService.saveUserToken(appInfo);
+
+    return authResp;
+  }
+
+  /**
+   * Inviabiliza o token de acesso no banco.
+   * Desloga o usuário da sessão
+   */
+  @Get('logout')
+  @UseGuards(AccessGuard)
+  async logout(@Req() request: RequestInfo, @Res({ passthrough: true }) response: ResponseInfo): Promise<void> {
+    this.cookieService.clearCookies(request, response);
   }
 
   @Get('oauth2/authorize')
@@ -132,25 +170,5 @@ export class AuthController {
   @Get('oauth2/token')
   async oauth2Token(@Req() request: RequestInfo): Promise<string> {
     return '';
-  }
-
-  /**
-   * Inviabiliza o token de acesso no banco.
-   * Desloga o usuário da sessão
-   */
-  @Get('logout')
-  @UseGuards(JWTGuard)
-  async logout(@Req() request: RequestInfo, @Res({ passthrough: true }) response: ResponseInfo): Promise<void> {
-    this.cookieService.clearCookies(request, response);
-  }
-
-  /**
-   * Refresca o token, coleta o usuário e atualiza a data de espiração
-   */
-  @Get('refresh')
-  @UseGuards(JWTGuard)
-  async refresh(@Req() request: RequestInfo, @Res({ passthrough: true }) response: ResponseInfo): Promise<JwtUserInfo> {
-    this.cookieService.createOrRefreshSSOCookie(request, response);
-    return request.user;
   }
 }

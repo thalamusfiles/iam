@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IsNotEmpty, IsString, IsUrl, IsUUID } from 'class-validator';
 import iamConfig from '../../../../config/iam.config';
-import { JwtUserInfo } from '../../jwt/jwt-user-info';
+import { AccessUserInfo } from '../../passaport/access-user-info';
 
 class OauthFieldsDto {
   @Expose()
@@ -60,8 +60,9 @@ export class AuthLoginDto extends OauthFieldsDto {
 }
 
 export type AuthLoginRespDto = {
-  access_token?: string;
   token_type: string;
+  access_token?: string;
   scope: string;
-  info?: JwtUserInfo;
+  expires_in: number;
+  info?: AccessUserInfo;
 };

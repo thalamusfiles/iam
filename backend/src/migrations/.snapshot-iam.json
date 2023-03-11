@@ -1418,7 +1418,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 512,
           "mappedType": "string"
         },
@@ -1457,7 +1457,7 @@
       "schema": "auth",
       "indexes": [
         {
-          "keyName": "user_token_unique_jwt_token",
+          "keyName": "user_token_unique_access_token",
           "columnNames": [
             "access_token",
             "deleted_at"
@@ -1465,7 +1465,7 @@
           "composite": true,
           "primary": false,
           "unique": false,
-          "expression": "ALTER TABLE \"auth\".\"user_token\" add constraint \"user_token_unique_jwt_token\" UNIQUE NULLS NOT DISTINCT (\"access_token\", \"deleted_at\")"
+          "expression": "ALTER TABLE \"auth\".\"user_token\" add constraint \"user_token_unique_access_token\" UNIQUE NULLS NOT DISTINCT (\"access_token\", \"deleted_at\")"
         },
         {
           "keyName": "user_token_unique_session_token",
@@ -1476,7 +1476,7 @@
           "composite": true,
           "primary": false,
           "unique": false,
-          "expression": "ALTER TABLE \"auth\".\"user_token\" add constraint \"user_token_unique_session_token\" UNIQUE NULLS NOT DISTINCT (\"session_token\", \"deleted_at\")"
+          "expression": "CREATE UNIQUE INDEX \"user_token_unique_session_token\" ON \"auth\".\"user_token\" (\"session_token\") WHERE (response_type = \"cookie\" AND \"deleted_at\" IS NULL)"
         },
         {
           "keyName": "user_token_pkey",

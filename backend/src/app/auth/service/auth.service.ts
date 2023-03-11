@@ -9,7 +9,7 @@ import { User } from '../../../model/User';
 import { UserLogin, UserLoginType } from '../../../model/UserLogin';
 import { UserToken } from '../../../model/UserToken';
 import { AuthLoginRespDto } from '../controller/dto/auth.dto';
-import { JwtUserInfo } from '../jwt/jwt-user-info';
+import { AccessUserInfo } from '../passaport/access-user-info';
 import { CryptService } from './crypt.service';
 
 export type LoginInfo = {
@@ -72,17 +72,44 @@ export class AuthService {
   }
 
   /**
-   * Valida o login e gera o token jwt de acesso
+   * Valida o login e gera o token acesso
    * @param username
    * @param password
    * @returns
    */
-  async loginJwt(username: string, password: string, appInfo: LoginInfo): Promise<AuthLoginRespDto> {
+  async findAndCreateAccessToken(username: string, password: string, appInfo: LoginInfo): Promise<AuthLoginRespDto> {
     this.logger.verbose('Login Local');
 
+    const userLogin = await this.findLocalUserByLogin(username, password);
+
+    return this.createAccessToken(userLogin.user, userLogin, appInfo);
+  }
+
+  /**
+   * Remove o token anterior e gera um novo
+   * @param accessToken
+   * @returns
+   */
+  async refreshAccessToken(accessToken: string, appInfo: LoginInfo): Promise<AuthLoginRespDto> {
+    const userToken = await this.userTokenRepository.findOne({ accessToken }, { populate: ['application', 'user', 'login'] });
+
+    if (userToken) {
+      await this.userTokenRepository.nativeUpdate({ accessToken }, { deletedAt: new Date() });
+      this.userTokenRepository.flush();
+
+      appInfo.clientId = userToken.application.uuid;
+      appInfo.userAgent = userToken.userAgent;
+      appInfo.responseType = userToken.responseType;
+      appInfo.redirectUri = userToken.redirectUri;
+      appInfo.scope = userToken.scope;
+
+      return this.createAccessToken(userToken.user, userToken.login, appInfo);
+    }
+    return null;
+  }
+
+  async createAccessToken(user: User, userLogin: UserLogin, appInfo: LoginInfo): Promise<AuthLoginRespDto> {
     const expiresIn = DateTime.now().plus({ seconds: jwtConfig.MAX_AGE }).toJSDate();
-    const userLogin = await this.validateLocalUser(username, password);
-    const user = userLogin.user;
 
     const info = this.userInfo(user, appInfo);
     const access_token = this.generateJwt(info, jwtConfig.MAX_AGE);
@@ -93,11 +120,20 @@ export class AuthService {
     appInfo.expiresIn = expiresIn;
 
     return {
-      token_type: '',
+      token_type: appInfo.responseType,
       scope: ['appInfo.scope'].join(' '),
+      expires_in: jwtConfig.MAX_AGE,
       access_token,
       info,
     };
+  }
+
+  async validateAccessToke(accessToken: string): Promise<boolean> {
+    const userToken = await this.userTokenRepository.findOne({ accessToken });
+    if (userToken?.expiresIn) {
+      return DateTime.now() < DateTime.fromJSDate(userToken.expiresIn);
+    }
+    return false;
   }
 
   async checkUsernameExists(username: string): Promise<boolean> {
@@ -105,7 +141,11 @@ export class AuthService {
     return !!userLogin;
   }
 
-  async createUserToken(appInfo: LoginInfo) {
+  /**
+   * Salva o registro do token no banco de dados
+   * @param appInfo
+   */
+  async saveUserToken(appInfo: LoginInfo) {
     this.userTokenRepository.create({
       // USER
       user: this.userRepository.getReference(appInfo.userUuid),
@@ -138,7 +178,7 @@ export class AuthService {
    * @param password
    * @returns
    */
-  private async validateLocalUser(username: string, password: string): Promise<UserLogin> {
+  private async findLocalUserByLogin(username: string, password: string): Promise<UserLogin> {
     this.logger.verbose('Valida login Local');
 
     const userLogin = await this.userLoginRepository.findOne({ username, type: UserLoginType.LOCAL }, { populate: ['user'] });
@@ -155,15 +195,16 @@ export class AuthService {
     }
   }
 
-  private userInfo(user: User, { clientId: application }: LoginInfo): JwtUserInfo {
+  private userInfo(user: User, { clientId: application }: LoginInfo): AccessUserInfo {
     return {
+      iat: DateTime.now().valueOf(),
       uuid: user.uuid,
       name: user.name,
       applicationLogged: application,
     };
   }
 
-  private generateJwt(user: JwtUserInfo, expiresInSeconds: number): string {
+  private generateJwt(user: AccessUserInfo, expiresInSeconds: number): string {
     return this.jwtService.sign(user, { expiresIn: expiresInSeconds });
   }
 }

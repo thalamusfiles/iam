@@ -1,6 +1,7 @@
 import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { JwtUserInfo } from '../../src/app/auth/jwt/jwt-user-info';
+import { AccessUserInfo } from '../../src/app/auth/passaport/access-user-info';
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class JTWGuardMockAdmin extends AuthGuard('jwt') {
@@ -8,8 +9,9 @@ export class JTWGuardMockAdmin extends AuthGuard('jwt') {
     return super.canActivate(context);
   }
 
-  handleRequest(err, user: Partial<JwtUserInfo> /*, info*/) {
+  handleRequest(err, user: Partial<AccessUserInfo> /*, info*/) {
     user = {
+      iat: DateTime.now().valueOf(),
       uuid: '11111111-1111-1111-1111-111111111111',
       name: 'Admin',
     };

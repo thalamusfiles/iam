@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Role } from '../../../model/Role';
-import { JWTGuard } from '../../auth/jwt/jwt.guard';
+import { AccessGuard } from '../../auth/passaport/access.guard';
 import { RoleService } from '../service/role.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
 import { RequestInfo } from '../../../types/request-info';
@@ -11,7 +11,7 @@ import { RoleNormalizeInitialsUseCase } from '../usecase/role-normalize-initials
 import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityRoleCreateDto, EntityRoleUpdateDto, FindRolePropsDto } from './dto/role.dto';
 
-@UseGuards(JWTGuard)
+@UseGuards(AccessGuard)
 @Controller('mgt/role')
 export class RoleController implements CRUDController<Role> {
   private readonly logger = new Logger(RoleController.name);

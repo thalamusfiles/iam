@@ -1,9 +1,9 @@
-import { JwtUserInfo } from '../app/auth/jwt/jwt-user-info';
+import { AccessUserInfo } from '../app/auth/passaport/access-user-info';
 import { Request } from 'express';
 
 export type RequestInfo = {
   //
-  user: JwtUserInfo;
+  user: AccessUserInfo;
   regionRef: { uuid: string };
   applicationRef: { uuid: string };
 } & Request;

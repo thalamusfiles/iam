@@ -4,7 +4,7 @@ import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../../../../src/app/app.module';
 import { Permission } from '../../../../src/model/Permission';
 import { EntityProps } from '../../../../src/app/mgt/types/crud.controller';
-import { JWTGuard } from '../../../../src/app/auth/jwt/jwt.guard';
+import { AccessGuard } from '../../../../src/app/auth/passaport/access.guard';
 import { JTWGuardMockAdmin } from '../../../mocks/jwt.mock';
 import { faker } from '@faker-js/faker';
 import { addGlobalIAMMgtRequestHeader, addRegionAppRequestHeader } from '../../../utils/setheader.utils';
@@ -43,7 +43,7 @@ describe('PermissionController (e2e)', () => {
     const moduleFixture = await Test.createTestingModule({
       imports: [AppModule],
     })
-      .overrideGuard(JWTGuard)
+      .overrideGuard(AccessGuard)
       .useClass(JTWGuardMockAdmin)
       .compile();
 

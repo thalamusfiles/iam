@@ -16,13 +16,20 @@ describe('UserController (e2e)', () => {
 
   // Cadastros de testes
   const password = faker.internet.password(16);
+  const oauth = {
+    cliente_id: iamConfig.MAIN_APP_IAM_ID,
+    response_type: 'cookie',
+    redirect_uri: 'https://localhost:8080/',
+    scope: 'all',
+  };
   const registerDto01: AuthRegisterDto = {
+    ...oauth,
     name: faker.name.fullName(),
     username: 'u_' + faker.internet.userName(),
     password: password,
     password_confirmed: password,
-    scope: ['all'],
   };
+  let coockies;
   let accessToken;
   let userInfo;
 
@@ -37,68 +44,74 @@ describe('UserController (e2e)', () => {
   });
 
   // Inicio dos testes
-  it(`${authUrl}/ (Post) Registra um novo usuário no sistema`, async () => {
-    const registerUrl = `${authUrl}/local/register`;
+  it(`${authUrl}/register (Post) Registra um novo usuário no sistema`, async () => {
+    const registerUrl = `${authUrl}/register`;
 
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(registerDto01).expect(201);
 
+    expect(result.headers['set-cookie']).toBeDefined();
     expect(result.body).toBeDefined();
-    expect(result.body).toHaveProperty('accessToken');
-    expect(result.body).toHaveProperty('userInfo');
+    expect(result.body).toHaveProperty('access_token');
+    expect(result.body).toHaveProperty('info');
     expect(result.body).toMatchObject(
       expect.objectContaining({
-        accessToken: expect.any(String),
-        userInfo: {
+        token_type: expect.any(String),
+        access_token: expect.any(String),
+        scope: expect.any(String),
+        expires_in: expect.any(Number),
+        info: {
+          iat: expect.any(Number),
           uuid: expect.any(String),
           name: expect.any(String),
-          regionLogged: expect.any(String),
           applicationLogged: expect.any(String),
         },
       }),
     );
-    expect(result.body.userInfo.regionLogged.length).toBeGreaterThan(3);
-    expect(result.body.userInfo.applicationLogged.length).toBeGreaterThan(3);
+    expect(result.body.info.applicationLogged).toEqual(registerDto01.cliente_id);
 
-    accessToken = result.body.accessToken;
-    userInfo = result.body.userInfo;
+    coockies = result.headers['set-cookie'];
+    accessToken = result.body.access_token;
+    userInfo = result.body.info;
   });
 
-  /*it(`${authUrl}/ (Post) Tentar registrar o mesmo usuário (não pode)`, async () => {
-    const registerUrl = `${authUrl}/local/register`;
-    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(registerDto01).expect(500);
+  it(`${authUrl}/ (Post) Tentar registrar o mesmo usuário (não pode)`, async () => {
+    const registerUrl = `${authUrl}/register`;
+    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(registerDto01).expect(400);
   });
 
   it(`${authUrl}/ (Post) Realiza o login`, async () => {
-    const registerUrl = `${authUrl}/local/login`;
+    const registerUrl = `${authUrl}/login`;
     const loginDto = {
+      ...oauth,
+      //
       username: registerDto01.username,
       password: registerDto01.password,
     };
 
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(loginDto).expect(201);
 
+    expect(result.headers['set-cookie']).toBeDefined();
     expect(result.body).toBeDefined();
-    expect(result.body).toHaveProperty('accessToken');
-    expect(result.body).toHaveProperty('userInfo');
+    expect(result.body).toHaveProperty('access_token');
+    expect(result.body).toHaveProperty('info');
     expect(result.body).toMatchObject(
       expect.objectContaining({
-        accessToken: expect.any(String),
-        userInfo: {
+        token_type: expect.any(String),
+        access_token: expect.any(String),
+        scope: expect.any(String),
+        expires_in: expect.any(Number),
+        info: {
+          iat: expect.any(Number),
           uuid: expect.any(String),
           name: expect.any(String),
-          regionLogged: expect.any(String),
           applicationLogged: expect.any(String),
         },
       }),
     );
-    expect(result.body.userInfo.regionLogged.length).toBeGreaterThan(3);
-    expect(result.body.userInfo.applicationLogged.length).toBeGreaterThan(3);
+    expect(result.body.info.applicationLogged).toEqual(registerDto01.cliente_id);
+  });
 
-    accessToken = result.body.accessToken;
-    userInfo = result.body.userInfo;
-  });*/
-
-  /*it(`${authUrl}/ (Get) Refresca o token/sessão de acesso`, async () => {
+  it(`${authUrl}/ (Get) Refresca o token/sessão de acesso`, async () => {
     const registerUrl = `${authUrl}/refresh`;
 
     const getRequest = request(app.getHttpServer()).get(registerUrl);
@@ -108,7 +121,11 @@ describe('UserController (e2e)', () => {
     const result = await getRequestWithApp.expect(200);
 
     expect(result.body).toBeDefined();
-    expect(result.body).toEqual(userInfo);
+    expect(result.body).toHaveProperty('access_token');
+    expect(result.body).toHaveProperty('info');
+    expect(result.body.access_token).not.toEqual(accessToken);
+    expect(result.body.info.uuid).toEqual(userInfo.uuid);
+    expect(result.body.info.applicationLogged).toEqual(userInfo.applicationLogged);
   });
 
   it(`${authUrl}/ (Get) Tenta utilizar um token inválido`, async () => {
@@ -134,11 +151,12 @@ describe('UserController (e2e)', () => {
     await getRequestWithApp.expect(401);
   });
 
-  /*it(`${authUrl}/ (Post) Testa limite de registros por ip por minuto`, async () => {
-    const registerUrl = `${authUrl}/local/register`;
+  it(`${authUrl}/ (Post) Testa limite de registros por ip por minuto`, async () => {
+    const registerUrl = `${authUrl}/register`;
 
     for (let j = 0; j < iamConfig.REGISTER_RATE_LIMITE - 2; j++) {
       const registerDto02: AuthRegisterDto = {
+        ...oauth,
         name: faker.name.fullName(),
         username: 'u_' + faker.internet.userName(),
         password: password,
@@ -149,6 +167,7 @@ describe('UserController (e2e)', () => {
     }
 
     const registerDto02: AuthRegisterDto = {
+      ...oauth,
       name: faker.name.fullName(),
       username: 'u_' + faker.internet.userName(),
       password: password,
@@ -159,8 +178,9 @@ describe('UserController (e2e)', () => {
   });
 
   it(`${authUrl}/ (Post) Testa limite de logins por ip por minuto`, async () => {
-    const registerUrl = `${authUrl}/local/login`;
+    const registerUrl = `${authUrl}/login`;
     const loginDto = {
+      ...oauth,
       username: registerDto01.username,
       password: registerDto01.password,
     };
@@ -171,5 +191,5 @@ describe('UserController (e2e)', () => {
 
     // Verifica se a trava de limite de tentativas de logins funciona
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(loginDto).expect(429);
-  });*/
+  });
 });

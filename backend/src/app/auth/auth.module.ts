@@ -7,7 +7,7 @@ import { User } from '../../model/User';
 import { UserLogin } from '../../model/UserLogin';
 import { Application } from '../../model/System/Application';
 import jwtConfig from '../../config/jwt.config';
-import { JWTStrategy } from './jwt/jwt.strategy';
+import { AccessStrategy } from './passaport/access.strategy';
 import { AuthService } from './service/auth.service';
 import { RequestService } from './service/request.service';
 import { AuthController } from './controller/auth.controller';
@@ -36,7 +36,7 @@ import { AuthRegisterOauthFieldsUseCase } from './usecase/auth-oauth-fields.usec
     CookieService,
     RequestService,
     AuthService,
-    JWTStrategy,
+    AccessStrategy,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,

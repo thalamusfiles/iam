@@ -46,7 +46,7 @@ export class CookieService {
   }
 
   getSSOCookie(request: RequestInfo): string {
-    return request.cookies.iam_sso;
+    return request.cookies?.iam_sso;
   }
 
   clearCookies(request: RequestInfo, response: ResponseInfo): void {

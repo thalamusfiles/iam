@@ -17,7 +17,7 @@ export class Migration20230223000000_user_token extends Migration {
         "scope" varchar(2048) not null, 
         "code_challenge" varchar(256) null, 
         "code_challenge_method" varchar(16) null,
-        "session_token" varchar(512) not null, 
+        "session_token" varchar(512) null, 
         "access_token" varchar(512) not null, 
         "expires_in" timestamptz(0) null, 
         "deleted_at" timestamptz(0) null, 
@@ -34,7 +34,7 @@ export class Migration20230223000000_user_token extends Migration {
       'ALTER TABLE "auth"."user_token" add constraint "user_token_unique_jwt_token" UNIQUE NULLS NOT DISTINCT ("access_token", "deleted_at");',
     );
     this.addSql(
-      'ALTER TABLE "auth"."user_token" add constraint "user_token_unique_session_token" UNIQUE NULLS NOT DISTINCT ("session_token", "deleted_at");',
+      `CREATE UNIQUE INDEX "user_token_unique_session_token" ON "auth"."user_token" ("session_token") WHERE (response_type = 'cookie' AND "deleted_at" IS NULL);`,
     );
 
     this.addSql(

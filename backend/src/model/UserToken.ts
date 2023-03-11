@@ -1,4 +1,4 @@
-import { Check, Entity, Index, ManyToOne, Property } from '@mikro-orm/core';
+import { Check, Entity, Filter, Index, ManyToOne, Property } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
 import { IamBaseEntity } from './Base/IamBaseEntity';
 import { Application } from './System/Application';
@@ -9,14 +9,15 @@ import { UserLogin } from './UserLogin';
 @Index({
   name: 'user_token_unique_session_token',
   properties: ['sessionToken', 'deletedAt'],
-  expression:
-    'ALTER TABLE "auth"."user_token" add constraint "user_token_unique_session_token" UNIQUE NULLS NOT DISTINCT ("session_token", "deleted_at")',
+  expression: `CREATE UNIQUE INDEX "user_token_unique_session_token" ON "auth"."user_token" ("session_token") WHERE (response_type = "cookie" AND "deleted_at" IS NULL)`,
 })
 @Index({
   name: 'user_token_unique_access_token',
   properties: ['accessToken', 'deletedAt'],
-  expression: 'ALTER TABLE "auth"."user_token" add constraint "user_token_unique_access_token" UNIQUE NULLS NOT DISTINCT ("access_token", "deleted_at")',
+  expression:
+    'ALTER TABLE "auth"."user_token" add constraint "user_token_unique_access_token" UNIQUE NULLS NOT DISTINCT ("access_token", "deleted_at")',
 })
+@Filter({ name: 'deletedAtIsNull', cond: { deletedAt: { $eq: null } }, default: true })
 export class UserToken extends IamBaseEntity {
   @ManyToOne(() => User, { nullable: false })
   user!: User;
@@ -52,8 +53,8 @@ export class UserToken extends IamBaseEntity {
 
   @Exclude()
   @Check({ expression: 'LENGTH(session_token) > 64' })
-  @Property({ nullable: false, length: 512 })
-  sessionToken!: string;
+  @Property({ nullable: true, length: 512 })
+  sessionToken?: string;
 
   @Exclude()
   @Check({ expression: 'LENGTH(access_token) > 64' })

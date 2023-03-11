@@ -22,7 +22,7 @@ export class Migration20230211100000_create_region_apps extends Migration {
         "created_by_uuid", "updated_by_uuid",
         "initials", "name", "description", "private_sso", "one_role_required") 
       values (
-        '11111111-1111-1111-1111-111111111111', CURRENT_DATE, CURRENT_DATE, 
+        '${iamConfig.MAIN_APP_IAM_ID}', CURRENT_DATE, CURRENT_DATE, 
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111',
         '${iamConfig.MAIN_APP_IAM}', '${iamConfig.MAIN_APP_IAM}', 'Description by ${iamConfig.MAIN_APP_IAM}', false, false);`,
     );
@@ -34,7 +34,7 @@ export class Migration20230211100000_create_region_apps extends Migration {
         "created_by_uuid", "updated_by_uuid",
         "initials", "name", "description", "private_sso", "one_role_required") 
       values (
-        '22222222-2222-2222-2222-222222222222', CURRENT_DATE, CURRENT_DATE, 
+        '${iamConfig.MAIN_APP_IAM_MGT_ID}', CURRENT_DATE, CURRENT_DATE, 
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111',
         '${iamConfig.MAIN_APP_IAM_MGT}', '${iamConfig.MAIN_APP_IAM_MGT}', 'Description by ${iamConfig.MAIN_APP_IAM_MGT}', true, true);`,
     );

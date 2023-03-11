@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Permission } from '../../../model/Permission';
-import { JWTGuard } from '../../auth/jwt/jwt.guard';
+import { AccessGuard } from '../../auth/passaport/access.guard';
 import { PermissionService } from '../service/permission.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
 import { RequestInfo } from '../../../types/request-info';
@@ -11,7 +11,7 @@ import { PermissionNormalizeInitialsUseCase } from '../usecase/permission-normal
 import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityPermissionCreateDto, EntityPermissionUpdateDto, FindPermissionPropsDto } from './dto/permission.dto';
 
-@UseGuards(JWTGuard)
+@UseGuards(AccessGuard)
 @Controller('mgt/permission')
 export class PermissionController implements CRUDController<Permission> {
   private readonly logger = new Logger(PermissionController.name);
