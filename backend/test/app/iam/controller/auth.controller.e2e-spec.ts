@@ -75,12 +75,12 @@ describe('UserController (e2e)', () => {
     userInfo = result.body.info;
   });
 
-  it(`${authUrl}/ (Post) Tentar registrar o mesmo usuário (não pode)`, async () => {
+  it(`${authUrl}/register (Post) Tentar registrar o mesmo usuário (não pode)`, async () => {
     const registerUrl = `${authUrl}/register`;
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(registerDto01).expect(400);
   });
 
-  it(`${authUrl}/ (Post) Realiza o login`, async () => {
+  it(`${authUrl}/login (Post) Realiza o login`, async () => {
     const registerUrl = `${authUrl}/login`;
     const loginDto = {
       ...oauth,
@@ -112,7 +112,7 @@ describe('UserController (e2e)', () => {
     expect(result.body.info.applicationLogged).toEqual(registerDto01.cliente_id);
   });
 
-  it(`${authUrl}/ (Get) Refresca o token/sessão de acesso`, async () => {
+  it(`${authUrl}/refresh (Get) Refresca o token/sessão de acesso`, async () => {
     const registerUrl = `${authUrl}/refresh`;
 
     const getRequest = request(app.getHttpServer()).get(registerUrl);
@@ -129,7 +129,7 @@ describe('UserController (e2e)', () => {
     expect(result.body.info.applicationLogged).toEqual(userInfo.applicationLogged);
   });
 
-  it(`${authUrl}/ (Get) Tenta utilizar um token inválido`, async () => {
+  it(`${authUrl}/refresh (Get) Tenta utilizar um token inválido`, async () => {
     const registerUrl = `${authUrl}/refresh`;
 
     const [header, payload, verify] = accessToken.split('.');
@@ -152,7 +152,7 @@ describe('UserController (e2e)', () => {
     await getRequestWithApp.expect(401);
   });
 
-  it(`${authUrl}/ (Post) Testa limite de registros por ip por minuto`, async () => {
+  it(`${authUrl}/register (Post) Testa limite de registros por ip por minuto`, async () => {
     const registerUrl = `${authUrl}/register`;
 
     for (let j = 0; j < iamConfig.REGISTER_RATE_LIMITE - 2; j++) {
@@ -178,7 +178,7 @@ describe('UserController (e2e)', () => {
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(registerDto02).expect(429);
   });
 
-  it(`${authUrl}/ (Post) Testa limite de logins por ip por minuto`, async () => {
+  it(`${authUrl}/login (Post) Testa limite de logins por ip por minuto`, async () => {
     const registerUrl = `${authUrl}/login`;
     const loginDto = {
       ...oauth,
@@ -194,14 +194,14 @@ describe('UserController (e2e)', () => {
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(loginDto).expect(429);
   });
 
-  it(`${authUrl}/ (GET) Tenta realizar login oauth sem cookie. Redireciona para o login`, async () => {
+  it(`${authUrl}/oauth2/authorize (GET) Tenta realizar login oauth sem cookie. Redireciona para o login`, async () => {
     const oauthUrl = `${authUrl}/oauth2/authorize`;
 
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(oauthUrl)).send(oauth).expect(302);
     expect(result.headers.location).toEqual('/login');
   });
 
-  it(`${authUrl}/ (GET) Tenta realizar login oauth com cookie. Redireciona para url informada.`, async () => {
+  it(`${authUrl}/oauth2/authorize (GET) Tenta realizar login oauth com cookie. Redireciona para url informada.`, async () => {
     const oauthUrl = `${authUrl}/oauth2/authorize`;
 
     const getRequest = request(app.getHttpServer()).get(oauthUrl);
@@ -211,7 +211,7 @@ describe('UserController (e2e)', () => {
     expect(result.headers.location).toEqual(oauth.redirect_uri);
   });
 
-  it(`${authUrl}/ (GET) Tenta realizar login oauth con cookien inválido (não pode)`, async () => {
+  it(`${authUrl}/oauth2/authorize (GET) Tenta realizar login oauth con cookien inválido (não pode)`, async () => {
     const oauthUrl = `${authUrl}/oauth2/authorize`;
 
     const getRequest = request(app.getHttpServer()).get(oauthUrl);
@@ -222,7 +222,7 @@ describe('UserController (e2e)', () => {
     expect(result.headers.location).toEqual('/login');
   });
 
-  it(`${authUrl}/ (GET) Tenta realizar login oauth não informando nada (não pode)`, async () => {
+  it(`${authUrl}/oauth2/authorize (GET) Tenta realizar login oauth não informando nada (não pode)`, async () => {
     const oauthUrl = `${authUrl}/oauth2/authorize`;
 
     const getRequest = request(app.getHttpServer()).get(oauthUrl);
