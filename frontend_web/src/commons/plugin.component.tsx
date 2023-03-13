@@ -106,7 +106,7 @@ export interface WMSFormPluginProps {
 
 const wmsFormPlugins: {
   [key: string]: {
-    component: IReactClassComponent<WmsFormProps>;
+    component: React.ComponentClass<WmsFormProps>;
   };
 } = {};
 
@@ -128,7 +128,7 @@ export function findWmsFormPlugin(name: string, props: WmsFormProps): JSX.Elemen
  * @param props define as propriedades que o componente deve aceitar.
  */
 export function WmsFormPlugin(props: WMSFormPluginProps) {
-  return <T extends IReactClassComponent<WmsFormProps>>(target: T): T => {
+  return <T extends React.ComponentClass<WmsFormProps>>(target: T): T => {
     //Inicializa estrutura do componente
     if (!wmsFormPlugins[props.name]) {
       wmsFormPlugins[props.name] = {

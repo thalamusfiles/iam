@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { IconsDef } from '../../../commons/consts';
-import { useI18N, WMSI18N } from '../../../commons/i18';
+import { WMSI18N } from '../../../commons/i18';
 import { getHistory, historySearch } from '../../../commons/route';
 import Loader from '../../../components/Loader';
 import SideBar from '../../../components/SideBar';
@@ -48,7 +48,8 @@ export default abstract class GenericEdit<S extends CommonEditStore> extends Rea
   sideBar = (<SideBarEdit />);
 
   render() {
-    const __ = useI18N();
+    //const __ = useI18N();
+    const __ = (tt: string) => tt;
     const { sideBarSpan, inModal } = this.props;
     const { show_save } = historySearch();
 

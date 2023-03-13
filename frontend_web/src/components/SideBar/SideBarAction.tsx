@@ -7,7 +7,7 @@ import { ButtonVariant } from 'react-bootstrap/esm/types';
 import Row from 'react-bootstrap/Row';
 import { Link } from 'react-router-dom';
 
-type SideBarAction = {
+type SideBarProps = {
   title?: string;
   faicon?: IconProp;
   facolor?: string;
@@ -16,7 +16,7 @@ type SideBarAction = {
   link?: any;
 };
 
-export function SideBarAction(props: SideBarAction) {
+export const SideBarAction: React.FC<SideBarProps> = (props) => {
   return (
     <Row className="action">
       <Col xs={1} />
@@ -30,4 +30,4 @@ export function SideBarAction(props: SideBarAction) {
       </Col>
     </Row>
   );
-}
+};

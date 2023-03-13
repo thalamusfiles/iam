@@ -6,7 +6,7 @@ import { IconsDef } from '../../commons/consts';
 
 type Sizes = 'lg' | 'md' | 'sm' | 'xs';
 
-export interface LoaderProps<As extends React.ElementType | string = React.ElementType> {
+export interface LoaderProps<As extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDListElement>, HTMLDListElement>> {
   /** The prefix of the component CSS class */
   classPrefix?: string;
 
@@ -51,7 +51,7 @@ interface RsRefForwardingComponent<T extends React.ElementType, P = unknown> {
   displayName?: string;
 }
 */
-const Loader /*: RsRefForwardingComponent<'div', LoaderProps>*/ = React.forwardRef((props: LoaderProps, ref) => {
+const Loader /*: RsRefForwardingComponent<'div', LoaderProps>*/ = React.forwardRef((props: LoaderProps<any>, ref) => {
   const {
     as: Component = 'div',
     show,

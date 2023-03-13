@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import Col from 'react-bootstrap/Col';
 
-type SideBarProps = {
+type SideBarProps = PropsWithChildren<{
   span: number;
-};
+}>;
 
 const SideBar: React.FC<SideBarProps> = ({ span, children }) => {
   return (

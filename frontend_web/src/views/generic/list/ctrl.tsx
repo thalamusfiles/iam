@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import { default as axios, default as Axios } from 'axios';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { AttributeType } from '../../../commons/attribute-type';
 import { ColorsDef } from '../../../commons/consts';
@@ -11,9 +11,9 @@ import { notify } from '../../../components/Notification';
 import { GraphQLInterface } from '../../../datasources/apigraphql/api';
 import { FilterDef } from './types/FilterDef';
 import { ListDefinition } from './types/ListDefinition';
-import { TableCell, TableCellInfo } from "./types/TableCellInfo";
-import { TableGroupCellInfo } from "./types/TableGroupCellInfo";
-import { TableHead } from "./types/TableHead";
+import { TableCell, TableCellInfo } from './types/TableCellInfo';
+import { TableGroupCellInfo } from './types/TableGroupCellInfo';
+import { TableHead } from './types/TableHead';
 
 /**
  * Configurações para inicialização da listagem
@@ -150,9 +150,11 @@ export class CommonListStore {
 
       //if (!this.fastFilters?.length && this.options.autoSearch) this.search();
     } catch (err) {
-      notify.danger(err?.response?.data?.message, 'An error occurred while loading the settings');
-      this.customListDefs = [];
-      console.error(err);
+      if (axios.isAxiosError(err)) {
+        notify.danger(err.response?.data?.message, 'An error occurred while loading the settings');
+        this.customListDefs = [];
+        console.error(err);
+      }
     }
   };
 
