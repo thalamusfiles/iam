@@ -1,6 +1,6 @@
 import { computed, makeObservable, observable } from 'mobx';
-import { useNavigate } from 'react-router-dom';
 import { CustomComponentI, findComponents, TargetForm, WMSPagePluginProps } from '../../../commons/plugin.component';
+import { historyPush } from '../../../commons/route';
 
 /**
  * Configurações para inicialização da listagem
@@ -82,7 +82,7 @@ export class CommonEditStore {
   };
 
   onBack = async () => {
-    useNavigate()(-1);
+    historyPush(-1);
   };
 
   @computed

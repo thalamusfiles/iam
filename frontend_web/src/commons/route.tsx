@@ -1,6 +1,7 @@
 import { IconName } from '@fortawesome/fontawesome-svg-core';
+import type { Router as RemixRouter } from '@remix-run/router';
 import qs from 'qs';
-import { Navigate, Outlet } from 'react-router-dom';
+import { createBrowserRouter, Navigate, Outlet, RouteObject } from 'react-router-dom';
 import { EndpointsDef } from '../datasources/endpoints';
 import { RoutesName } from '../views/routes-name';
 import { localStorageDef } from './consts';
@@ -9,12 +10,15 @@ import Storage from './storage';
 export type RouteDefinition = { title: string; icon?: IconName | Array<IconName>; path: string; component: any; index?: boolean };
 export type RouteDefinitions = { [key: string]: RouteDefinition };
 
+let router: RemixRouter;
+export const createBaseRouter = (routes: RouteObject[]): RemixRouter => (router = createBrowserRouter(routes));
+
 export function historyPush(
-  owner: RoutesName | string,
+  owner: RoutesName | string | number,
   options: { id?: any; inModal?: boolean; showSave?: boolean; open?: boolean; absolute?: boolean; search?: boolean } & any = {},
 ) {
-  // TODO: Ajustar
-  //let navigate = useHistory();
+  // Quando informado número, volta pra páginas anteriores ou posteriores.
+  if (typeof owner === 'number') router.navigate(owner);
 
   let push;
   switch (owner as RoutesName) {
@@ -86,7 +90,7 @@ export function historyPush(
       push = '/mgt/application/new';
       break;
     default:
-      push = owner;
+      push = owner as string;
       break;
   }
   if (options?.open) {
@@ -96,16 +100,14 @@ export function historyPush(
       window.open(`${EndpointsDef.url}:${EndpointsDef.port}${push}`);
     }
   } else if (options?.inModal) {
-    /*const search = window.location.search + qs.stringify(options.search);
+    const search = window.location.search + qs.stringify(options.search);
     let newLocation = window.location.pathname + '/modal' + push.replace(/\/mgt/, '') + '?' + search;
     if (options?.showSave) {
       newLocation = newLocation + '&show_save=show_save';
-    }*/
-    // TODO: Ajustar
-    //navigate(newLocation);
+    }
+    router.navigate(newLocation);
   } else {
-    // TODO: Ajustar
-    //navigate(push);
+    router.navigate(push);
   }
 }
 

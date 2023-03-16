@@ -3,7 +3,6 @@ import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { useNavigate } from 'react-router-dom';
 import { IconsDef } from '../../../../commons/consts';
 import { WMSI18N } from '../../../../commons/i18';
 import { historyPush, historySearch, historySearchReplace } from '../../../../commons/route';
@@ -49,7 +48,7 @@ class SideBarEdit extends React.Component<{ __?: Function }> {
       <SideBar span={2}>
         <div className="title">{__!('menu.actions')}</div>
         <SideBarAction faicon={IconsDef.new} title={__!('actions.new')} variant="outline-primary" onClick={() => historyPush('person_new')} />
-        <SideBarAction faicon={IconsDef.goBack} title={__!('actions.back')} variant="outline-secondary" onClick={() => useNavigate()(-1)} />
+        <SideBarAction faicon={IconsDef.goBack} title={__!('actions.back')} variant="outline-secondary" onClick={() => historyPush(-1)} />
 
         <div className="title">{__!('menu.lists')}</div>
         <SideBarAction

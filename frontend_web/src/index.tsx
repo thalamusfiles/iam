@@ -1,9 +1,10 @@
 import { Provider } from 'mobx-react';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, RouterProvider } from 'react-router-dom';
 import './assets/fontawasome.library';
 import './assets/theme.scss';
+import { createBaseRouter, PrivateRoutes } from './commons/route';
 import * as serviceWorker from './serviceWorker';
 import UserContext from './store/userContext';
 import { MgtModalRoutes } from './views/mgt/routes';
@@ -15,30 +16,34 @@ const Account = React.lazy(() => import('./views/account'));
 const Mgt = React.lazy(() => import('./views/mgt'));
 const InModal = React.lazy(() => import('./components/Modal').then((module) => ({ default: module.InModal })));
 
+const router = createBaseRouter([
+  { path: '/public/:region/:app/login', element: <LoginPage /> },
+  { path: '/public/:region/:app/register', element: <RegisterPage /> },
+  {
+    element: (
+      <Route element={<PrivateRoutes redirect="/public/global/root/login" />}>
+        <Route path={'/account/*'} element={<Account />} />
+        <Route path={'/mgt/*'} element={<Mgt />} />
+        <Route path={'/'} element={<Navigate to="/mgt" />} />
+        <Route
+          path={'*/modal'}
+          element={
+            <InModal>
+              <MgtModalRoutes />
+            </InModal>
+          }
+        />
+      </Route>
+    ),
+  },
+]);
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <React.Suspense fallback="loading">
       <Provider context={UserContext}>
-        <BrowserRouter>
-          <Routes>
-            <Route path={'/public/:region/:app/login'} element={<LoginPage />} />
-            <Route path={'/public/:region/:app/register'} element={<RegisterPage />} />
-            {/*<Route element={<PrivateRoutes redirect="/public/global/root/login" />}>*/}
-            <Route path={'/account/*'} element={<Account />} />
-            <Route path={'/mgt/*'} element={<Mgt />} />
-            <Route path={'/'} element={<Navigate to="/mgt" />} />
-            <Route
-              path={'*/modal'}
-              element={
-                <InModal>
-                  <MgtModalRoutes />
-                </InModal>
-              }
-            />
-            {/*</Route>*/}
-          </Routes>
-        </BrowserRouter>
+        <RouterProvider router={router} />
       </Provider>
     </React.Suspense>
   </React.StrictMode>,
