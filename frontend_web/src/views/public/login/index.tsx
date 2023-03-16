@@ -38,12 +38,16 @@ function LoginPage() {
   }
 
   function toLogin() {
-    UserContext.login(form.username, form.password).catch((error) => {
-      setErros({
-        username: 'User not found',
-        password: 'Invalid pass',
+    UserContext.login(form.username, form.password)
+      .then(() => {
+        historyPush('home');
+      })
+      .catch((error) => {
+        setErros({
+          username: 'User not found',
+          password: 'Invalid pass',
+        });
       });
-    });
   }
 
   function toRegister() {
