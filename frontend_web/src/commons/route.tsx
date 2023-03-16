@@ -1,26 +1,21 @@
 import { IconName } from '@fortawesome/fontawesome-svg-core';
-import { createBrowserHistory } from 'history';
 import qs from 'qs';
-import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { EndpointsDef } from '../datasources/endpoints';
 import { RoutesName } from '../views/routes-name';
 import { localStorageDef } from './consts';
 import Storage from './storage';
 
-export const history = createBrowserHistory();
-
-export type RouteDefinition = { title: string; icon?: IconName | Array<IconName>; path: string; component: any };
+export type RouteDefinition = { title: string; icon?: IconName | Array<IconName>; path: string; component: any; index?: boolean };
 export type RouteDefinitions = { [key: string]: RouteDefinition };
-
-export function getHistory() {
-  return history;
-}
 
 export function historyPush(
   owner: RoutesName | string,
   options: { id?: any; inModal?: boolean; showSave?: boolean; open?: boolean; absolute?: boolean; search?: boolean } & any = {},
 ) {
+  // TODO: Ajustar
+  //let navigate = useHistory();
+
   let push;
   switch (owner as RoutesName) {
     // PUBLIC
@@ -101,14 +96,16 @@ export function historyPush(
       window.open(`${EndpointsDef.url}:${EndpointsDef.port}${push}`);
     }
   } else if (options?.inModal) {
-    const search = history.location.search + qs.stringify(options.search);
-    let newLocation = history.location.pathname + '/modal' + push.replace(/\/mgt/, '') + '?' + search;
+    /*const search = window.location.search + qs.stringify(options.search);
+    let newLocation = window.location.pathname + '/modal' + push.replace(/\/mgt/, '') + '?' + search;
     if (options?.showSave) {
       newLocation = newLocation + '&show_save=show_save';
-    }
-    history.push(newLocation);
+    }*/
+    // TODO: Ajustar
+    //navigate(newLocation);
   } else {
-    history.push(push);
+    // TODO: Ajustar
+    //navigate(push);
   }
 }
 
@@ -123,16 +120,17 @@ export function historySearchReplace(params: any, exclude: string[] = []) {
 
   exclude.forEach((x) => (params[x] = undefined));
 
-  history.replace({
+  // TODO: Ajustar
+  /*history.replace({
     search: '?' + qs.stringify(params),
-  });
+  });*/
 }
 
 /**
  * Retorna os filtros informados na url
  */
 export function historySearch(options: { parseArrays?: boolean } = {}) {
-  return qs.parse(history.location.search.slice(1), options);
+  return qs.parse(window.location.search.slice(1), options);
 }
 
 /**
@@ -147,13 +145,15 @@ export function historyOnPop(listener: any) {
  * Verifica se esta autenticado e libera a rota
  * @param param0
  */
-export const PrivateRoutes = ({ redirect, children }: { redirect?: string; children: any }): JSX.Element => {
-  return Storage.getItem(localStorageDef.tokenKey) ? children : redirect ? <Redirect to={redirect} /> : null;
+export const PrivateRoutes = ({ redirect }: { redirect: string }): JSX.Element => {
+  return Storage.getItem(localStorageDef.tokenKey) ? <Outlet /> : <Navigate to={redirect} />;
 };
 
 /**
  * Escuta as alterações de links realizadas no sistema.
  */
+// TODO: Ajustar
+/*
 history.listen((location, action) => {
   //Verifica se tem uma hash/acontora de página e move a página até o elemento.
   if (location.hash) {
@@ -172,3 +172,4 @@ history.listen((location, action) => {
   }
   hPopsCallbacks.splice(0, hPopsCallbacks.length);
 });
+*/

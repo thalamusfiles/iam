@@ -7,7 +7,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { IconsDef } from '../../../commons/consts';
 import { WMSI18N } from '../../../commons/i18';
-import { getHistory, historySearch } from '../../../commons/route';
+import { historySearch } from '../../../commons/route';
 import Loader from '../../../components/Loader';
 import SideBar from '../../../components/SideBar';
 import { SideBarAction } from '../../../components/SideBar/SideBarAction';
@@ -28,7 +28,6 @@ export default abstract class GenericEdit<S extends CommonEditStore> extends Rea
     super(props);
     this.ctrl = props.ctrl;
     this.ctrl.setMatch(this.props.match);
-    this.ctrl.setHistory(getHistory());
 
     if (props.ctrlRef) {
       props.ctrlRef(this.ctrl);

@@ -1,7 +1,4 @@
-
-
-import React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { RouteDefinitions } from '../../commons/route';
 import DevicesConnectedPage from '../account/devices';
 import HomeAccount from '../account/home';
@@ -25,12 +22,11 @@ export const routes: RouteDefinitions = {
 export default function AccountRoutesRoutes() {
   //Não é porcorrida as ou realizado um foreach por questão de desempenho
   return (
-    <Switch>
+    <Routes>
       {Object.values(routes).map((route, idx) => (
-        <Route exact path={route.path.replace('*/', '/account/').concat('*')} component={route.component} key={idx} />
+        <Route path={route.path.replace('*/', '/account/').concat('*')} element={<route.component />} key={idx} />
       ))}
-
-      <Redirect to="/account/home" />
-    </Switch>
+      <Route path="*" element={<Navigate to="/account/home" replace />} />
+    </Routes>
   );
 }

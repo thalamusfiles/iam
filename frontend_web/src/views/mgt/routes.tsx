@@ -1,5 +1,4 @@
-import React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { IconsDef } from '../../commons/consts';
 import { RouteDefinition, RouteDefinitions } from '../../commons/route';
 import DevicesConnectedPage from '../account/devices';
@@ -17,13 +16,13 @@ import { RoleEdit, RoleList } from './roles';
  */
 export const routes: RouteDefinitions = {
   // Home
-  home: { title: 'menu.home', path: '*/home', component: Home },
+  home: { title: 'menu.home', path: '*/home', component: Home, index: true },
   //
   devices_connected: { title: '', path: '*/devices/connected', component: DevicesConnectedPage },
   logins_history: { title: '', path: '*/logins/history', component: LoginsPage },
-  // Person
+  //// Person
   person_list: { title: 'person.list.title', icon: IconsDef.person, path: '*/person/list', component: PersonList },
-  person_edit: { title: 'person.edit.title', icon: IconsDef.person, path: '*/person/edit/:id(\\d+)*', component: PersonEdit },
+  person_edit: { title: 'person.edit.title', icon: IconsDef.person, path: '*/person/edit/:id(\\d+)', component: PersonEdit },
   person_new: { title: 'person.new.title', icon: IconsDef.person, path: '*/person/new', component: PersonEdit },
   // Role
   role_list: { title: 'roles.list.title', icon: IconsDef.roles, path: '*/role/list', component: RoleList },
@@ -59,13 +58,11 @@ export const findRouteByLocation = (location: any, parentMatch: any): RouteDefin
 export default function MgtRoutes() {
   //Não é porcorrida as ou realizado um foreach por questão de desempenho
   return (
-    <Switch>
+    <Routes>
       {Object.values(routes).map((route, idx) => (
-        <Route exact path={route.path.replace('*/', '/mgt/').concat('*')} component={route.component} key={idx} />
+        <Route index={route.index} path={route.path.replace('*/', '/').concat('/*')} element={<route.component />} key={idx} />
       ))}
-
-      <Redirect to="/mgt/home" />
-    </Switch>
+    </Routes>
   );
 }
 
@@ -75,15 +72,10 @@ export default function MgtRoutes() {
  */
 export function MgtModalRoutes(props: any) {
   return (
-    <Switch>
+    <Routes>
       {Object.values(routes).map((route, idx) => (
-        <Route
-          exact
-          path={route.path.replace('*/', '*/modal/')}
-          component={(props: any) => <route.component inModal={true} {...props} />}
-          key={idx}
-        />
+        <Route path={route.path.replace('*/', '/')} element={<route.component inModal={true} {...props} />} key={idx} />
       ))}
-    </Switch>
+    </Routes>
   );
 }

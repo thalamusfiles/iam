@@ -3,9 +3,10 @@ import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import { useNavigate } from 'react-router-dom';
 import { IconsDef } from '../../../../commons/consts';
 import { WMSI18N } from '../../../../commons/i18';
-import { getHistory, historyPush, historySearch, historySearchReplace } from '../../../../commons/route';
+import { historyPush, historySearch, historySearchReplace } from '../../../../commons/route';
 import SideBar from '../../../../components/SideBar';
 import { SideBarAction } from '../../../../components/SideBar/SideBarAction';
 import PersonDefaultList from './defaultlist';
@@ -48,7 +49,7 @@ class SideBarEdit extends React.Component<{ __?: Function }> {
       <SideBar span={2}>
         <div className="title">{__!('menu.actions')}</div>
         <SideBarAction faicon={IconsDef.new} title={__!('actions.new')} variant="outline-primary" onClick={() => historyPush('person_new')} />
-        <SideBarAction faicon={IconsDef.goBack} title={__!('actions.back')} variant="outline-secondary" onClick={() => getHistory().goBack()} />
+        <SideBarAction faicon={IconsDef.goBack} title={__!('actions.back')} variant="outline-secondary" onClick={() => useNavigate()(-1)} />
 
         <div className="title">{__!('menu.lists')}</div>
         <SideBarAction

@@ -1,12 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Row from 'react-bootstrap/Row';
 import Tooltip from 'react-bootstrap/Tooltip';
-import { Route } from 'react-router-dom';
 import { ColorsDef, IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 import { historyPush } from '../../../commons/route';
@@ -23,8 +21,8 @@ function Home() {
           </Col>
           <Col md={8} className="dashboard-content">
             <QuickAccess />
-            <Route component={Register} />
-            <Route component={Systems} />
+            <Register />
+            <Systems />
           </Col>
         </Row>
       </Container>

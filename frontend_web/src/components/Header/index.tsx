@@ -31,7 +31,7 @@ class Header extends React.Component<HeaderProps> {
     const isArray = Array.isArray(icon);
     return (
       <Navbar className="header" bg="warning" fixed={fixed ? 'top' : undefined}>
-        <Navbar.Brand href="/mgt">
+        <Navbar.Brand href="/mgt/home">
           <img src="/logo.png" alt="logo" />
           {__!('menu.brand')}
         </Navbar.Brand>
@@ -40,7 +40,7 @@ class Header extends React.Component<HeaderProps> {
 
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto" style={{ minWidth: 150 }}>
-            <Nav.Link href="/mgt">{__!('menu.home')}</Nav.Link>
+            <Nav.Link href="/mgt/home">{__!('menu.home')}</Nav.Link>
             {title !== 'menu.home' && (
               <Navbar.Text>
                 <strong>

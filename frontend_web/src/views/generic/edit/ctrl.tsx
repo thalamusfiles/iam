@@ -1,5 +1,5 @@
 import { computed, makeObservable, observable } from 'mobx';
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CustomComponentI, findComponents, TargetForm, WMSPagePluginProps } from '../../../commons/plugin.component';
 
 /**
@@ -24,11 +24,8 @@ export class CommonEditStore {
   componentsClassesRefs: CustomComponentI[] = [];
   @observable componentLoaded = false;
 
-
   //react-router match
   match: any = {};
-  //react-router history
-  history: any = {};
 
   options: CommonEditStoreOptions = {
     inModal: false,
@@ -84,12 +81,8 @@ export class CommonEditStore {
     this.match = match;
   };
 
-  setHistory = (history: any) => {
-    this.history = history;
-  };
-
   onBack = async () => {
-    this.history.goBack();
+    useNavigate()(-1);
   };
 
   @computed
