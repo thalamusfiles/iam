@@ -1,5 +1,6 @@
 import i18next from 'i18next';
 import { action, computed, makeObservable, observable } from 'mobx';
+import { createContext, useContext } from 'react';
 import { localStorageDef } from '../commons/consts';
 import '../commons/i18';
 import { historyPush } from '../commons/route';
@@ -55,5 +56,9 @@ export class Ctx {
   }
 }
 
-const UserContext = new Ctx();
-export default UserContext;
+const UserValue = new Ctx();
+export default UserValue;
+
+export const UserContext = createContext<Ctx>({} as Ctx);
+export const UserProvider = UserContext.Provider;
+export const useUserStore = (): Ctx => useContext(UserContext);

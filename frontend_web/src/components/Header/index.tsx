@@ -9,7 +9,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { WMSI18N } from '../../commons/i18';
-import UserContext, { Ctx } from '../../store/userContext';
+import UserValue, { Ctx } from '../../store/userContext';
 import ApplicationInfo from '../ApplicationInfo';
 import { NotificationCtrl, notify } from '../Notification';
 
@@ -81,10 +81,10 @@ class Header extends React.Component<HeaderProps> {
             <NavDropdown title={<FontAwesomeIcon icon={'user-circle'} />} id="user-dd">
               <NavDropdown.Item>{context?.user.name}</NavDropdown.Item>
               <NavDropdown title={__!('menu.language')} bsPrefix="dropdown-item" id="i18n-dd">
-                <NavDropdown.Item onClick={() => UserContext.changeLanguage('en-US')}>{__!('menu.english')}</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => UserContext.changeLanguage('pt-BR')}>{__!('menu.portuguese')}</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => UserValue.changeLanguage('en-US')}>{__!('menu.english')}</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => UserValue.changeLanguage('pt-BR')}>{__!('menu.portuguese')}</NavDropdown.Item>
               </NavDropdown>
-              <NavDropdown.Item onClick={() => UserContext.logout()}>{__!('menu.logout')}</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => UserValue.logout()}>{__!('menu.logout')}</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

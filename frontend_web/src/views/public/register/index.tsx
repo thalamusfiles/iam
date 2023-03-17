@@ -13,11 +13,11 @@ import bgRotate04 from '../../../assets/bg_rotate_04.jpeg';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 import { historyPush } from '../../../commons/route';
-import UserContext from '../../../store/userContext';
+import UserValue from '../../../store/userContext';
 
 const bgImg = [bgRotate01, bgRotate02, bgRotate03, bgRotate04][Math.floor(Math.random() * 4)];
 
-function RegisterPage() {
+const RegisterPage: React.FC<{}> = () => {
   const __ = useI18N();
   const { region, app } = useParams();
   const [form, setForm] = useState({ username: '', password: '' });
@@ -42,7 +42,7 @@ function RegisterPage() {
   }
 
   function toRegister() {
-    UserContext.login(form.username, form.password)
+    UserValue.login(form.username, form.password)
       .then(() => {
         historyPush('home_account');
       })

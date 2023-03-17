@@ -1,4 +1,3 @@
-import { Provider } from 'mobx-react';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
@@ -6,7 +5,7 @@ import './assets/fontawasome.library';
 import './assets/theme.scss';
 import { createBaseRouter, PrivateRoutes } from './commons/route';
 import * as serviceWorker from './serviceWorker';
-import UserContext from './store/userContext';
+import UserValue, { UserProvider } from './store/userContext';
 import { MgtModalRoutes } from './views/mgt/routes';
 
 //Lazy Loading
@@ -19,10 +18,13 @@ const InModal = React.lazy(() => import('./components/Modal').then((module) => (
 const router = createBaseRouter(
   createRoutesFromElements(
     <>
-      <Route path="/public/:region/:app/login" element={<LoginPage />} />
+      <Route path="/public/:region/:app/login" element={<LoginPage />} index />
       <Route path="/public/:region/:app/register" element={<RegisterPage />} />
 
+      <Route path="/account/*" element={<Account />} />
+      {/*
       <Route path="/account/*" element={<PrivateRoutes element={<Account />} redirect="/public/global/root/login" />} />
+      */}
       <Route path="/mgt/*" element={<PrivateRoutes element={<Mgt />} redirect="/public/global/root/login" />} />
 
       <Route
@@ -41,9 +43,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <React.Suspense fallback="loading">
-      <Provider context={UserContext}>
+      <UserProvider value={UserValue}>
         <RouterProvider router={router} />
-      </Provider>
+      </UserProvider>
     </React.Suspense>
   </React.StrictMode>,
 );

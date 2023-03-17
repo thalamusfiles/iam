@@ -4,7 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { WMSI18N } from '../../commons/i18';
 import Footer from '../../components/Footer';
 import NotificationProvider from '../../components/Notification';
-import UserContext from '../../store/userContext';
+import UserValue from '../../store/userContext';
 import AccountRoutes from './routes';
 
 const Account: React.FC<{}> = () => {
@@ -34,7 +34,7 @@ class HeaderAccount extends React.Component<{ __?: Function }> {
           {__!('menu.brand')} - {__!('login.subtitle')}
         </Navbar.Brand>
         <Nav>
-          <Nav.Item onClick={() => UserContext.logout()}>{__!('menu.logout')}</Nav.Item>
+          <Nav.Item onClick={() => UserValue.logout()}>{__!('menu.logout')}</Nav.Item>
         </Nav>
       </Navbar>
     );
