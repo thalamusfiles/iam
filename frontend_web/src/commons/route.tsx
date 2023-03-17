@@ -1,7 +1,7 @@
 import { IconName } from '@fortawesome/fontawesome-svg-core';
 import type { Router as RemixRouter } from '@remix-run/router';
 import qs from 'qs';
-import { createBrowserRouter, Navigate, Outlet, RouteObject } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouteObject } from 'react-router-dom';
 import { EndpointsDef } from '../datasources/endpoints';
 import { RoutesName } from '../views/routes-name';
 import { localStorageDef } from './consts';
@@ -147,8 +147,8 @@ export function historyOnPop(listener: any) {
  * Verifica se esta autenticado e libera a rota
  * @param param0
  */
-export const PrivateRoutes = ({ redirect }: { redirect: string }): JSX.Element => {
-  return Storage.getItem(localStorageDef.tokenKey) ? <Outlet /> : <Navigate to={redirect} />;
+export const PrivateRoutes = ({ redirect, element }: { redirect: string; element: JSX.Element }): JSX.Element => {
+  return Storage.getItem(localStorageDef.tokenKey) ? element : <Navigate to={redirect} />;
 };
 
 /**

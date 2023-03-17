@@ -1,7 +1,7 @@
 import { Provider } from 'mobx-react';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Navigate, Route, RouterProvider, Routes } from 'react-router-dom';
+import { createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import './assets/fontawasome.library';
 import './assets/theme.scss';
 import { createBaseRouter, PrivateRoutes } from './commons/route';
@@ -16,30 +16,26 @@ const Account = React.lazy(() => import('./views/account'));
 const Mgt = React.lazy(() => import('./views/mgt'));
 const InModal = React.lazy(() => import('./components/Modal').then((module) => ({ default: module.InModal })));
 
-const router = createBaseRouter([
-  { path: '/public/:region/:app/login', element: <LoginPage /> },
-  { path: '/public/:region/:app/register', element: <RegisterPage /> },
-  {
-    path: '/*',
-    element: (
-      <Routes>
-        <Route element={<PrivateRoutes redirect="/public/global/root/login" />}>
-          <Route path={'/account/*'} element={<Account />} />
-          <Route path={'/mgt/*'} element={<Mgt />} />
-          <Route path={'/'} element={<Navigate to="/mgt" />} />
-          <Route
-            path={'*/modal'}
-            element={
-              <InModal>
-                <MgtModalRoutes />
-              </InModal>
-            }
-          />
-        </Route>
-      </Routes>
-    ),
-  },
-]);
+const router = createBaseRouter(
+  createRoutesFromElements(
+    <>
+      <Route path="/public/:region/:app/login" element={<LoginPage />} />
+      <Route path="/public/:region/:app/register" element={<RegisterPage />} />
+
+      <Route path="/account/*" element={<PrivateRoutes element={<Account />} redirect="/public/global/root/login" />} />
+      <Route path="/mgt/*" element={<PrivateRoutes element={<Mgt />} redirect="/public/global/root/login" />} />
+
+      <Route
+        path={'*/modal'}
+        element={
+          <InModal>
+            <MgtModalRoutes />
+          </InModal>
+        }
+      />
+    </>,
+  ),
+);
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

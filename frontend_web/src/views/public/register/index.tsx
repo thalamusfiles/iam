@@ -77,7 +77,7 @@ function RegisterPage() {
                     {__('register.cardindo')}
                   </p>
 
-                  <Form.Group controlId="validationCustom01">
+                  <Form.Group controlId="register.username">
                     <Form.Label>{__('register.username')}</Form.Label>
                     <Form.Control
                       placeholder="Enter your user name, code or email"
@@ -89,7 +89,7 @@ function RegisterPage() {
                     <Form.Control.Feedback type="invalid">{erros.username}</Form.Control.Feedback>
                   </Form.Group>
 
-                  <Form.Group controlId="validationCustom01">
+                  <Form.Group controlId="register.email">
                     <Form.Label>{__('register.email')}</Form.Label>
                     <Form.Control
                       placeholder="Enter your email"

@@ -80,13 +80,13 @@ function LoginPage() {
                   {!redirectTo && (
                     <Row>
                       <Col>
-                        <Form.Group controlId="validationCustom01">
+                        <Form.Group controlId="login.region">
                           <Form.Label>{__('login.region')}</Form.Label>
                           <Form.Control type="text" value="Global System" disabled />
                         </Form.Group>
                       </Col>
                       <Col>
-                        <Form.Group controlId="validationCustom01">
+                        <Form.Group controlId="login.system">
                           <Form.Label>{__('login.system')}</Form.Label>
                           <Form.Control type="text" value="Root" disabled />
                         </Form.Group>
@@ -94,7 +94,7 @@ function LoginPage() {
                     </Row>
                   )}
 
-                  <Form.Group controlId="validationCustom01">
+                  <Form.Group controlId="login.username">
                     <Form.Label>{__('login.username')}</Form.Label>
                     <Form.Control
                       placeholder="Enter your user name, code or email"

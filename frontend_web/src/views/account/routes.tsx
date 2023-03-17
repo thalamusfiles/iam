@@ -10,10 +10,10 @@ import LoginsPage from '../account/logins';
  */
 export const routes: RouteDefinitions = {
   // Home
-  home: { title: 'menu.home', path: '*/home', component: HomeAccount },
+  home: { title: 'menu.home', path: '/home', component: HomeAccount },
   //
-  devices_connected: { title: '', path: '*/devices/connected', component: DevicesConnectedPage },
-  logins_history: { title: '', path: '*/logins/history', component: LoginsPage },
+  devices_connected: { title: '', path: '/devices/connected', component: DevicesConnectedPage },
+  logins_history: { title: '', path: '/logins/history', component: LoginsPage },
 };
 
 /**
@@ -24,7 +24,7 @@ export default function AccountRoutesRoutes() {
   return (
     <Routes>
       {Object.values(routes).map((route, idx) => (
-        <Route path={route.path.replace('*/', '/').concat('/*')} element={<route.component />} key={idx} />
+        <Route path={route.path.concat('/*')} element={<route.component />} key={idx} />
       ))}
       <Route path="*" element={<Navigate to="/account/home" replace />} />
     </Routes>
