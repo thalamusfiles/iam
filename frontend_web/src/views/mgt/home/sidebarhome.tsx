@@ -10,7 +10,7 @@ import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 import modules from '../../modules.config';
 
-function SideBarHome() {
+const SideBarHome: React.FC<{}> = () => {
   const __ = useI18N();
   return (
     <div className="sidebar fixed">
@@ -42,9 +42,9 @@ function SideBarHome() {
       ))}
     </div>
   );
-}
+};
 
-function SideBarAction(props: any) {
+const SideBarAction: React.FC<any> = (props) => {
   return (
     <Row className="action">
       <Col xs={1}>
@@ -55,6 +55,6 @@ function SideBarAction(props: any) {
       </Col>
     </Row>
   );
-}
+};
 
 export default SideBarHome;

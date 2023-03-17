@@ -1,6 +1,7 @@
 import { makeObservable, observable } from 'mobx';
+import { createContext, useContext } from 'react';
 
-export class DevicesConnectedStore {
+export class DevicesConnectedCtx {
   constructor() {
     // Modifica classe pra ser observável
     makeObservable(this);
@@ -17,3 +18,7 @@ export class DevicesConnectedStore {
     { loginAt: '25/10/1986 05:10', device: 'Chrome 01 - Desktop' },
   ];
 }
+
+export const DevicesConnectedContext = createContext<DevicesConnectedCtx>({} as DevicesConnectedCtx);
+export const DevicesConnectedProvider = DevicesConnectedContext.Provider;
+export const useDevicesConnectedStore = (): DevicesConnectedCtx => useContext(DevicesConnectedContext);

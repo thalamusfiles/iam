@@ -3,14 +3,14 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { WMSI18N } from '../../commons/i18';
 import Footer from '../../components/Footer';
-import NotificationProvider from '../../components/Notification';
+import NotificationMenu from '../../components/Notification';
 import UserValue from '../../store/userContext';
 import AccountRoutes from './routes';
 
 const Account: React.FC<{}> = () => {
   return (
     <>
-      <NotificationProvider />
+      <NotificationMenu />
 
       <HeaderAccount />
 

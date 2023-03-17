@@ -1,96 +1,21 @@
-import { action, makeObservable, observable } from 'mobx';
-import { inject, observer, Provider } from 'mobx-react';
 import moment from 'moment';
 import React, { useState } from 'react';
 import Toast from 'react-bootstrap/Toast';
-
-type NotificationProps = {
-  id: string;
-  className?: string;
-  title: string;
-  message: string;
-  detail?: string;
-  createdAt: Date;
-};
-
-export class NotificationCtrl {
-  @observable alerts: NotificationProps[] = [];
-  @observable amount: number = 0;
-
-  constructor() {
-    //Modifica classe pra ser observável
-    makeObservable(this);
-  }
-
-  @action
-  showAll() {
-    this.amount = 0;
-    this.alerts.forEach((a) => {
-      a.id = Math.random().toString(32);
-    });
-  }
-
-  @action
-  success = (message: string, title?: string) => {
-    this.amount++;
-    this.alerts.unshift({
-      id: Math.random().toString(32),
-      className: 'bg-success text-white',
-      title: title || 'Success',
-      message: message,
-      createdAt: new Date(),
-    });
-  };
-
-  @action
-  warn = (message: string, title?: string, detail?: string) => {
-    this.amount++;
-    this.alerts.unshift({
-      id: Math.random().toString(32),
-      className: 'bg-warning',
-      title: title || 'Warning',
-      message: message,
-      detail: detail,
-      createdAt: new Date(),
-    });
-  };
-
-  @action
-  danger = (message: string, title?: string) => {
-    this.amount++;
-    this.alerts.unshift({
-      id: Math.random().toString(32),
-      className: 'bg-danger text-white',
-      title: title || 'Error',
-      message: message,
-      createdAt: new Date(),
-    });
-  };
-
-  @action
-  info = (message: string, title?: string) => {
-    this.amount++;
-    this.alerts.unshift({
-      id: Math.random().toString(32),
-      className: 'bg-info text-white',
-      title: title || 'Info',
-      message: message,
-      createdAt: new Date(),
-    });
-  };
-}
+import NotificationValue, { NotificationProps, NotificationProvider, useNotificationStore } from './ctrl';
 
 /**
  * Controlador das notificações
  */
-export const notify = new NotificationCtrl();
 
-export default class NotificationProvider extends React.Component {
+// TODO: Ajustar após migrar classes para React.FC
+export const notify = NotificationValue;
+
+export default class NotificationMenu extends React.Component {
   render() {
     return (
-      <Provider ctrl={notify}>
+      <NotificationProvider value={NotificationValue}>
         <NotificationList />
-      </Provider>
+      </NotificationProvider>
     );
   }
 }
@@ -98,25 +23,21 @@ export default class NotificationProvider extends React.Component {
 /***
  * Barra do topo com as funções da listagem
  */
-@inject('ctrl')
-@observer
-class NotificationList extends React.Component<{ ctrl?: NotificationCtrl }> {
-  render() {
-    const { ctrl } = this.props;
-    return (
-      //TODO: Criar css para as notificações
-      <div aria-live="polite" aria-atomic="true" style={{ position: 'relative', zIndex: 1100 }}>
-        <div style={{ position: 'fixed', top: 45, right: 10 }}>
-          {ctrl!.alerts.map((alert) => (
-            <Notification key={alert.id} {...alert} />
-          ))}
-        </div>
+const NotificationList: React.FC<{}> = () => {
+  const notify = useNotificationStore();
+  return (
+    //TODO: Criar css para as notificações
+    <div aria-live="polite" aria-atomic="true" style={{ position: 'relative', zIndex: 1100 }}>
+      <div style={{ position: 'fixed', top: 45, right: 10 }}>
+        {notify!.alerts.map((alert) => (
+          <Notification key={alert.id} {...alert} />
+        ))}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
-function Notification({ title, message, createdAt, className, detail }: NotificationProps) {
+const Notification: React.FC<NotificationProps> = ({ title, message, createdAt, className, detail }) => {
   const [show, setShow] = useState(true);
   return (
     <Toast onClose={() => setShow(false)} show={show} delay={5000} autohide>
@@ -131,4 +52,4 @@ function Notification({ title, message, createdAt, className, detail }: Notifica
       {!!detail && <Toast.Body>Detail: {detail}</Toast.Body>}
     </Toast>
   );
-}
+};

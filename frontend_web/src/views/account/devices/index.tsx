@@ -1,57 +1,46 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { inject, observer, Provider } from 'mobx-react';
 import React from 'react';
 import Table from 'react-bootstrap/Table';
 import { IconsDef } from '../../../commons/consts';
-import { WMSI18N } from '../../../commons/i18';
-import { DevicesConnectedStore } from './ctrl';
+import { useI18N } from '../../../commons/i18';
+import { DevicesConnectedCtx, DevicesConnectedProvider, useDevicesConnectedStore } from './ctrl';
 
-@WMSI18N()
-export default class DevicesConnectedPage extends React.Component<any> {
-  ctrl: DevicesConnectedStore;
+const DevicesConnectedPage: React.FC<{}> = () => {
+  const __ = useI18N();
 
-  constructor(props: any) {
-    super(props);
+  return (
+    <DevicesConnectedProvider value={new DevicesConnectedCtx()}>
+      <h2 id="devices_about">
+        <FontAwesomeIcon icon={IconsDef.applications[1]} /> {__!('devices.title')}
+      </h2>
+      <p>{__!('devices.description')}</p>
+      <DevicesConnectedTable />
+    </DevicesConnectedProvider>
+  );
+};
 
-    this.ctrl = new DevicesConnectedStore();
-  }
+const DevicesConnectedTable: React.FC<{}> = () => {
+  const __ = useI18N();
+  const ctrl = useDevicesConnectedStore();
 
-  render() {
-    const { __ } = this.props;
-    return (
-      <Provider ctrl={this.ctrl}>
-        <h2 id="devices_about">
-          <FontAwesomeIcon icon={IconsDef.applications[1]} /> {__!('devices.title')}
-        </h2>
-        <p>{__!('devices.description')}</p>
-        <DevicesConnectedTable />
-      </Provider>
-    );
-  }
-}
-
-@inject('ctrl')
-@observer
-class DevicesConnectedTable extends React.Component<{ ctrl?: DevicesConnectedStore }> {
-  render() {
-    const { ctrl } = this.props;
-    return (
-      <Table responsive striped size="sm">
-        <thead>
-          <tr>
-            <th>Devices</th>
-            <th>Logged in since</th>
+  return (
+    <Table responsive striped size="sm">
+      <thead>
+        <tr>
+          <th>{__('devices.devices')}</th>
+          <th>{__('devices.logged_since')}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {ctrl?.devices.map((on, idx) => (
+          <tr key={idx}>
+            <td>{on.device}</td>
+            <td>{on.loginAt}</td>
           </tr>
-        </thead>
-        <tbody>
-          {ctrl?.devices.map((on, idx) => (
-            <tr key={idx}>
-              <td>{on.device}</td>
-              <td>{on.loginAt}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    );
-  }
-}
+        ))}
+      </tbody>
+    </Table>
+  );
+};
+
+export default DevicesConnectedPage;

@@ -1,6 +1,6 @@
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
-import NotificationProvider from '../../components/Notification';
+import NotificationMenu from '../../components/Notification';
 import MgtRoutes from './routes';
 
 function Mgt() {
@@ -9,7 +9,7 @@ function Mgt() {
   //icon={route?.icon}
   return (
     <>
-      <NotificationProvider />
+      <NotificationMenu />
 
       <Header fixed title={'route?.title'} searchBar />
 

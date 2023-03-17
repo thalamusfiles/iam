@@ -11,7 +11,7 @@ import { historyPush } from '../../../commons/route';
 import ListTile from '../../../components/listtile';
 import SideBarHome from './sidebarhome';
 
-function Home() {
+const Home: React.FC<{}> = () => {
   return (
     <div className="dashboard">
       <Container fluid>
@@ -30,7 +30,7 @@ function Home() {
   );
 }
 
-function QuickAccess() {
+const QuickAccess: React.FC<{}> = () => {
   const __ = useI18N();
   return (
     <>
@@ -55,7 +55,7 @@ function QuickAccess() {
   );
 }
 
-function Register() {
+const Register: React.FC<{}> = () => {
   const __ = useI18N();
   return (
     <>
@@ -85,7 +85,7 @@ function Register() {
   );
 }
 
-function Systems() {
+const Systems: React.FC<{}> = () => {
   const __ = useI18N();
   return (
     <>
