@@ -56,8 +56,8 @@ export class Ctx {
   }
 }
 
-const UserValue = new Ctx();
-export default UserValue;
+const UserCtxInstance = new Ctx();
+export default UserCtxInstance;
 
 export const UserContext = createContext<Ctx>({} as Ctx);
 export const UserProvider = UserContext.Provider;

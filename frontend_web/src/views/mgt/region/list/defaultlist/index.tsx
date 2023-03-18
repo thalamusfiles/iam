@@ -1,11 +1,10 @@
 import { historyPush } from '../../../../../commons/route';
-import { RegionGraphQLDatasource } from '../../../../../datasources/apigraphql';
 import GenericList from '../../../../generic/list';
-import ctrlInstance from '../../../../generic/list/ctrl';
+import { CommonListContextProvider } from '../../../../generic/list/ctrl';
 import { RegionListStore } from './ctrl';
 
-const RegionDefaultList: React.FC<{}> = () => {
-  const ctrl = ctrlInstance('region', new RegionGraphQLDatasource(), RegionListStore);
+const RegionDefaultList: React.FC = () => {
+  const ctrl = new RegionListStore();
 
   ctrl.newCallback = () => {
     historyPush('region_new', { inModal: true, showSave: true });
@@ -15,7 +14,11 @@ const RegionDefaultList: React.FC<{}> = () => {
     historyPush('region_edit', { id, inModal: true, showSave: true });
   };
 
-  return <GenericList ctrl={ctrl} />;
+  return (
+    <CommonListContextProvider value={ctrl}>
+      <GenericList />
+    </CommonListContextProvider>
+  );
 };
 
 export default RegionDefaultList;

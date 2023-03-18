@@ -8,7 +8,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useI18N } from '../../commons/i18';
-import UserValue, { Ctx, useUserStore } from '../../store/userContext';
+import UserCtxInstance, { Ctx, useUserStore } from '../../store/userContext';
 import ApplicationInfo from '../ApplicationInfo';
 import NotificationValue, { NotificationProvider, useNotificationStore } from '../Notification/ctrl';
 
@@ -77,10 +77,10 @@ const Header: React.FC<HeaderProps> = ({ icon, title, fixed, searchBar }) => {
           <NavDropdown title={<FontAwesomeIcon icon={'user-circle'} />} id="user-dd">
             <NavDropdown.Item>{context?.user.name}</NavDropdown.Item>
             <NavDropdown title={__!('menu.language')} bsPrefix="dropdown-item" id="i18n-dd">
-              <NavDropdown.Item onClick={() => UserValue.changeLanguage('en-US')}>{__!('menu.english')}</NavDropdown.Item>
-              <NavDropdown.Item onClick={() => UserValue.changeLanguage('pt-BR')}>{__!('menu.portuguese')}</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => UserCtxInstance.changeLanguage('en-US')}>{__!('menu.english')}</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => UserCtxInstance.changeLanguage('pt-BR')}>{__!('menu.portuguese')}</NavDropdown.Item>
             </NavDropdown>
-            <NavDropdown.Item onClick={() => UserValue.logout()}>{__!('menu.logout')}</NavDropdown.Item>
+            <NavDropdown.Item onClick={() => UserCtxInstance.logout()}>{__!('menu.logout')}</NavDropdown.Item>
           </NavDropdown>
         </Nav>
       </Navbar.Collapse>
@@ -88,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({ icon, title, fixed, searchBar }) => {
   );
 };
 
-const NotificationBell: React.FC<{}> = () => {
+const NotificationBell: React.FC = () => {
   const notify = useNotificationStore();
   return (
     <Nav.Link className={classnames({ 'text-info': !!notify?.amount })} onClick={() => notify!.showAll()}>

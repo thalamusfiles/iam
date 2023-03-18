@@ -1,11 +1,10 @@
 import { historyPush } from '../../../../../commons/route';
-import { PersonGraphQLDatasource } from '../../../../../datasources/apigraphql';
 import GenericList from '../../../../generic/list';
-import ctrlInstance from '../../../../generic/list/ctrl';
+import { CommonListContextProvider } from '../../../../generic/list/ctrl';
 import { PersonListStore } from './ctrl';
 
-const PersonDefaultList: React.FC<{}> = () => {
-  const ctrl = ctrlInstance('person', new PersonGraphQLDatasource(), PersonListStore);
+const PersonDefaultList: React.FC = () => {
+  const ctrl = new PersonListStore();
 
   ctrl.newCallback = () => {
     historyPush('person_new');
@@ -15,7 +14,11 @@ const PersonDefaultList: React.FC<{}> = () => {
     historyPush('person_edit', { id });
   };
 
-  return <GenericList ctrl={ctrl} />;
+  return (
+    <CommonListContextProvider value={ctrl}>
+      <GenericList />
+    </CommonListContextProvider>
+  );
 };
 
 export default PersonDefaultList;

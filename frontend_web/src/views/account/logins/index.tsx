@@ -5,7 +5,7 @@ import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 import { LoginCtx, LoginProvider, useLoginStore } from './ctrl';
 
-const LoginsPage: React.FC<{}> = () => {
+const LoginsPage: React.FC = () => {
   const __ = useI18N();
 
   return (
@@ -19,7 +19,7 @@ const LoginsPage: React.FC<{}> = () => {
   );
 };
 
-const LoginsTable: React.FC<{}> = () => {
+const LoginsTable: React.FC = () => {
   const __ = useI18N();
   const ctrl = useLoginStore();
 

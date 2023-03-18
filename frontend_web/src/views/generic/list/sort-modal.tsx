@@ -8,14 +8,16 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
+import { useCommonListStore } from './ctrl';
 
 /***
  * Modal para aplicação da ordenação da listagem.
  */
 
-export const SortModal: React.FC<{}> = () => {
-  const ctrl = { sortableHeader: [], fastFilters: null } as { sortableHeader: any[]; fastFilters: {} | null } & any; //TODO:MUDAR
+export const SortModal: React.FC = () => {
+  const ctrl = useCommonListStore();
   const __ = useI18N();
+
   return (
     <Modal size="lg" animation={false} show={ctrl!.showSort} onHide={() => ctrl!.toggleShowSort()}>
       <Modal.Header closeButton>

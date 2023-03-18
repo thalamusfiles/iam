@@ -7,12 +7,13 @@ import { AttributeType } from '../../../commons/attribute-type';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 import { WmsFormGroup } from '../../../components/Form';
+import { useCommonListStore } from './ctrl';
 
 /***
  * Modal para aplicação da ordenação da listagem.
  */
-export const SaveListModal: React.FC<{}> = () => {
-  const ctrl = { newCustomListDefs: { name: '' }, fastFilters: null } as { newCustomListDefs: { filters: any[] }; fastFilters: {} | null } & any; //TODO:MUDAR
+export const SaveListModal: React.FC = () => {
+  const ctrl = useCommonListStore();
   const __ = useI18N();
 
   if (!ctrl!.newCustomListDefs) return null;

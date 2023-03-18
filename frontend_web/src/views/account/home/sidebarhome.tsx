@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 
-const SideBarHome: React.FC<{}> = () => {
+const SideBarHome: React.FC = () => {
   const __ = useI18N();
   return (
     <div className="sidebar">

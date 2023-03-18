@@ -5,7 +5,7 @@ import './assets/fontawasome.library';
 import './assets/theme.scss';
 import { createBaseRouter, PrivateRoutes } from './commons/route';
 import * as serviceWorker from './serviceWorker';
-import UserValue, { UserProvider } from './store/userContext';
+import UserCtxInstance, { UserProvider } from './store/userContext';
 import { MgtModalRoutes } from './views/mgt/routes';
 
 //Lazy Loading
@@ -42,7 +42,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <React.Suspense fallback="loading">
-      <UserProvider value={UserValue}>
+      <UserProvider value={UserCtxInstance}>
         <RouterProvider router={router} />
       </UserProvider>
     </React.Suspense>

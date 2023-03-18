@@ -1,10 +1,11 @@
 import { makeObservable } from 'mobx';
 import { AttributeType } from '../../../../../commons/attribute-type';
 import { SortOrder } from '../../../../../commons/enums/sort-order.enum';
-import { CommonListStore } from '../../../../generic/list/ctrl';
+import { PermissionGraphQLDatasource } from '../../../../../datasources/apigraphql';
+import { CommonListCtx } from '../../../../generic/list/ctrl';
 import { ListDefinition } from '../../../../generic/list/types/ListDefinition';
 
-export class PermissionListStore extends CommonListStore {
+export class PermissionListStore extends CommonListCtx {
   defaultListDefs: ListDefinition = {
     id: 'permissions_list',
     name: 'permissions_list',
@@ -21,8 +22,9 @@ export class PermissionListStore extends CommonListStore {
     sortOrder: SortOrder.Up,
   };
 
-  constructor(...props: any) {
-    super(props[0], false);
+  constructor() {
+    super(new PermissionGraphQLDatasource(), false);
+    
     makeObservable(this);
   }
 }

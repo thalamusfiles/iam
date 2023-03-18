@@ -1,10 +1,11 @@
 import { makeObservable } from 'mobx';
 import { AttributeType } from '../../../../../commons/attribute-type';
 import { SortOrder } from '../../../../../commons/enums/sort-order.enum';
-import { CommonListStore } from '../../../../generic/list/ctrl';
+import { PersonGraphQLDatasource } from '../../../../../datasources/apigraphql';
+import { CommonListCtx } from '../../../../generic/list/ctrl';
 import { ListDefinition } from '../../../../generic/list/types/ListDefinition';
 
-export class PersonListStore extends CommonListStore {
+export class PersonListStore extends CommonListCtx {
   defaultListDefs: ListDefinition = {
     id: 'users_list',
     name: 'users_list',
@@ -22,7 +23,8 @@ export class PersonListStore extends CommonListStore {
   };
 
   constructor(...props: any) {
-    super(props[0], false);
+    super(new PersonGraphQLDatasource(), false);
+    
     makeObservable(this);
   }
 }

@@ -1,5 +1,4 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Provider } from 'mobx-react';
 import React, { useState } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
@@ -13,7 +12,7 @@ import { SortOrder } from '../../../commons/enums/sort-order.enum';
 import { useI18N } from '../../../commons/i18';
 import Loader from '../../../components/Loader';
 import { ColumnsModal } from './columns-modal';
-import { CommonListStore } from './ctrl';
+import { useCommonListStore } from './ctrl';
 import { FastFilters, FiltersModal, FiltersResume } from './filters-modal';
 import { SaveListModal } from './save-list-modal';
 import { SortModal } from './sort-modal';
@@ -22,77 +21,21 @@ import { TableCellInfo } from './types/TableCellInfo';
 import { TableGroupCellInfo } from './types/TableGroupCellInfo';
 import { TableHead } from './types/TableHead';
 
-type GenericListProps = {
-  ctrl?: CommonListStore;
-};
-
-const GenericList: React.FC<GenericListProps> = () => {
+const GenericList: React.FC = () => {
   return (
-    <Provider>
+    <>
       <div className="zi1">
         <TopTabsBar />
         <FunctionsTabBar />
       </div>
       <List />
       <FastFilters />
-    </Provider>
+    </>
   );
 };
 
-/*
-class GenericList<S extends CommonListStore> extends React.Component<GenericListProps<S>> {
-  ctrl: S;
-
-  constructor(props: any) {
-    super(props);
-
-    this.ctrl = props.ctrl;
-    if (props.ctrlRef) {
-      props.ctrlRef(this.ctrl);
-    }
-  }
-
-  componentDidMount() {
-    this.ctrl.newCallback = this.onNewClick;
-    this.ctrl.editCallback = this.onEditClick;
-    this.ctrl.doubleClickCallback = this.onDoubleClick;
-
-    this.ctrl.build();
-  }
-
-  componentWillUnmount() {
-    this.ctrl.close();
-  }
-
-  /**
-   * Função acionada ao clicar no botão de novo
-   * /
-  onNewClick?: () => void;
-  /**
-   * Função acionada ao clicar no botão de editar
-   * /
-  onEditClick?: (id: number | string) => void;
-  /**
-   * Função acionada ao clicar duas vezes na célula
-   * /
-  onDoubleClick?: (id: number | string, cell: TableCell) => void;
-
-  render() {
-    return (
-      <Provider ctrl={this.ctrl}>
-        <div className="zi1">
-          <TopTabsBar />
-          <FunctionsTabBar />
-        </div>
-        <List />
-        <FastFilters />
-      </Provider>
-    );
-  }
-}*/
-
-const List: React.FC<{}> = () => {
-  const ctrl = { columns: [], fastFilters: null } as { columns: any[]; fastFilters: {} | null } & any; //TODO:MUDAR
+const List: React.FC = () => {
+  const ctrl = useCommonListStore();
   const __ = useI18N();
 
   const [drapHead, setDrapHead] = useState(null as TableHead | null);
@@ -230,8 +173,8 @@ export const CellComp: React.FC<{ cell: TableCellInfo | TableCellInfo[] | TableG
 /***
  * Barra do topo com as funções da listagem
  */
-const FunctionsTabBar: React.FC<{}> = () => {
-  const ctrl = { filtersApplied: {} } as any; //TODO:MUDAR
+const FunctionsTabBar: React.FC = () => {
+  const ctrl = useCommonListStore();
   const __ = useI18N();
   const filtersLg = ctrl!.filtersApplied.length;
   return (
@@ -288,8 +231,8 @@ const FunctionsTabBar: React.FC<{}> = () => {
 /***
  * Barra do topo com as funções da listagem
  */
-const TopTabsBar: React.FC<{}> = () => {
-  const ctrl = { customListDefs: [] } as any; //TODO:MUDAR
+const TopTabsBar: React.FC = () => {
+  const ctrl = useCommonListStore();
   const __ = useI18N();
 
   return (

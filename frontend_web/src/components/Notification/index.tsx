@@ -23,7 +23,7 @@ export default class NotificationMenu extends React.Component {
 /***
  * Barra do topo com as funções da listagem
  */
-const NotificationList: React.FC<{}> = () => {
+const NotificationList: React.FC = () => {
   const notify = useNotificationStore();
   return (
     //TODO: Criar css para as notificações

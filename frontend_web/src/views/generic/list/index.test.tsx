@@ -1,11 +1,10 @@
 import { Canceler } from 'axios';
 import { mount, shallow } from 'enzyme';
-import React from 'react';
 import GenericList from '.';
 import { AttributeType } from '../../../commons/attribute-type';
 import { SortOrder } from "../../../commons/enums/sort-order.enum";
 import { GraphQLInterface, ListUserDefs } from '../../../datasources/apigraphql/api';
-import ctrlInstance, { CommonListStore } from './ctrl';
+import ctrlInstance, { CommonListCtx } from './ctrl';
 import { FilterDef } from './types/FilterDef';
 import { ListDefinition } from './types/ListDefinition';
 import { TableHead } from "./types/TableHead";
@@ -22,7 +21,7 @@ describe('GenericList', () => {
     });
 
     it('Exibi modal com filtros e troca os filtros?', async () => {
-        let ctrl: CommonListStore;
+        let ctrl: CommonListCtx;
         const component = mount(<TestGenericList ctrlRef={(ref) => ctrl = ref} />);
 
         await ctrl!.search();
@@ -46,7 +45,7 @@ describe('GenericList', () => {
     });
 
     it('Exibi modal de colunas e altera colunas visíveis?', async () => {
-        let ctrl: CommonListStore;
+        let ctrl: CommonListCtx;
         const component = mount(<TestGenericList ctrlRef={(ref) => ctrl = ref} />);
 
         expect(ctrl!.columnsDefs).toHaveLength(customListDef.columns.length);
@@ -83,7 +82,7 @@ describe('GenericList', () => {
     });
 
     it('Exibi modal de ordenação e altera ordenação?', () => {
-        let ctrl: CommonListStore;
+        let ctrl: CommonListCtx;
         const component = mount(<TestGenericList ctrlRef={(ref) => ctrl = ref} />);
 
         //Teste botão de exibir modal de ordenação
@@ -107,7 +106,7 @@ describe('GenericList', () => {
     });
 
     it('Exibe conteúdo da listagem?', async () => {
-        let ctrl: CommonListStore;
+        let ctrl: CommonListCtx;
         mount(<TestGenericList ctrlRef={(ref) => ctrl = ref} />);
         const columnSize = customListDef.columns.filter(filter => filter.checked).length;
 
@@ -118,7 +117,7 @@ describe('GenericList', () => {
     });
 
     it('Troca para próxima página e página anterior?', async () => {
-        let ctrl: CommonListStore;
+        let ctrl: CommonListCtx;
         const component = mount(<TestGenericList ctrlRef={(ref) => ctrl = ref} />);
         
         await ctrl!.search();

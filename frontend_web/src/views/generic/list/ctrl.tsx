@@ -1,5 +1,6 @@
 import { default as axios, default as Axios } from 'axios';
 import { action, computed, makeObservable, observable } from 'mobx';
+import { createContext, useContext } from 'react';
 import { AttributeType } from '../../../commons/attribute-type';
 import { ColorsDef } from '../../../commons/consts';
 import { SortOrder } from '../../../commons/enums/sort-order.enum';
@@ -23,7 +24,7 @@ type CommonListStoreOptions = {
   replaceSearch?: boolean; //Alterar url com os filtros utilizados
 };
 
-export class CommonListStore {
+export class CommonListCtx {
   constructor(private datasource: GraphQLInterface, makeObs = true) {
     //Modifica classe pra ser observável
     makeObservable(this);
@@ -664,18 +665,6 @@ export class CommonListStore {
   };
 }
 
-const instances: any = {};
-/**
- * Permite criar vários controladores únicos (singleton)
- * para gerenciar telas diferentes.
- * @param name nome único do controlador
- * @param datasource api datasource para consulta dos dados
- * @param storeOverried classe que sobrescreve o CommonListStore
- */
-export default function ctrlInstance(name: string, datasource: GraphQLInterface, storeOverried?: typeof CommonListStore): CommonListStore {
-  if (instances[name] === undefined) {
-    if (storeOverried) instances[name] = new storeOverried(datasource);
-    else instances[name] = new CommonListStore(datasource);
-  }
-  return instances[name];
-}
+export const CommonListContext = createContext<CommonListCtx>({} as CommonListCtx);
+export const CommonListContextProvider = CommonListContext.Provider;
+export const useCommonListStore = (): CommonListCtx => useContext(CommonListContext);

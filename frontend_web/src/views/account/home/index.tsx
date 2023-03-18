@@ -8,7 +8,7 @@ import DevicesConnectedPage from '../devices';
 import LoginsPage from '../logins';
 import SideBarHome from './sidebarhome';
 
-const HomeAccount: React.FC<{}> = () => {
+const HomeAccount: React.FC = () => {
   return (
     <Container>
       <Row>
@@ -29,7 +29,7 @@ const HomeAccount: React.FC<{}> = () => {
   );
 };
 
-const AccountInfo: React.FC<{}> = () => {
+const AccountInfo: React.FC = () => {
   const __ = useI18N();
   const context = useUserStore();
   

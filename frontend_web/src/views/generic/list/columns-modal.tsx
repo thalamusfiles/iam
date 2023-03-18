@@ -8,13 +8,14 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
+import { useCommonListStore } from './ctrl';
 import { TableHeadSeparator } from './types/TableHead';
 
 /***
  * Modal para aplicação dos filtros.
  */
-export const ColumnsModal: React.FC<{}> = () => {
-  const ctrl = { columnsDefs: [] } as { columnsDefs: [] | null } & any; //TODO:MUDAR
+export const ColumnsModal: React.FC = () => {
+  const ctrl = useCommonListStore();
   const __ = useI18N();
 
   return (

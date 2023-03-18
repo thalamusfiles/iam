@@ -1,11 +1,10 @@
 import { historyPush } from '../../../../../commons/route';
-import { PermissionGraphQLDatasource } from '../../../../../datasources/apigraphql';
 import GenericList from '../../../../generic/list';
-import ctrlInstance from '../../../../generic/list/ctrl';
+import { CommonListContextProvider } from '../../../../generic/list/ctrl';
 import { PermissionListStore } from './ctrl';
 
-const PermissionDefaultList: React.FC<{}> = () => {
-  const ctrl = ctrlInstance('permission', new PermissionGraphQLDatasource(), PermissionListStore);
+const PermissionDefaultList: React.FC = () => {
+  const ctrl = new PermissionListStore();
 
   ctrl.newCallback = () => {
     historyPush('permission_new', { inModal: true, showSave: true });
@@ -15,7 +14,11 @@ const PermissionDefaultList: React.FC<{}> = () => {
     historyPush('permission_edit', { id, inModal: true, showSave: true });
   };
 
-  return <GenericList ctrl={ctrl} />;
+  return (
+    <CommonListContextProvider value={ctrl}>
+      <GenericList />
+    </CommonListContextProvider>
+  );
 };
 
 export default PermissionDefaultList;

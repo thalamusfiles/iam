@@ -5,7 +5,7 @@ import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 import { DevicesConnectedCtx, DevicesConnectedProvider, useDevicesConnectedStore } from './ctrl';
 
-const DevicesConnectedPage: React.FC<{}> = () => {
+const DevicesConnectedPage: React.FC = () => {
   const __ = useI18N();
 
   return (
@@ -19,7 +19,7 @@ const DevicesConnectedPage: React.FC<{}> = () => {
   );
 };
 
-const DevicesConnectedTable: React.FC<{}> = () => {
+const DevicesConnectedTable: React.FC = () => {
   const __ = useI18N();
   const ctrl = useDevicesConnectedStore();
 

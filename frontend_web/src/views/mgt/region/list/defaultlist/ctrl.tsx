@@ -1,10 +1,11 @@
 import { makeObservable } from 'mobx';
 import { AttributeType } from '../../../../../commons/attribute-type';
 import { SortOrder } from '../../../../../commons/enums/sort-order.enum';
-import { CommonListStore } from '../../../../generic/list/ctrl';
+import { RegionGraphQLDatasource } from '../../../../../datasources/apigraphql';
+import { CommonListCtx } from '../../../../generic/list/ctrl';
 import { ListDefinition } from '../../../../generic/list/types/ListDefinition';
 
-export class RegionListStore extends CommonListStore {
+export class RegionListStore extends CommonListCtx {
   defaultListDefs: ListDefinition = {
     id: 'regions_list',
     name: 'regions_list',
@@ -21,8 +22,9 @@ export class RegionListStore extends CommonListStore {
     sortOrder: SortOrder.Up,
   };
 
-  constructor(...props: any) {
-    super(props[0], false);
+  constructor() {
+    super(new RegionGraphQLDatasource(), false);
+
     makeObservable(this);
   }
 }
