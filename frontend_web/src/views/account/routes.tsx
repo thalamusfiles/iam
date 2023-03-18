@@ -26,7 +26,7 @@ export default function AccountRoutesRoutes() {
       {Object.values(routes).map((route, idx) => (
         <Route path={route.path.concat('/*')} element={<route.component />} key={idx} />
       ))}
-      <Route path="*" element={<Navigate to="/account/home" replace />} />
+      <Route path="/" element={<Navigate to={'/account/home'} replace />} />
     </Routes>
   );
 }

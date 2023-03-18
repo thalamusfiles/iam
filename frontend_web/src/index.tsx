@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
+import { createRoutesFromElements, Navigate, Route, RouterProvider } from 'react-router-dom';
 import './assets/fontawasome.library';
 import './assets/theme.scss';
 import { createBaseRouter, PrivateRoutes } from './commons/route';
@@ -21,20 +21,19 @@ const router = createBaseRouter(
       <Route path="/public/:region/:app/login" element={<LoginPage />} index />
       <Route path="/public/:region/:app/register" element={<RegisterPage />} />
 
-      <Route path="/account/*" element={<Account />} />
-      {/*
       <Route path="/account/*" element={<PrivateRoutes element={<Account />} redirect="/public/global/root/login" />} />
-      */}
       <Route path="/mgt/*" element={<PrivateRoutes element={<Mgt />} redirect="/public/global/root/login" />} />
 
       <Route
         path={'*/modal'}
         element={
           <InModal>
-            <MgtModalRoutes />
+            {' '}
+            <MgtModalRoutes />{' '}
           </InModal>
         }
       />
+      <Route path="/" element={<Navigate to={'/public/global/root/login'} replace />} />
     </>,
   ),
 );

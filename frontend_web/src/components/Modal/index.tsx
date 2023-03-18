@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { historyPush, historySearch } from '../../commons/route';
 
-export function InModal(props: any) {
+export const InModal: React.FC<PropsWithChildren> = ({ children }) => {
   const urlSearch = historySearch();
 
   const [smShow, setSmShow] = useState(false);
@@ -11,7 +11,7 @@ export function InModal(props: any) {
 
   return (
     <Modal show={smShow} size="xl" onHide={handleClose}>
-      <Modal.Body>{props.children}</Modal.Body>
+      <Modal.Body>{children}</Modal.Body>
     </Modal>
   );
-}
+};

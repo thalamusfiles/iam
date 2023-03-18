@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { IconsDef } from '../../commons/consts';
 import { RouteDefinition, RouteDefinitions } from '../../commons/route';
 import DevicesConnectedPage from '../account/devices';
@@ -62,6 +62,7 @@ export default function MgtRoutes() {
       {Object.values(routes).map((route, idx) => (
         <Route index={route.index} path={route.path.replace('*/', '/').concat('/*')} element={<route.component />} key={idx} />
       ))}
+      <Route path="/" element={<Navigate to={'/mgt/home'} replace />} />
     </Routes>
   );
 }
