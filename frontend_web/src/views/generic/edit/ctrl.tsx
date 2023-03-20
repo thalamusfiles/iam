@@ -1,5 +1,6 @@
 import { computed, makeObservable, observable } from 'mobx';
-import { CustomComponentI, findComponents, TargetForm, WMSPagePluginProps } from '../../../commons/plugin.component';
+import { createContext, useContext } from 'react';
+import { CustomComponentI, findComponents, PagePluginProps, TargetForm } from '../../../commons/plugin.component';
 import { historyPush } from '../../../commons/route';
 
 /**
@@ -9,7 +10,7 @@ type CommonEditStoreOptions = {
   inModal?: boolean; //Se a tela esta sendo exibida dentro de um modal
 };
 
-export class CommonEditStore {
+export class CommonEditCtx {
   constructor(private name: TargetForm, makeObs = true) {
     //Modifica classe pra ser observável
     if (makeObs) makeObservable(this);
@@ -19,13 +20,10 @@ export class CommonEditStore {
   @observable loading: boolean = false;
 
   //Componentes da tela
-  components: WMSPagePluginProps[] = [];
+  components: PagePluginProps[] = [];
   componentsClasses: (JSX.Element | null)[] = [];
   componentsClassesRefs: CustomComponentI[] = [];
   @observable componentLoaded = false;
-
-  //react-router match
-  match: any = {};
 
   options: CommonEditStoreOptions = {
     inModal: false,
@@ -72,13 +70,11 @@ export class CommonEditStore {
       .filter((comp) => !this.options.inModal || comp.displayInModal)
       .sort((l, r) => (l.order === r.order ? 0 : l.order < r.order ? -1 : 1))
       .map((comp) =>
-        comp.component ? <comp.component ctrl={this} ref={(ref) => this.componentsClassesRefs.push(ref as CustomComponentI)} /> : null,
+        //comp.component ? <comp.component ref={(ref) => this.componentsClassesRefs.push(ref as CustomComponentI)} /> : null,
+        //TODO:  Verificar referencia e impacto
+        comp.component ? <comp.component /> : null,
       );
     this.componentLoaded = true;
-  };
-
-  setMatch = (match: any) => {
-    this.match = match;
   };
 
   onBack = async () => {
@@ -91,22 +87,11 @@ export class CommonEditStore {
   }
 
   @computed
-  get componentsLoaded(): WMSPagePluginProps[] {
+  get componentsLoaded(): PagePluginProps[] {
     return this.componentLoaded ? this.components : [];
   }
 }
 
-const instances: any = {};
-/**
- * Permite criar vários controladores únicos (singleton)
- * para gerenciar telas diferentes.
- * @param target nome único da tela/página
- * @param datasource api datasource para consulta dos dados
- */
-export default function ctrlInstance(target: TargetForm, storeOverried?: typeof CommonEditStore): CommonEditStore {
-  if (instances[target] === undefined) {
-    if (storeOverried) instances[target] = new storeOverried(target);
-    else instances[target] = new CommonEditStore(target);
-  }
-  return instances[target];
-}
+export const CommonEditContext = createContext<CommonEditCtx>({} as CommonEditCtx);
+export const CommonEditContextProvider = CommonEditContext.Provider;
+export const useCommonEditStore = <Ctx extends CommonEditCtx>(): Ctx => useContext(CommonEditContext) as Ctx;

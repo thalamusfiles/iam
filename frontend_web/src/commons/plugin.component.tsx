@@ -2,8 +2,7 @@
 import React from 'react';
 import { WmsFormProps } from '../components/Form';
 import { notify } from '../components/Notification';
-import { CommonEditStore } from '../views/generic/edit/ctrl';
-import { IReactClassComponent } from './types/IReactComponent';
+import { CommonEditCtx } from '../views/generic/edit/ctrl';
 
 /**
  * Nomes dos formulários do sistema que são customizáveis
@@ -25,40 +24,31 @@ export enum TargetForm {
 /**
  * Propriedades do componente dinâmico
  */
-export interface WMSPagePluginProps {
+export interface PagePluginProps {
   name: string;
   sidebarTitle?: string;
   target: TargetForm;
   order: number;
   displayInModal?: boolean;
   //utilização interna
-  component?: IReactClassComponent;
+  component?: React.FC;
 }
 
-/**
- * Anotação responsável em criar novos componentes para ser adicionados na telas do sistema.
- * @param props
- */
-export function WMSPagePlugin(props: WMSPagePluginProps) {
-  return <T extends IReactClassComponent>(target: T): T => {
-    //Inicializa estrutura do componente
-    if (!components[props.target]) {
-      components[props.target] = {
-        components: [],
-      };
-    }
-    //Adiciona novo componente
-    props.component = target;
-    components[props.target].components.push(props);
-    return target;
-  };
+export function addPagePlugin(props: PagePluginProps) {
+  //Inicializa estrutura do componente
+  if (!components[props.target]) {
+    components[props.target] = {
+      components: [],
+    };
+  }
+  components[props.target].components.push(props);
 }
 
 /**
  * Interface com os métodos obrigatórios
  * a serem implementados pelo componente dinâmico
  */
-export interface CustomComponentI extends React.Component<{ ctrl: CommonEditStore; __?: Function }> {
+export interface CustomComponentI extends React.Component<{ ctrl: CommonEditCtx; __?: Function }> {
   /**
    * Método disparado após o conteudo ser carregado
    */
@@ -69,11 +59,11 @@ export interface CustomComponentI extends React.Component<{ ctrl: CommonEditStor
   onAssignContent?: (assignValues: any) => void;
 }
 
-export abstract class CustomComponentA<State = {}, CTRL = CommonEditStore> extends React.Component<{ ctrl: CTRL; __?: Function }, State> {}
+export abstract class CustomComponentA<State = {}, CTRL = CommonEditCtx> extends React.Component<{ ctrl: CTRL; __?: Function }, State> {}
 
 const components: {
   [key: string]: {
-    components: WMSPagePluginProps[];
+    components: PagePluginProps[];
   };
 } = {};
 
@@ -81,9 +71,9 @@ const components: {
  * Busca todos os componentes adicionados na tela
  * @param target
  */
-export function findComponents(target: TargetForm | null): WMSPagePluginProps[] {
+export function findComponents(target: TargetForm | null): PagePluginProps[] {
   if (target === null) {
-    return Object.values(components).reduce((last, curr) => last.concat(curr.components), [] as WMSPagePluginProps[]);
+    return Object.values(components).reduce((last, curr) => last.concat(curr.components), [] as PagePluginProps[]);
   }
   if (components[target]) return components[target].components || [];
 

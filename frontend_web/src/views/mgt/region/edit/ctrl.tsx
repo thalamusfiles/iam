@@ -1,11 +1,13 @@
 import { action, makeObservable, observable } from 'mobx';
+import { useParams } from 'react-router-dom';
+import { TargetForm } from '../../../../commons/plugin.component';
 import { historyPush } from '../../../../commons/route';
 import { notify } from '../../../../components/Notification';
 import { RegionCRUDDatasource } from '../../../../datasources/apicrud';
 import { CRUDInterface } from '../../../../datasources/apicrud/api';
-import { CommonEditStore } from '../../../generic/edit/ctrl';
+import { CommonEditCtx } from '../../../generic/edit/ctrl';
 
-export class RegionEditStore extends CommonEditStore {
+export class RegionEditStore extends CommonEditCtx {
   datasource: CRUDInterface = new RegionCRUDDatasource();
 
   //Conteudo da tela
@@ -16,13 +18,14 @@ export class RegionEditStore extends CommonEditStore {
     { id: 2, name: 'Application 03', description: 'Description 03' },
   ];
 
-  constructor(...props: any) {
-    super(props[0], false);
+  constructor() {
+    super(TargetForm.region_edit, false);
+    
     makeObservable(this);
   }
 
   afterBuild = async () => {
-    const { id } = this.match.params;
+    const { id } = useParams();
     if (id) {
       this.loadContent(id);
     }

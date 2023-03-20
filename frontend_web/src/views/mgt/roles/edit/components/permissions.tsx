@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { inject, observer } from 'mobx-react';
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Col from 'react-bootstrap/Col';
@@ -8,70 +7,53 @@ import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
-import { WMSI18N } from '../../../../../commons/i18';
-import { CustomComponentA, TargetForm, WMSPagePlugin } from '../../../../../commons/plugin.component';
+import { useI18N } from '../../../../../commons/i18';
+import { addPagePlugin, TargetForm } from '../../../../../commons/plugin.component';
+import { useCommonEditStore } from '../../../../generic/edit/ctrl';
 import { RoleEditStore } from '../ctrl';
 
-@WMSPagePlugin({
-  name: 'person_permissions',
-  sidebarTitle: 'Permissions',
-  target: TargetForm.role_edit,
-  order: 30,
-  displayInModal: true,  
-})
-@WMSI18N()
-@inject('ctrl')
-@observer
-export default class PermissionComp extends CustomComponentA<{}, RoleEditStore> {
-  state: Readonly<{ view: string }> = {
-    view: 'table',
-  };
+const PermissionComp: React.FC = () => {
+  const ctrl = useCommonEditStore<RoleEditStore>();
+  const __ = useI18N();
+  const [view, setView] = useState('table');
 
-  onChangeView = (view: string) => {
-    this.setState({ view });
-  };
-
-  render() {
-    const { __, ctrl } = this.props;
-    const { view } = this.state;
-    const { permissions } = ctrl;
-    const showList = view === 'list';
-    const showTable = view === 'table';
-    const showhierarchy = view === 'hierarchy';
-    return (
-      <>
+  const { permissions } = ctrl;
+  const showList = view === 'list';
+  const showTable = view === 'table';
+  const showhierarchy = view === 'hierarchy';
+  return (
+    <>
+      <Row>
+        <Col>
+          <h2 id="person_permissions">{__!('person.edit.permissions.title')}:</h2>
+          <p>{__!('person.edit.permissions.description')}</p>
+        </Col>
+        <Col md={2}>
+          <ButtonGroup>
+            <Button variant="light" active={showList} onClick={() => setView('list')}>
+              <FontAwesomeIcon size="xs" icon={'list'} />
+            </Button>
+            <Button variant="light" active={showTable} onClick={() => setView('table')}>
+              <FontAwesomeIcon size="xs" icon={'table'} />
+            </Button>
+            <Button variant="light" active={showhierarchy} onClick={() => setView('hierarchy')}>
+              <FontAwesomeIcon size="xs" icon={'sitemap'} />
+            </Button>
+          </ButtonGroup>
+        </Col>
+      </Row>
+      <Form>
         <Row>
           <Col>
-            <h2 id="person_permissions">{__!('person.edit.permissions.title')}:</h2>
-            <p>{__!('person.edit.permissions.description')}</p>
-          </Col>
-          <Col md={2}>
-            <ButtonGroup>
-              <Button variant="light" active={showList} onClick={() => this.onChangeView('list')}>
-                <FontAwesomeIcon size="xs" icon={'list'} />
-              </Button>
-              <Button variant="light" active={showTable} onClick={() => this.onChangeView('table')}>
-                <FontAwesomeIcon size="xs" icon={'table'} />
-              </Button>
-              <Button variant="light" active={showhierarchy} onClick={() => this.onChangeView('hierarchy')}>
-                <FontAwesomeIcon size="xs" icon={'sitemap'} />
-              </Button>
-            </ButtonGroup>
+            {showList && <ListView permissions={permissions} />}
+            {showTable && <ListTable permissions={permissions} />}
+            {showhierarchy && <ListHierarchy permissions={permissions} />}
           </Col>
         </Row>
-        <Form>
-          <Row>
-            <Col>
-              {showList && <ListView permissions={permissions} />}
-              {showTable && <ListTable permissions={permissions} />}
-              {showhierarchy && <ListHierarchy permissions={permissions} />}
-            </Col>
-          </Row>
-        </Form>
-      </>
-    );
-  }
-}
+      </Form>
+    </>
+  );
+};
 
 const ListView: React.FC<{ permissions: any[] }> = ({ permissions }) => {
   return (
@@ -168,3 +150,12 @@ const ListHierarchy: React.FC<{ permissions: any[] }> = ({ permissions }) => {
     </ul>
   );
 };
+
+addPagePlugin({
+  component: PermissionComp,
+  name: 'person_permissions',
+  sidebarTitle: 'Permissions',
+  target: TargetForm.role_edit,
+  order: 30,
+  displayInModal: true,
+});

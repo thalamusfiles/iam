@@ -1,118 +1,90 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { inject, observer, Provider } from 'mobx-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { IconsDef } from '../../../commons/consts';
-import { WMSI18N } from '../../../commons/i18';
+import { useI18N } from '../../../commons/i18';
 import { historySearch } from '../../../commons/route';
 import Loader from '../../../components/Loader';
 import SideBar from '../../../components/SideBar';
 import { SideBarAction } from '../../../components/SideBar/SideBarAction';
-import { CommonEditStore } from './ctrl';
+import { useCommonEditStore } from './ctrl';
 
-type GenericEditProps<S extends CommonEditStore> = {
+type GenericEditProps = {
   sideBarSpan?: number;
-  ctrl?: S;
-  ctrlRef?: (ctrl: S) => void;
   inModal?: boolean; //Se a tela esta sendo exibida dentro de um modal
-  match: any;
 };
 
-export default abstract class GenericEdit<S extends CommonEditStore> extends React.Component<GenericEditProps<S>, S> {
-  ctrl: S;
+const GenericEdit: React.FC<GenericEditProps> = ({ sideBarSpan, inModal }) => {
+  const ctrl = useCommonEditStore();
+  const __ = useI18N();
+  const sideBar = <SideBarEdit />;
+  const { show_save } = historySearch();
 
-  constructor(props: any) {
-    super(props);
-    this.ctrl = props.ctrl;
-    this.ctrl.setMatch(this.props.match);
+  useEffect(() => {
+    ctrl.build({ inModal });
 
-    if (props.ctrlRef) {
-      props.ctrlRef(this.ctrl);
-    }
-  }
+    return () => {
+      ctrl.close();
+    };
+  });
 
-  async componentDidMount() {
-    const { inModal } = this.props;
+  return (
+    <Container fluid>
+      <Row>
+        {!inModal && <Col md={{ span: sideBarSpan || 2 }}>{sideBar}</Col>}
+        <Col md={inModal ? 12 : 12 - (sideBarSpan || 2)}>
+          <Body />
+        </Col>
+      </Row>
+      <Row>
+        <Col></Col>
+        <Col md={{ span: 2 }}>
+          <Button block variant="outline-secondary" onClick={ctrl!.onBack}>
+            <FontAwesomeIcon icon={IconsDef.goBack} /> {inModal ? __('actions.close') : __('actions.back')}
+          </Button>
+        </Col>
+        {(!inModal || show_save) && (
+          <Col md={{ span: 2 }}>
+            <Button block variant="success" onClick={ctrl!.onSave}>
+              <FontAwesomeIcon icon={IconsDef.save} /> {__('actions.save')}
+            </Button>
+          </Col>
+        )}
+      </Row>
+    </Container>
+  );
+};
 
-    await this.ctrl.build({ inModal });
-  }
+const Body: React.FC = () => {
+  const ctrl = useCommonEditStore();
 
-  componentWillUnmount() {
-    this.ctrl.close();
-  }
+  return (
+    <>
+      <Loader show={ctrl!.loading} vertical center />
+      {ctrl!.componentsClass}
+    </>
+  );
+};
 
-  sideBar = (<SideBarEdit />);
+const SideBarEdit: React.FC = () => {
+  const ctrl = useCommonEditStore();
+  const __ = useI18N();
 
-  render() {
-    //const __ = useI18N();
-    const __ = (tt: string) => tt;
-    const { sideBarSpan, inModal } = this.props;
-    const { show_save } = historySearch();
+  return (
+    <SideBar span={2}>
+      <div className="title">{__!('menu.actions')}</div>
+      <SideBarAction faicon={IconsDef.save} title={__!('actions.save')} variant="outline-success" onClick={ctrl!.onSave} />
+      <SideBarAction faicon={IconsDef.goBack} title={__!('actions.back')} variant="outline-secondary" onClick={ctrl!.onBack} />
 
-    return (
-      <Provider ctrl={this.ctrl}>
-        <Container fluid>
-          <Row>
-            {!inModal && <Col md={{ span: sideBarSpan || 2 }}>{this.sideBar}</Col>}
-            <Col md={inModal ? 12 : 12 - (sideBarSpan || 2)}>
-              <Body />
-            </Col>
-          </Row>
-          <Row>
-            <Col></Col>
-            <Col md={{ span: 2 }}>
-              <Button block variant="outline-secondary" onClick={this.ctrl!.onBack}>
-                <FontAwesomeIcon icon={IconsDef.goBack} /> {inModal ? __('actions.close') : __('actions.back')}
-              </Button>
-            </Col>
-            {(!inModal || show_save) && (
-              <Col md={{ span: 2 }}>
-                <Button block variant="success" onClick={this.ctrl!.onSave}>
-                  <FontAwesomeIcon icon={IconsDef.save} /> {__('actions.save')}
-                </Button>
-              </Col>
-            )}
-          </Row>
-        </Container>
-      </Provider>
-    );
-  }
-}
+      <div className="title">{__!('menu.quickaccess')}</div>
+      {ctrl!.componentsLoaded.map((comp) => (
+        <SideBarAction title={comp.sidebarTitle} link={'#' + comp.name} key={comp.name} />
+      ))}
+    </SideBar>
+  );
+};
 
-@inject('ctrl')
-@observer
-class Body extends React.Component<{ ctrl?: CommonEditStore }> {
-  render() {
-    const { ctrl } = this.props;
-    return (
-      <>
-        <Loader show={ctrl!.loading} vertical center />
-        {ctrl!.componentsClass}
-      </>
-    );
-  }
-}
-
-@WMSI18N()
-@inject('ctrl')
-@observer
-class SideBarEdit extends React.Component<{ ctrl?: CommonEditStore; __?: Function }> {
-  render() {
-    const { __, ctrl } = this.props;
-    return (
-      <SideBar span={2}>
-        <div className="title">{__!('menu.actions')}</div>
-        <SideBarAction faicon={IconsDef.save} title={__!('actions.save')} variant="outline-success" onClick={ctrl!.onSave} />
-        <SideBarAction faicon={IconsDef.goBack} title={__!('actions.back')} variant="outline-secondary" onClick={ctrl!.onBack} />
-
-        <div className="title">{__!('menu.quickaccess')}</div>
-        {ctrl!.componentsLoaded.map((comp) => (
-          <SideBarAction title={comp.sidebarTitle} link={'#' + comp.name} key={comp.name} />
-        ))}
-      </SideBar>
-    );
-  }
-}
+export default GenericEdit;

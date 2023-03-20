@@ -1,11 +1,13 @@
 import { action, makeObservable, observable } from 'mobx';
+import { useParams } from 'react-router-dom';
+import { TargetForm } from '../../../../commons/plugin.component';
 import { historyPush } from '../../../../commons/route';
 import { notify } from '../../../../components/Notification';
 import { RoleCRUDDatasource } from '../../../../datasources/apicrud';
 import { CRUDInterface } from '../../../../datasources/apicrud/api';
-import { CommonEditStore } from '../../../generic/edit/ctrl';
+import { CommonEditCtx } from '../../../generic/edit/ctrl';
 
-export class RoleEditStore extends CommonEditStore {
+export class RoleEditStore extends CommonEditCtx {
   datasource: CRUDInterface = new RoleCRUDDatasource();
 
   //Conteudo da tela
@@ -28,14 +30,14 @@ export class RoleEditStore extends CommonEditStore {
     { id: '14', on: 'Application', action: 'Delete', name: 'Application_Delete' },
   ];
 
+  constructor() {
+    super(TargetForm.role_edit, false);
 
-  constructor(...props: any) {
-    super(props[0], false);
     makeObservable(this);
   }
 
   afterBuild = async () => {
-    const { id } = this.match.params;
+    const { id } = useParams();
     if (id) {
       this.loadContent(id);
     }
