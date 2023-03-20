@@ -6,10 +6,9 @@ import { EndpointsDef } from './endpoints';
 /**
  * Default Headers
  */
-axios.defaults.headers = {
-  'Access-Control-Allow-Credentials': true,
-  'Access-Control-Allow-Origin': '*',
-};
+
+axios.defaults.headers.common['Access-Control-Allow-Credentials'] = true;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 /**
  * Intercepta todas as requisições
