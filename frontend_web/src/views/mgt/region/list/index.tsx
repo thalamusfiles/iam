@@ -24,9 +24,9 @@ export const RegionList: React.FC = () => {
           <Col md={10}>
             <h1 id="region_about">
               <FontAwesomeIcon icon={IconsDef.region} />
-              &nbsp; {__!('region.list.title')}
+              &nbsp; {__('region.list.title')}
             </h1>
-            <p>{__!('region.list.about.description')}</p>
+            <p>{__('region.list.about.description')}</p>
 
             <RegionDefaultList />
           </Col>
@@ -41,19 +41,19 @@ export const SideBarEdit: React.FC = () => {
 
   return (
     <SideBar span={2}>
-      <div className="title">{__!('menu.actions')}</div>
+      <div className="title">{__('menu.actions')}</div>
       <SideBarAction
         faicon={IconsDef.new}
-        title={__!('actions.new')}
+        title={__('actions.new')}
         variant="outline-primary"
         onClick={() => historyPush('region_new', { inModal: true, showSave: true })}
       />
-      <SideBarAction faicon={IconsDef.goBack} title={__!('actions.back')} variant="outline-secondary" onClick={() => historyPush(-1)} />
+      <SideBarAction faicon={IconsDef.goBack} title={__('actions.back')} variant="outline-secondary" onClick={() => historyPush(-1)} />
 
-      <div className="title">{__!('menu.lists')}</div>
+      <div className="title">{__('menu.lists')}</div>
       <SideBarAction
         faicon={IconsDef.region}
-        title={__!('region.list.title')}
+        title={__('region.list.title')}
         variant="light"
         onClick={() => historySearchReplace({ list: 'region' })}
       />

@@ -21,7 +21,7 @@ export const SortModal: React.FC = () => {
   return (
     <Modal size="lg" animation={false} show={ctrl!.showSort} onHide={() => ctrl!.toggleShowSort()}>
       <Modal.Header closeButton>
-        <Modal.Title>{__!('menu.sort')}</Modal.Title>
+        <Modal.Title>{__('menu.sort')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container>
@@ -46,7 +46,7 @@ export const SortModal: React.FC = () => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={() => ctrl!.toggleShowSort()}>
-          <FontAwesomeIcon icon={IconsDef.close} /> {__!('actions.close')}
+          <FontAwesomeIcon icon={IconsDef.close} /> {__('actions.close')}
         </Button>
       </Modal.Footer>
     </Modal>

@@ -26,9 +26,9 @@ export const PersonList: React.FC = () => {
               {IconsDef.person.map((icon) => (
                 <FontAwesomeIcon icon={icon} />
               ))}
-              &nbsp; {__!('person.list.title')}
+              &nbsp; {__('person.list.title')}
             </h1>
-            <p>{__!('person.list.about.description')}</p>
+            <p>{__('person.list.about.description')}</p>
 
             <PersonDefaultList />
           </Col>
@@ -43,20 +43,20 @@ export const SideBarEdit: React.FC = () => {
 
   return (
     <SideBar span={2}>
-      <div className="title">{__!('menu.actions')}</div>
-      <SideBarAction faicon={IconsDef.new} title={__!('actions.new')} variant="outline-primary" onClick={() => historyPush('person_new')} />
-      <SideBarAction faicon={IconsDef.goBack} title={__!('actions.back')} variant="outline-secondary" onClick={() => historyPush(-1)} />
+      <div className="title">{__('menu.actions')}</div>
+      <SideBarAction faicon={IconsDef.new} title={__('actions.new')} variant="outline-primary" onClick={() => historyPush('person_new')} />
+      <SideBarAction faicon={IconsDef.goBack} title={__('actions.back')} variant="outline-secondary" onClick={() => historyPush(-1)} />
 
-      <div className="title">{__!('menu.lists')}</div>
+      <div className="title">{__('menu.lists')}</div>
       <SideBarAction
         faicon={IconsDef.person[0]}
-        title={__!('person.list.title')}
+        title={__('person.list.title')}
         variant="light"
         onClick={() => historySearchReplace({ list: 'person' })}
       />
       <SideBarAction
         faicon={IconsDef.permissions}
-        title={__!('person.permissions.list.title')}
+        title={__('person.permissions.list.title')}
         variant="light"
         onClick={() => historySearchReplace({ list: 'person_permissions' })}
       />

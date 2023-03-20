@@ -22,10 +22,10 @@ const AboutComp: React.FC = () => {
     <>
       <h1 id="role_about">
         <FontAwesomeIcon icon={IconsDef.roles} />
-        &nbsp; {__!('role.edit.about.title')}: {content.name}
+        &nbsp; {__('role.edit.about.title')}: {content.name}
         <ApplicationInfo />
       </h1>
-      <p>{__!('role.edit.about.description')}</p>
+      <p>{__('role.edit.about.description')}</p>
       <Form>
         <Row>
           <Col>

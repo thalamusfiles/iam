@@ -20,13 +20,13 @@ export const SaveListModal: React.FC = () => {
   return (
     <Modal size="lg" animation={false} show={ctrl!.showSaveList} onHide={() => ctrl!.toggleShowSaveList()}>
       <Modal.Header closeButton>
-        <Modal.Title>{__!('menu.save-list')}</Modal.Title>
+        <Modal.Title>{__('menu.save-list')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container>
-          <p>{__!('msg.save-list.dest')}</p>
+          <p>{__('msg.save-list.dest')}</p>
           <WmsFormGroup
-            title={__!('field.name')}
+            title={__('field.name')}
             type={AttributeType.Text}
             name="listname"
             value={ctrl!.newCustomListDefs.name}
@@ -34,7 +34,7 @@ export const SaveListModal: React.FC = () => {
           />
           <br />
           <p>
-            <strong>{__!('msg.filterby')}: </strong>
+            <strong>{__('msg.filterby')}: </strong>
             <br />
             {ctrl!.newCustomListDefs.filters
               ?.filter((filter: any) => filter.value !== undefined)
@@ -45,12 +45,12 @@ export const SaveListModal: React.FC = () => {
               ))}
           </p>
           <p>
-            <strong>{__!('msg.orderby')}: </strong>
+            <strong>{__('msg.orderby')}: </strong>
             <br />
             {ctrl!.newCustomListDefs.sort?.title}
           </p>
           <p>
-            <strong>{__!('msg.showcolumns')}: </strong>
+            <strong>{__('msg.showcolumns')}: </strong>
             <br />
             {ctrl!.newCustomListDefs.columns
               ?.filter((head: any) => head.show)
@@ -61,10 +61,10 @@ export const SaveListModal: React.FC = () => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="success" disabled={ctrl!.newCustomListDefs.name.length < 3} onClick={() => ctrl!.saveCustomList(ctrl!.newCustomListDefs)}>
-          <FontAwesomeIcon icon={IconsDef.save} /> {__!('actions.save')}
+          <FontAwesomeIcon icon={IconsDef.save} /> {__('actions.save')}
         </Button>
         <Button variant="secondary" onClick={() => ctrl!.toggleShowSaveList()}>
-          <FontAwesomeIcon icon={IconsDef.close} /> {__!('actions.close')}
+          <FontAwesomeIcon icon={IconsDef.close} /> {__('actions.close')}
         </Button>
       </Modal.Footer>
     </Modal>

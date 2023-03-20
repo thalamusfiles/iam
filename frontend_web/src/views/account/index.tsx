@@ -30,10 +30,10 @@ const HeaderAccount: React.FC = () => {
     <Navbar className="header">
       <Navbar.Brand className="mr-auto">
         <img src="/logo.png" alt="logo" />
-        {__!('menu.brand')} - {__!('login.subtitle')}
+        {__('menu.brand')} - {__('login.subtitle')}
       </Navbar.Brand>
       <Nav>
-        <Nav.Item onClick={() => UserCtxInstance.logout()}>{__!('menu.logout')}</Nav.Item>
+        <Nav.Item onClick={() => UserCtxInstance.logout()}>{__('menu.logout')}</Nav.Item>
       </Nav>
     </Navbar>
   );

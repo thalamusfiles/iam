@@ -14,8 +14,8 @@ const AuthorizationComp: React.FC = () => {
 
   return (
     <>
-      <h2 id="person_authorization">{__!('person.edit.auth.title')}:</h2>
-      <p>{__!('person.edit.auth.description')}</p>
+      <h2 id="person_authorization">{__('person.edit.auth.title')}:</h2>
+      <p>{__('person.edit.auth.description')}</p>
       <Form>
         <Row>
           <Col>

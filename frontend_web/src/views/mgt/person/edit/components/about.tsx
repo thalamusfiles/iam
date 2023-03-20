@@ -23,9 +23,9 @@ const AboutComp: React.FC = () => {
         {IconsDef.person.map((icon) => (
           <FontAwesomeIcon icon={icon} />
         ))}
-        &nbsp; {__!('person.edit.about.title')}: {content.name}
+        &nbsp; {__('person.edit.about.title')}: {content.name}
       </h1>
-      <p>{__!('person.edit.about.description')}</p>
+      <p>{__('person.edit.about.description')}</p>
       <Form>
         <Row>
           <Col>

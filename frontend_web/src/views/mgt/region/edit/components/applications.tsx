@@ -15,8 +15,8 @@ const AuthorizationComp: React.FC = () => {
   const { applications } = ctrl;
   return (
     <>
-      <h2 id="region_applications">{__!('region.edit.applications.title')}:</h2>
-      <p>{__!('region.edit.applications.description')}</p>
+      <h2 id="region_applications">{__('region.edit.applications.title')}:</h2>
+      <p>{__('region.edit.applications.description')}</p>
       <Form>
         <Row>
           <Col>

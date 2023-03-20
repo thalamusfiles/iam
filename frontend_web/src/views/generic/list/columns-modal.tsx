@@ -21,7 +21,7 @@ export const ColumnsModal: React.FC = () => {
   return (
     <Modal size="lg" animation={false} show={ctrl!.showColumns} onHide={() => ctrl!.toggleShowColumns()}>
       <Modal.Header closeButton>
-        <Modal.Title>{__!('menu.columns')}</Modal.Title>
+        <Modal.Title>{__('menu.columns')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container>
@@ -52,13 +52,13 @@ export const ColumnsModal: React.FC = () => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="warning" onClick={ctrl!.clearColumns} className="pull-left">
-          <FontAwesomeIcon icon={IconsDef.clear} /> {__!('actions.clear')}
+          <FontAwesomeIcon icon={IconsDef.clear} /> {__('actions.clear')}
         </Button>
         <Button variant="secondary" onClick={() => ctrl!.toggleShowColumns()}>
-          <FontAwesomeIcon icon={IconsDef.close} /> {__!('actions.close')}
+          <FontAwesomeIcon icon={IconsDef.close} /> {__('actions.close')}
         </Button>
         <Button variant="primary" onClick={() => ctrl!.applyColumns()}>
-          <FontAwesomeIcon icon={IconsDef.save} /> {__!('generic.actions.applycolumns')}
+          <FontAwesomeIcon icon={IconsDef.save} /> {__('generic.actions.applycolumns')}
         </Button>
       </Modal.Footer>
     </Modal>

@@ -22,10 +22,10 @@ const AboutComp: React.FC = () => {
     <>
       <h1 id="permission_about">
         <FontAwesomeIcon icon={IconsDef.permissions} />
-        &nbsp; {__!('permission.edit.about.title')}: {content.name}
+        &nbsp; {__('permission.edit.about.title')}: {content.name}
         <ApplicationInfo />
       </h1>
-      <p>{__!('permission.edit.about.description')}</p>
+      <p>{__('permission.edit.about.description')}</p>
       <Form>
         <Row>
           <Col>

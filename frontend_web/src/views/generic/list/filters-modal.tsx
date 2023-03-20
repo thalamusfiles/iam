@@ -23,7 +23,7 @@ export const FiltersModal: React.FC = () => {
   return (
     <Modal size="lg" animation={false} show={ctrl!.showFilters} onHide={() => ctrl!.toggleShowFilters()}>
       <Modal.Header closeButton>
-        <Modal.Title>{__!('menu.filters')}</Modal.Title>
+        <Modal.Title>{__('menu.filters')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container>
@@ -42,18 +42,18 @@ export const FiltersModal: React.FC = () => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="warning" onClick={ctrl!.clearFilters} className="pull-left">
-          <FontAwesomeIcon icon={IconsDef.clear} /> {__!('actions.clear')}
+          <FontAwesomeIcon icon={IconsDef.clear} /> {__('actions.clear')}
         </Button>
         {ctrl!.filtersApplied.length > 0 && (
           <Button variant="warning" onClick={ctrl!.resetFilters} className="pull-left">
-            <FontAwesomeIcon icon={IconsDef.reset} /> {__!('actions.reset')}
+            <FontAwesomeIcon icon={IconsDef.reset} /> {__('actions.reset')}
           </Button>
         )}
         <Button variant="secondary" onClick={() => ctrl!.toggleShowFilters()}>
-          <FontAwesomeIcon icon={IconsDef.close} /> {__!('actions.close')}
+          <FontAwesomeIcon icon={IconsDef.close} /> {__('actions.close')}
         </Button>
         <Button variant="primary" onClick={() => ctrl!.applyFilters()}>
-          <FontAwesomeIcon icon={IconsDef.filter} /> {__!('actions.applyfilter')}
+          <FontAwesomeIcon icon={IconsDef.filter} /> {__('actions.applyfilter')}
         </Button>
       </Modal.Footer>
     </Modal>
@@ -73,10 +73,10 @@ export const FiltersResume: React.FC = () => {
   return (
     <>
       <Nav.Item>
-        <Nav.Link disabled>{__!('menu.filters')}:</Nav.Link>
+        <Nav.Link disabled>{__('menu.filters')}:</Nav.Link>
       </Nav.Item>
       {ctrl!.filtersApplied.map((filter, idx) => (
-        <OverlayTrigger placement={'top'} overlay={<Tooltip id={`tooltip-${idx}`}>{__!('generic.tooltop.filterremove')}</Tooltip>}>
+        <OverlayTrigger placement={'top'} overlay={<Tooltip id={`tooltip-${idx}`}>{__('generic.tooltop.filterremove')}</Tooltip>}>
           <Nav.Item key={idx} className="pointer" onClick={() => ctrl!.removeFilter(filter, idx)}>
             <Nav.Link disabled>
               {filter.title}: {filter.description || filter.value}
@@ -111,7 +111,7 @@ export const FastFilters: React.FC<{ inSide?: boolean }> = ({ inSide }) => {
       <Row>
         <Col sm={12} md={{ span: span, offset }}>
           <Button block variant="outline-primary" onClick={() => ctrl!.applyFilters()}>
-            {length > 2 || hasMultiple ? __!('menu.all') : __!('menu.both')}
+            {length > 2 || hasMultiple ? __('menu.all') : __('menu.both')}
           </Button>
           <br />
           <CascadeFilterGroup filters={ctrl!.fastFilters!} ctrl={ctrl!} />
@@ -121,7 +121,7 @@ export const FastFilters: React.FC<{ inSide?: boolean }> = ({ inSide }) => {
         {hasCustom && (
           <Col md={custoSpan}>
             <Button variant="outline-info" block disabled>
-              {__!('menu.customlists')}
+              {__('menu.customlists')}
             </Button>
             <br />
             {ctrl!.customListDefs.map((customList, key) => (

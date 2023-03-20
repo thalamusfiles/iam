@@ -25,8 +25,8 @@ const PermissionComp: React.FC = () => {
     <>
       <Row>
         <Col>
-          <h2 id="person_permissions">{__!('person.edit.permissions.title')}:</h2>
-          <p>{__!('person.edit.permissions.description')}</p>
+          <h2 id="person_permissions">{__('person.edit.permissions.title')}:</h2>
+          <p>{__('person.edit.permissions.description')}</p>
         </Col>
         <Col md={2}>
           <ButtonGroup>

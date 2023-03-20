@@ -11,9 +11,9 @@ const LoginsPage: React.FC = () => {
   return (
     <LoginProvider value={new LoginCtx()}>
       <h2 id="logins_about">
-        <FontAwesomeIcon icon={IconsDef.login} /> {__!('logins.title')}
+        <FontAwesomeIcon icon={IconsDef.login} /> {__('logins.title')}
       </h2>
-      <p>{__!('logins.description')}</p>
+      <p>{__('logins.description')}</p>
       <LoginsTable />
     </LoginProvider>
   );

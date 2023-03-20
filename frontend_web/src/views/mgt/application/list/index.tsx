@@ -26,9 +26,9 @@ export const ApplicationList: React.FC = () => {
               {IconsDef.applications.map((icon) => (
                 <FontAwesomeIcon icon={icon} />
               ))}
-              &nbsp; {__!('application.list.title')}
+              &nbsp; {__('application.list.title')}
             </h1>
-            <p>{__!('application.list.about.description')}</p>
+            <p>{__('application.list.about.description')}</p>
 
             <ApplicationDefaultList />
           </Col>
@@ -43,19 +43,19 @@ export const SideBarEdit: React.FC = () => {
 
   return (
     <SideBar span={2}>
-      <div className="title">{__!('menu.actions')}</div>
+      <div className="title">{__('menu.actions')}</div>
       <SideBarAction
         faicon={IconsDef.new}
-        title={__!('actions.new')}
+        title={__('actions.new')}
         variant="outline-primary"
         onClick={() => historyPush('application_new', { inModal: true, showSave: true })}
       />
-      <SideBarAction faicon={IconsDef.goBack} title={__!('actions.back')} variant="outline-secondary" onClick={() => historyPush(-1)} />
+      <SideBarAction faicon={IconsDef.goBack} title={__('actions.back')} variant="outline-secondary" onClick={() => historyPush(-1)} />
 
-      <div className="title">{__!('menu.lists')}</div>
+      <div className="title">{__('menu.lists')}</div>
       <SideBarAction
         faicon={IconsDef.applications[0]}
-        title={__!('application.list.title')}
+        title={__('application.list.title')}
         variant="light"
         onClick={() => historySearchReplace({ list: 'application' })}
       />

@@ -11,9 +11,9 @@ const DevicesConnectedPage: React.FC = () => {
   return (
     <DevicesConnectedProvider value={new DevicesConnectedCtx()}>
       <h2 id="devices_about">
-        <FontAwesomeIcon icon={IconsDef.applications[1]} /> {__!('devices.title')}
+        <FontAwesomeIcon icon={IconsDef.applications[1]} /> {__('devices.title')}
       </h2>
-      <p>{__!('devices.description')}</p>
+      <p>{__('devices.description')}</p>
       <DevicesConnectedTable />
     </DevicesConnectedProvider>
   );

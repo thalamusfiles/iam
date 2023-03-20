@@ -63,7 +63,7 @@ const List: React.FC = () => {
       <Table hover size="sm">
         <tbody>
           <tr>
-            <td>{__!('msg.loadingsettings')}</td>
+            <td>{__('msg.loadingsettings')}</td>
           </tr>
         </tbody>
       </Table>
@@ -100,7 +100,7 @@ const List: React.FC = () => {
             ))}
             {ctrl!.showAddColumn && (
               <th className="pointer nowrap" onClick={() => ctrl!.toggleShowColumns()}>
-                {__!('generic.actions.addcol')}
+                {__('generic.actions.addcol')}
               </th>
             )}
           </tr>
@@ -187,17 +187,17 @@ const FunctionsTabBar: React.FC = () => {
         <Nav>
           <Nav.Item onClick={() => ctrl!.toggleShowFilters()} id="tg_filters">
             <Button size="sm" variant={filtersLg ? 'outline-primary' : 'link'}>
-              <FontAwesomeIcon size="xs" icon="filter" /> {filtersLg ? filtersLg : null} {__!('menu.filters')}
+              <FontAwesomeIcon size="xs" icon="filter" /> {filtersLg ? filtersLg : null} {__('menu.filters')}
             </Button>
           </Nav.Item>
           <Nav.Item onClick={() => ctrl!.toggleShowSort()} id="tg_sort">
             <Button size="sm" variant="link">
-              <FontAwesomeIcon size="xs" icon="sort" /> {__!('menu.sort')}
+              <FontAwesomeIcon size="xs" icon="sort" /> {__('menu.sort')}
             </Button>
           </Nav.Item>
           <Nav.Item onClick={() => ctrl!.toggleShowColumns()} id="tg_columns">
             <Button size="sm" variant="link">
-              <FontAwesomeIcon size="xs" icon="columns" /> {__!('menu.columns')}
+              <FontAwesomeIcon size="xs" icon="columns" /> {__('menu.columns')}
             </Button>
           </Nav.Item>
           <NavDropdown title="Export" id="nav-dropdown">
@@ -210,7 +210,7 @@ const FunctionsTabBar: React.FC = () => {
           {ctrl!.newCallback && (
             <Nav.Item onClick={() => ctrl!.onNewClick()}>
               <Button size="sm" variant="link">
-                <FontAwesomeIcon size="xs" icon={IconsDef.new} /> {__!('actions.new')}
+                <FontAwesomeIcon size="xs" icon={IconsDef.new} /> {__('actions.new')}
               </Button>
             </Nav.Item>
           )}
@@ -242,7 +242,7 @@ const TopTabsBar: React.FC = () => {
       </Nav.Item>
       <Nav.Item>
         <Nav.Link href={`#${ctrl!.defaultListDefs?.name}`} onClick={() => ctrl!.toggleCustomList(ctrl!.defaultListDefs)}>
-          {__!('menu.list')}
+          {__('menu.list')}
         </Nav.Link>
       </Nav.Item>
       {ctrl!.customListDefs?.map((customListDef: any) => (

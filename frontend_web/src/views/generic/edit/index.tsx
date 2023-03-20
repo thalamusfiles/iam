@@ -75,11 +75,11 @@ const SideBarEdit: React.FC = () => {
 
   return (
     <SideBar span={2}>
-      <div className="title">{__!('menu.actions')}</div>
-      <SideBarAction faicon={IconsDef.save} title={__!('actions.save')} variant="outline-success" onClick={ctrl!.onSave} />
-      <SideBarAction faicon={IconsDef.goBack} title={__!('actions.back')} variant="outline-secondary" onClick={ctrl!.onBack} />
+      <div className="title">{__('menu.actions')}</div>
+      <SideBarAction faicon={IconsDef.save} title={__('actions.save')} variant="outline-success" onClick={ctrl!.onSave} />
+      <SideBarAction faicon={IconsDef.goBack} title={__('actions.back')} variant="outline-secondary" onClick={ctrl!.onBack} />
 
-      <div className="title">{__!('menu.quickaccess')}</div>
+      <div className="title">{__('menu.quickaccess')}</div>
       {ctrl!.componentsLoaded.map((comp) => (
         <SideBarAction title={comp.sidebarTitle} link={'#' + comp.name} key={comp.name} />
       ))}

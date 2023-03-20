@@ -35,11 +35,11 @@ const AccountInfo: React.FC = () => {
   
   return (
     <>
-      <h1>{__!('account.home.title', { name: context?.user.name })}</h1>
+      <h1>{__('account.home.title', { name: context?.user.name })}</h1>
       <br />
 
-      <p>{__!('account.home.subtitle')}</p>
-      <p>{__!('account.home.accessmsg', { username: context?.user.username, email: context?.user.email })}</p>
+      <p>{__('account.home.subtitle')}</p>
+      <p>{__('account.home.accessmsg', { username: context?.user.username, email: context?.user.email })}</p>
     </>
   );
 };

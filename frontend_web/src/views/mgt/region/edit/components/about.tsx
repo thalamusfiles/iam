@@ -21,9 +21,9 @@ const AboutComp: React.FC = () => {
     <>
       <h1 id="region_about">
         <FontAwesomeIcon icon={IconsDef.region} />
-        &nbsp; {__!('region.edit.about.title')}: {content.name}
+        &nbsp; {__('region.edit.about.title')}: {content.name}
       </h1>
-      <p>{__!('region.edit.about.description')}</p>
+      <p>{__('region.edit.about.description')}</p>
       <Form>
         <Row>
           <Col>
