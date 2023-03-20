@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 // Loaders
 $loader-lg-diameter: 64px;
 $loader-lg-content-font-size: $font-size-lg* 2;
@@ -64,7 +66,7 @@ $loader-rotor-inverse-top-color: $dark;
 
         &-content {
             font-size: $font-size;
-            line-height: unit(($diameter / $font-size));
+            line-height: unit(math.div($diameter, $font-size));
         }
 
         &-vertical & {
@@ -72,7 +74,7 @@ $loader-rotor-inverse-top-color: $dark;
         }
 
         &-vertical &-content {
-            line-height: unit(($line-height-base / $font-size));
+            line-height: unit(math.div($line-height-base, $font-size));
         }
     }
 }
@@ -155,7 +157,7 @@ $loader-rotor-inverse-top-color: $dark;
         }
 
         .rs-loader-content {
-            line-height: unit(($line-height-base / $loader-default-content-font-size));
+            line-height: unit(math.div($line-height-base, $loader-default-content-font-size));
             text-align: center;
         }
 

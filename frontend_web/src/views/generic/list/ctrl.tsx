@@ -11,7 +11,7 @@ import { WmsFormEvent } from '../../../components/Form';
 import { notify } from '../../../components/Notification';
 import { GraphQLInterface } from '../../../datasources/apigraphql/api';
 import { FilterDef } from './types/FilterDef';
-import { ListDefinition } from './types/ListDefinition';
+import type { ListDefinition } from './types/ListDefinition';
 import { TableCell, TableCellInfo } from './types/TableCellInfo';
 import { TableGroupCellInfo } from './types/TableGroupCellInfo';
 import { TableHead } from './types/TableHead';
@@ -592,7 +592,7 @@ export class CommonListCtx {
   };
 
   @action assignNewCustomList = (newCustomListDefs: PartOf<ListDefinition>) => {
-    Object.assign(this.newCustomListDefs, newCustomListDefs);
+    this.newCustomListDefs = Object.assign({}, this.newCustomListDefs, newCustomListDefs);
   };
 
   /**

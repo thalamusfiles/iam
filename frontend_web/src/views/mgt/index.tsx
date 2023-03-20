@@ -1,9 +1,10 @@
+import React from 'react';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import NotificationMenu from '../../components/Notification';
 import MgtRoutes from './routes';
 
-function Mgt() {
+const Mgt: React.FC = () => {
   // TODO: Ajustar
   //const route = findRouteByLocation(props.location, props.match);
   //icon={route?.icon}
@@ -20,6 +21,6 @@ function Mgt() {
       <Footer />
     </>
   );
-}
+};
 
 export default Mgt;
