@@ -32,7 +32,7 @@ const ProfilesComp: React.FC = () => {
       <h2 id="person_roles">{__('person.edit.roles.title')}:</h2>
       <p>{__('person.edit.roles.description')}</p>
       <Form>
-        <Form.Row>
+        
           {roles.map((role: any, idx) => (
             <WmsFormGroup
               groupAs={Col}
@@ -45,7 +45,7 @@ const ProfilesComp: React.FC = () => {
               type={AttributeType.Boolean}
             />
           ))}
-        </Form.Row>
+        
       </Form>
     </>
   );

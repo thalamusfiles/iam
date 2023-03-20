@@ -29,55 +29,47 @@ const AboutComp: React.FC = () => {
       <Form>
         <Row>
           <Col>
-            <Form.Row>
-              <WmsFormGroup
-                groupAs={Col}
-                name="on"
-                title="On"
-                type={AttributeType.Text}
-                value={content.name}
-                onChange={(value) => assignContent({ on: value })}
-              />
-            </Form.Row>
+            <WmsFormGroup
+              groupAs={Col}
+              name="on"
+              title="On"
+              type={AttributeType.Text}
+              value={content.name}
+              onChange={(value) => assignContent({ on: value })}
+            />
           </Col>
           <Col>
-            <Form.Row>
-              <WmsFormGroup
-                groupAs={Col}
-                name="action"
-                title="Action"
-                type={AttributeType.Text}
-                value={content.name}
-                onChange={(value) => assignContent({ action: value })}
-              />
-            </Form.Row>
+            <WmsFormGroup
+              groupAs={Col}
+              name="action"
+              title="Action"
+              type={AttributeType.Text}
+              value={content.name}
+              onChange={(value) => assignContent({ action: value })}
+            />
           </Col>
           <Col>
-            <Form.Row>
-              <WmsFormGroup
-                groupAs={Col}
-                name="name"
-                title="Name"
-                type={AttributeType.Text}
-                value={content.name}
-                onChange={(value) => assignContent({ name: value })}
-                disabled
-              />
-            </Form.Row>
+            <WmsFormGroup
+              groupAs={Col}
+              name="name"
+              title="Name"
+              type={AttributeType.Text}
+              value={content.name}
+              onChange={(value) => assignContent({ name: value })}
+              disabled
+            />
           </Col>
         </Row>
         <Row>
           <Col>
-            <Form.Row>
-              <WmsFormGroup
-                groupAs={Col}
-                name="description"
-                title="Description"
-                type={AttributeType.Text}
-                value={content.name}
-                onChange={(value) => assignContent({ name: value })}
-              />
-            </Form.Row>
+            <WmsFormGroup
+              groupAs={Col}
+              name="description"
+              title="Description"
+              type={AttributeType.Text}
+              value={content.name}
+              onChange={(value) => assignContent({ name: value })}
+            />
           </Col>
         </Row>
       </Form>

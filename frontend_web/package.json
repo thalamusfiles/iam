@@ -20,7 +20,7 @@
     "@types/react-datepicker": "^3.1.8",
     "@types/react-dom": "18.0.11",
     "axios": "^1.3.4",
-    "bootstrap": "^4.5.2",
+    "bootstrap": "^5.2.3",
     "classnames": "^2.3.2",
     "i18next": "^22.4.12",
     "i18next-browser-languagedetector": "^7.0.1",
@@ -32,12 +32,12 @@
     "numeral": "^2.0.6",
     "qs": "^6.11.1",
     "react": "18.2.0",
-    "react-bootstrap": "^1.5.0",
+    "react-bootstrap": "^2.7.2",
     "react-datepicker": "^3.6.0",
     "react-dom": "18.2.0",
     "react-i18next": "^12.2.0",
     "react-router-dom": "^6.9.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "5.0.1",
     "typescript": "4.6.3"
   },
   "devDependencies": {
@@ -61,7 +61,7 @@
     "mini-css-extract-plugin": "^0.9.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "prettier": "2.8.4",
-    "sass-loader": "^8.0.2",
+    "sass-loader": "^13.2.1",
     "ts-loader": "^8.0.12",
     "webpack-cli": "^3.3.11"
   },

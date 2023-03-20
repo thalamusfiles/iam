@@ -14,15 +14,14 @@ const SideBarHome: React.FC = () => {
   const __ = useI18N();
   return (
     <div className="sidebar fixed">
-      <Form inline>
+      <Form>
         <Row>
           <Col>
             <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text>
-                  <FontAwesomeIcon size="xs" icon={'search'} />
-                </InputGroup.Text>
-              </InputGroup.Prepend>
+              <InputGroup.Text>
+                <FontAwesomeIcon size="xs" icon={'search'} />
+              </InputGroup.Text>
+
               <FormControl size="sm" type="text" placeholder={__('menu.search')} />
             </InputGroup>
           </Col>

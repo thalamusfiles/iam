@@ -110,7 +110,7 @@ export const FastFilters: React.FC<{ inSide?: boolean }> = ({ inSide }) => {
     <Container className="mt-5">
       <Row>
         <Col sm={12} md={{ span: span, offset }}>
-          <Button block variant="outline-primary" onClick={() => ctrl!.applyFilters()}>
+          <Button variant="outline-primary" onClick={() => ctrl!.applyFilters()}>
             {length > 2 || hasMultiple ? __('menu.all') : __('menu.both')}
           </Button>
           <br />
@@ -120,12 +120,12 @@ export const FastFilters: React.FC<{ inSide?: boolean }> = ({ inSide }) => {
 
         {hasCustom && (
           <Col md={custoSpan}>
-            <Button variant="outline-info" block disabled>
+            <Button variant="outline-info" disabled>
               {__('menu.customlists')}
             </Button>
             <br />
             {ctrl!.customListDefs.map((customList, key) => (
-              <Button block variant="outline-secondary" key={key} onClick={() => ctrl!.toggleCustomList(customList)}>
+              <Button variant="outline-secondary" key={key} onClick={() => ctrl!.toggleCustomList(customList)}>
                 {customList.name}
               </Button>
             ))}
@@ -162,7 +162,7 @@ export const CascadeFilterGroup: React.FC<{ ctrl: CommonListCtx; filters: Filter
 
 export const FilterButton: React.FC<{ ctrl: CommonListCtx; filter: FilterDef }> = ({ ctrl, filter }) => {
   return (
-    <Button block variant="secondary" onClick={() => ctrl!.addFilter(filter)}>
+    <Button variant="secondary" onClick={() => ctrl!.addFilter(filter)}>
       {filter.title}
     </Button>
   );

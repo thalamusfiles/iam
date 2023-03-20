@@ -24,7 +24,7 @@ export class PersonListStore extends CommonListCtx {
 
   constructor(...props: any) {
     super(new PersonGraphQLDatasource(), false);
-    
+
     makeObservable(this);
   }
 }

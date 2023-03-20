@@ -3,7 +3,7 @@ import { AttributeType } from '../../../../commons/attribute-type';
 export type ColumnSeparator = 'separator';
 export const TableHeadSeparator = 'separator';
 
-export interface TableHead /*WmsFieldMetadata*/ {
+export interface TableHead {
   colname: string;
   type: AttributeType | ColumnSeparator | TableHead[];
   title: string;

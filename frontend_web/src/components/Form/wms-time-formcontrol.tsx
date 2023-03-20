@@ -1,11 +1,11 @@
-import { WmsFormProps } from './index';
+import enUS from 'date-fns/locale/en-US';
+import ptBR from 'date-fns/locale/pt-BR';
+import i18next from 'i18next';
+import moment from 'moment';
 import React from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
-import ptBR from 'date-fns/locale/pt-BR';
-import enUS from 'date-fns/locale/en-US';
-import i18next from 'i18next';
+import { WmsFormProps } from './index';
 
 registerLocale('pt-BR', ptBR);
 registerLocale('en-US', enUS);

@@ -29,28 +29,24 @@ const AboutComp: React.FC = () => {
       <Form>
         <Row>
           <Col>
-            <Form.Row>
-              <WmsFormGroup
-                groupAs={Col}
-                name="name"
-                title="Name"
-                type={AttributeType.Text}
-                value={content.name}
-                onChange={(value) => assignContent({ name: value })}
-              />
-            </Form.Row>
+            <WmsFormGroup
+              groupAs={Col}
+              name="name"
+              title="Name"
+              type={AttributeType.Text}
+              value={content.name}
+              onChange={(value) => assignContent({ name: value })}
+            />
           </Col>
           <Col>
-            <Form.Row>
-              <WmsFormGroup
-                groupAs={Col}
-                name="description"
-                title="Description"
-                type={AttributeType.Text}
-                value={content.name}
-                onChange={(value) => assignContent({ name: value })}
-              />
-            </Form.Row>
+            <WmsFormGroup
+              groupAs={Col}
+              name="description"
+              title="Description"
+              type={AttributeType.Text}
+              value={content.name}
+              onChange={(value) => assignContent({ name: value })}
+            />
           </Col>
         </Row>
       </Form>

@@ -135,13 +135,13 @@ const RegisterPage: React.FC = () => {
                 <Card.Footer>
                   <Row>
                     <Col sm={6}>
-                      <Button size="sm" variant="ligth" onClick={toLogin} block>
+                      <Button size="sm" variant="ligth" onClick={toLogin}>
                         {__('register.action.tologin')}
                       </Button>
                     </Col>
                     <Col></Col>
                     <Col sm={5}>
-                      <Button variant="primary" onClick={toRegister} block>
+                      <Button variant="primary" onClick={toRegister}>
                         <FontAwesomeIcon icon={IconsDef.save} /> {__('login.action.register')}
                       </Button>
                     </Col>
@@ -154,6 +154,6 @@ const RegisterPage: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default RegisterPage;

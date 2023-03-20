@@ -9,7 +9,6 @@ import { addPagePlugin, TargetForm } from '../../../../../commons/plugin.compone
 const AuthorizationComp: React.FC = () => {
   //const ctrl = useCommonEditStore<PersonEditStore>();
   const __ = useI18N();
-
   //const { content, assignContent } = ctrl;
 
   return (

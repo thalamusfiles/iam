@@ -123,13 +123,13 @@ const LoginPage: React.FC = () => {
                 <Card.Footer>
                   <Row>
                     <Col sm={4}>
-                      <Button variant="ligth" onClick={toRegister} block>
+                      <Button variant="ligth" onClick={toRegister}>
                         {__('login.action.register')}
                       </Button>
                     </Col>
                     <Col></Col>
                     <Col sm={4}>
-                      <Button variant="primary" onClick={toLogin} block>
+                      <Button variant="primary" onClick={toLogin}>
                         <FontAwesomeIcon icon={IconsDef.login} /> {__('login.action.login')}
                       </Button>
                     </Col>

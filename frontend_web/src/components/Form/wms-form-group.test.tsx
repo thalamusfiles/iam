@@ -1,8 +1,7 @@
-import React from 'react';
-import {WmsFormGroup} from './index';
-import { AttributeType } from '../../commons/attribute-type';
 import { mount } from 'enzyme';
 import moment from 'moment';
+import { AttributeType } from '../../commons/attribute-type';
+import { WmsFormGroup } from './index';
 
 describe('WmsFormGroup tests', () => {
   formControlTester({
@@ -67,41 +66,37 @@ type FormControlTesterParams = {
   type: AttributeType;
   value: any;
   changedValue: any;
-}
+};
 
-function formControlTester(params: FormControlTesterParams){
+function formControlTester(params: FormControlTesterParams) {
   it(`/ ${params.title}`, () => {
-
     //arrange
     let displayValue = params.value;
     let component = mount(
-      <WmsFormGroup name="test" title="Test" type={params.type}
-          value={params.value}
-          onChange={(value) => displayValue = value}
-      />
+      <WmsFormGroup name="test" title="Test" type={params.type} value={params.value} onChange={(value) => (displayValue = value)} />,
     );
 
     //act
-    component.find(`input[name="test"]`).simulate('change', { target: { value: params.changedValue}});
+    component.find(`input[name="test"]`).simulate('change', { target: { value: params.changedValue } });
 
     //assert
     expect(displayValue).toStrictEqual(params.changedValue);
   });
 }
 
-function formControlWithPickerTester(params: FormControlTesterParams){
+function formControlWithPickerTester(params: FormControlTesterParams) {
   it(`/ ${params.title}`, () => {
-
     //arrange
     let displayValue = params.value;
     let component = mount(
-      <WmsFormGroup name="test" title="Test" type={params.type}
-          value={params.value}
-          onChange={(value) => displayValue = value}
-          options={[
-            { value: params.changedValue, columns: [params.changedValue] }
-          ]}
-      />
+      <WmsFormGroup
+        name="test"
+        title="Test"
+        type={params.type}
+        value={params.value}
+        onChange={(value) => (displayValue = value)}
+        options={[{ value: params.changedValue, columns: [params.changedValue] }]}
+      />,
     );
 
     //act

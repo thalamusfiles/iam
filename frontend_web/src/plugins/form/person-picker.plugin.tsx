@@ -1,5 +1,4 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { PickersNames } from '../../commons/attribute-type';
@@ -31,21 +30,12 @@ export class PersonPickerPlugin extends WmsFormComponent {
     return (
       <>
         <InputGroup>
-          <Form.Control
-            autoComplete="off"
-            as="select"
-            custom
-            name={this.props.name}
-            value={this.props.value}
-            onMouseDown={() => this.pickerRef.show()}
-          >
+          <Form.Control autoComplete="off" as="select" name={this.props.name} value={this.props.value} onMouseDown={() => this.pickerRef.show()}>
             <option>{option}</option>
           </Form.Control>
-          <InputGroup.Append onClick={this.viewClick}>
-            <InputGroup.Text>
-              <FontAwesomeIcon color={'gray'} size="xs" icon={'eye'} />
-            </InputGroup.Text>
-          </InputGroup.Append>
+          <InputGroup.Text onClick={this.viewClick}>
+            <FontAwesomeIcon color={'gray'} size="xs" icon={'eye'} />
+          </InputGroup.Text>
         </InputGroup>
         <PersonPicker
           onSel={(value: any | null, row: any, event: any) => this.props.onChange && this.props.onChange(value, row, event)}
@@ -66,15 +56,13 @@ export class PersonPicker extends WmsPicker<{ filters: any }> {
     filters.name = `%${this.state.search}%`;
     filters.take = Math.floor(defaultPageSize / 2);
 
-    new PersonCRUDDatasource()
-      .findAll(filters)
-      .then((response) => {
-        const options = (response).map((result) => ({
-          value: result,
-          columns: [result.name],
-        }));
+    new PersonCRUDDatasource().findAll(filters).then((response) => {
+      const options = response.map((result) => ({
+        value: result,
+        columns: [result.name],
+      }));
 
-        this.setOptions(options);
-      });
+      this.setOptions(options);
+    });
   };
 }

@@ -1,10 +1,9 @@
-import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { author, version } from '../../../package.json';
 
-function Footer() {
+const Footer: React.FC = () => {
   return (
     <Container fluid className="footer">
       <Row>
@@ -17,6 +16,6 @@ function Footer() {
       </Row>
     </Container>
   );
-}
+};
 
 export default Footer;

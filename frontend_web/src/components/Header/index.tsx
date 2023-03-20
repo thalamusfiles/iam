@@ -54,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({ icon, title, fixed, searchBar }) => {
         </Nav>
 
         {searchBar && (
-          <Form inline className="mr-auto">
+          <Form className="mr-auto">
             <FormControl type="text" placeholder={__('menu.search')} className="mr-sm-2" />
           </Form>
         )}

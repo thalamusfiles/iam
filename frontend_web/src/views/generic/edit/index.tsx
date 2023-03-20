@@ -42,13 +42,13 @@ const GenericEdit: React.FC<GenericEditProps> = ({ sideBarSpan, inModal }) => {
       <Row>
         <Col></Col>
         <Col md={{ span: 2 }}>
-          <Button block variant="outline-secondary" onClick={ctrl!.onBack}>
+          <Button variant="outline-secondary" onClick={ctrl!.onBack}>
             <FontAwesomeIcon icon={IconsDef.goBack} /> {inModal ? __('actions.close') : __('actions.back')}
           </Button>
         </Col>
         {(!inModal || show_save) && (
           <Col md={{ span: 2 }}>
-            <Button block variant="success" onClick={ctrl!.onSave}>
+            <Button variant="success" onClick={ctrl!.onSave}>
               <FontAwesomeIcon icon={IconsDef.save} /> {__('actions.save')}
             </Button>
           </Col>

@@ -161,9 +161,7 @@ export const CellComp: React.FC<{ cell: TableCellInfo | TableCellInfo[] | TableG
     );
   } else if ((props.cell as TableCellInfo).colorName) {
     return (
-      <Badge variant={(props.cell as TableCellInfo).colorName}>
-        {(props.cell as TableCellInfo).description || (props.cell as TableCellInfo).value}
-      </Badge>
+      <Badge bg={(props.cell as TableCellInfo).colorName}>{(props.cell as TableCellInfo).description || (props.cell as TableCellInfo).value}</Badge>
     );
   } else {
     return (props.cell as TableCellInfo).description || (props.cell as TableCellInfo).value;
