@@ -24,10 +24,10 @@ export function historyPush(
   switch (owner as RoutesName) {
     // PUBLIC
     case 'login':
-      push = '/public/:region/:app/login'.replace(':region', options.region).replace(':app', options.app);
+      push = '/public/app/:app/login'.replace(':region', options.region).replace(':app', options.app);
       break;
     case 'register':
-      push = '/public/:region/:app/register'.replace(':region', options.region).replace(':app', options.app);
+      push = '/public/app/:app/register'.replace(':region', options.region).replace(':app', options.app);
       break;
     // ACCOUNT
     case 'home_account':

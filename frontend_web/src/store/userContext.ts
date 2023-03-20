@@ -5,6 +5,7 @@ import { localStorageDef } from '../commons/consts';
 import '../commons/i18';
 import { historyPush } from '../commons/route';
 import Storage from '../commons/storage';
+import { AuthDataSource } from '../datasources/auth';
 
 export class Ctx {
   constructor() {
@@ -23,15 +24,11 @@ export class Ctx {
 
   //Realiza autenticação do usuário
   @action login(username: string, password: string): Promise<any> {
-    this.saveUser({ name: 'Test user', id: '', username: 'testuser', email: 'teste@email.com.br' }, 'token');
-
-    return Promise.resolve();
-
-    /*return new AuthDataSource().login(username, password).then((response) => {
+    return new AuthDataSource().login(username, password).then((response) => {
       this.saveUser(response.data.user, response.data.access_token);
       historyPush('home');
       return response;
-    });*/
+    });
   }
   @action logout() {
     this.saveUser({}, null);

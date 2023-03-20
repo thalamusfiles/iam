@@ -4,6 +4,7 @@ import { createRoutesFromElements, Navigate, Route, RouterProvider } from 'react
 import './assets/fontawasome.library';
 import './assets/theme.scss';
 import { createBaseRouter, PrivateRoutes } from './commons/route';
+import iamConfig from './config/iam.config';
 import * as serviceWorker from './serviceWorker';
 import UserCtxInstance, { UserProvider } from './store/userContext';
 import { MgtModalRoutes } from './views/mgt/routes';
@@ -15,14 +16,17 @@ const Account = React.lazy(() => import('./views/account'));
 const Mgt = React.lazy(() => import('./views/mgt'));
 const InModal = React.lazy(() => import('./components/Modal').then((module) => ({ default: module.InModal })));
 
+const accountRoute = `/public/app/${iamConfig.MAIN_APP_IAM_ID}/login`;
+const mgtRoute = `/public/app/${iamConfig.MAIN_APP_IAM_MGT_ID}/login`;
+
 const router = createBaseRouter(
   createRoutesFromElements(
     <>
-      <Route path="/public/:region/:app/login" element={<LoginPage />} index />
-      <Route path="/public/:region/:app/register" element={<RegisterPage />} />
+      <Route path="/public/app/:app/login" element={<LoginPage />} index />
+      <Route path="/public/app/:app/register" element={<RegisterPage />} />
 
-      <Route path="/account/*" element={<PrivateRoutes element={<Account />} redirect="/public/global/root/login" />} />
-      <Route path="/mgt/*" element={<PrivateRoutes element={<Mgt />} redirect="/public/global/root/login" />} />
+      <Route path="/account/*" element={<PrivateRoutes element={<Account />} redirect={accountRoute} />} />
+      <Route path="/mgt/*" element={<PrivateRoutes element={<Mgt />} redirect={mgtRoute} />} />
 
       <Route
         path={'*/modal'}
@@ -33,7 +37,7 @@ const router = createBaseRouter(
           </InModal>
         }
       />
-      <Route path="/" element={<Navigate to={'/public/global/root/login'} replace />} />
+      <Route path="/" element={<Navigate to={accountRoute} replace />} />
     </>,
   ),
 );

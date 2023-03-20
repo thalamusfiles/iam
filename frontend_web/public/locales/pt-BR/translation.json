@@ -4,6 +4,7 @@
     "subtitle":"Gerenciamento de identidades e acesso.",
     "cardindo":"Informe seu usuário e senha para entrar no sistema",
     "system": "Sistema",
+    "system-info": "Após realizar o login você será redirecionado para a aplicação.",
     "region": "Região",
     "username": "Usuário, code ou e-mail",
     "password": "Senha",

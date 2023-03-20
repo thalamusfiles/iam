@@ -4,6 +4,7 @@
     "subtitle":"Identity and Access Management.",
     "cardindo":"Type your username and password to enter the system.",
     "system": "System",
+    "system-info": "After login, you will be redirected to the application.",
     "region": "Region",
     "username": "User, code or e-mail",
     "password": "Password",
