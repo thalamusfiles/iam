@@ -2,7 +2,7 @@
   "name": "iam-consumer",
   "version": "0.1.0",
   "description": "Consumidor da api Thalamus IAM",
-  "main": "dist/index.ts",
+  "main": "dist/index.js",
   "author": "Thalamus Digital",
   "private": false,
   "engines": {
@@ -17,7 +17,7 @@
     "prettier": "2.8.5"
   },
   "scripts": {
-    "build": "node_modules/typescript/bin/tsc tsconfig.json"
+    "build": "tsc "
   },
   "browserslist": {
     "production": [

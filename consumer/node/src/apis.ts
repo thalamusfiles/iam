@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { EndpointsDef } from './endpoints';
+import { configureEndpoint, EndpointsDef } from './endpoints';
 
 /**
  * Default Headers
@@ -42,4 +42,10 @@ const setAuthorizationToken = (newToken: string): void => {
   token = newToken;
 };
 
-export { ApiMGT, ApiAuth, initApis, setAuthorizationToken };
+const configureConsumer = (baseUrl?: string, basePort?: string): void => {
+  configureEndpoint(baseUrl, basePort);
+  initApis();
+};
+
+
+export { ApiMGT, ApiAuth, configureConsumer, setAuthorizationToken };
