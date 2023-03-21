@@ -2,16 +2,13 @@
   "compilerOptions": {
     "target": "ES5",
     "lib": ["ES5"],
-    "module": "CommonJS",
+    "module": "ESNext",
     "moduleResolution": "node",
-    "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "resolveJsonModule": true,
     "isolatedModules": true,
     "removeComments": true,
     "sourceMap": true,
@@ -19,7 +16,10 @@
     "rootDir": "src",
     "outDir": "dist",
   },
+  "exclude": [
+    "node_modules"
+  ],
   "include": [
-    "src/*"
+    "src/**/*"
   ]
 }

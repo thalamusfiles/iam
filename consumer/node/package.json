@@ -17,7 +17,7 @@
     "prettier": "2.8.5"
   },
   "scripts": {
-    "build": "node_modules/typescript/bin/tsc src/index.ts"
+    "build": "node_modules/typescript/bin/tsc tsconfig.json"
   },
   "browserslist": {
     "production": [
