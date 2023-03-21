@@ -1,14 +1,13 @@
+import { PersonCRUDDatasource } from '@thalamus/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { useParams } from 'react-router-dom';
 import { TargetForm } from '../../../../commons/plugin.component';
 import { historyPush } from '../../../../commons/route';
 import { notify } from '../../../../components/Notification';
-import { PersonCRUDDatasource } from '../../../../datasources/apicrud';
-import { CRUDInterface } from '../../../../datasources/apicrud/api';
 import { CommonEditCtx } from '../../../generic/edit/ctrl';
 
 export class PersonEditStore extends CommonEditCtx {
-  datasource: CRUDInterface = new PersonCRUDDatasource();
+  datasource = new PersonCRUDDatasource();
 
   //Conteudo da tela
   @observable content: any = {};

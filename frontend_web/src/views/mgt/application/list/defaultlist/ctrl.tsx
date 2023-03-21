@@ -1,7 +1,6 @@
 import { makeObservable } from 'mobx';
 import { AttributeType } from '../../../../../commons/attribute-type';
 import { SortOrder } from '../../../../../commons/enums/sort-order.enum';
-import { ApplicationGraphQLDatasource } from '../../../../../datasources/apigraphql';
 import { CommonListCtx } from '../../../../generic/list/ctrl';
 import { ListDefinition } from '../../../../generic/list/types/ListDefinition';
 
@@ -24,7 +23,7 @@ export class ApplicationListStore extends CommonListCtx {
   };
 
   constructor() {
-    super(new ApplicationGraphQLDatasource(), false);
+    super({}, false);
     
     makeObservable(this);
   }

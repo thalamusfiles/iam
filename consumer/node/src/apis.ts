@@ -11,26 +11,35 @@ axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
  * Intercepta todas as requisições
  * @param config
  */
-/*const requestInterceptors = (config: any) => {
-  const token = Storage.getItem(localStorageDef.tokenKey);
+let token = '';
+const requestInterceptors = (config: any) => {
   if (token) config.headers.Authorization = 'Bearer ' + token;
   return config;
-};*/
+};
 
 const axiosStart = (config: AxiosRequestConfig): AxiosInstance => {
   const api = axios.create(config);
-  //api.interceptors.request.use(requestInterceptors);
+  api.interceptors.request.use(requestInterceptors);
   return api;
 };
 
-const ApiMGT = axiosStart({
-  baseURL: EndpointsDef.apiMGT,
-  timeout: EndpointsDef.timeout,
-});
+let ApiMGT: AxiosInstance;
+let ApiAuth: AxiosInstance;
 
-const ApiAuth = axiosStart({
-  baseURL: EndpointsDef.apiAuth,
-  timeout: EndpointsDef.timeout,
-});
+const initApis = () => {
+  ApiMGT = axiosStart({
+    baseURL: EndpointsDef.apiMGT!,
+    timeout: EndpointsDef.timeout,
+  });
 
-export { ApiMGT, ApiAuth };
+  ApiAuth = axiosStart({
+    baseURL: EndpointsDef.apiAuth!,
+    timeout: EndpointsDef.timeout,
+  });
+};
+
+const setAuthorizationToken = (newToken: string): void => {
+  token = newToken;
+};
+
+export { ApiMGT, ApiAuth, initApis, setAuthorizationToken };

@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { PersonCRUDDatasource } from '@thalamus/iam-consumer';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { PickersNames } from '../../commons/attribute-type';
@@ -6,7 +7,6 @@ import { defaultPageSize } from '../../commons/consts';
 import { WmsFormComponent, WmsFormPlugin } from '../../commons/plugin.component';
 import { historyPush } from '../../commons/route';
 import { WmsPicker } from '../../components/Form/wms-picker';
-import { PersonCRUDDatasource } from '../../datasources/apicrud';
 
 @WmsFormPlugin({
   name: PickersNames.person,
@@ -56,8 +56,8 @@ export class PersonPicker extends WmsPicker<{ filters: any }> {
     filters.name = `%${this.state.search}%`;
     filters.take = Math.floor(defaultPageSize / 2);
 
-    new PersonCRUDDatasource().findAll(filters).then((response) => {
-      const options = response.map((result) => ({
+    new PersonCRUDDatasource().findAll(filters).then((response: any) => {
+      const options = response.map((result: any) => ({
         value: result,
         columns: [result.name],
       }));

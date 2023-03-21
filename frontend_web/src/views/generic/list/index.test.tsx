@@ -3,7 +3,6 @@ import { mount, shallow } from 'enzyme';
 import GenericList from '.';
 import { AttributeType } from '../../../commons/attribute-type';
 import { SortOrder } from '../../../commons/enums/sort-order.enum';
-import { GraphQLInterface } from '../../../datasources/apigraphql/api';
 import { CommonListContextProvider, CommonListCtx } from './ctrl';
 import { FilterDef } from './types/FilterDef';
 import { ListDefinition } from './types/ListDefinition';
@@ -180,7 +179,7 @@ const customListDef: ListDefinition = {
 /**
  * Mock data source teste
  */
-class TestGraphQLDatasourceMock implements GraphQLInterface {
+class TestGraphQLDatasourceMock {
   baseQuery: string = '/';
 
   //Retorna listagem com chave e valor das colunas.

@@ -9,7 +9,6 @@ import { historySearch, historySearchReplace } from '../../../commons/route';
 import { PartOf } from '../../../commons/types/PartOf';
 import { WmsFormEvent } from '../../../components/Form';
 import { notify } from '../../../components/Notification';
-import { GraphQLInterface } from '../../../datasources/apigraphql/api';
 import { FilterDef } from './types/FilterDef';
 import type { ListDefinition } from './types/ListDefinition';
 import { TableCell, TableCellInfo } from './types/TableCellInfo';
@@ -25,7 +24,7 @@ type CommonListStoreOptions = {
 };
 
 export class CommonListCtx {
-  constructor(private datasource: GraphQLInterface, makeObs = true) {
+  constructor(private datasource: any, makeObs = true) {
     //Modifica classe pra ser observável
     makeObservable(this);
   }
@@ -190,7 +189,7 @@ export class CommonListCtx {
         this.perPage,
         this.sort,
         this.sortOrder,
-        (c) => {
+        (c: any) => {
           this.cancelRequestCallback = c;
         },
       );

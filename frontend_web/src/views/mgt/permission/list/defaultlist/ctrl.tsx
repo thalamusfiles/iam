@@ -1,7 +1,6 @@
 import { makeObservable } from 'mobx';
 import { AttributeType } from '../../../../../commons/attribute-type';
 import { SortOrder } from '../../../../../commons/enums/sort-order.enum';
-import { PermissionGraphQLDatasource } from '../../../../../datasources/apigraphql';
 import { CommonListCtx } from '../../../../generic/list/ctrl';
 import { ListDefinition } from '../../../../generic/list/types/ListDefinition';
 
@@ -23,7 +22,7 @@ export class PermissionListStore extends CommonListCtx {
   };
 
   constructor() {
-    super(new PermissionGraphQLDatasource(), false);
+    super({}, false);
     
     makeObservable(this);
   }

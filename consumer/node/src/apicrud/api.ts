@@ -1,4 +1,4 @@
-import { ApiCRUD } from '../apis';
+import { ApiMGT } from '../apis';
 import { EntityProps } from './types/entity-props';
 
 type EntityPropsOptions = {
@@ -21,7 +21,7 @@ export abstract class CRUDDatasource implements CRUDInterface {
 
   findAll(options?: { relations?: [] } | any) {
     //TODO: Criar método genérico de consulta de listagem
-    return ApiCRUD.get<any[]>(this.endpoint, {
+    return ApiMGT.get<any[]>(this.endpoint, {
       params: {
         ...options,
       },
@@ -29,7 +29,7 @@ export abstract class CRUDDatasource implements CRUDInterface {
   }
 
   findById(id: number, options?: { relations: [] }) {
-    return ApiCRUD.get<any>(this.endpoint + '/' + id, {
+    return ApiMGT.get<any>(this.endpoint + '/' + id, {
       params: {
         relations: options?.relations,
       },
@@ -37,18 +37,18 @@ export abstract class CRUDDatasource implements CRUDInterface {
   }
 
   create(entity: any, options?: EntityPropsOptions) {
-    return ApiCRUD.post<EntityProps<any>>(this.endpoint, { entity, options }).then((axios) => axios.data);
+    return ApiMGT.post<EntityProps<any>>(this.endpoint, { entity, options }).then((axios) => axios.data);
   }
 
   update(id: number, entity: any, options?: EntityPropsOptions) {
-    return ApiCRUD.put<EntityProps<any>>(this.endpoint + '/' + id, { entity, options }).then((axios) => axios.data);
+    return ApiMGT.put<EntityProps<any>>(this.endpoint + '/' + id, { entity, options }).then((axios) => axios.data);
   }
 
   updateAll(entities: any[], options?: EntityPropsOptions) {
-    return ApiCRUD.put<EntityProps<any>[]>(this.endpoint, { entities, options }).then((axios) => axios.data);
+    return ApiMGT.put<EntityProps<any>[]>(this.endpoint, { entities, options }).then((axios) => axios.data);
   }
 
   remove(id: number) {
-    return ApiCRUD.delete<void>(this.endpoint + '/' + id).then((axios) => axios.data);
+    return ApiMGT.delete<void>(this.endpoint + '/' + id).then((axios) => axios.data);
   }
 }

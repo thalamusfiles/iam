@@ -1,7 +1,6 @@
 import { makeObservable } from 'mobx';
 import { AttributeType } from '../../../../../commons/attribute-type';
 import { SortOrder } from '../../../../../commons/enums/sort-order.enum';
-import { RoleGraphQLDatasource } from '../../../../../datasources/apigraphql';
 import { CommonListCtx } from '../../../../generic/list/ctrl';
 import { ListDefinition } from '../../../../generic/list/types/ListDefinition';
 
@@ -21,7 +20,7 @@ export class RoleListStore extends CommonListCtx {
   };
 
   constructor() {
-    super(new RoleGraphQLDatasource(), false);
+    super({}, false);
 
     makeObservable(this);
   }

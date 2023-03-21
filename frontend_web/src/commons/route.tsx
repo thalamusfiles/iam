@@ -2,7 +2,6 @@ import { IconName } from '@fortawesome/fontawesome-svg-core';
 import type { Router as RemixRouter } from '@remix-run/router';
 import qs from 'qs';
 import { createBrowserRouter, Navigate, RouteObject } from 'react-router-dom';
-import { EndpointsDef } from '../datasources/endpoints';
 import { RoutesName } from '../views/routes-name';
 import { localStorageDef } from './consts';
 import Storage from './storage';
@@ -97,7 +96,7 @@ export function historyPush(
     if (options.absolute) {
       window.open(push);
     } else {
-      window.open(`${EndpointsDef.url}:${EndpointsDef.port}${push}`);
+      window.open(`${push}`);
     }
   } else if (options?.inModal) {
     const search = window.location.search + qs.stringify(options.search);

@@ -1,14 +1,13 @@
+import { RegionCRUDDatasource } from '@thalamus/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { useParams } from 'react-router-dom';
 import { TargetForm } from '../../../../commons/plugin.component';
 import { historyPush } from '../../../../commons/route';
 import { notify } from '../../../../components/Notification';
-import { RegionCRUDDatasource } from '../../../../datasources/apicrud';
-import { CRUDInterface } from '../../../../datasources/apicrud/api';
 import { CommonEditCtx } from '../../../generic/edit/ctrl';
 
 export class RegionEditStore extends CommonEditCtx {
-  datasource: CRUDInterface = new RegionCRUDDatasource();
+  datasource = new RegionCRUDDatasource();
 
   //Conteudo da tela
   @observable content: any = {};
@@ -20,7 +19,7 @@ export class RegionEditStore extends CommonEditCtx {
 
   constructor() {
     super(TargetForm.region_edit, false);
-    
+
     makeObservable(this);
   }
 
