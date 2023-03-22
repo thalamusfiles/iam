@@ -1,4 +1,4 @@
-import { EndpointsDef } from '../endpoints';
+import Endpoints from '../endpoints';
 import { CRUDDatasource } from './api';
 
 /**
@@ -6,7 +6,7 @@ import { CRUDDatasource } from './api';
  */
 export class PersonCRUDDatasource extends CRUDDatasource {
   constructor() {
-    super(EndpointsDef.apiMGTPerson);
+    super(Endpoints.apiMGTPerson);
   }
 }
 
@@ -15,7 +15,7 @@ export class PersonCRUDDatasource extends CRUDDatasource {
  */
 export class RoleCRUDDatasource extends CRUDDatasource {
   constructor() {
-    super(EndpointsDef.apiMGTRole);
+    super(Endpoints.apiMGTRole);
   }
 }
 
@@ -24,7 +24,7 @@ export class RoleCRUDDatasource extends CRUDDatasource {
  */
 export class PermissionCRUDDatasource extends CRUDDatasource {
   constructor() {
-    super(EndpointsDef.apiMGTPermission);
+    super(Endpoints.apiMGTPermission);
   }
 }
 
@@ -33,7 +33,7 @@ export class PermissionCRUDDatasource extends CRUDDatasource {
  */
 export class ApplicationCRUDDatasource extends CRUDDatasource {
   constructor() {
-    super(EndpointsDef.apiMGTApplication);
+    super(Endpoints.apiMGTApplication);
   }
 }
 
@@ -43,6 +43,6 @@ export class ApplicationCRUDDatasource extends CRUDDatasource {
  */
 export class RegionCRUDDatasource extends CRUDDatasource {
   constructor() {
-    super(EndpointsDef.apiMGTRegion);
+    super(Endpoints.apiMGTRegion);
   }
 }

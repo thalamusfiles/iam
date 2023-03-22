@@ -1,51 +1,51 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { configureEndpoint, EndpointsDef } from './endpoints';
+import Endpoint from './endpoints';
 
-/**
- * Default Headers
- */
-axios.defaults.headers.common['Access-Control-Allow-Credentials'] = true;
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+class IamApisConfigure {
+  token = '';
+  ApiMGT: AxiosInstance;
+  ApiAuth: AxiosInstance;
 
-/**
- * Intercepta todas as requisições
- * @param config
- */
-let token = '';
-const requestInterceptors = (config: any) => {
-  if (token) config.headers.Authorization = 'Bearer ' + token;
-  return config;
-};
+  /**
+   * Intercepta todas as requisições
+   * @param config
+   */
+  requestInterceptors = (config: any) => {
+    if (this.token) config.headers.Authorization = 'Bearer ' + this.token;
+    return config;
+  };
 
-const axiosStart = (config: AxiosRequestConfig): AxiosInstance => {
-  const api = axios.create(config);
-  api.interceptors.request.use(requestInterceptors);
-  return api;
-};
+  axiosStart = (config: AxiosRequestConfig): AxiosInstance => {
+    // Default Headers
+    axios.defaults.headers.common['Access-Control-Allow-Credentials'] = true;
+    axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
-let ApiMGT: AxiosInstance;
-let ApiAuth: AxiosInstance;
+    const api = axios.create(config);
+    api.interceptors.request.use(this.requestInterceptors);
+    return api;
+  };
 
-const initApis = () => {
-  ApiMGT = axiosStart({
-    baseURL: EndpointsDef.apiMGT!,
-    timeout: EndpointsDef.timeout,
-  });
+  initApis = () => {
+    this.ApiMGT = this.axiosStart({
+      baseURL: Endpoint.apiMGT!,
+      timeout: Endpoint.timeout,
+    });
 
-  ApiAuth = axiosStart({
-    baseURL: EndpointsDef.apiAuth!,
-    timeout: EndpointsDef.timeout,
-  });
-};
+    this.ApiAuth = this.axiosStart({
+      baseURL: Endpoint.apiAuth!,
+      timeout: Endpoint.timeout,
+    });
+  };
 
-const setAuthorizationToken = (newToken: string): void => {
-  token = newToken;
-};
+  setGlobalAuthorizationToken = (newToken: string): void => {
+    this.token = newToken;
+  };
 
-const configureConsumer = (baseUrl?: string, basePort?: string): void => {
-  configureEndpoint(baseUrl, basePort);
-  initApis();
-};
+  configureConsumer = (baseUrl?: string, basePort?: string): void => {
+    Endpoint.configureEndpoint(baseUrl, basePort);
+    this.initApis();
+  };
+}
 
-
-export { ApiMGT, ApiAuth, configureConsumer, setAuthorizationToken };
+const Apis = new IamApisConfigure();
+export default Apis;

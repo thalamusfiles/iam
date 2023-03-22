@@ -43,6 +43,7 @@ const LoginPage: React.FC = () => {
         historyPush('home');
       })
       .catch((error) => {
+        console.log(error);
         setErros({
           username: 'User not found',
           password: 'Invalid pass',

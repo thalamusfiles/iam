@@ -1,5 +1,5 @@
-import { ApiAuth } from '../apis';
-import { EndpointsDef } from '../endpoints';
+import Apis from '../apis';
+import Endpoints from '../endpoints';
 
 type OauthFieldsDto = {
   cliente_id: string;
@@ -29,7 +29,7 @@ interface AuthDataSourceI {
 
 export class AuthDataSource implements AuthDataSourceI {
   async register({ name, username, password, password_confirmed }: RegisterDto, oauth: OauthFieldsDto): Promise<any> {
-    return await ApiAuth.post(`${EndpointsDef.apiAuthLogin}`, {
+    return await Apis.ApiAuth.post(`${Endpoints.apiAuthLogin}`, {
       name,
       username,
       password,
@@ -39,7 +39,7 @@ export class AuthDataSource implements AuthDataSourceI {
   }
 
   async login({ username, password }: LoginDto, oauth: OauthFieldsDto): Promise<any> {
-    return await ApiAuth.post(`${EndpointsDef.apiAuthLogin}`, {
+    return await Apis.ApiAuth.post(`${Endpoints.apiAuthLogin}`, {
       username,
       password,
       ...oauth,

@@ -1,5 +1,5 @@
 import { ApplicationCRUDDatasource, PermissionCRUDDatasource, PersonCRUDDatasource, RegionCRUDDatasource, RoleCRUDDatasource } from './apicrud';
-import { configureConsumer, setAuthorizationToken } from './apis';
+import Apis from './apis';
 import { AuthDataSource } from './auth';
 
 export {
@@ -9,6 +9,5 @@ export {
   PermissionCRUDDatasource,
   RegionCRUDDatasource,
   ApplicationCRUDDatasource,
-  configureConsumer,
-  setAuthorizationToken,
+  Apis as IamApisConfigure,
 };

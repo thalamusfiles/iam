@@ -1,3 +1,4 @@
+import { IamApisConfigure } from '@thalamus/iam-consumer';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createRoutesFromElements, Navigate, Route, RouterProvider } from 'react-router-dom';
@@ -18,6 +19,8 @@ const InModal = React.lazy(() => import('./components/Modal').then((module) => (
 
 const accountRoute = `/public/app/${iamConfig.MAIN_APP_IAM_ID}/login`;
 const mgtRoute = `/public/app/${iamConfig.MAIN_APP_IAM_MGT_ID}/login`;
+
+IamApisConfigure.configureConsumer(iamConfig.BASE_URL, iamConfig.BASE_PORT);
 
 const router = createBaseRouter(
   createRoutesFromElements(
