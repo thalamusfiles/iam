@@ -1,7 +1,5 @@
 const iamConfig = {
   PRODCTION_MODE: process.env.NODE_ENV === 'production',
-  BASE_URL: 'localhost',
-  BASE_PORT: '3000',
   // Região Principal
   MAIN_APP_IAM: 'iam',
   MAIN_APP_IAM_ID: '11111111-1111-1111-1111-111111111111',

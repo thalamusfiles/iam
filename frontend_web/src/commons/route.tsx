@@ -2,8 +2,8 @@ import { IconName } from '@fortawesome/fontawesome-svg-core';
 import type { Router as RemixRouter } from '@remix-run/router';
 import qs from 'qs';
 import { createBrowserRouter, Navigate, RouteObject } from 'react-router-dom';
-import { RoutesName } from '../views/routes-name';
 import { localStorageDef } from './consts';
+import { RoutesName } from './routes-name';
 import Storage from './storage';
 
 export type RouteDefinition = { title: string; icon?: IconName | Array<IconName>; path: string; component: any; index?: boolean };

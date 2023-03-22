@@ -1,21 +1,21 @@
 import Apis from '../apis';
 import Endpoints from '../endpoints';
 
-type OauthFieldsDto = {
+export type OauthFieldsDto = {
   cliente_id: string;
   response_type: string;
   redirect_uri: string;
   scope: string;
 };
 
-type RegisterDto = {
+export type RegisterDto = {
   name: string;
   username: string;
   password: string;
   password_confirmed: string;
 };
 
-type LoginDto = {
+export type LoginDto = {
   username: string;
   password: string;
 };

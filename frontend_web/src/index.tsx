@@ -1,49 +1,17 @@
-import { IamApisConfigure } from '@thalamus/iam-consumer';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createRoutesFromElements, Navigate, Route, RouterProvider } from 'react-router-dom';
+import { createRoutesFromElements, RouterProvider } from 'react-router-dom';
 import './assets/fontawasome.library';
 import './assets/theme.scss';
-import { createBaseRouter, PrivateRoutes } from './commons/route';
-import iamConfig from './config/iam.config';
+import { createBaseRouter } from './commons/route';
+import apiConfigure from './config/api.config';
 import * as serviceWorker from './serviceWorker';
 import UserCtxInstance, { UserProvider } from './store/userContext';
-import { MgtModalRoutes } from './views/mgt/routes';
+import routes from './views/routes';
 
-//Lazy Loading
-const LoginPage = React.lazy(() => import('./views/public/login'));
-const RegisterPage = React.lazy(() => import('./views/public/register'));
-const Account = React.lazy(() => import('./views/account'));
-const Mgt = React.lazy(() => import('./views/mgt'));
-const InModal = React.lazy(() => import('./components/Modal').then((module) => ({ default: module.InModal })));
+apiConfigure();
 
-const accountRoute = `/public/app/${iamConfig.MAIN_APP_IAM_ID}/login`;
-const mgtRoute = `/public/app/${iamConfig.MAIN_APP_IAM_MGT_ID}/login`;
-
-IamApisConfigure.configureConsumer(iamConfig.BASE_URL, iamConfig.BASE_PORT);
-
-const router = createBaseRouter(
-  createRoutesFromElements(
-    <>
-      <Route path="/public/app/:app/login" element={<LoginPage />} index />
-      <Route path="/public/app/:app/register" element={<RegisterPage />} />
-
-      <Route path="/account/*" element={<PrivateRoutes element={<Account />} redirect={accountRoute} />} />
-      <Route path="/mgt/*" element={<PrivateRoutes element={<Mgt />} redirect={mgtRoute} />} />
-
-      <Route
-        path={'*/modal'}
-        element={
-          <InModal>
-            {' '}
-            <MgtModalRoutes />{' '}
-          </InModal>
-        }
-      />
-      <Route path="/" element={<Navigate to={accountRoute} replace />} />
-    </>,
-  ),
-);
+const router = createBaseRouter(createRoutesFromElements(routes));
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
