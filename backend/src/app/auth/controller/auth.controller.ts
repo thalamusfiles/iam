@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Ip, Logger, Post, Req, Res, Session, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Ip, Logger, Post, Req, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { FormException } from '../../../types/form.exception';
 import { AuthService, LoginInfo } from '../service/auth.service';
 import { AuthRegisterNameUseCase } from '../usecase/auth-register-name.usecase';
@@ -189,6 +189,6 @@ export class AuthController {
   @Get('oauth2/token')
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   async oauth2Token(@Req() request: RequestInfo): Promise<string> {
-    return '';
+    return '' + request;
   }
 }

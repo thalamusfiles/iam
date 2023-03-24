@@ -12,6 +12,7 @@ export class LoginCtx {
   // Login
   @observable username = '';
   @observable password = '';
+  @observable erroMessage = '';
   @observable erros = { username: null as string | null, password: null as string | null };
 
   // Oauth
@@ -42,27 +43,21 @@ export class LoginCtx {
     }
   };
 
+  @action
   toLogin = () => {
-    UserCtxInstance.login(
-      //
-      this.username,
-      this.password,
-      {
-        scope: this.scope!,
-        cliente_id: this.app!,
-        redirect_uri: this.redirectTo!,
-      },
-    )
+    UserCtxInstance.login(this.username, this.password, {
+      scope: this.scope!,
+      cliente_id: this.app!,
+      redirect_uri: this.redirectTo || undefined,
+    })
       .then(() => {
         historyPush('home');
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((error: any) => {
+        const data = error.response.data;
 
-        this.erros = {
-          username: 'User not found',
-          password: 'Invalid pass',
-        };
+        this.erroMessage = data.message;
+        this.erros = data.fields;
       });
   };
 
@@ -71,6 +66,6 @@ export class LoginCtx {
   };
 }
 
-export const LoginContext = createContext<LoginCtx>({} as LoginCtx);
+export const LoginContext = createContext<LoginCtx>(new LoginCtx());
 export const LoginProvider = LoginContext.Provider;
 export const useLoginStore = (): LoginCtx => useContext(LoginContext);

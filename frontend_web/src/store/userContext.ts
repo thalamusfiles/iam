@@ -23,12 +23,12 @@ export class Ctx {
   }
 
   //Realiza autenticação do usuário
-  @action login(username: string, password: string, oauth: { scope: string; cliente_id: string; redirect_uri: string }): Promise<any> {
+  @action login(username: string, password: string, oauth: { scope: string; cliente_id: string; redirect_uri?: string }): Promise<any> {
     return new AuthDataSource()
       .login(
         { username, password },
         {
-          response_type: 'session',
+          response_type: 'cookie',
           scope: oauth.scope,
           cliente_id: oauth.cliente_id,
           redirect_uri: oauth.redirect_uri,
@@ -36,7 +36,6 @@ export class Ctx {
       )
       .then((response) => {
         this.saveUser(response.data.user, response.data.access_token);
-        historyPush('home');
         return response;
       });
   }

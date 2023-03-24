@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { autorun } from 'mobx';
 import { useEffect } from 'react';
+import { Alert } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -33,6 +34,8 @@ const LoginPageProvided: React.FC = () => {
 
   const { app } = useParams();
   const [searchParams] = useSearchParams();
+
+  console.log(ctrl.erroMessage);
 
   useEffect(
     () =>
@@ -72,6 +75,8 @@ const LoginPageProvided: React.FC = () => {
                         <Form.Text className="text-muted">{__('login.system-info')}</Form.Text>
                       </Form.Group>
                     )}
+
+                    {ctrl.erroMessage && <Alert variant="danger">{ctrl.erroMessage}</Alert>}
 
                     <Form.Group controlId="login.username">
                       <Form.Label>{__('login.username')}</Form.Label>

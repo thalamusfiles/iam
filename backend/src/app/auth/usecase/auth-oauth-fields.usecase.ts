@@ -4,7 +4,7 @@ import { ResponseTypes } from '../types/response-type';
 
 @Injectable({ scope: Scope.REQUEST })
 export class AuthRegisterOauthFieldsUseCase {
-  execute = async ({ cliente_id, response_type, redirect_uri, scope }: any): Promise<Array<FormExceptionError>> => {
+  execute = async ({ cliente_id, response_type, scope }: any): Promise<Array<FormExceptionError>> => {
     const erros = [];
     if (!cliente_id) {
       const error = 'O cliente_id é obrigatório.';
@@ -20,10 +20,6 @@ export class AuthRegisterOauthFieldsUseCase {
         const error = 'O response_type deve ser do tipo:' + ResponseTypes.join(' ');
         erros.push({ kind: 'response_type', error: error });
       }
-    }
-    if (!redirect_uri) {
-      const error = 'O redirect_uri é obrigatório.';
-      erros.push({ kind: 'redirect_uri', error: error });
     }
     if (!scope) {
       const error = 'O scope é obrigatório.';

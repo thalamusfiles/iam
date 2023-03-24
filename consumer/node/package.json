@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "author": "Thalamus Digital",
   "private": false,
+  "license": "MIT",
   "engines": {
     "node": ">=14.0"
   },
