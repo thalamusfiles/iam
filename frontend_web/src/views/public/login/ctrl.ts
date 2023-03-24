@@ -1,9 +1,10 @@
 import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
+import { getFormExceptionErrosToObject } from '../../../commons/error';
 import { historyPush } from '../../../commons/route';
 import UserCtxInstance from '../../../store/userContext';
 
-export class LoginCtx {
+export class LoginCtrl {
   constructor() {
     // Modifica classe pra ser observável
     makeObservable(this);
@@ -54,10 +55,9 @@ export class LoginCtx {
         historyPush('home');
       })
       .catch((error: any) => {
-        const data = error.response.data;
+        const data = error.response?.data;
 
-        this.erroMessage = data.message;
-        this.erros = data.fields;
+        [this.erroMessage, this.erros] = getFormExceptionErrosToObject(data, ['username', 'password']);
       });
   };
 
@@ -66,6 +66,6 @@ export class LoginCtx {
   };
 }
 
-export const LoginContext = createContext<LoginCtx>(new LoginCtx());
+export const LoginContext = createContext({} as LoginCtrl);
 export const LoginProvider = LoginContext.Provider;
-export const useLoginStore = (): LoginCtx => useContext(LoginContext);
+export const useLoginStore = (): LoginCtrl => useContext(LoginContext);

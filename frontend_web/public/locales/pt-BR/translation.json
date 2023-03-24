@@ -1,4 +1,8 @@
 {
+  "server": {
+    "server.user_not_found": "Usuário não encontrado",
+    "server.password_invalid": "Senha incorreta"
+  },
   "login": {
     "title":"Thalamus IAM",
     "subtitle":"Gerenciamento de identidades e acesso.",
@@ -6,7 +10,8 @@
     "system": "Sistema",
     "system-info": "Após realizar o login você será redirecionado para a aplicação.",
     "region": "Região",
-    "username": "Usuário, code ou e-mail",
+    "username": "E-mail",
+    "typeusername": "Informe seu e-mail",
     "password": "Senha",
     "action": {
       "login": "Entrar",
@@ -17,9 +22,9 @@
   "register": {
     "title":"Thalamus IAM",
     "subtitle":"Cadastro de novo usuário.",
-    "cardindo":"Úm unico cadastro para todas as aplicações Thalamus.",
+    "cardindo":"Um unico cadastro para todas as aplicações Thalamus",
     "username": "Usuário ou code de acesso",
-    "email": "e-mail",
+    "email": "E-mail",
     "password": "Senha",
     "passwordcheck": "Confirme a senha",
     "action": {

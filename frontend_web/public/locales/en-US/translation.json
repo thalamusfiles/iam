@@ -1,4 +1,8 @@
 {
+  "server": {
+    "server.user_not_found": "User does not exists",
+    "server.password_invalid": "Password invalid"
+  },
   "login": {
     "title":"Thalamus IAM",
     "subtitle":"Identity and Access Management.",
@@ -6,7 +10,8 @@
     "system": "System",
     "system-info": "After login, you will be redirected to the application.",
     "region": "Region",
-    "username": "User, code or e-mail",
+    "username": "E-mail",
+    "typeusername": "Type your e-mail",
     "password": "Password",
     "action": {
       "login": "Login",

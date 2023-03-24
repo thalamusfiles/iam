@@ -14,6 +14,7 @@ import { ResponseInfo } from '../../../types/response-info';
 import { CookieService } from '../service/cookie.service';
 import { AuthRegisterOauthFieldsUseCase } from '../usecase/auth-oauth-fields.usecase';
 import { AuthRegisterClientIdUseCase } from '../usecase/auth-register-client_id.usecase';
+import { IamValidationPipe } from '../../../types/validation.pipe';
 
 @Controller('auth')
 export class AuthController {
@@ -74,7 +75,7 @@ export class AuthController {
    */
   @Post('login')
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(new IamValidationPipe())
   async localLogin(
     @Body() body: AuthLoginDto,
     @Req() request: RequestInfo,

@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { autorun } from 'mobx';
+import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { Alert } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
@@ -14,12 +15,12 @@ import bgRotate03 from '../../../assets/bg_rotate_03.jpeg';
 import bgRotate04 from '../../../assets/bg_rotate_04.jpeg';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
-import { LoginCtx, LoginProvider, useLoginStore } from './ctrl';
+import { LoginCtrl, LoginProvider, useLoginStore } from './ctrl';
 
 const bgImg = [bgRotate01, bgRotate02, bgRotate03, bgRotate04][Math.floor(Math.random() * 4)];
 
 const LoginPage: React.FC = () => {
-  const ctrl = new LoginCtx();
+  const ctrl = new LoginCtrl();
 
   return (
     <LoginProvider value={ctrl}>
@@ -28,14 +29,12 @@ const LoginPage: React.FC = () => {
   );
 };
 
-const LoginPageProvided: React.FC = () => {
+const LoginPageProvided: React.FC = observer(() => {
   const __ = useI18N();
   const ctrl = useLoginStore();
 
   const { app } = useParams();
   const [searchParams] = useSearchParams();
-
-  console.log(ctrl.erroMessage);
 
   useEffect(
     () =>
@@ -68,6 +67,8 @@ const LoginPageProvided: React.FC = () => {
                   </p>
 
                   <Form>
+                    {ctrl.erroMessage && <Alert variant="danger">{ctrl.erroMessage}</Alert>}
+
                     {!ctrl.redirectTo && (
                       <Form.Group controlId="login.system">
                         <Form.Label>{__('login.system')}</Form.Label>
@@ -76,18 +77,16 @@ const LoginPageProvided: React.FC = () => {
                       </Form.Group>
                     )}
 
-                    {ctrl.erroMessage && <Alert variant="danger">{ctrl.erroMessage}</Alert>}
-
                     <Form.Group controlId="login.username">
                       <Form.Label>{__('login.username')}</Form.Label>
                       <Form.Control
-                        placeholder="Enter your user name, code or email"
+                        placeholder={__('login.typeusername')}
                         type="email"
                         onKeyPress={ctrl.onKeyUpFilter}
                         onChange={ctrl.handleUsername}
                         isInvalid={!!ctrl.erros.username}
                       />
-                      <Form.Control.Feedback type="invalid">{ctrl.erros.username}</Form.Control.Feedback>
+                      <Form.Control.Feedback type="invalid">{__(ctrl.erros.username || '')}</Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group>
@@ -100,7 +99,7 @@ const LoginPageProvided: React.FC = () => {
                         onChange={ctrl.handlePassword}
                         isInvalid={!!ctrl.erros.password}
                       />
-                      <Form.Control.Feedback type="invalid">{ctrl.erros.password}</Form.Control.Feedback>
+                      <Form.Control.Feedback type="invalid">{__(ctrl.erros.password || '')}</Form.Control.Feedback>
                     </Form.Group>
                   </Form>
 
@@ -128,6 +127,6 @@ const LoginPageProvided: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
 export default LoginPage;

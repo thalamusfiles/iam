@@ -8,6 +8,7 @@ import jwtConfig from '../../../config/jwt.config';
 import { User } from '../../../model/User';
 import { UserLogin, UserLoginType } from '../../../model/UserLogin';
 import { UserToken } from '../../../model/UserToken';
+import { FormException } from '../../../types/form.exception';
 import { AuthLoginRespDto } from '../controller/dto/auth.dto';
 import { AccessUserInfo } from '../passaport/access-user-info';
 import { CryptService } from './crypt.service';
@@ -183,7 +184,7 @@ export class AuthService {
 
     const userLogin = await this.userLoginRepository.findOne({ username, type: UserLoginType.LOCAL }, { populate: ['user'] });
     if (!userLogin) {
-      throw new NotFoundException('User does not exist.');
+      throw new FormException([{ kind: 'username', error: 'server.user_not_found' }]);
     }
 
     const _password = this.cryptService.encrypt(iamConfig.IAM_PASS_SECRET_SALT, userLogin._salt, password);
@@ -191,7 +192,7 @@ export class AuthService {
     if (_password === userLogin._password) {
       return userLogin;
     } else {
-      throw new BadRequestException('Password incorrect.');
+      throw new FormException([{ kind: 'password', error: 'server.password_invalid' }]);
     }
   }
 
