@@ -11,16 +11,16 @@ const Account = React.lazy(() => import('./account'));
 const Mgt = React.lazy(() => import('./mgt'));
 const InModal = React.lazy(() => import('../components/Modal').then((module) => ({ default: module.InModal })));
 
-const accountRoute = `/public/app/${iamConfig.MAIN_APP_IAM_ID}/login`;
-const mgtRoute = `/public/app/${iamConfig.MAIN_APP_IAM_MGT_ID}/login`;
+const accountLoginRoute = `/public/app/${iamConfig.MAIN_APP_IAM_ID}/login?scope=${iamConfig.DEFAULT_SCOPE}`;
+const mgtLoginRoute = `/public/app/${iamConfig.MAIN_APP_IAM_MGT_ID}/login?scope=${iamConfig.DEFAULT_SCOPE}`;
 
 const routes = (
   <>
     <Route path="/public/app/:app/login" element={<LoginPage />} index />
     <Route path="/public/app/:app/register" element={<RegisterPage />} />
 
-    <Route path="/account/*" element={<PrivateRoutes element={<Account />} redirect={accountRoute} />} />
-    <Route path="/mgt/*" element={<PrivateRoutes element={<Mgt />} redirect={mgtRoute} />} />
+    <Route path="/account/*" element={<PrivateRoutes element={<Account />} redirect={accountLoginRoute} />} />
+    <Route path="/mgt/*" element={<PrivateRoutes element={<Mgt />} redirect={mgtLoginRoute} />} />
 
     <Route
       path={'*/modal'}
@@ -31,7 +31,7 @@ const routes = (
         </InModal>
       }
     />
-    <Route path="/" element={<Navigate to={accountRoute} replace />} />
+    <Route path="/" element={<Navigate to={accountLoginRoute} replace />} />
   </>
 );
 

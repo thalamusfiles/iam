@@ -1,7 +1,7 @@
 import { makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
 
-export class LoginCtx {
+export class LoginsCtx {
   constructor() {
     // Modifica classe pra ser observável
     makeObservable(this);
@@ -18,6 +18,6 @@ export class LoginCtx {
   ];
 }
 
-export const LoginContext = createContext<LoginCtx>({} as LoginCtx);
-export const LoginProvider = LoginContext.Provider;
-export const useLoginStore = (): LoginCtx => useContext(LoginContext);
+export const LoginsContext = createContext<LoginsCtx>({} as LoginsCtx);
+export const LoginsProvider = LoginsContext.Provider;
+export const useLoginStore = (): LoginsCtx => useContext(LoginsContext);

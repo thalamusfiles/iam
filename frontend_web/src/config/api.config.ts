@@ -1,7 +1,7 @@
 import { IamApisConfigure } from '@thalamus/iam-consumer';
 
 const apiConfig = {
-  BASE_URL: 'localhost',
+  BASE_URL: 'http://localhost',
   BASE_PORT: '3000',
 };
 

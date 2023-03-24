@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
+import { autorun } from 'mobx';
+import { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -12,54 +13,39 @@ import bgRotate03 from '../../../assets/bg_rotate_03.jpeg';
 import bgRotate04 from '../../../assets/bg_rotate_04.jpeg';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
-import { historyPush } from '../../../commons/route';
-import UserCtxInstance from '../../../store/userContext';
+import { LoginCtx, LoginProvider, useLoginStore } from './ctrl';
 
 const bgImg = [bgRotate01, bgRotate02, bgRotate03, bgRotate04][Math.floor(Math.random() * 4)];
 
 const LoginPage: React.FC = () => {
+  const ctrl = new LoginCtx();
+
+  return (
+    <LoginProvider value={ctrl}>
+      <LoginPageProvided />
+    </LoginProvider>
+  );
+};
+
+const LoginPageProvided: React.FC = () => {
   const __ = useI18N();
+  const ctrl = useLoginStore();
+
   const { app } = useParams();
-  const [form, setForm] = useState({ username: '', password: '' });
-  const [erros, setErros] = useState({ username: null as string | null, password: null as string | null });
-  const [redirectTo, setRedirectTo] = useState(null as string | null);
   const [searchParams] = useSearchParams();
 
-  useEffect(() => {
-    setRedirectTo(searchParams.get('redirectTo'));
-  }, [searchParams]);
-
-  function handleUsername(e: any) {
-    setForm({ username: e.target.value, password: form.password });
-  }
-
-  function handlePassword(e: any) {
-    setForm({ password: e.target.value, username: form.username });
-  }
-
-  function toLogin() {
-    UserCtxInstance.login(form.username, form.password)
-      .then(() => {
-        historyPush('home');
-      })
-      .catch((error) => {
-        console.log(error);
-        setErros({
-          username: 'User not found',
-          password: 'Invalid pass',
-        });
-      });
-  }
-
-  function toRegister() {
-    historyPush('register', { app });
-  }
-
-  function onKeyUpFilter(e: any) {
-    if (e.charCode === 13) {
-      toLogin();
-    }
-  }
+  useEffect(
+    () =>
+      autorun(() => {
+        ctrl.setParams(
+          //
+          app as string,
+          searchParams.get('redirectTo'),
+          searchParams.get('scope'),
+        );
+      }),
+    [app, ctrl, searchParams],
+  );
 
   return (
     <div style={{ backgroundImage: `url(${bgImg})` }} className="bgImageCover">
@@ -79,7 +65,7 @@ const LoginPage: React.FC = () => {
                   </p>
 
                   <Form>
-                    {!redirectTo && (
+                    {!ctrl.redirectTo && (
                       <Form.Group controlId="login.system">
                         <Form.Label>{__('login.system')}</Form.Label>
                         <Form.Control type="text" value="Root" disabled />
@@ -92,11 +78,11 @@ const LoginPage: React.FC = () => {
                       <Form.Control
                         placeholder="Enter your user name, code or email"
                         type="email"
-                        onKeyPress={onKeyUpFilter}
-                        onChange={handleUsername}
-                        isInvalid={!!erros.username}
+                        onKeyPress={ctrl.onKeyUpFilter}
+                        onChange={ctrl.handleUsername}
+                        isInvalid={!!ctrl.erros.username}
                       />
-                      <Form.Control.Feedback type="invalid">{erros.username}</Form.Control.Feedback>
+                      <Form.Control.Feedback type="invalid">{ctrl.erros.username}</Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group>
@@ -105,11 +91,11 @@ const LoginPage: React.FC = () => {
                         placeholder={__('login.password') as string}
                         type="password"
                         autoComplete="off"
-                        onKeyPress={onKeyUpFilter}
-                        onChange={handlePassword}
-                        isInvalid={!!erros.password}
+                        onKeyPress={ctrl.onKeyUpFilter}
+                        onChange={ctrl.handlePassword}
+                        isInvalid={!!ctrl.erros.password}
                       />
-                      <Form.Control.Feedback type="invalid">{erros.password}</Form.Control.Feedback>
+                      <Form.Control.Feedback type="invalid">{ctrl.erros.password}</Form.Control.Feedback>
                     </Form.Group>
                   </Form>
 
@@ -118,13 +104,13 @@ const LoginPage: React.FC = () => {
                 <Card.Footer>
                   <Row>
                     <Col sm={4}>
-                      <Button variant="ligth" onClick={toRegister}>
+                      <Button variant="ligth" onClick={ctrl.toRegister}>
                         {__('login.action.register')}
                       </Button>
                     </Col>
                     <Col></Col>
                     <Col sm={4}>
-                      <Button variant="primary" onClick={toLogin}>
+                      <Button variant="primary" onClick={ctrl.toLogin}>
                         <FontAwesomeIcon icon={IconsDef.login} /> {__('login.action.login')}
                       </Button>
                     </Col>
@@ -138,4 +124,5 @@ const LoginPage: React.FC = () => {
     </div>
   );
 };
+
 export default LoginPage;

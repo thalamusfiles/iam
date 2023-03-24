@@ -3,19 +3,19 @@ import React from 'react';
 import Table from 'react-bootstrap/Table';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
-import { LoginCtx, LoginProvider, useLoginStore } from './ctrl';
+import { LoginsCtx, LoginsProvider, useLoginStore } from './ctrl';
 
 const LoginsPage: React.FC = () => {
   const __ = useI18N();
 
   return (
-    <LoginProvider value={new LoginCtx()}>
+    <LoginsProvider value={new LoginsCtx()}>
       <h2 id="logins_about">
         <FontAwesomeIcon icon={IconsDef.login} /> {__('logins.title')}
       </h2>
       <p>{__('logins.description')}</p>
       <LoginsTable />
-    </LoginProvider>
+    </LoginsProvider>
   );
 };
 

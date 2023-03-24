@@ -23,15 +23,15 @@ export class Ctx {
   }
 
   //Realiza autenticação do usuário
-  @action login(username: string, password: string): Promise<any> {
+  @action login(username: string, password: string, oauth: { scope: string; cliente_id: string; redirect_uri: string }): Promise<any> {
     return new AuthDataSource()
       .login(
         { username, password },
         {
           response_type: 'session',
-          scope: 'all',
-          cliente_id: '',
-          redirect_uri: '/account/home',
+          scope: oauth.scope,
+          cliente_id: oauth.cliente_id,
+          redirect_uri: oauth.redirect_uri,
         },
       )
       .then((response) => {

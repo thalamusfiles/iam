@@ -13,7 +13,6 @@ import bgRotate04 from '../../../assets/bg_rotate_04.jpeg';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 import { historyPush } from '../../../commons/route';
-import UserCtxInstance from '../../../store/userContext';
 
 const bgImg = [bgRotate01, bgRotate02, bgRotate03, bgRotate04][Math.floor(Math.random() * 4)];
 
@@ -21,7 +20,7 @@ const RegisterPage: React.FC = () => {
   const __ = useI18N();
   const { region, app } = useParams();
   const [form, setForm] = useState({ username: '', password: '' });
-  const [erros, setErros] = useState({ username: null as string | null, password: null as string | null });
+  const [erros] = useState({ username: null as string | null, password: null as string | null });
   const [, setRedirectTo] = useState(null as string | null);
   const [searchParams] = useSearchParams();
 
@@ -41,18 +40,7 @@ const RegisterPage: React.FC = () => {
     historyPush('login', { region, app });
   }
 
-  function toRegister() {
-    UserCtxInstance.login(form.username, form.password)
-      .then(() => {
-        historyPush('home_account');
-      })
-      .catch((error) => {
-        setErros({
-          username: 'User not found',
-          password: 'Invalid pass',
-        });
-      });
-  }
+  function toRegister() {}
 
   function onKeyUpFilter(e: any) {
     if (e.charCode === 13) {
