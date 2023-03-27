@@ -1,14 +1,14 @@
 {
   "server": {
-    "server.user_not_found": "Usuário não encontrado",
-    "server.password_invalid": "Senha incorreta"
+    "user_not_found": "Usuário não encontrado",
+    "password_invalid": "Senha incorreta"
   },
   "login": {
     "title":"Thalamus IAM",
     "subtitle":"Gerenciamento de identidades e acesso.",
     "cardindo":"Informe seu usuário e senha para entrar no sistema",
-    "system": "Sistema",
-    "system-info": "Após realizar o login você será redirecionado para a aplicação.",
+    "application": "Aplicação",
+    "application-info": "Após realizar o login você será redirecionado para a aplicação.",
     "region": "Região",
     "username": "E-mail",
     "typeusername": "Informe seu e-mail",

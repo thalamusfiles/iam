@@ -67,15 +67,13 @@ const LoginPageProvided: React.FC = observer(() => {
                   </p>
 
                   <Form>
-                    {ctrl.erroMessage && <Alert variant="danger">{ctrl.erroMessage}</Alert>}
+                    {!!ctrl.erroMessages?.length && <Alert variant="danger">{ctrl.erroMessages.map(__)}</Alert>}
 
-                    {!ctrl.redirectTo && (
-                      <Form.Group controlId="login.system">
-                        <Form.Label>{__('login.system')}</Form.Label>
-                        <Form.Control type="text" value="Root" disabled />
-                        <Form.Text className="text-muted">{__('login.system-info')}</Form.Text>
-                      </Form.Group>
-                    )}
+                    <Form.Group controlId="login.application">
+                      <Form.Label>{__('login.system')}</Form.Label>
+                      <Form.Control type="text" value={ctrl.app?.name} disabled />
+                      <Form.Text className="text-muted">{__('login.application-info')}</Form.Text>
+                    </Form.Group>
 
                     <Form.Group controlId="login.username">
                       <Form.Label>{__('login.username')}</Form.Label>
@@ -86,7 +84,7 @@ const LoginPageProvided: React.FC = observer(() => {
                         onChange={ctrl.handleUsername}
                         isInvalid={!!ctrl.erros.username}
                       />
-                      <Form.Control.Feedback type="invalid">{__(ctrl.erros.username || '')}</Form.Control.Feedback>
+                      <Form.Control.Feedback type="invalid">{ctrl.erros.username?.map(__)}</Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group>
@@ -99,7 +97,7 @@ const LoginPageProvided: React.FC = observer(() => {
                         onChange={ctrl.handlePassword}
                         isInvalid={!!ctrl.erros.password}
                       />
-                      <Form.Control.Feedback type="invalid">{__(ctrl.erros.password || '')}</Form.Control.Feedback>
+                      <Form.Control.Feedback type="invalid">{ctrl.erros.username?.map(__)}</Form.Control.Feedback>
                     </Form.Group>
                   </Form>
 

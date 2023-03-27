@@ -3,7 +3,7 @@ import { FormExceptionError } from '../../../types/form.exception';
 import { RequestService } from '../service/request.service';
 
 @Injectable({ scope: Scope.REQUEST })
-export class AuthRegisterClientIdUseCase {
+export class AuthLoginClientIdUseCase {
   constructor(private readonly requestService: RequestService) {}
 
   execute = async ({ cliente_id }: any): Promise<Array<FormExceptionError>> => {

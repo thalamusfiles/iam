@@ -7,7 +7,9 @@ class EndpointsConfigure {
   managementUrl = '/mgt';
   //AUTH Urls
   apiAuth = null as string | null;
+  apiAuthApplicationInfo = 'application/info';
   apiAuthLogin = '/login';
+  apiAuthRegister = '/register';
   //API MGT Urls
   apiMGT = null as string | null;
   apiMGTPerson = `/person`;
@@ -29,7 +31,6 @@ class EndpointsConfigure {
   };
 }
 
-
-const Endpoints = new EndpointsConfigure()
+const Endpoints = new EndpointsConfigure();
 
 export default Endpoints;

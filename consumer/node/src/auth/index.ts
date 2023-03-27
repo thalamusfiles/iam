@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios';
 import Apis from '../apis';
 import Endpoints from '../endpoints';
 
@@ -22,12 +23,22 @@ export type LoginDto = {
 
 interface AuthDataSourceI {
   //Registra novo usuário no servidor e realiza login oauth
-  register(register: LoginDto, oauth: OauthFieldsDto): Promise<{ user: any; token: string }>;
+  applicationInfo(applicationUuid: string): Promise<AxiosResponse<{ uuid: string; name: string }>>;
+  //Registra novo usuário no servidor e realiza login oauth
+  register(register: LoginDto, oauth: OauthFieldsDto): Promise<AxiosResponse<{ user: any; token: string }>>;
   //Autêntica usuário no servidor via oauth
-  login(login: LoginDto, oauth: OauthFieldsDto): Promise<{ user: any; token: string }>;
+  login(login: LoginDto, oauth: OauthFieldsDto): Promise<AxiosResponse<{ user: any; token: string }>>;
 }
 
 export class AuthDataSource implements AuthDataSourceI {
+  async applicationInfo(applicationUuid: string): Promise<any> {
+    return await Apis.ApiAuth.get(`${Endpoints.apiAuthApplicationInfo}`, {
+      params: {
+        uuid: applicationUuid,
+      },
+    });
+  }
+
   async register({ name, username, password, password_confirmed }: RegisterDto, oauth: OauthFieldsDto): Promise<any> {
     return await Apis.ApiAuth.post(`${Endpoints.apiAuthLogin}`, {
       name,
@@ -39,7 +50,7 @@ export class AuthDataSource implements AuthDataSourceI {
   }
 
   async login({ username, password }: LoginDto, oauth: OauthFieldsDto): Promise<any> {
-    return await Apis.ApiAuth.post(`${Endpoints.apiAuthLogin}`, {
+    return await Apis.ApiAuth.post(`${Endpoints.apiAuthRegister}`, {
       username,
       password,
       ...oauth,

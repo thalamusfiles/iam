@@ -3,7 +3,7 @@ import { FormExceptionError } from '../../../types/form.exception';
 import { ResponseTypes } from '../types/response-type';
 
 @Injectable({ scope: Scope.REQUEST })
-export class AuthRegisterOauthFieldsUseCase {
+export class AuthOauthFieldsUseCase {
   execute = async ({ cliente_id, response_type, scope }: any): Promise<Array<FormExceptionError>> => {
     const erros = [];
     if (!cliente_id) {

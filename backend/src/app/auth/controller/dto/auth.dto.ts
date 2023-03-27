@@ -26,6 +26,16 @@ class OauthFieldsDto {
  * Dados necessários para registrar um novo usuário
  */
 @Exclude()
+export class ApplicationInfoDto {
+  @Expose()
+  @IsString()
+  uuid: string;
+}
+
+/**
+ * Dados necessários para registrar um novo usuário
+ */
+@Exclude()
 export class AuthRegisterDto extends OauthFieldsDto {
   @Expose()
   @IsString()

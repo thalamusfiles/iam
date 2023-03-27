@@ -1,4 +1,3 @@
-import { AuthDataSource } from '@thalamus/iam-consumer';
 import i18next from 'i18next';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
@@ -23,29 +22,20 @@ export class Ctx {
   }
 
   //Realiza autenticação do usuário
-  @action login(username: string, password: string, oauth: { scope: string; cliente_id: string; redirect_uri?: string }): Promise<any> {
-    return new AuthDataSource()
-      .login(
-        { username, password },
-        {
-          response_type: 'cookie',
-          scope: oauth.scope,
-          cliente_id: oauth.cliente_id,
-          redirect_uri: oauth.redirect_uri,
-        },
-      )
-      .then((response) => {
-        this.saveUser(response.data.user, response.data.access_token);
-        return response;
-      });
+  @action
+  login(user: any, token: string | null): void {
+    this.saveUser(user, token);
   }
-  @action logout() {
+
+  @action
+  logout() {
     this.saveUser({}, null);
     historyPush('login', { region: 'global', app: 'root' });
   }
 
   //Retorna se usuário esta logado
-  @computed get isAuth(): boolean {
+  @computed
+  get isAuth(): boolean {
     return !!this.token;
   }
 

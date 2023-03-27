@@ -1,14 +1,14 @@
 {
   "server": {
-    "server.user_not_found": "User does not exists",
-    "server.password_invalid": "Password invalid"
+    "user_not_found": "User does not exists",
+    "password_invalid": "Password invalid"
   },
   "login": {
     "title":"Thalamus IAM",
     "subtitle":"Identity and Access Management.",
     "cardindo":"Type your username and password to enter the system.",
-    "system": "System",
-    "system-info": "After login, you will be redirected to the application.",
+    "application": "Application",
+    "application-info": "After login, you will be redirected to the application.",
     "region": "Region",
     "username": "E-mail",
     "typeusername": "Type your e-mail",

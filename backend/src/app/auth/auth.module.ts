@@ -16,12 +16,13 @@ import { APP_GUARD } from '@nestjs/core';
 import { UserToken } from '../../model/UserToken';
 import { CookieService } from './service/cookie.service';
 import { CryptService } from './service/crypt.service';
-import { AuthRegisterClientIdUseCase } from './usecase/auth-register-client_id.usecase';
+import { AuthLoginClientIdUseCase } from './usecase/auth-register-client_id.usecase';
 import { AuthRegisterNameUseCase } from './usecase/auth-register-name.usecase';
 import { AuthRegisterUsernameUseCase } from './usecase/auth-register-username.usecase';
 import { AuthRegisterPasswordUseCase } from './usecase/auth-register-password.usecase';
 import { AuthRegisterMaxRegisterIpUseCase } from './usecase/auth-register-max-register-ip';
-import { AuthRegisterOauthFieldsUseCase } from './usecase/auth-oauth-fields.usecase';
+import { AuthOauthFieldsUseCase } from './usecase/auth-oauth-fields.usecase';
+import { ApplicationService } from './service/application.service';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { AuthRegisterOauthFieldsUseCase } from './usecase/auth-oauth-fields.usec
     CookieService,
     RequestService,
     AuthService,
+    ApplicationService,
     AccessStrategy,
     {
       provide: APP_GUARD,
@@ -46,8 +48,8 @@ import { AuthRegisterOauthFieldsUseCase } from './usecase/auth-oauth-fields.usec
     AuthRegisterUsernameUseCase,
     AuthRegisterPasswordUseCase,
     AuthRegisterMaxRegisterIpUseCase,
-    AuthRegisterOauthFieldsUseCase,
-    AuthRegisterClientIdUseCase,
+    AuthOauthFieldsUseCase,
+    AuthLoginClientIdUseCase,
   ],
   exports: [AuthService, RequestService],
   controllers: [AuthController],
