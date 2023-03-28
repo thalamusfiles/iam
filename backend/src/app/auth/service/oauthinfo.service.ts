@@ -4,8 +4,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Application } from '../../../model/System/Application';
 
 @Injectable()
-export class ApplicationService {
-  private readonly logger = new Logger(ApplicationService.name);
+export class OauthInfoService {
+  private readonly logger = new Logger(OauthInfoService.name);
 
   constructor(
     @InjectRepository(Application)
@@ -15,13 +15,13 @@ export class ApplicationService {
   }
 
   /**
-   * Busca por vários registros
+   * Busca pelas informações da aplicação(cliente)
    * @param query
    * @returns
    */
-  async find(uuid: string): Promise<Application> {
+  async findApplication(uuid: string): Promise<Application> {
     this.logger.verbose('Find all');
 
-    return this.applicationRepository.findOne({ uuid });
+    return this.applicationRepository.findOneOrFail({ uuid });
   }
 }

@@ -1,6 +1,6 @@
 import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DateTime } from 'luxon';
 import iamConfig from '../../../config/iam.config';
@@ -8,7 +8,7 @@ import jwtConfig from '../../../config/jwt.config';
 import { User } from '../../../model/User';
 import { UserLogin, UserLoginType } from '../../../model/UserLogin';
 import { UserToken } from '../../../model/UserToken';
-import { FormException } from '../../../types/form.exception';
+import { FormException } from '../../../commons/form.exception';
 import { AuthLoginRespDto } from '../controller/dto/auth.dto';
 import { AccessUserInfo } from '../passaport/access-user-info';
 import { CryptService } from './crypt.service';

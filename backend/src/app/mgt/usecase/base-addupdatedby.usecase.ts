@@ -1,11 +1,11 @@
-import { Region } from '../../../model/System/Region';
-import { UseCasePlugin, UseCasePluginMetadata } from '../../../types/usecase';
+import { UseCasePlugin, UseCasePluginMetadata } from '../../../commons/usecase';
+import { IamBaseEntityWithUser } from '../../../model/Base/IamBaseEntityWithUser';
 
 /**
  * Adiciona o updatedBy na entidade
  */
-export class BaseAddUpdatedByUseCase extends UseCasePlugin<Region> {
-  preSave = async (data: UseCasePluginMetadata<Region>): Promise<void> => {
+export class BaseAddUpdatedByUseCase extends UseCasePlugin<IamBaseEntityWithUser> {
+  preSave = async (data: UseCasePluginMetadata<IamBaseEntityWithUser>): Promise<void> => {
     data.entity.updatedBy = data.user.uuid;
   };
 }

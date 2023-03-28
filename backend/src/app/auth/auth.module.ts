@@ -22,7 +22,8 @@ import { AuthRegisterUsernameUseCase } from './usecase/auth-register-username.us
 import { AuthRegisterPasswordUseCase } from './usecase/auth-register-password.usecase';
 import { AuthRegisterMaxRegisterIpUseCase } from './usecase/auth-register-max-register-ip';
 import { AuthOauthFieldsUseCase } from './usecase/auth-oauth-fields.usecase';
-import { ApplicationService } from './service/application.service';
+import { OauthInfoService } from './service/oauthinfo.service';
+import { OauthController } from './controller/oauth.controller';
 
 @Module({
   imports: [
@@ -37,7 +38,7 @@ import { ApplicationService } from './service/application.service';
     CookieService,
     RequestService,
     AuthService,
-    ApplicationService,
+    OauthInfoService,
     AccessStrategy,
     {
       provide: APP_GUARD,
@@ -52,7 +53,11 @@ import { ApplicationService } from './service/application.service';
     AuthLoginClientIdUseCase,
   ],
   exports: [AuthService, RequestService],
-  controllers: [AuthController],
+  controllers: [
+    //
+    AuthController,
+    OauthController,
+  ],
 })
 export class AuthModule implements NestModule {
   private readonly logger = new Logger(AuthModule.name);

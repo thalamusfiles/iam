@@ -3,7 +3,7 @@ import { Role } from '../../../model/Role';
 import { AccessGuard } from '../../auth/passaport/access.guard';
 import { RoleService } from '../service/role.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
-import { RequestInfo } from '../../../types/request-info';
+import { RequestInfo } from '../../../commons/request-info';
 import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
 import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
 import { RoleAddAplicationUseCase } from '../usecase/role-addapplication.usecase';
@@ -18,7 +18,7 @@ export class RoleController implements CRUDController<Role> {
 
   constructor(private readonly roleService: RoleService, private readonly useCaseService: UseCaseMGTService) {
     this.logger.log('starting');
-    
+
     this.useCaseService.register(Role, BaseAddCreatedByUseCase);
     this.useCaseService.register(Role, BaseAddUpdatedByUseCase);
     this.useCaseService.register(Role, RoleNormalizeInitialsUseCase);

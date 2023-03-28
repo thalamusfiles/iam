@@ -1,5 +1,5 @@
 import { Injectable, Scope } from '@nestjs/common';
-import { FormExceptionError } from '../../../types/form.exception';
+import { FormExceptionError } from '../../../commons/form.exception';
 import { ResponseTypes } from '../types/response-type';
 
 @Injectable({ scope: Scope.REQUEST })

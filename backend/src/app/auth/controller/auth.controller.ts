@@ -1,21 +1,20 @@
-import { Body, Controller, Get, Headers, Ip, Logger, Post, Query, Req, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { FormException } from '../../../types/form.exception';
+import { Body, Controller, Get, Headers, Ip, Logger, Post, Req, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { FormException } from '../../../commons/form.exception';
 import { AuthService, LoginInfo } from '../service/auth.service';
 import { AuthRegisterNameUseCase } from '../usecase/auth-register-name.usecase';
 import { AuthRegisterPasswordUseCase } from '../usecase/auth-register-password.usecase';
 import { AuthRegisterUsernameUseCase } from '../usecase/auth-register-username.usecase';
-import { ApplicationInfoDto, AuthLoginDto, AuthLoginRespDto, AuthRegisterDto } from './dto/auth.dto';
+import { AuthLoginDto, AuthLoginRespDto, AuthRegisterDto } from './dto/auth.dto';
 import { Throttle } from '@nestjs/throttler';
 import iamConfig from '../../../config/iam.config';
 import { AuthRegisterMaxRegisterIpUseCase } from '../usecase/auth-register-max-register-ip';
 import { AccessGuard } from '../passaport/access.guard';
-import { RequestInfo } from '../../../types/request-info';
-import { ResponseInfo } from '../../../types/response-info';
+import { RequestInfo } from '../../../commons/request-info';
+import { ResponseInfo } from '../../../commons/response-info';
 import { CookieService } from '../service/cookie.service';
 import { AuthOauthFieldsUseCase } from '../usecase/auth-oauth-fields.usecase';
 import { AuthLoginClientIdUseCase } from '../usecase/auth-register-client_id.usecase';
-import { IamValidationPipe } from '../../../types/validation.pipe';
-import { ApplicationService } from '../service/application.service';
+import { IamValidationPipe } from '../../../commons/validation.pipe';
 
 @Controller('auth')
 export class AuthController {
@@ -24,7 +23,6 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly cookieService: CookieService,
-    private readonly applicationService: ApplicationService,
     private readonly authRegisterNameUseCase: AuthRegisterNameUseCase,
     private readonly authRegisterUsernameUseCase: AuthRegisterUsernameUseCase,
     private readonly authRegisterPasswordUseCase: AuthRegisterPasswordUseCase,
@@ -33,21 +31,6 @@ export class AuthController {
     private readonly authLoginClienteId: AuthLoginClientIdUseCase,
   ) {
     this.logger.log('starting');
-  }
-
-  /**
-   * Coleta o nome da aplicação para exibir na tela de login
-   * @param body
-   * @returns
-   */
-  @Get('application/info')
-  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
-  @UsePipes(new ValidationPipe({ transform: true }))
-  async applicationInfo(@Query() query?: ApplicationInfoDto): Promise<{ uuid: string; name: string }> {
-    this.logger.log('Registro Local de Usuários');
-
-    const { uuid, name } = await this.applicationService.find(query.uuid);
-    return { uuid, name };
   }
 
   /**
@@ -108,7 +91,6 @@ export class AuthController {
       await this.authOauthFieldsUseCase.execute(body),
       await this.authLoginClienteId.execute(body),
     );
-
     if (allErros.length) {
       throw new FormException(allErros);
     }
@@ -135,7 +117,6 @@ export class AuthController {
     appInfo.sessionToken = cookieId;
 
     const authResp = await this.authService.findAndCreateAccessToken(body.username, body.password, appInfo);
-
     await this.authService.saveUserToken(appInfo);
 
     return authResp;
@@ -178,35 +159,5 @@ export class AuthController {
   @UseGuards(AccessGuard)
   async logout(@Req() request: RequestInfo, @Res({ passthrough: true }) response: ResponseInfo): Promise<void> {
     this.cookieService.clearCookies(request, response);
-  }
-
-  @Get('oauth2/authorize')
-  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
-  async oauth2Authorize(@Req() request: RequestInfo, @Res() res, @Body() body: AuthRegisterDto): Promise<string> {
-    this.logger.log('Oauth2 authorize');
-
-    //Executa os casos de uso com validações
-    const allErros = [].concat(
-      //
-      await this.authOauthFieldsUseCase.execute(body),
-      await this.authLoginClienteId.execute(body),
-    );
-
-    if (allErros.length) {
-      throw new FormException(allErros);
-    }
-
-    const cookieId = this.cookieService.getSSOCookie(request);
-    if (cookieId) {
-      return res.redirect(body.redirect_uri);
-    } else {
-      return res.redirect('/login');
-    }
-  }
-
-  @Get('oauth2/token')
-  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
-  async oauth2Token(@Req() request: RequestInfo): Promise<string> {
-    return '' + request;
   }
 }

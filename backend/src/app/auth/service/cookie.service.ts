@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import cookieConfig from '../../../config/cookie.config';
-import { RequestInfo } from '../../../types/request-info';
-import { ResponseInfo } from '../../../types/response-info';
+import { RequestInfo } from '../../../commons/request-info';
+import { ResponseInfo } from '../../../commons/response-info';
 import { DateTime } from 'luxon';
 import { CryptService } from './crypt.service';
 

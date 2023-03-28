@@ -1,6 +1,6 @@
 import { Injectable, Scope } from '@nestjs/common';
 import iamConfig from '../../../config/iam.config';
-import { FormExceptionError } from '../../../types/form.exception';
+import { FormExceptionError } from '../../../commons/form.exception';
 import { RequestService } from '../service/request.service';
 
 @Injectable({ scope: Scope.REQUEST })

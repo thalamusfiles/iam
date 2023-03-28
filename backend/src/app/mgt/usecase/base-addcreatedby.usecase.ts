@@ -1,11 +1,11 @@
-import { Region } from '../../../model/System/Region';
-import { UseCasePlugin, UseCasePluginMetadata } from '../../../types/usecase';
+import { UseCasePlugin, UseCasePluginMetadata } from '../../../commons/usecase';
+import { IamBaseEntityWithUser } from '../../../model/Base/IamBaseEntityWithUser';
 
 /**
  * Adiciona o createdBy na entidade
  */
-export class BaseAddCreatedByUseCase extends UseCasePlugin<Region> {
-  prePersist = async (data: UseCasePluginMetadata<Region>): Promise<void> => {
+export class BaseAddCreatedByUseCase extends UseCasePlugin<IamBaseEntityWithUser> {
+  prePersist = async (data: UseCasePluginMetadata<IamBaseEntityWithUser>): Promise<void> => {
     data.entity.createdBy = data.user.uuid;
   };
 }

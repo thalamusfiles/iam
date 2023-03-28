@@ -4,18 +4,6 @@ const defaultIamConfig = {
 
 const iamConfig = {
   PRODCTION_MODE: process.env.NODE_ENV === 'production',
-  // Região Principal
-  MAIN_REGION: 'global',
-  // Aplicação de authenticação SSO
-  // Aplicação de authenticação SSO
-  MAIN_APP_IAM: 'iam',
-  MAIN_APP_IAM_ID: '11111111-1111-1111-1111-111111111111',
-  MAIN_APP_IAM_NAME: 'Conta Thalamus',
-  // Aplicação de gestão do IAM SSO
-  MAIN_APP_IAM_MGT: 'iam_mgt',
-  MAIN_APP_IAM_MGT_ID: '22222222-2222-2222-2222-222222222222',
-  MAIN_APP_IAM_MGT_NAME: 'Gestão IAM Thalamus',
-
   // Salt adicional na gerão do password
   IAM_PASS_SECRET_SALT: process.env.IAM_PASS_SECRET_SALT || defaultIamConfig.IAM_PASS_SECRET_SALT,
 
@@ -31,6 +19,21 @@ const iamConfig = {
   REGISTER_MAX_PER_WEEK: 20,
   // Máximo de registros por mês
   REGISTER_MAX_PER_MONTH: 30,
+
+  // Região Principal
+  MAIN_REGION: 'global',
+  // Aplicação de authenticação SSO
+  MAIN_APP_IAM: 'iam',
+  MAIN_APP_IAM_ID: '11111111-1111-1111-1111-111111111111',
+  MAIN_APP_IAM_NAME: 'Conta Thalamus',
+  // Aplicação de gestão do IAM SSO
+  MAIN_APP_IAM_MGT: 'iam_mgt',
+  MAIN_APP_IAM_MGT_ID: '22222222-2222-2222-2222-222222222222',
+  MAIN_APP_IAM_MGT_NAME: 'Gestão IAM Thalamus',
+  // Primeiro Usuário
+  FIRST_USER_NAME: 'First User',
+  // Após instalação, cadastrar um segundo usuário e remover o primeiro.
+  FIRST_USER_EMAIL: 'first@thalamus.digital',
 };
 
 export default iamConfig;

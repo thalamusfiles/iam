@@ -1,5 +1,5 @@
 import { Application } from '../../../model/System/Application';
-import { UseCasePlugin, UseCasePluginMetadata } from '../../../types/usecase';
+import { UseCasePlugin, UseCasePluginMetadata } from '../../../commons/usecase';
 
 /**
  * Padroniza a inicial da região para sempre estar em minúsculo

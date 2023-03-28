@@ -3,7 +3,7 @@ import { Region } from '../../../model/System/Region';
 import { AccessGuard } from '../../auth/passaport/access.guard';
 import { RegionService } from '../service/region.service';
 import { CRUDController, EntityProps } from '../types/crud.controller';
-import { RequestInfo } from '../../../types/request-info';
+import { RequestInfo } from '../../../commons/request-info';
 import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
 import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
 import { RegionNormalizeInitialsUseCase } from '../usecase/region-normalize-initials.usecase';

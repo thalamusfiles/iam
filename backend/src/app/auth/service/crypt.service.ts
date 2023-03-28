@@ -4,6 +4,7 @@ import { Injectable, Logger } from '@nestjs/common';
 @Injectable()
 export class CryptService {
   private readonly logger = new Logger(CryptService.name);
+
   constructor() {
     this.logger.log('starting');
   }

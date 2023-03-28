@@ -1,5 +1,5 @@
 import { Role } from '../../../model/Role';
-import { UseCasePlugin, UseCasePluginMetadata } from '../../../types/usecase';
+import { UseCasePlugin, UseCasePluginMetadata } from '../../../commons/usecase';
 
 /**
  * Padroniza a inicial da role para sempre estar em minúsculo

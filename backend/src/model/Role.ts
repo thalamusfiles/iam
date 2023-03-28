@@ -7,6 +7,9 @@ import { User } from './User';
 @Entity()
 @Unique({ properties: ['application', 'initials'] })
 export class Role extends IamBaseEntityWithDelete {
+  @ManyToOne(() => Application, { nullable: false })
+  application?: Application;
+
   @Check({ expression: 'LENGTH(initials) >= 3' })
   @Property({ nullable: false })
   initials!: string;
@@ -18,9 +21,6 @@ export class Role extends IamBaseEntityWithDelete {
   @Check({ expression: 'LENGTH(description) >= 10' })
   @Property({ nullable: false })
   description!: string;
-
-  @ManyToOne(() => Application, { nullable: false })
-  application?: Application;
 
   @ManyToMany(() => User, (user) => user.roles)
   users = new Collection<User>(this);

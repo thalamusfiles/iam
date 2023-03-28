@@ -7,6 +7,7 @@ import { addBearerAuthorization, addGlobalIAMMgtRequestHeader } from '../../../u
 import { AuthRegisterDto } from '../../../../src/app/auth/controller/dto/auth.dto';
 import { faker } from '@faker-js/faker';
 import iamConfig from '../../../../src/config/iam.config';
+import { NotFoundExceptionFilter } from '../../../../src/commons/catch.exception';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
@@ -41,10 +42,40 @@ describe('UserController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     app.use(cookieParser());
+    app.useGlobalFilters(new NotFoundExceptionFilter());
     await app.init();
   });
 
   // Inicio dos testes
+  it(`${authUrl}/application/info (Get) Coleta informações da aplicação`, async () => {
+    const registerUrl = `${authUrl}/application/info`;
+
+    const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(registerUrl))
+      .query({
+        uuid: iamConfig.MAIN_APP_IAM_ID,
+      })
+      .expect(200);
+
+    expect(result.body).toBeDefined();
+    expect(result.body).toMatchObject(
+      expect.objectContaining({
+        uuid: expect.any(String),
+        name: expect.any(String),
+      }),
+    );
+  });
+
+  // Inicio dos testes
+  it(`${authUrl}/application/info (Get) Coleta informações de uma aplicação inválida`, async () => {
+    const registerUrl = `${authUrl}/application/info`;
+
+    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(registerUrl))
+      .query({
+        uuid: iamConfig.MAIN_APP_IAM_ID.replace('11111111-', '12345678-'),
+      })
+      .expect(404);
+  });
+
   it(`${authUrl}/register (Post) Registra um novo usuário no sistema`, async () => {
     const registerUrl = `${authUrl}/register`;
 
@@ -110,6 +141,18 @@ describe('UserController (e2e)', () => {
       }),
     );
     expect(result.body.info.applicationLogged).toEqual(registerDto01.cliente_id);
+  });
+
+  it(`${authUrl}/login (Post) Realiza o login com o primeiro usuário`, async () => {
+    const registerUrl = `${authUrl}/login`;
+    const loginDto = {
+      ...oauth,
+      //
+      username: iamConfig.FIRST_USER_EMAIL,
+      password: iamConfig.FIRST_USER_EMAIL,
+    };
+
+    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(loginDto).expect(201);
   });
 
   it(`${authUrl}/refresh (Get) Refresca o token/sessão de acesso`, async () => {
@@ -186,7 +229,7 @@ describe('UserController (e2e)', () => {
       password: registerDto01.password,
     };
 
-    for (let j = 0; j < iamConfig.REGISTER_RATE_LIMITE - 1; j++) {
+    for (let j = 0; j < iamConfig.REGISTER_RATE_LIMITE - 2; j++) {
       await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(loginDto).expect(201);
     }
 
