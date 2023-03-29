@@ -24,6 +24,7 @@ import { AuthRegisterMaxRegisterIpUseCase } from './usecase/auth-register-max-re
 import { AuthOauthFieldsUseCase } from './usecase/auth-oauth-fields.usecase';
 import { OauthInfoService } from './service/oauthinfo.service';
 import { OauthController } from './controller/oauth.controller';
+import { Role } from '../../model/Role';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { OauthController } from './controller/oauth.controller';
     PassportModule.register({ session: true }),
     JwtModule.register({ secret: jwtConfig.SECRET }),
     ThrottlerModule.forRoot(/*{ limit: iamConfig.REGISTER_RATE_LIMITE, ttl: iamConfig.REGISTER_RATE_LIMITE_REST_TIME }*/),
-    MikroOrmModule.forFeature([Application, User, UserLogin, UserToken]),
+    MikroOrmModule.forFeature([Application, User, UserLogin, UserToken, Role]),
   ],
   providers: [
     CryptService,

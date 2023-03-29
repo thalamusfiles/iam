@@ -20,6 +20,8 @@ const iamConfig = {
   // Máximo de registros por mês
   REGISTER_MAX_PER_MONTH: 30,
 
+  // Scopo principal
+  MAIN_SCOPE_IAM: 'iam_all',
   // Região Principal
   MAIN_REGION: 'global',
   // Aplicação de authenticação SSO
@@ -30,6 +32,12 @@ const iamConfig = {
   MAIN_APP_IAM_MGT: 'iam_mgt',
   MAIN_APP_IAM_MGT_ID: '22222222-2222-2222-2222-222222222222',
   MAIN_APP_IAM_MGT_NAME: 'Gestão IAM Thalamus',
+  // Perfil base Iam e suas permissões
+  MAIN_ROLE_IAM: 'all',
+  MAIN_PERMISSION_ME_VIEW_IAM: 'me_view',
+  MAIN_PERMISSION_LOGIN_VIEW_IAM: 'login_view',
+  MAIN_PERMISSION_TOKEN_VIEW_IAM: 'token_view',
+  MAIN_PERMISSION_TOKEN_REMOVE_IAM: 'token_remove',
   // Primeiro Usuário
   FIRST_USER_NAME: 'First User',
   // Após instalação, cadastrar um segundo usuário e remover o primeiro.

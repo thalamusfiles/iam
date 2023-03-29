@@ -36,6 +36,16 @@ export class ApplicationInfoDto {
  * Dados necessários para registrar um novo usuário
  */
 @Exclude()
+export class ScopeInfoDto {
+  @Expose()
+  @IsString()
+  scope: string;
+}
+
+/**
+ * Dados necessários para registrar um novo usuário
+ */
+@Exclude()
 export class AuthRegisterDto extends OauthFieldsDto {
   @Expose()
   @IsString()

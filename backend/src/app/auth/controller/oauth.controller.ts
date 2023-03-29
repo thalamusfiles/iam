@@ -6,7 +6,7 @@ import { RequestInfo } from '../../../commons/request-info';
 import { CookieService } from '../service/cookie.service';
 import { AuthOauthFieldsUseCase } from '../usecase/auth-oauth-fields.usecase';
 import { AuthLoginClientIdUseCase } from '../usecase/auth-register-client_id.usecase';
-import { ApplicationInfoDto, AuthRegisterDto } from './dto/auth.dto';
+import { ApplicationInfoDto, AuthRegisterDto, ScopeInfoDto } from './dto/auth.dto';
 import { OauthInfoService } from '../service/oauthinfo.service';
 
 @Controller('auth')
@@ -31,10 +31,24 @@ export class OauthController {
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   @UsePipes(new ValidationPipe({ transform: true }))
   async applicationInfo(@Query() query?: ApplicationInfoDto): Promise<{ uuid: string; name: string }> {
-    this.logger.log('Registro Local de Usuários');
+    this.logger.log('Application info');
 
     const { uuid, name } = await this.oauthInfoService.findApplication(query.uuid);
     return { uuid, name };
+  }
+
+  /**
+   * Coleta todas as permissões vinculadas aos escopos informados
+   * @param body
+   * @returns
+   */
+  @Get('scope/info')
+  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async scopeInfo(@Query() query?: ScopeInfoDto): Promise<any> {
+    this.logger.log('Scope info');
+
+    return await this.oauthInfoService.findScopesInfo(query.scope);
   }
 
   @Get('oauth2/authorize')
