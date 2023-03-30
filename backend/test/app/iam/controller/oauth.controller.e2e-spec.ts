@@ -35,7 +35,7 @@ describe('OauthController (e2e)', () => {
   });
 
   // Inicio dos testes
-  /*it(`${authUrl}/application/info (Get) Coleta informações da aplicação`, async () => {
+  it(`${authUrl}/application/info (Get) Coleta informações da aplicação`, async () => {
     const registerUrl = `${authUrl}/application/info`;
 
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(registerUrl))
@@ -61,22 +61,31 @@ describe('OauthController (e2e)', () => {
         uuid: iamConfig.MAIN_APP_IAM_ID.replace('11111111-', '12345678-'),
       })
       .expect(404);
-  });*/
+  });
 
   it(`${authUrl}/scope/info (Get) Coleta informações sobre o(s) scopo(s) informados`, async () => {
     const registerUrl = `${authUrl}/scope/info`;
 
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(registerUrl))
       .query({
-        scope: iamConfig.MAIN_SCOPE_IAM + ' ' + iamConfig.MAIN_SCOPE_IAM,
+        scope: iamConfig.MAIN_SCOPE_IAM,
       })
       .expect(200);
 
     expect(result.body).toBeDefined();
     expect(result.body.length).toEqual(4);
+    expect(result.body[0]).toMatchObject(
+      expect.objectContaining({
+        scope: expect.any(String),
+        app: {
+          name: expect.any(String),
+          description: expect.any(String),
+        },
+      }),
+    );
   });
 
-  /*it(`${authUrl}/login (Post) Realiza o login`, async () => {
+  it(`${authUrl}/login (Post) Realiza o login`, async () => {
     const registerUrl = `${authUrl}/login`;
     const loginDto = {
       ...oauth,
@@ -126,5 +135,5 @@ describe('OauthController (e2e)', () => {
     const getRequestWithApp = addGlobalIAMMgtRequestHeader(getRequest);
 
     await getRequestWithApp.set('Cookie', 'cookie teste').expect(400);
-  });*/
+  });
 });

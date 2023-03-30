@@ -17,7 +17,7 @@ describe('UserController (e2e)', () => {
 
   // Cadastros de testes
   const uuidUserSaved = '11111111-1111-1111-1111-111111111111';
-  const userNameCheck = 'Admin';
+  const userNameCheck = iamConfig.FIRST_USER_NAME;
   const userToCreate: EntityProps<User> = {
     entity: {
       name: userNameCheck,

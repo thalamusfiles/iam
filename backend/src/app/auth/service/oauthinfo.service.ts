@@ -4,6 +4,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Role } from '../../../model/Role';
 import { Application } from '../../../model/System/Application';
 
+type ScopeInfo = { scope: string; app: { name: string; description: string } };
+
 @Injectable()
 export class OauthInfoService {
   private readonly logger = new Logger(OauthInfoService.name);
@@ -33,7 +35,7 @@ export class OauthInfoService {
    * @param scope Escopos separados por um espaço
    * @returns
    */
-  async findScopesInfo(scope: string): Promise<any> {
+  async findScopesInfo(scope: string): Promise<ScopeInfo[]> {
     this.logger.verbose('Find all');
 
     const apps: Record<string, Application> = {};
@@ -52,7 +54,7 @@ export class OauthInfoService {
       appAndRoles.push({ scope, app: apps[app], role });
     }
 
-    const infos: { scope: string; app: { name: string; description: string } }[] = [];
+    const infos: ScopeInfo[] = [];
     for (const appAndRole of appAndRoles) {
       const appRef = this.applicationRepository.getReference(appAndRole.app.uuid);
       const role = await this.roleRepository.findOneOrFail({ application: appRef, initials: appAndRole.role }, { populate: ['permissions'] });
@@ -67,8 +69,6 @@ export class OauthInfoService {
         infos.push(info);
       }
     }
-
-    console.log(infos);
 
     return infos;
   }

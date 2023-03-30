@@ -14,7 +14,7 @@ export class JTWGuardMockAdmin extends AuthGuard('jwt') {
     user = {
       iat: DateTime.now().valueOf(),
       uuid: iamConfig.MAIN_APP_IAM_ID,
-      name: 'Admin',
+      name: iamConfig.FIRST_USER_NAME,
     };
 
     return user as any;
