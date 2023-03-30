@@ -71,7 +71,7 @@ const LoginPageProvided: React.FC = observer(() => {
 
                     <Form.Group controlId="login.application">
                       <Form.Label>{__('login.system')}</Form.Label>
-                      <Form.Control type="text" value={ctrl.app?.name} disabled />
+                      <Form.Control type="text" value={ctrl.appInfo?.name} disabled />
                       <Form.Text className="text-muted">{__('login.application-info')}</Form.Text>
                     </Form.Group>
 

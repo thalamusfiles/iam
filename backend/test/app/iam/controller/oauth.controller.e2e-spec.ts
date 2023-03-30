@@ -36,9 +36,9 @@ describe('OauthController (e2e)', () => {
 
   // Inicio dos testes
   it(`${authUrl}/application/info (Get) Coleta informações da aplicação`, async () => {
-    const registerUrl = `${authUrl}/application/info`;
+    const appInfoUrl = `${authUrl}/application/info`;
 
-    const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(registerUrl))
+    const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(appInfoUrl))
       .query({
         uuid: iamConfig.MAIN_APP_IAM_ID,
       })
@@ -54,9 +54,9 @@ describe('OauthController (e2e)', () => {
   });
 
   it(`${authUrl}/application/info (Get) Coleta informações de uma aplicação inválida`, async () => {
-    const registerUrl = `${authUrl}/application/info`;
+    const appInfoUrl = `${authUrl}/application/info`;
 
-    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(registerUrl))
+    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(appInfoUrl))
       .query({
         uuid: iamConfig.MAIN_APP_IAM_ID.replace('11111111-', '12345678-'),
       })

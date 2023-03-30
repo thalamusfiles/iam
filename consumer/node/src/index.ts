@@ -1,9 +1,10 @@
 import { ApplicationCRUDDatasource, PermissionCRUDDatasource, PersonCRUDDatasource, RegionCRUDDatasource, RoleCRUDDatasource } from './apicrud';
 import Apis from './apis';
-import { AuthDataSource, OauthFieldsDto, RegisterDto, LoginDto } from './auth';
+import { OauthDataSource, AuthDataSource, OauthFieldsDto, RegisterDto, LoginDto, ApplicationInfo, ScopeInfo } from './auth';
 
 export {
   // Apis
+  OauthDataSource,
   AuthDataSource,
   PersonCRUDDatasource,
   RoleCRUDDatasource,
@@ -16,4 +17,6 @@ export {
   OauthFieldsDto,
   RegisterDto,
   LoginDto,
+  ApplicationInfo,
+  ScopeInfo,
 };

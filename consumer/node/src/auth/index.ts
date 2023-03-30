@@ -21,24 +21,24 @@ export type LoginDto = {
   password: string;
 };
 
+export type ApplicationInfo = { uuid: string; name: string };
+export type ScopeInfo = { scope: string; app: { name: string; description: string } };
+
 interface AuthDataSourceI {
-  //Registra novo usuário no servidor e realiza login oauth
-  applicationInfo(applicationUuid: string): Promise<AxiosResponse<{ uuid: string; name: string }>>;
-  //Registra novo usuário no servidor e realiza login oauth
+  // Registra novo usuário no servidor e realiza login oauth
   register(register: LoginDto, oauth: OauthFieldsDto): Promise<AxiosResponse<{ user: any; token: string }>>;
-  //Autêntica usuário no servidor via oauth
+  // Autêntica usuário no servidor via oauth
   login(login: LoginDto, oauth: OauthFieldsDto): Promise<AxiosResponse<{ user: any; token: string }>>;
 }
 
-export class AuthDataSource implements AuthDataSourceI {
-  async applicationInfo(applicationUuid: string): Promise<any> {
-    return await Apis.ApiAuth.get(`${Endpoints.apiAuthApplicationInfo}`, {
-      params: {
-        uuid: applicationUuid,
-      },
-    });
-  }
+interface OauthDataSourceI {
+  // Coleta informações da aplicação
+  applicationInfo(applicationUuid: string): Promise<AxiosResponse<ApplicationInfo>>;
+  // Coleta informações dos escopos solicitados
+  scopeInfo(scope: string): Promise<AxiosResponse<ScopeInfo[]>>;
+}
 
+export class AuthDataSource implements AuthDataSourceI {
   async register({ name, username, password, password_confirmed }: RegisterDto, oauth: OauthFieldsDto): Promise<any> {
     return await Apis.ApiAuth.post(`${Endpoints.apiAuthLogin}`, {
       name,
@@ -54,6 +54,23 @@ export class AuthDataSource implements AuthDataSourceI {
       username,
       password,
       ...oauth,
+    });
+  }
+}
+
+export class OauthDataSource implements OauthDataSourceI {
+  async applicationInfo(applicationUuid: string): Promise<any> {
+    return await Apis.ApiAuth.get(`${Endpoints.apiOauthApplicationInfo}`, {
+      params: {
+        uuid: applicationUuid,
+      },
+    });
+  }
+  async scopeInfo(scope: string): Promise<any> {
+    return await Apis.ApiAuth.get(`${Endpoints.apiOauthScopeInfo}`, {
+      params: {
+        scope,
+      },
     });
   }
 }

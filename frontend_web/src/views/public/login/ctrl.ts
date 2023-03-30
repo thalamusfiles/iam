@@ -1,4 +1,4 @@
-import { AuthDataSource } from '@thalamus/iam-consumer';
+import { ApplicationInfo, AuthDataSource, OauthDataSource, ScopeInfo } from '@thalamus/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
 import type { ErrosAsList } from '../../../commons/error';
@@ -18,7 +18,8 @@ export class LoginCtrl {
   @observable password = '';
   @observable erroMessages: string[] = [];
   @observable erros: ErrorListRecord = { username: null as string[] | null, password: null as string[] | null };
-  @observable app: { uuid: string; name: string } | null = null;
+  @observable appInfo: ApplicationInfo | null = null;
+  @observable scopeInfo: ScopeInfo[] | null = null;
 
   // Oauth
   @observable redirectTo = null as string | null;
@@ -34,7 +35,8 @@ export class LoginCtrl {
     this.scope = scope;
 
     if (isChange) {
-      this.loadApplication();
+      this.loadApplicationInfo();
+      this.loadScopeInfo();
     }
   };
 
@@ -55,9 +57,18 @@ export class LoginCtrl {
   };
 
   @action
-  loadApplication = () => {
-    new AuthDataSource().applicationInfo(this.applicationUuid!).then((response) => {
-      this.app = response.data;
+  loadApplicationInfo = () => {
+    new OauthDataSource().applicationInfo(this.applicationUuid!).then((response) => {
+      this.appInfo = response.data;
+    });
+  };
+
+  @action
+  loadScopeInfo = () => {
+    console.log(OauthDataSource);
+    new OauthDataSource().scopeInfo(this.scope!).then((response) => {
+      this.scopeInfo = response.data;
+      alert(JSON.stringify(this.scopeInfo));
     });
   };
 

@@ -3,14 +3,15 @@ class EndpointsConfigure {
   port = null as string | null;
   base = null as string | null;
   timeout = 5000;
-  //Modules Urls
+  // Modules Urls
   managementUrl = '/mgt';
-  //AUTH Urls
+  // AUTH Urls
   apiAuth = null as string | null;
-  apiAuthApplicationInfo = 'application/info';
   apiAuthLogin = '/login';
   apiAuthRegister = '/register';
-  //API MGT Urls
+  apiOauthApplicationInfo = 'application/info';
+  apiOauthScopeInfo = 'scope/info';
+  // API MGT Urls
   apiMGT = null as string | null;
   apiMGTPerson = `/person`;
   apiMGTRole = `/role`;
