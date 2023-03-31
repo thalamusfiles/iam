@@ -26,7 +26,7 @@ describe('MeController (e2e)', () => {
   });
 
   // Inicio dos testes
-  it(`${userUrl}/ (Post) Cria novo usuário`, async () => {
+  it(`${userUrl}/ (Get) Consulta informações do usuário`, async () => {
     const result = await await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(userUrl)).expect(200);
 
     expect(result.body).toBeDefined();

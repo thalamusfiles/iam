@@ -17,4 +17,10 @@ export class TokenController {
     const uuid = request.user.uuid;
     return await this.userService.activeTokensByUser(uuid);
   }
+
+  @Get('all')
+  async findAll(@Req() request: RequestInfo): Promise<TokenInfo[]> {
+    const uuid = request.user.uuid;
+    return await this.userService.findAll(uuid, 0, 1000);
+  }
 }

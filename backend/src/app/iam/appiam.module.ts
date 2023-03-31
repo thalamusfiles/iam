@@ -12,12 +12,13 @@ import { UserService } from './service/user.service';
 import { UserLogin } from '../../model/UserLogin';
 import { TokenService } from './service/token.service';
 import { TokenController } from './controller/token.controller';
+import { UserToken } from '../../model/UserToken';
 
 @Module({
   imports: [
     //
     JwtModule.register({ secret: jwtConfig.SECRET }),
-    MikroOrmModule.forFeature([Application, User, UserLogin]),
+    MikroOrmModule.forFeature([Application, User, UserLogin, UserToken]),
     AuthModule,
   ],
   providers: [
