@@ -11,8 +11,8 @@ const Account = React.lazy(() => import('./account'));
 const Mgt = React.lazy(() => import('./mgt'));
 const InModal = React.lazy(() => import('../components/Modal').then((module) => ({ default: module.InModal })));
 
-const accountLoginRoute = `/public/app/${iamConfig.MAIN_APP_IAM_ID}/login?scope=${iamConfig.DEFAULT_SCOPE}`;
-const mgtLoginRoute = `/public/app/${iamConfig.MAIN_APP_IAM_MGT_ID}/login?scope=${iamConfig.DEFAULT_SCOPE}`;
+const accountLoginRoute = `/public/app/${iamConfig.MAIN_APP_IAM_ID}/login?scope=${iamConfig.DEFAULT_SCOPE}&redirectTo=${window.location.origin}/account`;
+const mgtLoginRoute = `/public/app/${iamConfig.MAIN_APP_IAM_MGT_ID}/login?scope=${iamConfig.DEFAULT_SCOPE}&redirectTo=${window.location.origin}/mgt`;
 
 const routes = (
   <>

@@ -122,7 +122,7 @@ export class AuthService {
 
     return {
       token_type: appInfo.responseType,
-      scope: ['appInfo.scope'].join(' '),
+      scope: appInfo.scope,
       expires_in: jwtConfig.MAX_AGE,
       access_token,
       info,

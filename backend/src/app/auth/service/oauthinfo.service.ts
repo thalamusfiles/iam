@@ -4,7 +4,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Role } from '../../../model/Role';
 import { Application } from '../../../model/System/Application';
 
-type ScopeInfo = { scope: string; app: { name: string; description: string } };
+type ScopeInfo = { scope: string; app: { name: string; description: string }; permission: { description: string } };
 
 @Injectable()
 export class OauthInfoService {

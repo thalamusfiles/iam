@@ -22,7 +22,7 @@ export type LoginDto = {
 };
 
 export type ApplicationInfo = { uuid: string; name: string };
-export type ScopeInfo = { scope: string; app: { name: string; description: string } };
+export type ScopeInfo = { scope: string; app: { name: string; description: string }; permission: { description: string } };
 
 interface AuthDataSourceI {
   // Registra novo usuário no servidor e realiza login oauth
@@ -50,7 +50,7 @@ export class AuthDataSource implements AuthDataSourceI {
   }
 
   async login({ username, password }: LoginDto, oauth: OauthFieldsDto): Promise<any> {
-    return await Apis.ApiAuth.post(`${Endpoints.apiAuthRegister}`, {
+    return await Apis.ApiAuth.post(`${Endpoints.apiAuthLogin}`, {
       username,
       password,
       ...oauth,

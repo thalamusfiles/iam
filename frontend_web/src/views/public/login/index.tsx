@@ -16,6 +16,7 @@ import bgRotate04 from '../../../assets/bg_rotate_04.jpeg';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 import { LoginCtrl, LoginProvider, useLoginStore } from './ctrl';
+import PermissionInfoModal from './permissions.modal';
 
 const bgImg = [bgRotate01, bgRotate02, bgRotate03, bgRotate04][Math.floor(Math.random() * 4)];
 
@@ -52,6 +53,8 @@ const LoginPageProvided: React.FC = observer(() => {
   return (
     <div style={{ backgroundImage: `url(${bgImg})` }} className="bgImageCover">
       <div style={{ backgroundColor: 'rgba(90,90,90,.8)', width: '100%', padding: 20 }} className="bgImageCover">
+        <PermissionInfoModal />
+
         <Row>
           <Col md={{ span: 4, offset: 4 }} sm={{ span: 6, offset: 3 }} className="text-center text-white mb-5 mt-5">
             <h2>{__('login.title')}</h2>
@@ -65,15 +68,19 @@ const LoginPageProvided: React.FC = observer(() => {
                     <img src="/logo.png" alt="logo" id="logo" />
                     {__('login.cardindo')}
                   </p>
-
                   <Form>
                     {!!ctrl.erroMessages?.length && <Alert variant="danger">{ctrl.erroMessages.map(__)}</Alert>}
 
                     <Form.Group controlId="login.application">
-                      <Form.Label>{__('login.system')}</Form.Label>
-                      <Form.Control type="text" value={ctrl.appInfo?.name} disabled />
+                      <Form.Label>{__('login.application')}</Form.Label>
+                      <Form.Control type="text" defaultValue={ctrl.appInfo?.name} disabled />
                       <Form.Text className="text-muted">{__('login.application-info')}</Form.Text>
                     </Form.Group>
+
+                    <p onClick={() => ctrl.showPermissionModal()}>
+                      <br />
+                      <strong>{__('login.permissions-info')}</strong>
+                    </p>
 
                     <Form.Group controlId="login.username">
                       <Form.Label>{__('login.username')}</Form.Label>
@@ -97,10 +104,9 @@ const LoginPageProvided: React.FC = observer(() => {
                         onChange={ctrl.handlePassword}
                         isInvalid={!!ctrl.erros.password}
                       />
-                      <Form.Control.Feedback type="invalid">{ctrl.erros.username?.map(__)}</Form.Control.Feedback>
+                      <Form.Control.Feedback type="invalid">{ctrl.erros.password?.map(__)}</Form.Control.Feedback>
                     </Form.Group>
                   </Form>
-
                   <Card.Link color="secondary">{__('login.action.forgotpass')}</Card.Link>
                 </Card.Body>
                 <Card.Footer>

@@ -50,6 +50,5 @@ export const getFormExceptionErrosToObject = (
       messages.push(responseData.message);
     }
   }
-  console.log([messages, erros as ErrorRecord & ErrorListRecord]);
   return [messages, erros as ErrorRecord & ErrorListRecord];
 };

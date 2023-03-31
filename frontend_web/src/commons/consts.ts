@@ -48,6 +48,7 @@ export const localStorageDef = {
   key: lsKey,
   userContextKey: `${lsKey}_user`, //Identificador de armazenamento do usuário
   tokenKey: `${lsKey}_token`, //Identificador de armazenamento do usuário
+  expiresIn: `${lsKey}_expires_in`, //Identificador de armazenamento do usuário
 };
 
 //Qauntidade de itens por página

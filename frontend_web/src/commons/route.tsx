@@ -14,7 +14,7 @@ export const createBaseRouter = (routes: RouteObject[]): RemixRouter => (router 
 
 export function historyPush(
   owner: RoutesName | string | number,
-  options: { id?: any; inModal?: boolean; showSave?: boolean; open?: boolean; absolute?: boolean; search?: boolean } & any = {},
+  options: { id?: any; inModal?: boolean; showSave?: boolean; open?: boolean; absolute?: boolean; search?: string } & any = {},
 ) {
   // Quando informado número, volta pra páginas anteriores ou posteriores.
   if (typeof owner === 'number') router.navigate(owner);
@@ -26,7 +26,7 @@ export function historyPush(
       push = '/public/app/:app/login'.replace(':region', options.region).replace(':app', options.app);
       break;
     case 'register':
-      push = '/public/app/:app/register'.replace(':region', options.region).replace(':app', options.app);
+      push = '/public/app/:app/register'.replace(':region', options.region).replace(':app', options.app) + qs.stringify(options.search);
       break;
     // ACCOUNT
     case 'home_account':

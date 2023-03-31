@@ -1,4 +1,8 @@
 {
+  "username.isNotEmpty": "Username required",
+  "password.isNotEmpty": "Password required",
+  "redirect_uri.isUrl": "Redirect uri required",
+
   "server": {
     "user_not_found": "User does not exists",
     "password_invalid": "Password invalid"
@@ -9,10 +13,15 @@
     "cardindo":"Type your username and password to enter the system.",
     "application": "Application",
     "application-info": "After login, you will be redirected to the application.",
+    "permissions-info": "After logging in, you will share various permissions with the application. Click here to view them.",
     "region": "Region",
     "username": "E-mail",
     "typeusername": "Type your e-mail",
     "password": "Password",
+    "permissions": {
+      "title": "Shared Permissions",
+      "subtitle": "You will share the following permissions with the application."
+    },
     "action": {
       "login": "Login",
       "register": "Register",

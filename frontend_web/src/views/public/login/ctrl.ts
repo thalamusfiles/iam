@@ -26,6 +26,9 @@ export class LoginCtrl {
   @observable applicationUuid = null as string | null;
   @observable scope = null as string | null;
 
+  // Modals
+  @observable permissionModalDisplay: boolean = false;
+
   @action
   setParams = (applicationUuid: string, redirectTo: string | null, scope: string | null) => {
     const isChange = this.applicationUuid !== applicationUuid;
@@ -38,6 +41,30 @@ export class LoginCtrl {
       this.loadApplicationInfo();
       this.loadScopeInfo();
     }
+  };
+
+  @action
+  loadApplicationInfo = () => {
+    new OauthDataSource().applicationInfo(this.applicationUuid!).then((response) => {
+      this.appInfo = response.data;
+    });
+  };
+
+  @action
+  loadScopeInfo = () => {
+    new OauthDataSource().scopeInfo(this.scope!).then((response) => {
+      this.scopeInfo = response.data;
+    });
+  };
+
+  @action
+  showPermissionModal = () => {
+    this.permissionModalDisplay = true;
+  };
+
+  @action
+  hidePermissionModal = () => {
+    this.permissionModalDisplay = false;
   };
 
   @action
@@ -57,22 +84,6 @@ export class LoginCtrl {
   };
 
   @action
-  loadApplicationInfo = () => {
-    new OauthDataSource().applicationInfo(this.applicationUuid!).then((response) => {
-      this.appInfo = response.data;
-    });
-  };
-
-  @action
-  loadScopeInfo = () => {
-    console.log(OauthDataSource);
-    new OauthDataSource().scopeInfo(this.scope!).then((response) => {
-      this.scopeInfo = response.data;
-      alert(JSON.stringify(this.scopeInfo));
-    });
-  };
-
-  @action
   toLogin = () => {
     new AuthDataSource()
       .login(
@@ -86,12 +97,10 @@ export class LoginCtrl {
       )
       .then((response) => {
         const responseData = response.data;
-        UserCtxInstance.login(responseData.user, responseData.access_token);
+        UserCtxInstance.login(responseData.info, responseData.access_token, responseData.info.expires_in);
 
         if (this.redirectTo) {
           window.location.href = this.redirectTo;
-        } else {
-          historyPush('home');
         }
       })
       .catch((error: any) => {
@@ -105,7 +114,7 @@ export class LoginCtrl {
   };
 
   toRegister = () => {
-    historyPush('register', { app: this.applicationUuid });
+    historyPush('register', { app: this.applicationUuid, search: 'scope=' + this.scope });
   };
 }
 

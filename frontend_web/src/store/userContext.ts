@@ -16,6 +16,7 @@ export class Ctx {
 
   @observable user: any = {};
   @observable token: string | null = null;
+  @observable expiresIn: number | null = null;
 
   changeLanguage(lng?: string): Promise<Function> {
     return i18next.changeLanguage(lng);
@@ -23,13 +24,16 @@ export class Ctx {
 
   //Realiza autenticação do usuário
   @action
-  login(user: any, token: string | null): void {
-    this.saveUser(user, token);
+  login(user: any, token: string | null, expiresIn: number | null): void {
+    this.saveUser(user, token, expiresIn);
   }
 
   @action
   logout() {
-    this.saveUser({}, null);
+    this.saveUser({}, null, null);
+
+    Storage.clear();
+
     historyPush('login', { region: 'global', app: 'root' });
   }
 
@@ -42,13 +46,17 @@ export class Ctx {
   @action loadUser() {
     this.user = Storage.getItem(localStorageDef.userContextKey);
     this.token = Storage.getItem(localStorageDef.tokenKey);
+    this.expiresIn = Storage.getItem(localStorageDef.tokenKey);
   }
 
-  @action saveUser(user: any, token: string | null) {
+  @action saveUser(user: any, token: string | null, expiresIn: number | null) {
     Storage.setItem(localStorageDef.userContextKey, user);
     Storage.setItem(localStorageDef.tokenKey, token);
+    Storage.setItem(localStorageDef.expiresIn, expiresIn);
+
     this.user = user;
     this.token = token;
+    this.expiresIn = expiresIn;
   }
 }
 

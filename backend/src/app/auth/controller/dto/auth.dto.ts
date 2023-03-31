@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IsNotEmpty, IsOptional, IsString, IsUrl, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsString, IsUrl, IsUUID } from 'class-validator';
 import iamConfig from '../../../../config/iam.config';
 import { AccessUserInfo } from '../../passaport/access-user-info';
 
@@ -13,7 +13,6 @@ class OauthFieldsDto {
   response_type: string;
 
   @Expose()
-  @IsOptional()
   @IsUrl({ require_tld: iamConfig.PRODCTION_MODE })
   redirect_uri?: string;
 

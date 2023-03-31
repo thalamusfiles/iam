@@ -1,18 +1,28 @@
 {
+  "username.isNotEmpty": "Usuário obrigatório",
+  "password.isNotEmpty": "Senha obrigatória",
+  "redirect_uri.isUrl": "Redirect uri required",
+  
   "server": {
     "user_not_found": "Usuário não encontrado",
     "password_invalid": "Senha incorreta"
   },
+
   "login": {
     "title":"Thalamus IAM",
     "subtitle":"Gerenciamento de identidades e acesso.",
     "cardindo":"Informe seu usuário e senha para entrar no sistema",
     "application": "Aplicação",
     "application-info": "Após realizar o login você será redirecionado para a aplicação.",
+    "permissions-info": "Apos realizar o login, você irá compartilhar várias permissões com a aplicação. Clique aqui para visualizá-las.",
     "region": "Região",
     "username": "E-mail",
     "typeusername": "Informe seu e-mail",
     "password": "Senha",
+    "permissions": {
+      "title": "Permissões Compartilhadas",
+      "subtitle": "Você irá compartilhar as seguintes permissões com a aplicação."
+    },
     "action": {
       "login": "Entrar",
       "register": "Criar conta",
