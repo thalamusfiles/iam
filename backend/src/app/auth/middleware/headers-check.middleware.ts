@@ -13,15 +13,15 @@ export class GlobalIamHeadersCheckMiddleware implements NestMiddleware {
   }
 
   async use(req: RequestInfo, res: Response, next: NextFunction) {
-    const region = req.header('region');
+    //const region = req.header('region');
     const application = req.header('application');
-    if (!region || !application) {
+    if (/*!region ||*/ !application) {
       this.logger.error('Tentativa de uso de área restrita');
-      throw new UnauthorizedException('Region and application required');
+      throw new UnauthorizedException('Application header required');
     }
-    if (region !== iamConfig.MAIN_REGION || application !== iamConfig.MAIN_APP_IAM_MGT) {
+    if (/*region !== iamConfig.MAIN_REGION ||*/ application !== iamConfig.MAIN_APP_IAM_MGT) {
       this.logger.error('Tentativa de uso de área restrita');
-      throw new UnauthorizedException('Region and application not allowed');
+      throw new UnauthorizedException('Application header not allowed');
     }
 
     req.applicationRef = await this.requestService.getApplicationRef(iamConfig.MAIN_APP_IAM_MGT);
@@ -39,18 +39,18 @@ export class RegionAppHeadersCheckMiddleware implements NestMiddleware {
   }
 
   async use(req: RequestInfo, res: Response, next: NextFunction) {
-    const region = req.header('region');
+    //const region = req.header('region');
     const application = req.header('application');
-    if (!region || !application) {
+    if (/*!region ||*/ !application) {
       this.logger.error('Tentativa de acesso sem informar a região ou aplicação');
-      throw new UnauthorizedException('Region and application required');
+      throw new UnauthorizedException('Application header required');
     }
-    if (typeof region !== 'string' || typeof application !== 'string') {
+    if (/*typeof region !== 'string' ||*/ typeof application !== 'string') {
       this.logger.error('Tentativa de acesso com região ou aplicação malformado');
-      throw new UnauthorizedException('Region and application malformed');
+      throw new UnauthorizedException('Application header malformed');
     }
 
-    req.regionRef = await this.requestService.getRegionRef(region);
+    //req.regionRef = await this.requestService.getRegionRef(region);
     req.applicationRef = await this.requestService.getApplicationRef(application);
 
     next();

@@ -10,11 +10,12 @@ export class JTWGuardMockAdmin extends AuthGuard('jwt') {
     return super.canActivate(context);
   }
 
-  handleRequest(err, user: Partial<AccessUserInfo> /*, info*/) {
+  handleRequest(err, user: AccessUserInfo /*, info*/) {
     user = {
       iat: DateTime.now().valueOf(),
-      uuid: iamConfig.MAIN_APP_IAM_ID,
+      uuid: '11111111-1111-1111-1111-111111111111',
       name: iamConfig.FIRST_USER_NAME,
+      applicationLogged: iamConfig.MAIN_APP_IAM,
     };
 
     return user as any;

@@ -1,9 +1,20 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Logger, Req, UseGuards } from '@nestjs/common';
+import { RequestInfo } from '../../../commons/request-info';
+import { AccessGuard } from '../../auth/passaport/access.guard';
+import { UserInfo, UserService } from '../service/user.service';
 
+@UseGuards(AccessGuard)
 @Controller('iam/me')
 export class MeController {
+  private readonly logger = new Logger(MeController.name);
+
+  constructor(private readonly userService: UserService) {
+    this.logger.log('starting');
+  }
+
   @Get()
-  findAll(): string {
-    return 'This action returns all cats';
+  async me(@Req() request: RequestInfo): Promise<UserInfo> {
+    const uuid = request.user.uuid;
+    return await this.userService.userInfo(uuid);
   }
 }
