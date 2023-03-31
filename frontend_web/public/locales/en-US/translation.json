@@ -44,7 +44,7 @@
     "home": {
       "title": "Welcome {{name}}!",
       "subtitle": "Your account is ready to be used in Thalamus applications.",
-      "accessmsg": "Your access identity is testuser and your email teste@email.com.br."
+      "accessmsg": "Your access identity is {{username}}."
     }
   },
   "menu": {

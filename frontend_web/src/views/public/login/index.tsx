@@ -1,5 +1,4 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { autorun } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { Alert } from 'react-bootstrap';
@@ -23,6 +22,18 @@ const bgImg = [bgRotate01, bgRotate02, bgRotate03, bgRotate04][Math.floor(Math.r
 const LoginPage: React.FC = () => {
   const ctrl = new LoginCtrl();
 
+  const { app } = useParams();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    ctrl.setParams(
+      //
+      app as string,
+      searchParams.get('redirectTo'),
+      searchParams.get('scope'),
+    );
+  });
+
   return (
     <LoginProvider value={ctrl}>
       <LoginPageProvided />
@@ -33,22 +44,6 @@ const LoginPage: React.FC = () => {
 const LoginPageProvided: React.FC = observer(() => {
   const __ = useI18N();
   const ctrl = useLoginStore();
-
-  const { app } = useParams();
-  const [searchParams] = useSearchParams();
-
-  useEffect(
-    () =>
-      autorun(() => {
-        ctrl.setParams(
-          //
-          app as string,
-          searchParams.get('redirectTo'),
-          searchParams.get('scope'),
-        );
-      }),
-    [app, ctrl, searchParams],
-  );
 
   return (
     <div style={{ backgroundImage: `url(${bgImg})` }} className="bgImageCover">
