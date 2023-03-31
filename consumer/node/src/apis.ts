@@ -4,6 +4,7 @@ import Endpoint from './endpoints';
 class IamApisConfigure {
   token = '';
   ApiMGT: AxiosInstance;
+  ApiIAM: AxiosInstance;
   ApiAuth: AxiosInstance;
 
   /**
@@ -33,6 +34,11 @@ class IamApisConfigure {
 
     this.ApiAuth = this.axiosStart({
       baseURL: Endpoint.apiAuth!,
+      timeout: Endpoint.timeout,
+    });
+
+    this.ApiIAM = this.axiosStart({
+      baseURL: Endpoint.apiIAM!,
       timeout: Endpoint.timeout,
     });
   };

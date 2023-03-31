@@ -11,6 +11,11 @@ class EndpointsConfigure {
   apiAuthRegister = '/register';
   apiOauthApplicationInfo = 'application/info';
   apiOauthScopeInfo = 'scope/info';
+  // IAM Urls
+  apiIAM = '/iam';
+  apiIAMMe = '/me';
+  apiIAMToken = '/token';
+  apiIAMTokenActive = '/token/active';
   // API MGT Urls
   apiMGT = null as string | null;
   apiMGTPerson = `/person`;

@@ -12,6 +12,7 @@ describe('MeController (e2e)', () => {
 
   // Registros utilizado nos testes
   const tokenUrl = '/iam/token';
+  let toDeleteUuid: string;
 
   // Executa antes de cada teste
   beforeAll(async () => {
@@ -46,11 +47,25 @@ describe('MeController (e2e)', () => {
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(loginUrl)).send(loginDto).expect(201);
   });
 
+  it(`${tokenUrl} (Get) Coleta todos os logins realizados`, async () => {
+    const activeTokenUrl = `${tokenUrl}`;
+    const result = await await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(activeTokenUrl)).expect(200);
+
+    expect(result.body).toBeDefined();
+    expect(result.body.length).toBeGreaterThanOrEqual(1);
+    expect(result.body[0]).toMatchObject(
+      expect.objectContaining({
+        scope: expect.any(String),
+        userAgent: expect.any(String),
+        createdAt: expect.any(String),
+        expiresIn: expect.any(String),
+      }),
+    );
+  });
+
   it(`${tokenUrl}/active (Get) Coleta todos os tokens ativos`, async () => {
     const activeTokenUrl = `${tokenUrl}/active`;
     const result = await await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(activeTokenUrl)).expect(200);
-
-    console.log(result.body.length);
 
     expect(result.body).toBeDefined();
     expect(result.body.length).toBeGreaterThanOrEqual(1);
@@ -63,23 +78,13 @@ describe('MeController (e2e)', () => {
         expiresIn: expect.any(String),
       }),
     );
+
+    toDeleteUuid = result.body[0].uuid;
   });
 
-  it(`${tokenUrl}/all (Get) Coleta todos os logins realizados`, async () => {
-    const activeTokenUrl = `${tokenUrl}/all`;
-    const result = await await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(activeTokenUrl)).expect(200);
+  it(`${tokenUrl}/ (Delete) Remove/Desabilita registro de login`, async () => {
+    const deleteUrl = `${tokenUrl}/${toDeleteUuid}`;
 
-    console.log(result.body.length);
-
-    expect(result.body).toBeDefined();
-    expect(result.body.length).toBeGreaterThanOrEqual(1);
-    expect(result.body[0]).toMatchObject(
-      expect.objectContaining({
-        scope: expect.any(String),
-        userAgent: expect.any(String),
-        createdAt: expect.any(String),
-        expiresIn: expect.any(String),
-      }),
-    );
+    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).delete(deleteUrl)).expect(200);
   });
 });

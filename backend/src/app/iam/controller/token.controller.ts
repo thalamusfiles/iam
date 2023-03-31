@@ -1,4 +1,4 @@
-import { Controller, Get, Logger, Req, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Logger, Param, Req, UseGuards } from '@nestjs/common';
 import { RequestInfo } from '../../../commons/request-info';
 import { AccessGuard } from '../../auth/passaport/access.guard';
 import { TokenInfo, TokenService } from '../service/token.service';
@@ -12,15 +12,21 @@ export class TokenController {
     this.logger.log('starting');
   }
 
-  @Get('active')
-  async active(@Req() request: RequestInfo): Promise<TokenInfo[]> {
-    const uuid = request.user.uuid;
-    return await this.userService.activeTokensByUser(uuid);
+  @Get()
+  async findAll(@Req() request: RequestInfo): Promise<TokenInfo[]> {
+    const userUuid = request.user.uuid;
+    return await this.userService.findAll(userUuid, 0, 1000);
   }
 
-  @Get('all')
-  async findAll(@Req() request: RequestInfo): Promise<TokenInfo[]> {
-    const uuid = request.user.uuid;
-    return await this.userService.findAll(uuid, 0, 1000);
+  @Delete(':uuid')
+  async delete(@Param('uuid') uuid: string, @Req() request: RequestInfo): Promise<void> {
+    const userUuid = request.user.uuid;
+    return await this.userService.delete(userUuid, uuid);
+  }
+
+  @Get('active')
+  async active(@Req() request: RequestInfo): Promise<TokenInfo[]> {
+    const userUuid = request.user.uuid;
+    return await this.userService.activeTokensByUser(userUuid);
   }
 }
