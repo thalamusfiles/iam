@@ -7,6 +7,7 @@
     "user_not_found": "User does not exists",
     "password_invalid": "Password invalid"
   },
+
   "login": {
     "title":"Thalamus IAM",
     "subtitle":"Identity and Access Management.",
@@ -32,8 +33,10 @@
     "title":"Thalamus IAM",
     "subtitle":"New user registration.",
     "cardindo":"A single registration for all Thalamus applications..",
-    "username": "User or access code",
-    "email": "e-mail",
+    "name": "Name and surname",
+    "typename": "Type your name and last name",
+    "username": "E-mail",
+    "typeusername": "Type your e-mail",
     "password": "Password",
     "passwordcheck": "Retype Password",
     "action": {

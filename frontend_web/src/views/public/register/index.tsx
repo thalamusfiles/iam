@@ -1,5 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
+import { Alert } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -12,41 +14,35 @@ import bgRotate03 from '../../../assets/bg_rotate_03.jpeg';
 import bgRotate04 from '../../../assets/bg_rotate_04.jpeg';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
-import { historyPush } from '../../../commons/route';
+import { RegisterCtrl, RegisterProvider, useRegisterStore } from './ctrl';
 
 const bgImg = [bgRotate01, bgRotate02, bgRotate03, bgRotate04][Math.floor(Math.random() * 4)];
 
 const RegisterPage: React.FC = () => {
-  const __ = useI18N();
-  const { region, app } = useParams();
-  const [form, setForm] = useState({ username: '', password: '' });
-  const [erros] = useState({ username: null as string | null, password: null as string | null });
-  const [, setRedirectTo] = useState(null as string | null);
+  const ctrl = new RegisterCtrl();
+
+  const { app } = useParams();
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    setRedirectTo(searchParams.get('redirectTo'));
-  }, [searchParams]);
+    ctrl.setParams(
+      //
+      app as string,
+      searchParams.get('redirectTo'),
+      searchParams.get('scope'),
+    );
+  });
 
-  function handleUsername(e: any) {
-    setForm({ username: e.target.value, password: form.password });
-  }
+  return (
+    <RegisterProvider value={ctrl}>
+      <RegisterPageProvided />
+    </RegisterProvider>
+  );
+};
 
-  function handlePassword(e: any) {
-    setForm({ password: e.target.value, username: form.username });
-  }
-
-  function toLogin() {
-    historyPush('login', { region, app });
-  }
-
-  function toRegister() {}
-
-  function onKeyUpFilter(e: any) {
-    if (e.charCode === 13) {
-      toLogin();
-    }
-  }
+const RegisterPageProvided: React.FC = observer(() => {
+  const __ = useI18N();
+  const ctrl = useRegisterStore();
 
   return (
     <div style={{ backgroundImage: `url(${bgImg})` }} className="bgImageCover">
@@ -65,71 +61,86 @@ const RegisterPage: React.FC = () => {
                     {__('register.cardindo')}
                   </p>
 
-                  <Form.Group controlId="register.username">
-                    <Form.Label>{__('register.username')}</Form.Label>
-                    <Form.Control
-                      placeholder="Enter your user name, code or email"
-                      type="username"
-                      onKeyPress={onKeyUpFilter}
-                      onChange={handleUsername}
-                      isInvalid={!!erros.username}
-                    />
-                    <Form.Control.Feedback type="invalid">{erros.username}</Form.Control.Feedback>
-                  </Form.Group>
+                  <Form>
+                    {!!ctrl.erroMessages?.length && <Alert variant="danger">{ctrl.erroMessages.map(__)}</Alert>}
 
-                  <Form.Group controlId="register.email">
-                    <Form.Label>{__('register.email')}</Form.Label>
-                    <Form.Control
-                      placeholder="Enter your email"
-                      type="email"
-                      onKeyPress={onKeyUpFilter}
-                      onChange={handleUsername}
-                      isInvalid={!!erros.username}
-                    />
-                    <Form.Control.Feedback type="invalid">{erros.username}</Form.Control.Feedback>
-                  </Form.Group>
+                    <Form.Group controlId="login.application">
+                      <Form.Label>{__('login.application')}</Form.Label>
+                      <Form.Control type="text" defaultValue={ctrl.appInfo?.name} disabled />
+                      <Form.Text className="text-muted">{__('login.application-info')}</Form.Text>
+                    </Form.Group>
 
-                  <Row>
-                    <Col>
-                      <Form.Group>
-                        <Form.Label>{__('register.password')}</Form.Label>
-                        <Form.Control
-                          placeholder={__('register.password') as string}
-                          type="password"
-                          autoComplete="off"
-                          onKeyPress={onKeyUpFilter}
-                          onChange={handlePassword}
-                          isInvalid={!!erros.password}
-                        />
-                        <Form.Control.Feedback type="invalid">{erros.password}</Form.Control.Feedback>
-                      </Form.Group>
-                    </Col>
-                    <Col>
-                      <Form.Group>
-                        <Form.Label>{__('register.passwordcheck')}</Form.Label>
-                        <Form.Control
-                          placeholder={__('register.passwordcheck') as string}
-                          type="password"
-                          autoComplete="off"
-                          onKeyPress={onKeyUpFilter}
-                          onChange={handlePassword}
-                          isInvalid={!!erros.password}
-                        />
-                        <Form.Control.Feedback type="invalid">{erros.password}</Form.Control.Feedback>
-                      </Form.Group>
-                    </Col>
-                  </Row>
+                    <p onClick={() => ctrl.showPermissionModal()}>
+                      <br />
+                      <strong>{__('login.permissions-info')}</strong>
+                    </p>
+
+                    <Form.Group controlId="register.name">
+                      <Form.Label>{__('register.name')}</Form.Label>
+                      <Form.Control
+                        placeholder={__('register.typename')}
+                        type="name"
+                        onKeyPress={ctrl.onKeyUpFilter}
+                        onChange={ctrl.handleName}
+                        isInvalid={!!ctrl.erros.name}
+                      />
+                      <Form.Control.Feedback type="invalid">{ctrl.erros.name?.map(__)}</Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Form.Group controlId="register.username">
+                      <Form.Label>{__('register.username')}</Form.Label>
+                      <Form.Control
+                        placeholder={__('register.typeusername')}
+                        type="username"
+                        onKeyPress={ctrl.onKeyUpFilter}
+                        onChange={ctrl.handleUsername}
+                        isInvalid={!!ctrl.erros.username}
+                      />
+                      <Form.Control.Feedback type="invalid">{ctrl.erros.username?.map(__)}</Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Row>
+                      <Col>
+                        <Form.Group>
+                          <Form.Label>{__('register.password')}</Form.Label>
+                          <Form.Control
+                            placeholder={__('register.password') as string}
+                            type="password"
+                            autoComplete="off"
+                            onKeyPress={ctrl.onKeyUpFilter}
+                            onChange={ctrl.handlePassword}
+                            isInvalid={!!ctrl.erros.password}
+                          />
+                          <Form.Control.Feedback type="invalid">{ctrl.erros.password?.map(__)}</Form.Control.Feedback>
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group>
+                          <Form.Label>{__('register.passwordcheck')}</Form.Label>
+                          <Form.Control
+                            placeholder={__('register.passwordcheck') as string}
+                            type="password"
+                            autoComplete="off"
+                            onKeyPress={ctrl.onKeyUpFilter}
+                            onChange={ctrl.handlePassword}
+                            isInvalid={!!ctrl.erros.password_confirmed}
+                          />
+                          <Form.Control.Feedback type="invalid">{ctrl.erros.password_confirmed?.map(__)}</Form.Control.Feedback>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  </Form>
                 </Card.Body>
                 <Card.Footer>
                   <Row>
                     <Col sm={6}>
-                      <Button size="sm" variant="ligth" onClick={toLogin}>
+                      <Button size="sm" variant="ligth" onClick={ctrl.toLogin}>
                         {__('register.action.tologin')}
                       </Button>
                     </Col>
                     <Col></Col>
                     <Col sm={5}>
-                      <Button variant="primary" onClick={toRegister}>
+                      <Button variant="primary" onClick={ctrl.toRegister}>
                         <FontAwesomeIcon icon={IconsDef.save} /> {__('login.action.register')}
                       </Button>
                     </Col>
@@ -142,6 +153,6 @@ const RegisterPage: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
 export default RegisterPage;

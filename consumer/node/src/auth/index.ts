@@ -40,7 +40,7 @@ interface OauthDataSourceI {
 
 export class AuthDataSource implements AuthDataSourceI {
   async register({ name, username, password, password_confirmed }: RegisterDto, oauth: OauthFieldsDto): Promise<any> {
-    return await Apis.ApiAuth.post(`${Endpoints.apiAuthLogin}`, {
+    return await Apis.ApiAuth.post(`${Endpoints.apiAuthRegister}`, {
       name,
       username,
       password,

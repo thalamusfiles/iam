@@ -81,7 +81,7 @@ const LoginPageProvided: React.FC = observer(() => {
                       <Form.Label>{__('login.username')}</Form.Label>
                       <Form.Control
                         placeholder={__('login.typeusername')}
-                        type="email"
+                        type="username"
                         onKeyPress={ctrl.onKeyUpFilter}
                         onChange={ctrl.handleUsername}
                         isInvalid={!!ctrl.erros.username}

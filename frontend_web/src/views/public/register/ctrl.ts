@@ -7,17 +7,24 @@ import { historyPush } from '../../../commons/route';
 import type { ErrorListRecord } from '../../../commons/types/ErrorListRecord';
 import UserCtxInstance from '../../../store/userContext';
 
-export class LoginCtrl {
+export class RegisterCtrl {
   constructor() {
     // Modifica classe pra ser observável
     makeObservable(this);
   }
 
-  // Login
+  // Register
+  @observable name = '';
   @observable username = '';
   @observable password = '';
+  @observable passwordConfirmed = '';
   @observable erroMessages: string[] = [];
-  @observable erros: ErrorListRecord = { username: null as string[] | null, password: null as string[] | null };
+  @observable erros: ErrorListRecord = {
+    name: null as string[] | null,
+    username: null as string[] | null,
+    password: null as string[] | null,
+    password_confirmed: null as string[] | null,
+  };
   @observable appInfo: ApplicationInfo | null = null;
   @observable scopeInfo: ScopeInfo[] | null = null;
 
@@ -68,6 +75,11 @@ export class LoginCtrl {
   };
 
   @action
+  handleName = (e: any): void => {
+    this.name = e.target.value;
+  };
+
+  @action
   handleUsername = (e: any): void => {
     this.username = e.target.value;
   };
@@ -77,17 +89,22 @@ export class LoginCtrl {
     this.password = e.target.value;
   };
 
+  @action
+  handlePasswordConfirmed = (e: any): void => {
+    this.passwordConfirmed = e.target.value;
+  };
+
   onKeyUpFilter = (e: any): void => {
     if (e.charCode === 13) {
-      this.toLogin();
+      this.toRegister();
     }
   };
 
   @action
-  toLogin = () => {
+  toRegister = () => {
     new AuthDataSource()
-      .login(
-        { username: this.username, password: this.password },
+      .register(
+        { name: this.name, username: this.username, password: this.password, password_confirmed: this.passwordConfirmed },
         {
           response_type: 'cookie',
           scope: this.scope!,
@@ -99,7 +116,7 @@ export class LoginCtrl {
         const responseData = response.data;
         // Adicionar o token de acesso no consumidar da API
         IamApisConfigure.setGlobalAuthorizationToken(responseData.access_token);
-        // Regista o login no contexto do usuário
+        // Regista o Register no contexto do usuário
         UserCtxInstance.login(responseData.info, responseData.access_token, responseData.info.expires_in);
 
         if (this.redirectTo) {
@@ -111,16 +128,16 @@ export class LoginCtrl {
 
         [this.erroMessages, this.erros] = getFormExceptionErrosToObject(data, {
           splitByConstraints: true,
-          ignoreKindsToMessage: ['username', 'password'],
+          ignoreKindsToMessage: ['name', 'username', 'password', 'password_confirmed'],
         }) as ErrosAsList;
       });
   };
 
-  toRegister = () => {
-    historyPush('register', { app: this.applicationUuid, search: { scope: this.scope, redirectTo: this.redirectTo } });
+  toLogin = () => {
+    historyPush('login', { app: this.applicationUuid, search: { scope: this.scope, redirectTo: this.redirectTo } });
   };
 }
 
-export const LoginContext = createContext({} as LoginCtrl);
-export const LoginProvider = LoginContext.Provider;
-export const useLoginStore = (): LoginCtrl => useContext(LoginContext);
+export const RegisterContext = createContext({} as RegisterCtrl);
+export const RegisterProvider = RegisterContext.Provider;
+export const useRegisterStore = (): RegisterCtrl => useContext(RegisterContext);

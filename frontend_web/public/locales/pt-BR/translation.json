@@ -33,8 +33,10 @@
     "title":"Thalamus IAM",
     "subtitle":"Cadastro de novo usuário.",
     "cardindo":"Um unico cadastro para todas as aplicações Thalamus",
-    "username": "Usuário ou code de acesso",
-    "email": "E-mail",
+    "name": "Nome e sobrenome",
+    "typename": "Informe nome e sobrenome",
+    "username": "E-mail",
+    "typeusername": "Informe seu e-mail",
     "password": "Senha",
     "passwordcheck": "Confirme a senha",
     "action": {
