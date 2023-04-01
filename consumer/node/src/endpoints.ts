@@ -12,7 +12,7 @@ class EndpointsConfigure {
   apiOauthApplicationInfo = 'application/info';
   apiOauthScopeInfo = 'scope/info';
   // IAM Urls
-  apiIAM = '/iam';
+  apiIAM = null as string | null;
   apiIAMMe = '/me';
   apiIAMToken = '/token';
   apiIAMTokenActive = '/token/active';
@@ -27,12 +27,14 @@ class EndpointsConfigure {
   configureEndpoint = (baseUrl: string = 'localhost', basePort: string = '3000') => {
     const baseEndpoint = `${baseUrl}:${basePort}`;
     const apiAuth = `${baseEndpoint}/auth`;
+    const apiIAM = `${baseEndpoint}/iam`;
     const apiMGT = `${baseEndpoint}/apicrud`;
 
     this.url = baseUrl;
     this.port = basePort;
     this.base = baseEndpoint;
     this.apiAuth = apiAuth;
+    this.apiIAM = apiIAM;
     this.apiMGT = apiMGT;
   };
 }

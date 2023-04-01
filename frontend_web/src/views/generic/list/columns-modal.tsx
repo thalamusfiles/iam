@@ -58,7 +58,7 @@ export const ColumnsModal: React.FC = () => {
           <FontAwesomeIcon icon={IconsDef.close} /> {__('actions.close')}
         </Button>
         <Button variant="primary" onClick={() => ctrl!.applyColumns()}>
-          <FontAwesomeIcon icon={IconsDef.save} /> {__('generic.actions.applycolumns')}
+          <FontAwesomeIcon icon={IconsDef.save} /> {__('actions.applycolumns')}
         </Button>
       </Modal.Footer>
     </Modal>

@@ -6,8 +6,9 @@ import { UserToken } from '../../../model/UserToken';
 
 export type TokenInfo = {
   uuid?: string;
-  userAgent: string;
+  applicationName?: string;
   scope: string;
+  userAgent: string;
   createdAt: Date;
   expiresIn: Date;
 };
@@ -39,8 +40,8 @@ export class TokenService {
 
     return tokens.map((token) => ({
       uuid: token.uuid,
-      userAgent: token.userAgent,
       scope: token.scope,
+      userAgent: token.userAgent,
       createdAt: token.createdAt,
       expiresIn: token.createdAt,
     }));
@@ -59,13 +60,15 @@ export class TokenService {
     const tokens =
       (await this.userTokenRepository.find(filters, {
         filters: { deletedAtIsNull: false },
+        populate: ['application'],
         limit: maxPerPage,
         offset: page * maxPerPage,
       })) || [];
 
     return tokens.map((token) => ({
-      userAgent: token.userAgent,
+      applicationName: token.application?.name,
       scope: token.scope,
+      userAgent: token.userAgent,
       createdAt: token.createdAt,
       expiresIn: token.createdAt,
     }));

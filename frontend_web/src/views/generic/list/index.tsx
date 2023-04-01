@@ -100,7 +100,7 @@ const List: React.FC = () => {
             ))}
             {ctrl!.showAddColumn && (
               <th className="pointer nowrap" onClick={() => ctrl!.toggleShowColumns()}>
-                {__('generic.actions.addcol')}
+                {__('actions.addcolumn')}
               </th>
             )}
           </tr>

@@ -1,11 +1,16 @@
 import { ApplicationCRUDDatasource, PermissionCRUDDatasource, PersonCRUDDatasource, RegionCRUDDatasource, RoleCRUDDatasource } from './apicrud';
 import Apis from './apis';
 import { OauthDataSource, AuthDataSource, OauthFieldsDto, RegisterDto, LoginDto, ApplicationInfo, ScopeInfo } from './auth';
+import { MeDataSource, TokenDataSource, UserInfo, TokenInfo } from './iam';
 
 export {
-  // Apis
+  // Apis Auth
   OauthDataSource,
   AuthDataSource,
+  // Apis Iam
+  MeDataSource,
+  TokenDataSource,
+  // Apis Mgt
   PersonCRUDDatasource,
   RoleCRUDDatasource,
   PermissionCRUDDatasource,
@@ -14,9 +19,11 @@ export {
   // Configure
   Apis as IamApisConfigure,
   // Dtos
-  OauthFieldsDto,
-  RegisterDto,
   LoginDto,
+  OauthFieldsDto,
+  UserInfo,
+  TokenInfo,
+  RegisterDto,
   ApplicationInfo,
   ScopeInfo,
 };

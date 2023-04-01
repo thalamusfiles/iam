@@ -1,4 +1,4 @@
-import { ApplicationInfo, AuthDataSource, OauthDataSource, ScopeInfo } from '@thalamus/iam-consumer';
+import { ApplicationInfo, AuthDataSource, IamApisConfigure, OauthDataSource, ScopeInfo } from '@thalamus/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
 import type { ErrosAsList } from '../../../commons/error';
@@ -97,6 +97,9 @@ export class LoginCtrl {
       )
       .then((response) => {
         const responseData = response.data;
+        // Adicionar o token de acesso no consumidar da API
+        IamApisConfigure.setGlobalAuthorizationToken(responseData.access_token);
+        // Regista o login no contexto do usuário
         UserCtxInstance.login(responseData.info, responseData.access_token, responseData.info.expires_in);
 
         if (this.redirectTo) {

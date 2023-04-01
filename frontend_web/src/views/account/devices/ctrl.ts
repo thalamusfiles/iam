@@ -1,5 +1,8 @@
-import { makeObservable, observable } from 'mobx';
+import { TokenDataSource, TokenInfo } from '@thalamus/iam-consumer';
+import { DateTime } from 'luxon';
+import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
+import { UAParser } from 'ua-parser-js';
 
 export class DevicesConnectedCtx {
   constructor() {
@@ -7,16 +10,41 @@ export class DevicesConnectedCtx {
     makeObservable(this);
   }
 
+  // Dispositivos conectados
+  @observable devices: TokenInfo[] = [];
   // Informa quando esta sendo carregado a listagem
   @observable loading: boolean = false;
+  // Indica que já foi disparado o init
+  started = false;
 
-  // Dispositivos conectados
-  @observable devices: any[] = [
-    { loginAt: '25/10/1986 02:10', device: 'Chrome 01 - Desktop' },
-    { loginAt: '25/10/1986 05:10', device: 'Edge - Desktop' },
-    { loginAt: '25/10/1986 05:10', device: 'Chrome 01 - Mobile' },
-    { loginAt: '25/10/1986 05:10', device: 'Chrome 01 - Desktop' },
-  ];
+  @action
+  init = () => {
+    if (!this.started) {
+      this.started = true;
+
+      this.loadDefices();
+    }
+  };
+
+  @action
+  loadDefices = () => {
+    this.loading = true;
+
+    // Carrega os logins ativos
+    new TokenDataSource().active().then((response) => {
+      this.loading = false;
+
+      const responseData = response.data;
+
+      this.devices = responseData.map((device) => {
+        const uap = new UAParser(device.userAgent);
+        device.userAgent = `${uap.getOS().name}/${uap.getOS().version} ${uap.getBrowser().name} ${uap.getBrowser().version}`;
+        device.createdAt = DateTime.fromISO(device.createdAt).toFormat('dd/MM/yyyy HH:mm');
+
+        return device;
+      });
+    });
+  };
 }
 
 export const DevicesConnectedContext = createContext<DevicesConnectedCtx>({} as DevicesConnectedCtx);

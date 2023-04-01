@@ -48,6 +48,19 @@
       "accessmsg": "Sua identidade de acesso é {{username}}."
     }
   },
+  "devices": {
+    "title": "Dispositivos conectados",
+    "description": "Listagem de dispositivos conectados no momento",
+    "device": "Dispositivo",
+    "logged_since": "Logado desde"
+  },
+  "logins": {
+    "title": "Todos os logins realizados",
+    "description": "Listagem de dispositivos conectados no momento",
+    "device": "Dispositivo",
+    "to_application": "Aplicação",
+    "login_at": "Realizado em"
+  },
   "menu": {
     "messages": "Mensagens",
     "both":"Ambos",
@@ -84,9 +97,12 @@
       "person": "Usuários",
       "roles": "Perfis / Papeis / Cargos",
       "permissions": "Permissões / Recursos",
-      "my_devices_connected": "Meus aparelhos conectados",
+      "my_devices_connected": "Meus dispositivos conectados",
       "my_logins": "Meus logins realizados"
     }
+  },
+  "info": {
+    "thereXmorerecords": "Existe mais {{number}} registros"
   },
   "actions": {
     "showall": "Exibir tudo",
@@ -104,11 +120,9 @@
     "search": "Buscar",
     "applyfilter":"Aplicar filters",
     "findfileupload": "Procurar arquivo",
-    "import": "Importar"
-  },
-  "generic" :{
-    "actions.addcol": "Adicionar colunas",
-    "actions.applycolumns": "Exibir estas colunas"
+    "import": "Importar",
+    "addcolumn": "Adicionar colunas",
+    "applycolumns": "Exibir estas colunas"
   },
   "person": {
     "new.title": "Novo Usuário",

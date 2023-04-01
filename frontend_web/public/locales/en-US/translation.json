@@ -47,6 +47,19 @@
       "accessmsg": "Your access identity is {{username}}."
     }
   },
+  "devices": {
+    "title": "Devices connected",
+    "description": "list of currently connected devices",
+    "device": "Device",
+    "logged_since": "Logged since"
+  },
+  "logins": {
+    "title": "All logins performed",
+    "description": "list of currently connected devices",
+    "device": "Device",
+    "to_application": "Application",
+    "login_at": "Login at"
+  },
   "menu": {
     "messages": "Messages",
     "both":"Both",
@@ -87,6 +100,9 @@
       "my_logins": "My logins performed"
     }
   },
+  "info": {
+    "thereXmorerecords": "There are {{number}} more records"
+  },
   "actions": {
     "showall": "Show All",
     "new": "New",
@@ -103,11 +119,9 @@
     "search": "Search",
     "applyfilter":"Apply filters",
     "findfileupload": "Find file",
-    "import": "Import"
-  },
-  "generic" :{
-    "actions.addcol": "Add Columns",
-    "actions.applycolumns": "Apply Columns"
+    "import": "Import",
+    "addcolumn": "Add Columns",
+    "applycolumns": "Apply Columns"
   },
   "person": {
     "new.title": "New User",

@@ -3,9 +3,9 @@ import Endpoint from './endpoints';
 
 class IamApisConfigure {
   token = '';
-  ApiMGT: AxiosInstance;
-  ApiIAM: AxiosInstance;
   ApiAuth: AxiosInstance;
+  ApiIAM: AxiosInstance;
+  ApiMGT: AxiosInstance;
 
   /**
    * Intercepta todas as requisições
@@ -27,11 +27,6 @@ class IamApisConfigure {
   };
 
   initApis = () => {
-    this.ApiMGT = this.axiosStart({
-      baseURL: Endpoint.apiMGT!,
-      timeout: Endpoint.timeout,
-    });
-
     this.ApiAuth = this.axiosStart({
       baseURL: Endpoint.apiAuth!,
       timeout: Endpoint.timeout,
@@ -39,6 +34,11 @@ class IamApisConfigure {
 
     this.ApiIAM = this.axiosStart({
       baseURL: Endpoint.apiIAM!,
+      timeout: Endpoint.timeout,
+    });
+
+    this.ApiMGT = this.axiosStart({
+      baseURL: Endpoint.apiMGT!,
       timeout: Endpoint.timeout,
     });
   };
