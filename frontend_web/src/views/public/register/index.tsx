@@ -125,7 +125,7 @@ const RegisterPageProvided: React.FC = observer(() => {
                             type="password"
                             autoComplete="off"
                             onKeyPress={ctrl.onKeyUpFilter}
-                            onChange={ctrl.handlePassword}
+                            onChange={ctrl.handlePasswordConfirmed}
                             isInvalid={!!ctrl.erros.password_confirmed}
                           />
                           <Form.Control.Feedback type="invalid">{ctrl.erros.password_confirmed?.map(__)}</Form.Control.Feedback>

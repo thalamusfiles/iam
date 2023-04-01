@@ -7,10 +7,10 @@ export class AuthRegisterNameUseCase {
     const erros = [];
     if (!name || name.length < 6) {
       const error = 'O nome deve ter no mínimo 6 caracteres.';
-      erros.push({ kind: 'password', error: error });
+      erros.push({ kind: 'name', error: error });
     } else if (name.length > 255) {
       const error = 'O nome deve ter no máximo 255 caracteres.';
-      erros.push({ kind: 'password', error: error });
+      erros.push({ kind: 'name', error: error });
     }
     return erros;
   };
