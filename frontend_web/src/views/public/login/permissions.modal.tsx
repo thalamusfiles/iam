@@ -3,11 +3,11 @@ import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Modal from 'react-bootstrap/Modal';
 import { useI18N } from '../../../commons/i18';
-import { useLoginStore } from './ctrl';
+import { RegisterCtrl } from '../register/ctrl';
+import { LoginCtrl } from './ctrl';
 
-const PermissionInfoModal: React.FC = observer(() => {
+const PermissionInfoModal: React.FC<{ ctrl: LoginCtrl | RegisterCtrl }> = observer(({ ctrl }) => {
   const __ = useI18N();
-  const ctrl = useLoginStore();
 
   return (
     <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" show={ctrl.permissionModalDisplay} onHide={() => ctrl.hidePermissionModal()}>

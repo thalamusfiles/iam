@@ -14,6 +14,7 @@ import bgRotate03 from '../../../assets/bg_rotate_03.jpeg';
 import bgRotate04 from '../../../assets/bg_rotate_04.jpeg';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
+import PermissionInfoModal from '../login/permissions.modal';
 import { RegisterCtrl, RegisterProvider, useRegisterStore } from './ctrl';
 
 const bgImg = [bgRotate01, bgRotate02, bgRotate03, bgRotate04][Math.floor(Math.random() * 4)];
@@ -47,6 +48,8 @@ const RegisterPageProvided: React.FC = observer(() => {
   return (
     <div style={{ backgroundImage: `url(${bgImg})` }} className="bgImageCover">
       <div style={{ backgroundColor: 'rgba(90,90,90,.8)', width: '100%', padding: 20 }} className="bgImageCover">
+      <PermissionInfoModal ctrl={ctrl} />
+
         <Row>
           <Col md={{ span: 4, offset: 4 }} sm={{ span: 6, offset: 3 }} className="text-center text-white mb-5 mt-5">
             <h2>{__('register.title')}</h2>
