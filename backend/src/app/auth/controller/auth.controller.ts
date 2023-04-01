@@ -116,7 +116,11 @@ export class AuthController {
     const cookieId = this.cookieService.createOrRefreshSSOCookie(request, response, true);
     appInfo.sessionToken = cookieId;
 
+    // Procura usuários e cria token de acesso
     const authResp = await this.authService.findAndCreateAccessToken(body.username, body.password, appInfo);
+    // Remove todos os logins anteriores da máquina
+    await this.authService.removeOldTokens(authResp.info.uuid, userAgent, ip);
+    // Salva o registro do novo login
     await this.authService.saveUserToken(appInfo);
 
     return authResp;

@@ -73,6 +73,19 @@ export class AuthService {
   }
 
   /**
+   * Remove todos os logins anteriores
+   * @param username
+   * @param password
+   * @returns
+   */
+  async removeOldTokens(userUuid: string, userAgent: string, ip: string): Promise<void> {
+    this.logger.verbose('Remove Old Tokens');
+
+    const user = this.userRepository.getReference(userUuid);
+    await this.userTokenRepository.nativeUpdate({ user, userAgent, ip }, { deletedAt: new Date() });
+  }
+
+  /**
    * Valida o login e gera o token acesso
    * @param username
    * @param password
