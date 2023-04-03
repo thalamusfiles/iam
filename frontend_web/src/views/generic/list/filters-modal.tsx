@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { observer } from 'mobx-react-lite';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
@@ -16,7 +17,7 @@ import { FilterDef } from './types/FilterDef';
 /***
  * Modal para aplicação dos filtros.
  */
-export const FiltersModal: React.FC = () => {
+export const FiltersModal: React.FC = observer(() => {
   const ctrl = useCommonListStore();
   const __ = useI18N();
 
@@ -58,12 +59,12 @@ export const FiltersModal: React.FC = () => {
       </Modal.Footer>
     </Modal>
   );
-};
+});
 
 /***
  * Resumo dos filtros aplicados
  */
-export const FiltersResume: React.FC = () => {
+export const FiltersResume: React.FC = observer(() => {
   const ctrl = useCommonListStore();
   const __ = useI18N();
 
@@ -86,13 +87,13 @@ export const FiltersResume: React.FC = () => {
       ))}
     </>
   );
-};
+});
 
 /**
  * Seleção rápida de filtros
  * exibido na abertura da tela.
  */
-export const FastFilters: React.FC<{ inSide?: boolean }> = ({ inSide }) => {
+export const FastFilters: React.FC<{ inSide?: boolean }> = observer(({ inSide }) => {
   const ctrl = useCommonListStore();
   const __ = useI18N();
 
@@ -134,7 +135,7 @@ export const FastFilters: React.FC<{ inSide?: boolean }> = ({ inSide }) => {
       </Row>
     </Container>
   );
-};
+});
 
 export const CascadeFilterGroup: React.FC<{ ctrl: CommonListCtx; filters: FilterDef[] }> = ({ ctrl, filters }) => {
   const hasMultiple = Array.isArray(filters[0]);

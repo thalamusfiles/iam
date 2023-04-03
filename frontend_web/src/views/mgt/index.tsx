@@ -1,19 +1,17 @@
 import React from 'react';
 import Footer from '../../components/Footer';
-import Header from '../../components/Header';
 import NotificationMenu from '../../components/Notification';
-import MgtRoutes from './routes';
+import Header from './header';
+import MgtRoutes, { MgtModalRoutes } from './routes';
 
 const Mgt: React.FC = () => {
-  // TODO: Ajustar
-  //const route = findRouteByLocation(props.location, props.match);
-  //icon={route?.icon}
   return (
     <>
       <NotificationMenu />
 
-      <Header fixed title={'route?.title'} searchBar />
+      <Header title={'route?.title'} searchBar />
 
+      <MgtModalRoutes />
       <div className="mainContainer topSpace">
         <MgtRoutes />
       </div>

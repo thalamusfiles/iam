@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from 'react';
+import { Row } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 
 type SideBarProps = PropsWithChildren<{
@@ -7,9 +8,9 @@ type SideBarProps = PropsWithChildren<{
 
 const SideBar: React.FC<SideBarProps> = ({ span, children }) => {
   return (
-    <div className="sidebar fixed">
+    <Row className="sidebar">
       <Col md={span}>{children}</Col>
-    </div>
+    </Row>
   );
 };
 

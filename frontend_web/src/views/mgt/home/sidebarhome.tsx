@@ -1,39 +1,24 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import { Link } from 'react-router-dom';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
+import { getLinkTo } from '../../../commons/route';
 import modules from '../../modules.config';
 
 const SideBarHome: React.FC = () => {
   const __ = useI18N();
   return (
-    <div className="sidebar fixed">
-      <Form>
-        <Row>
-          <Col>
-            <InputGroup>
-              <InputGroup.Text>
-                <FontAwesomeIcon size="xs" icon={'search'} />
-              </InputGroup.Text>
-
-              <FormControl size="sm" type="text" placeholder={__('menu.search')} />
-            </InputGroup>
-          </Col>
-          <Col xs={2} style={{ padding: 3 }}>
-            <FontAwesomeIcon size="xs" icon={'th-large'} /> <FontAwesomeIcon size="xs" icon={'bars'} />
-          </Col>
-        </Row>
-      </Form>
-
+    <div className="sidebar">
       <div className="title">{__('menu.mgt.activity')}</div>
-      <SideBarAction faicon={IconsDef.tokensActive} title={__('menu.mgt.my_devices_connected')} />
-      <SideBarAction faicon={IconsDef.history} title={__('menu.mgt.my_logins')} />
+      <SideBarAction
+        faicon={IconsDef.tokensActive}
+        title={__('menu.mgt.my_devices_connected')}
+        link={getLinkTo('devices_connected', { inModal: true })}
+      />
+      <SideBarAction faicon={IconsDef.history} title={__('menu.mgt.my_logins')} link={getLinkTo('logins_history', { inModal: true })} />
 
       <div className="title">{__('menu.modules.title')}</div>
       {modules.routes.map((route: any, idx) => (

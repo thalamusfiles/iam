@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -14,7 +15,7 @@ import { TableHeadSeparator } from './types/TableHead';
 /***
  * Modal para aplicação dos filtros.
  */
-export const ColumnsModal: React.FC = () => {
+export const ColumnsModal: React.FC = observer(() => {
   const ctrl = useCommonListStore();
   const __ = useI18N();
 
@@ -63,4 +64,4 @@ export const ColumnsModal: React.FC = () => {
       </Modal.Footer>
     </Modal>
   );
-};
+});

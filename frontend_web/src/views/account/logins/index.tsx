@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 import { historyPush } from '../../../commons/route';
@@ -40,7 +40,7 @@ const LoginsPageProvided: React.FC = () => {
         <FontAwesomeIcon icon={IconsDef.history} /> {__('logins.title')}
       </h2>
       <p>{__('logins.description')}</p>
-      <LoginsTable showAll={false} />
+      <LoginsTable />
     </>
   );
 };
@@ -62,7 +62,7 @@ const LoginsPageModalProvided: React.FC = () => {
       <Modal.Body>
         <p>{__('logins.description')}</p>
 
-        <LoginsTable showAll={true} />
+        <LoginsTable />
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={() => historyPush(-1)}>{__('actions.close')}</Button>
@@ -72,9 +72,11 @@ const LoginsPageModalProvided: React.FC = () => {
 };
 
 const pageLimite = 5;
-const LoginsTable: React.FC<{ showAll: boolean }> = observer(({ showAll }) => {
+const LoginsTable: React.FC = observer(() => {
   const __ = useI18N();
   const ctrl = useLoginStore();
+  const location = useLocation();
+  const showAll = location.pathname.includes('/modal/');
 
   return (
     <Table responsive striped size="sm">

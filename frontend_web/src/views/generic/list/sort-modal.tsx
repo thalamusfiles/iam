@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -14,7 +15,7 @@ import { useCommonListStore } from './ctrl';
  * Modal para aplicação da ordenação da listagem.
  */
 
-export const SortModal: React.FC = () => {
+export const SortModal: React.FC = observer(() => {
   const ctrl = useCommonListStore();
   const __ = useI18N();
 
@@ -51,4 +52,4 @@ export const SortModal: React.FC = () => {
       </Modal.Footer>
     </Modal>
   );
-};
+});

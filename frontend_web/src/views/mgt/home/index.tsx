@@ -16,10 +16,10 @@ const Home: React.FC = () => {
     <div className="dashboard">
       <Container fluid>
         <Row>
-          <Col md={{ span: 3, offset: 1 }}>
+          <Col md={{ span: 2, offset: 1 }}>
             <SideBarHome />
           </Col>
-          <Col md={8} className="dashboard-content">
+          <Col md={9} className="dashboard-content">
             <QuickAccess />
             <Register />
             <Systems />
@@ -91,14 +91,6 @@ const Systems: React.FC = () => {
     <>
       <h1>{__('menu.mgt.systems')}</h1>
       <Row>
-        <Col sm={6}>
-          <ListTile
-            variant={ColorsDef.regionVariant}
-            faicon={IconsDef.region}
-            title={__('menu.mgt.region')}
-            onClick={() => historyPush('region_list')}
-          />
-        </Col>
         <Col sm={6}>
           <ListTile
             variant={ColorsDef.applicationsVariant}

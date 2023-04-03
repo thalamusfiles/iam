@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
@@ -34,7 +35,7 @@ const GenericList: React.FC = () => {
   );
 };
 
-const List: React.FC = () => {
+const List: React.FC = observer(() => {
   const ctrl = useCommonListStore();
   const __ = useI18N();
 
@@ -142,7 +143,7 @@ const List: React.FC = () => {
       {content}
     </>
   );
-};
+});
 
 export const CellComp: React.FC<{ cell: TableCellInfo | TableCellInfo[] | TableGroupCellInfo | TableGroupCellInfo[] }> = (props) => {
   if (Array.isArray(props.cell)) {
@@ -171,7 +172,7 @@ export const CellComp: React.FC<{ cell: TableCellInfo | TableCellInfo[] | TableG
 /***
  * Barra do topo com as funções da listagem
  */
-const FunctionsTabBar: React.FC = () => {
+const FunctionsTabBar: React.FC = observer(() => {
   const ctrl = useCommonListStore();
   const __ = useI18N();
   const filtersLg = ctrl!.filtersApplied.length;
@@ -224,12 +225,12 @@ const FunctionsTabBar: React.FC = () => {
       </Nav>
     </>
   );
-};
+});
 
 /***
  * Barra do topo com as funções da listagem
  */
-const TopTabsBar: React.FC = () => {
+const TopTabsBar: React.FC = observer(() => {
   const ctrl = useCommonListStore();
   const __ = useI18N();
 
@@ -257,6 +258,6 @@ const TopTabsBar: React.FC = () => {
       </Nav.Item>
     </Nav>
   );
-};
+});
 
 export default GenericList;

@@ -63,6 +63,11 @@
     "to_application": "Aplicação",
     "login_at": "Realizado em"
   },
+  "application": {
+    "list": {
+      "title": "Aplicações"
+    }
+  },
   "menu": {
     "messages": "Mensagens",
     "both":"Ambos",
@@ -104,6 +109,7 @@
     }
   },
   "info": {
+    "notloaded": "Não carregado",
     "thereXmorerecords": "Existe mais {{number}} registros"
   },
   "actions": {

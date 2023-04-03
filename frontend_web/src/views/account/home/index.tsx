@@ -27,10 +27,10 @@ const HomeAccountPageProvided: React.FC = () => {
   return (
     <Container>
       <Row>
-        <Col md={{ span: 3 }}>
+        <Col md={3}>
           <SideBarHome />
         </Col>
-        <Col md={8}>
+        <Col md={9}>
           <AccountInfo />
           <br />
 

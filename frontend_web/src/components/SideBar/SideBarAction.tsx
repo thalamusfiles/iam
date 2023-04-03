@@ -22,7 +22,7 @@ export const SideBarAction: React.FC<SideBarProps> = (props) => {
       <Col xs={1} />
       <Col>
         {props.onClick && (
-          <Button variant={props.variant} size="sm" onClick={props.onClick}>
+          <Button variant={props.variant} size="sm" onClick={props.onClick} >
             {props.faicon && <FontAwesomeIcon color={props.facolor} size="xs" icon={props.faicon} />} {props.title}
           </Button>
         )}

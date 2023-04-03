@@ -12,21 +12,15 @@ export type RouteDefinitions = { [key: string]: RouteDefinition };
 let router: RemixRouter;
 export const createBaseRouter = (routes: RouteObject[]): RemixRouter => (router = createBrowserRouter(routes));
 
-export function historyPush(
-  owner: RoutesName | string | number,
-  options: { id?: any; inModal?: boolean; showSave?: boolean; open?: boolean; absolute?: boolean; search?: string } & any = {},
-) {
-  // Quando informado número, volta pra páginas anteriores ou posteriores.
-  if (typeof owner === 'number') router.navigate(owner);
-
+export function getLinkTo(owner: RoutesName | string | number, options: { id: string } & any): string {
   let push;
   switch (owner as RoutesName) {
     // PUBLIC
     case 'login':
-      push = '/public/app/:app/login'.replace(':region', options.region).replace(':app', options.app) + '?' + qs.stringify(options.search);
+      push = '/public/app/:app/login'.replace(':app', options.app) + '?' + qs.stringify(options.search);
       break;
     case 'register':
-      push = '/public/app/:app/register'.replace(':region', options.region).replace(':app', options.app) + '?' + qs.stringify(options.search);
+      push = '/public/app/:app/register'.replace(':app', options.app) + '?' + qs.stringify(options.search);
       break;
     // ACCOUNT
     case 'home_account':
@@ -92,19 +86,34 @@ export function historyPush(
       push = owner as string;
       break;
   }
+
+  if (options?.inModal) {
+    const search = window.location.search + qs.stringify(options.search);
+    let newLocation = window.location.pathname + '/modal' + push.replace(/\/mgt/, '') + '?' + search;
+    if (options?.showSave) {
+      newLocation = newLocation + '&show_save=show_save';
+    }
+    return newLocation;
+  }
+
+  return push;
+}
+
+export function historyPush(
+  owner: RoutesName | string | number,
+  options: { id?: any; inModal?: boolean; showSave?: boolean; open?: boolean; absolute?: boolean; search?: string } & any = {},
+) {
+  // Quando informado número, volta pra páginas anteriores ou posteriores.
+  if (typeof owner === 'number') router.navigate(owner);
+
+  const push = getLinkTo(owner, options);
+
   if (options?.open) {
     if (options.absolute) {
       window.open(push);
     } else {
       window.open(`${push}`);
     }
-  } else if (options?.inModal) {
-    const search = window.location.search + qs.stringify(options.search);
-    let newLocation = window.location.pathname + '/modal' + push.replace(/\/mgt/, '') + '?' + search;
-    if (options?.showSave) {
-      newLocation = newLocation + '&show_save=show_save';
-    }
-    router.navigate(newLocation);
   } else {
     router.navigate(push);
   }
