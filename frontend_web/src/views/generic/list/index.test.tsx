@@ -206,7 +206,7 @@ class TestGraphQLDatasourceMock {
  */
 
 const TestGenericList: React.FC = () => {
-  const ctrl = new CommonListCtx(new TestGraphQLDatasourceMock());
+  const ctrl = new CommonListCtx();
   return (
     <CommonListContextProvider value={ctrl}>
       <GenericList />

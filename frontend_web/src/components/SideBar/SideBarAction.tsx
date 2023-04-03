@@ -20,7 +20,7 @@ export const SideBarAction: React.FC<SideBarProps> = (props) => {
   return (
     <Row className="action">
       <Col xs={1} />
-      <Col>
+      <Col className='d-grid gap-1'>
         {props.onClick && (
           <Button variant={props.variant} size="sm" onClick={props.onClick} >
             {props.faicon && <FontAwesomeIcon color={props.facolor} size="xs" icon={props.faicon} />} {props.title}

@@ -22,7 +22,7 @@ export class PersonListStore extends CommonListCtx {
   };
 
   constructor(...props: any) {
-    super({}, false);
+    super(false);
 
     makeObservable(this);
   }

@@ -28,8 +28,8 @@ export class RequestService {
   }
 
   @UseRequestContext()
-  async getApplicationRef(initials: string): Promise<Application> {
-    const application = await this.applicationRepository.findOne({ initials });
+  async getApplicationRef(uuid: string): Promise<Application> {
+    const application = await this.applicationRepository.findOneOrFail({ uuid });
     return this.applicationRepository.getReference(application.uuid);
   }
 

@@ -39,10 +39,10 @@ const List: React.FC = observer(() => {
   const ctrl = useCommonListStore();
   const __ = useI18N();
 
-  const [drapHead, setDrapHead] = useState(null as TableHead | null);
+  const [headerDrag, setHeaderDrag] = useState(null as TableHead | null);
 
   const onDragStart = (head: TableHead) => {
-    setDrapHead(head);
+    setHeaderDrag(head);
   };
 
   const onDragOver = (e: any) => {
@@ -50,9 +50,9 @@ const List: React.FC = observer(() => {
   };
 
   const onDrop = (head: TableHead) => {
-    if (drapHead) {
-      ctrl!.swapHeaderOrder(drapHead, head);
-      setDrapHead(null);
+    if (headerDrag) {
+      ctrl!.swapHeaderOrder(headerDrag, head);
+      setHeaderDrag(null);
     }
   };
 
@@ -64,7 +64,7 @@ const List: React.FC = observer(() => {
       <Table hover size="sm">
         <tbody>
           <tr>
-            <td>{__('msg.loadingsettings')}</td>
+            <td>{__('info.loadingsettings')}</td>
           </tr>
         </tbody>
       </Table>
@@ -240,7 +240,7 @@ const TopTabsBar: React.FC = observer(() => {
         <Nav.Link disabled>#</Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link href={`#${ctrl!.defaultListDefs?.name}`} onClick={() => ctrl!.toggleCustomList(ctrl!.defaultListDefs)}>
+        <Nav.Link href={`#${ctrl!.defaultListDefs?.name}`} onClick={() => ctrl!.toggleCustomList(ctrl!.defaultListDefs)} active>
           {__('menu.list')}
         </Nav.Link>
       </Nav.Item>

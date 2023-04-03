@@ -6,7 +6,6 @@ import Row from 'react-bootstrap/Row';
 import { IconsDef } from '../../../../commons/consts';
 import { useI18N } from '../../../../commons/i18';
 import { historyPush, historySearch, historySearchReplace } from '../../../../commons/route';
-import SideBar from '../../../../components/SideBar';
 import { SideBarAction } from '../../../../components/SideBar/SideBarAction';
 import ApplicationDefaultList from './defaultlist';
 
@@ -23,8 +22,8 @@ export const ApplicationList: React.FC = () => {
         {(!list || list === 'application') && (
           <Col md={10}>
             <h1 id="application_about">
-              {IconsDef.applications.map((icon) => (
-                <FontAwesomeIcon icon={icon} />
+              {IconsDef.applications.map((icon, idx) => (
+                <FontAwesomeIcon icon={icon} key={idx} />
               ))}
               &nbsp; {__('application.list.title')}
             </h1>
@@ -42,7 +41,7 @@ export const SideBarEdit: React.FC = () => {
   const __ = useI18N();
 
   return (
-    <SideBar span={2}>
+    <>
       <div className="title">{__('menu.actions')}</div>
       <SideBarAction
         faicon={IconsDef.new}
@@ -59,7 +58,7 @@ export const SideBarEdit: React.FC = () => {
         variant="light"
         onClick={() => historySearchReplace({ list: 'application' })}
       />
-    </SideBar>
+    </>
   );
 };
 

@@ -22,7 +22,7 @@ export class PermissionListStore extends CommonListCtx {
   };
 
   constructor() {
-    super({}, false);
+    super(false);
     
     makeObservable(this);
   }

@@ -45,7 +45,7 @@ export class Ctx {
   }
 
   @action loadUser() {
-    this.user = Storage.getItem(localStorageDef.userContextKey);
+    this.user = Storage.getItem(localStorageDef.userContextKey, {});
     this.token = Storage.getItem(localStorageDef.tokenKey);
     this.expiresIn = Storage.getItem(localStorageDef.tokenKey);
   }

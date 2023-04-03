@@ -20,7 +20,7 @@ export class RoleListStore extends CommonListCtx {
   };
 
   constructor() {
-    super({}, false);
+    super(false);
 
     makeObservable(this);
   }

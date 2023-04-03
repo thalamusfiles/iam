@@ -99,6 +99,7 @@ export class LoginCtrl {
         const responseData = response.data;
         // Adicionar o token de acesso no consumidar da API
         IamApisConfigure.setGlobalAuthorizationToken(responseData.access_token);
+        IamApisConfigure.setGlobalApplication(responseData.info.applicationLogged);
         // Regista o login no contexto do usuário
         UserCtxInstance.login(responseData.info, responseData.access_token, responseData.info.expires_in);
 

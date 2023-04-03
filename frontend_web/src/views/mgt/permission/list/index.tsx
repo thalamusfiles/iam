@@ -6,7 +6,6 @@ import Row from 'react-bootstrap/Row';
 import { IconsDef } from '../../../../commons/consts';
 import { useI18N } from '../../../../commons/i18';
 import { historyPush, historySearch, historySearchReplace } from '../../../../commons/route';
-import SideBar from '../../../../components/SideBar';
 import { SideBarAction } from '../../../../components/SideBar/SideBarAction';
 import PermissionDefaultList from './defaultlist';
 
@@ -40,7 +39,7 @@ export const SideBarEdit: React.FC = () => {
   const __ = useI18N();
 
   return (
-    <SideBar span={2}>
+    <>
       <div className="title">{__('menu.actions')}</div>
       <SideBarAction
         faicon={IconsDef.new}
@@ -57,7 +56,7 @@ export const SideBarEdit: React.FC = () => {
         variant="light"
         onClick={() => historySearchReplace({ list: 'permission' })}
       />
-    </SideBar>
+    </>
   );
 };
 

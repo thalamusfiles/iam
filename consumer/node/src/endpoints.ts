@@ -28,7 +28,7 @@ class EndpointsConfigure {
     const baseEndpoint = `${baseUrl}:${basePort}`;
     const apiAuth = `${baseEndpoint}/auth`;
     const apiIAM = `${baseEndpoint}/iam`;
-    const apiMGT = `${baseEndpoint}/apicrud`;
+    const apiMGT = `${baseEndpoint}/mgt`;
 
     this.url = baseUrl;
     this.port = basePort;

@@ -24,7 +24,7 @@ type CommonListStoreOptions = {
 };
 
 export class CommonListCtx {
-  constructor(private datasource: any, makeObs = true) {
+  constructor(makeObs = true) {
     //Modifica classe pra ser observável
     makeObservable(this);
   }
@@ -115,19 +115,12 @@ export class CommonListCtx {
    * Coleta as definições da listagem padrão
    * e listagens customizáveis do servidor
    */
+  @action
   build = async (options?: CommonListStoreOptions) => {
     try {
       if (options) {
         Object.assign(this.options, options);
       }
-
-      /*
-      const defs = await this.datasource.listUserDefs();
-      this.customListDefs = defs.customLists;
-      this.defaultListDefs = defs.defaultList;
-      this.fastFilters = defs.fastFilters;
-      */
-      this.activeListDefs = this.defaultListDefs.name;
 
       this.filtersDefs = (this.defaultListDefs.filters || []).map((j) => {
         const applied = this.filtersApplied.find((a) => a.name === j.name);
@@ -137,18 +130,12 @@ export class CommonListCtx {
         return { ...j };
       }); //Criar cópia
 
-      this.filtersApplied = [];
       this.columnsDefs = this.defaultListDefs.columns.map((j) => {
         return { ...j };
       }); //Criar cópia
-      this.sort = this.defaultListDefs.sort;
-      this.sortOrder = this.defaultListDefs.sortOrder;
 
+      this.toggleCustomList(this.defaultListDefs, false);
       this.loadFiltersFromUrl();
-      this.applyFilters(false, false);
-      this.applyColumns(false);
-
-      //if (!this.fastFilters?.length && this.options.autoSearch) this.search();
     } catch (err) {
       if (axios.isAxiosError(err)) {
         notify.danger(err.response?.data?.message, 'An error occurred while loading the settings');
@@ -181,18 +168,7 @@ export class CommonListCtx {
     if (this.cancelRequestCallback) this.cancelRequestCallback();
 
     try {
-      this.response = await this.datasource.exec(
-        //
-        this.filtersApplied,
-        this.columns,
-        this.page,
-        this.perPage,
-        this.sort,
-        this.sortOrder,
-        (c: any) => {
-          this.cancelRequestCallback = c;
-        },
-      );
+      this.response = await this.execSearch();
       this.formatList(this.response);
     } catch (error) {
       if (!Axios.isCancel(error)) {
@@ -201,6 +177,10 @@ export class CommonListCtx {
     }
 
     this.loading = false;
+  };
+  // Função chamada quando é solicitado uma nova busca.
+  execSearch = async (): Promise<any[]> => {
+    return [];
   };
 
   /**
@@ -387,7 +367,7 @@ export class CommonListCtx {
    * Cria uma cópia dos filtros
    */
   @action
-  applyFilters = (research: boolean | undefined = true, savesilters: boolean | undefined = true) => {
+  applyFilters = (research: boolean | undefined = true, saveFilters: boolean | undefined = true) => {
     this.page = 1;
 
     this.toggleShowFilters(false);
@@ -397,7 +377,7 @@ export class CommonListCtx {
         return { ...filter };
       });
 
-    if (savesilters) this.saveFilters();
+    if (saveFilters) this.saveFilters();
     if (research) this.search();
   };
 
@@ -560,7 +540,7 @@ export class CommonListCtx {
    * Altera entre listagens customizadas pelos usuários
    * @param customList
    */
-  @action toggleCustomList = (customList: ListDefinition | null) => {
+  @action toggleCustomList = (customList: ListDefinition | null, saveFilters: boolean | undefined = true) => {
     if (customList === null) return;
 
     this.activeListDefs = customList.name;
@@ -570,7 +550,7 @@ export class CommonListCtx {
     this.filtersDefs = customList.filters || [];
     this.columnsDefs = customList.columns;
 
-    this.applyFilters(false);
+    this.applyFilters(false, saveFilters);
     this.applyColumns(false);
 
     this.search();
@@ -611,22 +591,6 @@ export class CommonListCtx {
     } else {
       //isNew = true;
     }
-
-    /*new PersonalizationDataSource()
-      .save(`customlist/${this.datasource.baseQuery}`, this.newCustomListDefs?.id || '', this.newCustomListDefs)
-      .then((resp) => {
-        notify.success('Saved successfully.');
-
-        this.showSaveList = false;
-        this.newCustomListDefs = null;
-        this.toggleCustomList(newCustomListDefs);
-        if (isNew) {
-          this.customListDefs.push(newCustomListDefs!);
-        }
-      })
-      .catch((error) => {
-        notify.warn(error.message);
-      });*/
   };
 
   /**

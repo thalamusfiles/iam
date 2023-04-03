@@ -15,7 +15,7 @@ const PermissionInfoModal: React.FC<{ ctrl: LoginCtrl | RegisterCtrl }> = observ
         <Modal.Title>{__('login.permissions.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>{__('login.permissions-info')}</p>
+        <p>{__('login.permissions.subtitle')}</p>
 
         <ListGroup as="ol" numbered>
           {ctrl.scopeInfo?.map((info, idx) => (

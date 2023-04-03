@@ -6,7 +6,6 @@ import Row from 'react-bootstrap/Row';
 import { IconsDef } from '../../../../commons/consts';
 import { useI18N } from '../../../../commons/i18';
 import { historyPush, historySearch, historySearchReplace } from '../../../../commons/route';
-import SideBar from '../../../../components/SideBar';
 import { SideBarAction } from '../../../../components/SideBar/SideBarAction';
 import PersonDefaultList from './defaultlist';
 
@@ -42,7 +41,7 @@ export const SideBarEdit: React.FC = () => {
   const __ = useI18N();
 
   return (
-    <SideBar span={2}>
+    <>
       <div className="title">{__('menu.actions')}</div>
       <SideBarAction faicon={IconsDef.new} title={__('actions.new')} variant="outline-primary" onClick={() => historyPush('person_new')} />
       <SideBarAction faicon={IconsDef.goBack} title={__('actions.back')} variant="outline-secondary" onClick={() => historyPush(-1)} />
@@ -60,7 +59,7 @@ export const SideBarEdit: React.FC = () => {
         variant="light"
         onClick={() => historySearchReplace({ list: 'person_permissions' })}
       />
-    </SideBar>
+    </>
   );
 };
 

@@ -3,6 +3,7 @@ import Endpoint from './endpoints';
 
 class IamApisConfigure {
   token = '';
+  application = '';
   ApiAuth: AxiosInstance;
   ApiIAM: AxiosInstance;
   ApiMGT: AxiosInstance;
@@ -13,6 +14,7 @@ class IamApisConfigure {
    */
   requestInterceptors = (config: any) => {
     if (this.token) config.headers.Authorization = 'Bearer ' + this.token;
+    if (this.application) config.headers.application = this.application;
     return config;
   };
 
@@ -45,6 +47,10 @@ class IamApisConfigure {
 
   setGlobalAuthorizationToken = (newToken: string): void => {
     this.token = newToken;
+  };
+
+  setGlobalApplication = (application: string): void => {
+    this.application = application;
   };
 
   configureConsumer = (baseUrl?: string, basePort?: string): void => {

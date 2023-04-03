@@ -6,8 +6,8 @@ type EntityPropsOptions = {
 };
 
 export interface CRUDInterface {
-  findAll(options?: { relations?: [] } | any): Promise<any[]>;
-  findById(id: number, options?: any): Promise<any>;
+  findAll(params?: { populate?: [] } | any): Promise<any[]>;
+  findById(id: number, options?: { populate: [] }): Promise<any>;
   create(entity: any, options?: EntityPropsOptions): Promise<EntityProps<any>>;
   update(id: number, entity: any, options?: EntityPropsOptions): Promise<EntityProps<any>>;
   updateAll(entities: any[], options?: EntityPropsOptions): Promise<EntityProps<any>[]>;
@@ -19,19 +19,19 @@ export interface CRUDInterface {
 export abstract class CRUDDatasource implements CRUDInterface {
   constructor(private endpoint: string) {}
 
-  findAll(options?: { relations?: [] } | any) {
+  findAll(params?: { populate?: [] } | any) {
     //TODO: Criar método genérico de consulta de listagem
     return Apis.ApiMGT.get<any[]>(this.endpoint, {
       params: {
-        ...options,
+        ...params,
       },
     }).then((axios) => axios.data);
   }
 
-  findById(id: number, options?: { relations: [] }) {
+  findById(id: number, options?: { populate: [] }) {
     return Apis.ApiMGT.get<any>(this.endpoint + '/' + id, {
       params: {
-        relations: options?.relations,
+        populate: options?.populate,
       },
     }).then((axios) => axios.data);
   }

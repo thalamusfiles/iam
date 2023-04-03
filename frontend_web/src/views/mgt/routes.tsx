@@ -52,7 +52,6 @@ export const findRouteByLocation = (location: any, parentMatch: any): RouteDefin
  * Rotas
  */
 export default function MgtRoutes() {
-  //Não é porcorrida as ou realizado um foreach por questão de desempenho
   return (
     <Routes>
       {Object.values(routes).map((route, idx) => (

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { historyPush } from '../../../../../commons/route';
 import GenericList from '../../../../generic/list';
 import { CommonListContextProvider } from '../../../../generic/list/ctrl';
@@ -5,6 +6,10 @@ import { ApplicationListStore } from './ctrl';
 
 const ApplicationDefaultList: React.FC = () => {
   const ctrl = new ApplicationListStore();
+
+  useEffect(() => {
+    ctrl.build();
+  });
 
   ctrl.newCallback = () => {
     historyPush('application_new', { inModal: true, showSave: true });

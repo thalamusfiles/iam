@@ -21,7 +21,7 @@
     "password": "Password",
     "permissions": {
       "title": "Shared Permissions",
-      "subtitle": "You will share the following permissions with the application."
+      "subtitle": "You will share the following permissions with the application:"
     },
     "action": {
       "login": "Login",
@@ -65,7 +65,8 @@
   },
   "application": {
     "list": {
-      "title": "Applications"
+      "title": "Applications",
+      "about.description": "Applications list"
     }
   },
   "menu": {
@@ -110,7 +111,8 @@
   },
   "info": {
     "notloaded": "Not loaded",
-    "thereXmorerecords": "There are {{number}} more records"
+    "thereXmorerecords": "There are {{number}} more records",
+    "loadingsettings": "Loading settings"
   },
   "actions": {
     "showall": "Show All",

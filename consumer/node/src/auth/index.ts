@@ -21,14 +21,15 @@ export type LoginDto = {
   password: string;
 };
 
+export type AuthLoginRespDto = { token_type: string; access_token?: string; scope: string; expires_in: number; info?: any };
 export type ApplicationInfo = { uuid: string; name: string };
 export type ScopeInfo = { scope: string; app: { name: string; description: string }; permission: { description: string } };
 
 interface AuthDataSourceI {
   // Registra novo usuário no servidor e realiza login oauth
-  register(register: LoginDto, oauth: OauthFieldsDto): Promise<AxiosResponse<{ user: any; token: string }>>;
+  register(register: LoginDto, oauth: OauthFieldsDto): Promise<AxiosResponse<AuthLoginRespDto>>;
   // Autêntica usuário no servidor via oauth
-  login(login: LoginDto, oauth: OauthFieldsDto): Promise<AxiosResponse<{ user: any; token: string }>>;
+  login(login: LoginDto, oauth: OauthFieldsDto): Promise<AxiosResponse<AuthLoginRespDto>>;
 }
 
 interface OauthDataSourceI {

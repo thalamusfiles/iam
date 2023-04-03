@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite';
 import moment from 'moment';
 import React, { useState } from 'react';
 import Toast from 'react-bootstrap/Toast';
@@ -23,7 +24,7 @@ export default class NotificationMenu extends React.Component {
 /***
  * Barra do topo com as funções da listagem
  */
-const NotificationList: React.FC = () => {
+const NotificationList: React.FC = observer(() => {
   const notify = useNotificationStore();
   return (
     //TODO: Criar css para as notificações
@@ -35,7 +36,7 @@ const NotificationList: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
 const Notification: React.FC<NotificationProps> = ({ title, message, createdAt, className, detail }) => {
   const [show, setShow] = useState(true);

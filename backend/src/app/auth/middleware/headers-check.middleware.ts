@@ -19,12 +19,12 @@ export class GlobalIamHeadersCheckMiddleware implements NestMiddleware {
       this.logger.error('Tentativa de uso de área restrita');
       throw new UnauthorizedException('Application header required');
     }
-    if (/*region !== iamConfig.MAIN_REGION ||*/ application !== iamConfig.MAIN_APP_IAM_MGT) {
+    if (/*region !== iamConfig.MAIN_REGION ||*/ application !== iamConfig.MAIN_APP_IAM_MGT_ID) {
       this.logger.error('Tentativa de uso de área restrita');
       throw new UnauthorizedException('Application header not allowed');
     }
 
-    req.applicationRef = await this.requestService.getApplicationRef(iamConfig.MAIN_APP_IAM_MGT);
+    req.applicationRef = await this.requestService.getApplicationRef(iamConfig.MAIN_APP_IAM_MGT_ID);
 
     next();
   }

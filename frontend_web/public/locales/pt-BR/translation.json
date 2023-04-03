@@ -21,7 +21,7 @@
     "password": "Senha",
     "permissions": {
       "title": "Permissões Compartilhadas",
-      "subtitle": "Você irá compartilhar as seguintes permissões com a aplicação."
+      "subtitle": "Você irá compartilhar as seguintes permissões com a aplicação:"
     },
     "action": {
       "login": "Entrar",
@@ -65,7 +65,8 @@
   },
   "application": {
     "list": {
-      "title": "Aplicações"
+      "title": "Aplicações",
+      "about.description": "Listagem de aplicações"
     }
   },
   "menu": {
@@ -110,7 +111,8 @@
   },
   "info": {
     "notloaded": "Não carregado",
-    "thereXmorerecords": "Existe mais {{number}} registros"
+    "thereXmorerecords": "Existe mais {{number}} registros",
+    "loadingsettings": "Carregando configurações"
   },
   "actions": {
     "showall": "Exibir tudo",
