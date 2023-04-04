@@ -2,7 +2,6 @@
 import React from 'react';
 import { WmsFormProps } from '../components/Form';
 import { notify } from '../components/Notification';
-import { CommonEditCtx } from '../views/generic/edit/ctrl';
 
 /**
  * Nomes dos formulários do sistema que são customizáveis
@@ -43,23 +42,6 @@ export function addPagePlugin(props: PagePluginProps) {
   }
   components[props.target].components.push(props);
 }
-
-/**
- * Interface com os métodos obrigatórios
- * a serem implementados pelo componente dinâmico
- */
-export interface CustomComponentI extends React.Component<{ ctrl: CommonEditCtx; __?: Function }> {
-  /**
-   * Método disparado após o conteudo ser carregado
-   */
-  onLoadContent?: () => void;
-  /**
-   * Método disparado quando o conteudo é modificado
-   */
-  onAssignContent?: (assignValues: any) => void;
-}
-
-export abstract class CustomComponentA<State = {}, CTRL = CommonEditCtx> extends React.Component<{ ctrl: CTRL; __?: Function }, State> {}
 
 const components: {
   [key: string]: {

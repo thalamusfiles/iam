@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -11,15 +12,15 @@ import Loader from '../../../components/Loader';
 import { SideBarAction } from '../../../components/SideBar/SideBarAction';
 import { useCommonEditStore } from './ctrl';
 
-type GenericEditProps = {
+export type GenericEditProps = {
   sideBarSpan?: number;
   inModal?: boolean; //Se a tela esta sendo exibida dentro de um modal
 };
 
-const GenericEdit: React.FC<GenericEditProps> = ({ sideBarSpan, inModal }) => {
+const GenericEdit: React.FC<GenericEditProps> = observer(({ sideBarSpan, inModal }) => {
   const ctrl = useCommonEditStore();
   const __ = useI18N();
-  const sideBar = <SideBarEdit />;
+  const sideBar = <GenericSideBarEdit />;
   const { show_save } = historySearch();
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const GenericEdit: React.FC<GenericEditProps> = ({ sideBarSpan, inModal }) => {
       <Row>
         {!inModal && <Col md={{ span: sideBarSpan || 2 }}>{sideBar}</Col>}
         <Col md={inModal ? 12 : 12 - (sideBarSpan || 2)}>
-          <Body />
+          <GenericBody />
         </Col>
       </Row>
       <Row>
@@ -55,9 +56,9 @@ const GenericEdit: React.FC<GenericEditProps> = ({ sideBarSpan, inModal }) => {
       </Row>
     </Container>
   );
-};
+});
 
-const Body: React.FC = () => {
+const GenericBody: React.FC = observer(() => {
   const ctrl = useCommonEditStore();
 
   return (
@@ -66,9 +67,9 @@ const Body: React.FC = () => {
       {ctrl!.componentsClass}
     </>
   );
-};
+});
 
-const SideBarEdit: React.FC = () => {
+const GenericSideBarEdit: React.FC = () => {
   const ctrl = useCommonEditStore();
   const __ = useI18N();
 

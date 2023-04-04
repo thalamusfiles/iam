@@ -9,6 +9,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useI18N } from '../../commons/i18';
+import { historyPush } from '../../commons/route';
 import ApplicationInfo from '../../components/ApplicationInfo';
 import NotificationValue, { NotificationProvider, useNotificationStore } from '../../components/Notification/ctrl';
 import UserCtxInstance, { useUserStore } from '../../store/userContext';
@@ -77,7 +78,7 @@ const Header: React.FC<HeaderProps> = ({ icon, title, searchBar }) => {
             <div className="navbar-spacer" />
 
             <NavDropdown title={<FontAwesomeIcon icon={'user-circle'} />} id="user-dd">
-              <NavDropdown.Item>{context?.user.name}</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => historyPush('home_account')}>{context?.user.name}</NavDropdown.Item>
               <NavDropdown title={__('menu.language')} bsPrefix="dropdown-item" id="i18n-dd">
                 <NavDropdown.Item onClick={() => UserCtxInstance.changeLanguage('en-US')}>{__('menu.english')}</NavDropdown.Item>
                 <NavDropdown.Item onClick={() => UserCtxInstance.changeLanguage('pt-BR')}>{__('menu.portuguese')}</NavDropdown.Item>

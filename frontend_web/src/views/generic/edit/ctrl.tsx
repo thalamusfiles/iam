@@ -1,6 +1,6 @@
 import { computed, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
-import { CustomComponentI, findComponents, PagePluginProps, TargetForm } from '../../../commons/plugin.component';
+import { findComponents, PagePluginProps, TargetForm } from '../../../commons/plugin.component';
 import { historyPush } from '../../../commons/route';
 
 /**
@@ -22,7 +22,6 @@ export class CommonEditCtx {
   //Componentes da tela
   components: PagePluginProps[] = [];
   componentsClasses: (JSX.Element | null)[] = [];
-  componentsClassesRefs: CustomComponentI[] = [];
   @observable componentLoaded = false;
 
   options: CommonEditStoreOptions = {
@@ -56,7 +55,6 @@ export class CommonEditCtx {
   clear = () => {
     this.components = [];
     this.componentsClasses = [];
-    this.componentsClassesRefs = [];
     this.componentLoaded = false;
   };
 
@@ -69,11 +67,12 @@ export class CommonEditCtx {
       .filter((comp) => comp.component)
       .filter((comp) => !this.options.inModal || comp.displayInModal)
       .sort((l, r) => (l.order === r.order ? 0 : l.order < r.order ? -1 : 1))
-      .map((comp) =>
-        //comp.component ? <comp.component ref={(ref) => this.componentsClassesRefs.push(ref as CustomComponentI)} /> : null,
-        //TODO:  Verificar referencia e impacto
-        comp.component ? <comp.component /> : null,
-      );
+      .map((comp, idx) => {
+        if (comp.component) {
+          return <comp.component key={idx} />;
+        }
+        return null;
+      });
     this.componentLoaded = true;
   };
 

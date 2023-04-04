@@ -1,6 +1,5 @@
 import { ApplicationCRUDDatasource } from '@thalamus/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
-import { useParams } from 'react-router-dom';
 import { TargetForm } from '../../../../commons/plugin.component';
 import { historyPush } from '../../../../commons/route';
 import { notify } from '../../../../components/Notification';
@@ -18,26 +17,16 @@ export class ApplicationEditStore extends CommonEditCtx {
     makeObservable(this);
   }
 
-  afterBuild = async () => {
-    const { id } = useParams();
-    if (id) {
-      this.loadContent(id);
-    }
-  };
-
   /**
    * Carregas o conteudo da tela
    * @param id
    */
-  loadContent = async (id: any) => {
+  loadContent = async (uuid: any) => {
     this.loading = true;
 
     try {
       //Carrega o conteudo
-      this.content = await this.datasource.findById(id);
-
-      //Dispara listener informando que o conteu foi carregado
-      this.componentsClassesRefs.forEach((comp) => comp.onLoadContent && comp.onLoadContent());
+      this.content = await this.datasource.findById(uuid);
     } catch (error) {
       console.error(error);
       notify.warn('An error occurred while updating the listing.');
@@ -50,14 +39,14 @@ export class ApplicationEditStore extends CommonEditCtx {
     this.loading = true;
 
     try {
-      const isNew = !this.content.id;
+      const isNew = !this.content.uuid;
       let response;
 
       //Salva o conteudo
       if (isNew) {
         response = await this.datasource.create(this.content);
       } else {
-        response = await this.datasource.update(this.content.id, this.content);
+        response = await this.datasource.update(this.content.uuid, this.content);
       }
       this.content = response.entity;
 
@@ -86,6 +75,5 @@ export class ApplicationEditStore extends CommonEditCtx {
     } else {
       this.content = Object.assign({}, this.content, values);
     }
-    this.componentsClassesRefs.forEach((comp) => comp.onAssignContent && comp.onAssignContent(values));
   };
 }

@@ -22,19 +22,19 @@ export const routes: RouteDefinitions = {
   logins_history: { title: '', path: '/logins/history', component: LoginsPage },
   //// Person
   person_list: { title: 'person.list.title', icon: IconsDef.person, path: '/person/list', component: PersonList },
-  person_edit: { title: 'person.edit.title', icon: IconsDef.person, path: '/person/edit/:id(\\d+)', component: PersonEdit },
+  person_edit: { title: 'person.edit.title', icon: IconsDef.person, path: '/person/edit/:uuid', component: PersonEdit },
   person_new: { title: 'person.new.title', icon: IconsDef.person, path: '/person/new', component: PersonEdit },
   // Role
   role_list: { title: 'roles.list.title', icon: IconsDef.roles, path: '/role/list', component: RoleList },
-  role_edit: { title: 'roles.edit.title', path: '/role/edit/:id(\\d+)*', component: RoleEdit },
+  role_edit: { title: 'roles.edit.title', path: '/role/edit/:uuid', component: RoleEdit },
   role_new: { title: 'roles.new.title', path: '/role/new', component: RoleEdit },
   // Permissions
   permission_list: { title: 'permissions.list.title', icon: IconsDef.permissions, path: '/permission/list', component: PermissionList },
-  permission_edit: { title: 'permissions.edit.title', path: '/permission/edit/:id(\\d+)*', component: PermissionEdit },
+  permission_edit: { title: 'permissions.edit.title', path: '/permission/edit/:uuid', component: PermissionEdit },
   permission_new: { title: 'permissions.new.title', path: '/permission/new', component: PermissionEdit },
   // Application
   application_list: { title: 'applications.list.title', icon: IconsDef.applications, path: '/application/list', component: ApplicationList },
-  application_edit: { title: 'applications.edit.title', path: '/application/edit/:id(\\d+)*', component: ApplicationEdit },
+  application_edit: { title: 'applications.edit.title', path: '/application/edit/:uuid', component: ApplicationEdit },
   application_new: { title: 'applications.new.title', path: '/application/new', component: ApplicationEdit },
 };
 
@@ -67,21 +67,21 @@ export default function MgtRoutes() {
  * @param props
  */
 export function MgtModalRoutes(props: any) {
+  //Component modal com as rotas
+  const modalComponent = (
+    <InModal>
+      <Routes>
+        {Object.values(routes).map((route, idx) => (
+          <Route path={route.path.concat('/*')} element={<route.component inModal={true} {...props} />} key={idx} />
+        ))}
+      </Routes>
+    </InModal>
+  );
+  // Adiciona prepende para abertura do modal
   return (
     <Routes>
-      <Route
-        path={':prepend/modal/*'}
-
-        element={
-          <InModal>
-            <Routes>
-              {Object.values(routes).map((route, idx) => (
-                <Route path={route.path.concat('/*')} element={<route.component inModal={true} {...props} />} key={idx} />
-              ))}
-            </Routes>
-          </InModal>
-        }
-      />
+      <Route path={':ignore1/modal/*'} element={modalComponent} />
+      <Route path={':ignore1/:ignore2/modal/*'} element={modalComponent} />
     </Routes>
   );
 }

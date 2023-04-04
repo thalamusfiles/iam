@@ -12,7 +12,7 @@ export type RouteDefinitions = { [key: string]: RouteDefinition };
 let router: RemixRouter;
 export const createBaseRouter = (routes: RouteObject[]): RemixRouter => (router = createBrowserRouter(routes));
 
-export function getLinkTo(owner: RoutesName | string | number, options: { id: string } & any): string {
+export function getLinkTo(owner: RoutesName | string | number, options: { uuid: string } & any): string {
   let push;
   switch (owner as RoutesName) {
     // PUBLIC
@@ -41,7 +41,7 @@ export function getLinkTo(owner: RoutesName | string | number, options: { id: st
       push = '/mgt/person/list';
       break;
     case 'person_edit':
-      push = '/mgt/person/edit/:id'.replace(':id', options.id);
+      push = '/mgt/person/edit/:uuid'.replace(':uuid', options.uuid);
       break;
     case 'person_new':
       push = '/mgt/person/new';
@@ -50,7 +50,7 @@ export function getLinkTo(owner: RoutesName | string | number, options: { id: st
       push = '/mgt/role/list';
       break;
     case 'role_edit':
-      push = '/mgt/role/edit/:id'.replace(':id', options.id);
+      push = '/mgt/role/edit/:uuid'.replace(':uuid', options.uuid);
       break;
     case 'role_new':
       push = '/mgt/role/new';
@@ -59,7 +59,7 @@ export function getLinkTo(owner: RoutesName | string | number, options: { id: st
       push = '/mgt/permission/list';
       break;
     case 'permission_edit':
-      push = '/mgt/permission/edit/:id'.replace(':id', options.id);
+      push = '/mgt/permission/edit/:uuid'.replace(':uuid', options.uuid);
       break;
     case 'permission_new':
       push = '/mgt/permission/new';
@@ -68,7 +68,7 @@ export function getLinkTo(owner: RoutesName | string | number, options: { id: st
       push = '/mgt/region/list';
       break;
     case 'region_edit':
-      push = '/mgt/region/edit/:id'.replace(':id', options.id);
+      push = '/mgt/region/edit/:uuid'.replace(':uuid', options.uuid);
       break;
     case 'region_new':
       push = '/mgt/region/new';
@@ -77,7 +77,7 @@ export function getLinkTo(owner: RoutesName | string | number, options: { id: st
       push = '/mgt/application/list';
       break;
     case 'application_edit':
-      push = '/mgt/application/edit/:id'.replace(':id', options.id);
+      push = '/mgt/application/edit/:uuid'.replace(':uuid', options.uuid);
       break;
     case 'application_new':
       push = '/mgt/application/new';
@@ -101,7 +101,7 @@ export function getLinkTo(owner: RoutesName | string | number, options: { id: st
 
 export function historyPush(
   owner: RoutesName | string | number,
-  options: { id?: any; inModal?: boolean; showSave?: boolean; open?: boolean; absolute?: boolean; search?: string } & any = {},
+  options: { uuid?: any; inModal?: boolean; showSave?: boolean; open?: boolean; absolute?: boolean; search?: string } & any = {},
 ) {
   // Quando informado número, volta pra páginas anteriores ou posteriores.
   if (typeof owner === 'number') router.navigate(owner);

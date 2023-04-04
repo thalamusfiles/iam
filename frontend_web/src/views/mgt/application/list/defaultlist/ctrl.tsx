@@ -2,6 +2,7 @@ import { ApplicationCRUDDatasource } from '@thalamus/iam-consumer';
 import { makeObservable } from 'mobx';
 import { AttributeType } from '../../../../../commons/attribute-type';
 import { SortOrder } from '../../../../../commons/enums/sort-order.enum';
+import { historyPush } from '../../../../../commons/route';
 import { CommonListCtx } from '../../../../generic/list/ctrl';
 import { ListDefinition } from '../../../../generic/list/types/ListDefinition';
 
@@ -30,6 +31,14 @@ export class ApplicationListStore extends CommonListCtx {
 
     makeObservable(this);
   }
+  
+  newCallback = () => {
+    historyPush('application_new', { inModal: true, showSave: true });
+  };
+
+  editCallback = (uuid: number | string) => {
+    historyPush('application_edit', { uuid, inModal: true, showSave: true });
+  };
 
   execSearch = async () => {
     // Monta os filtros da api mgt conforme os filtros da tela

@@ -57,9 +57,6 @@ export class PersonEditStore extends CommonEditCtx {
       //Carrega o conteudo
       this.content = await this.datasource.findById(id);
       this.loadProfileRoles();
-
-      //Dispara listener informando que o conteu foi carregado
-      this.componentsClassesRefs.forEach((comp) => comp.onLoadContent && comp.onLoadContent());
     } catch (error) {
       console.error(error);
       notify.warn('An error occurred while updating the listing.');
@@ -72,14 +69,14 @@ export class PersonEditStore extends CommonEditCtx {
     this.loading = true;
 
     try {
-      const isNew = !this.content.id;
+      const isNew = !this.content.uuid;
       let response;
 
       //Salva o conteudo
       if (isNew) {
         response = await this.datasource.create(this.content);
       } else {
-        response = await this.datasource.update(this.content.id, this.content);
+        response = await this.datasource.update(this.content.uuid, this.content);
       }
       this.content = response.entity;
 
@@ -108,7 +105,6 @@ export class PersonEditStore extends CommonEditCtx {
     } else {
       this.content = Object.assign({}, this.content, values);
     }
-    this.componentsClassesRefs.forEach((comp) => comp.onAssignContent && comp.onAssignContent(values));
   };
 
   loadProfileRoles = () => {

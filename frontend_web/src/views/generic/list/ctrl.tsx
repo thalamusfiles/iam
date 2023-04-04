@@ -84,9 +84,9 @@ export class CommonListCtx {
 
   //callbacks
   newCallback?: () => void;
-  editCallback?: (id: number | string) => void;
-  doubleClickCallback?: (id: number | string, cell: TableCell) => void;
-  removeCallback?: (id: number | string) => void;
+  editCallback?: (uuid: number | string) => void;
+  doubleClickCallback?: (uuid: number | string, cell: TableCell) => void;
+  removeCallback?: (uuid: number | string) => void;
 
   @action toggleShowFilters = (show: boolean | undefined = undefined) => {
     this.showFilters = show === undefined ? !this.showFilters : show;
@@ -605,7 +605,7 @@ export class CommonListCtx {
    */
   onEditClick = (idx: number) => {
     if (this.editCallback) {
-      this.editCallback(this.response[idx].id);
+      this.editCallback(this.response[idx].uuid);
     }
   };
 
@@ -614,7 +614,7 @@ export class CommonListCtx {
    */
   onDoubleClick = (yindex: number, cell: TableCell) => {
     if (this.doubleClickCallback) {
-      this.doubleClickCallback(this.response[yindex].id, cell);
+      this.doubleClickCallback(this.response[yindex].uuid, cell);
     }
   };
 
@@ -623,7 +623,7 @@ export class CommonListCtx {
    */
   onRemoveClick = (yindex: number, cell: TableCell) => {
     if (this.onRemoveClick) {
-      this.onRemoveClick(this.response[yindex].id, cell);
+      this.onRemoveClick(this.response[yindex].uuid, cell);
     }
   };
 }

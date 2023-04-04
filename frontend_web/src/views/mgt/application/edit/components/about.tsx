@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -11,7 +12,7 @@ import { WmsFormGroup } from '../../../../../components/Form';
 import { useCommonEditStore } from '../../../../generic/edit/ctrl';
 import { ApplicationEditStore } from '../ctrl';
 
-const AboutComp: React.FC = () => {
+const AboutComp: React.FC = observer(() => {
   const ctrl = useCommonEditStore<ApplicationEditStore>();
   const __ = useI18N();
 
@@ -20,8 +21,8 @@ const AboutComp: React.FC = () => {
   return (
     <>
       <h1 id="application_about">
-        {IconsDef.applications.map((icon) => (
-          <FontAwesomeIcon icon={icon} />
+        {IconsDef.applications.map((icon, idx) => (
+          <FontAwesomeIcon icon={icon} key={idx} />
         ))}
         &nbsp; {__('application.edit.about.title')}: {content.name}
       </h1>
@@ -34,8 +35,8 @@ const AboutComp: React.FC = () => {
               name="initials"
               title="Initials"
               type={AttributeType.Text}
-              value={content.name}
-              onChange={(value) => assignContent({ name: value })}
+              value={content.initials}
+              disabled
             />
           </Col>
           <Col>
@@ -56,22 +57,12 @@ const AboutComp: React.FC = () => {
               name="description"
               title="Description"
               type={AttributeType.Text}
-              value={content.name}
-              onChange={(value) => assignContent({ name: value })}
+              value={content.description}
+              onChange={(value) => assignContent({ description: value })}
             />
           </Col>
         </Row>
         <Row>
-          <Col>
-            <WmsFormGroup
-              groupAs={Col}
-              name="region"
-              title="Region"
-              type={AttributeType.Text}
-              value={content.name}
-              onChange={(value) => assignContent({ name: value })}
-            />
-          </Col>
           <Col>
             <WmsFormGroup
               groupAs={Col}
@@ -83,22 +74,11 @@ const AboutComp: React.FC = () => {
               type={AttributeType.Boolean}
             />
           </Col>
-          <Col>
-            <WmsFormGroup
-              groupAs={Col}
-              name="noSSO"
-              title="Without SSO"
-              value={'1'}
-              checked={content.noSSO}
-              onChange={() => assignContent({ noSSO: !content.noSSO })}
-              type={AttributeType.Boolean}
-            />
-          </Col>
         </Row>
       </Form>
     </>
   );
-};
+});
 
 addPagePlugin({
   component: AboutComp,

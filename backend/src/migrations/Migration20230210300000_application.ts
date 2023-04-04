@@ -14,8 +14,7 @@ export class Migration20230210300000_application extends Migration {
         "initials" varchar(255) not null, 
         "name" varchar(255) not null, 
         "description" varchar(255) not null, 
-        "private_sso" boolean not null, 
-        "one_role_required" boolean not null, 
+        "public" boolean not null, 
         
         constraint "application_pkey" primary key ("uuid"), 
         constraint application_initials_check check (LENGTH(initials) >= 3), 

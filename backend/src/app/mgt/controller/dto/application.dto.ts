@@ -33,11 +33,7 @@ class ApplicationCreateDto {
 
   @Expose()
   @IsNotEmpty()
-  privateSSO: boolean;
-
-  @Expose()
-  @IsNotEmpty()
-  oneRoleRequired: boolean;
+  public: boolean;
 
   /*@Expose()
   @IsArray()
@@ -53,7 +49,7 @@ export class EntityApplicationCreateDto extends EntityProps<ApplicationCreateDto
 @Exclude()
 class ApplicationUpdateDto {
   @Expose()
-  @IsUUID('4')
+  @IsUUID()
   uuid: string;
 
   @Expose()
