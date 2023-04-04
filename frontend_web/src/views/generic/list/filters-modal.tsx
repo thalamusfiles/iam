@@ -77,8 +77,8 @@ export const FiltersResume: React.FC = observer(() => {
         <Nav.Link disabled>{__('menu.filters')}:</Nav.Link>
       </Nav.Item>
       {ctrl!.filtersApplied.map((filter, idx) => (
-        <OverlayTrigger placement={'top'} overlay={<Tooltip id={`tooltip-${idx}`}>{__('generic.tooltop.filterremove')}</Tooltip>}>
-          <Nav.Item key={idx} className="pointer" onClick={() => ctrl!.removeFilter(filter, idx)}>
+        <OverlayTrigger placement={'top'} overlay={<Tooltip id={`tooltip-${idx}`}>{__('generic.tooltop.filterremove')}</Tooltip>} key={idx}>
+          <Nav.Item className="pointer" onClick={() => ctrl!.removeFilter(filter, idx)}>
             <Nav.Link disabled>
               {filter.title}: {filter.description || filter.value}
             </Nav.Link>

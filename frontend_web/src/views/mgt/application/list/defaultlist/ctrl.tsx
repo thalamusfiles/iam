@@ -19,7 +19,7 @@ export class ApplicationListStore extends CommonListCtx {
       { colname: 'initials', title: 'Initials', type: AttributeType.Text, show: true },
       { colname: 'name', title: 'Name', type: AttributeType.Text, show: true },
       { colname: 'description', title: 'Description', type: AttributeType.Text },
-      { colname: 'region.name', title: 'Region', type: AttributeType.Text, show: true, sortable: false },
+      { colname: 'regions.name', title: 'Name', type: AttributeType.Text, show: true },
     ],
     sort: { colname: 'name', title: '', type: AttributeType.Text },
     sortOrder: SortOrder.Up,
@@ -32,19 +32,18 @@ export class ApplicationListStore extends CommonListCtx {
   }
 
   execSearch = async () => {
-    console.log(this.filtersApplied.length);
-    console.log(this.columns.length);
-    console.log(this.page);
-    console.log(this.perPage);
-    console.log(this.sort);
-    console.log(this.sortOrder);
+    // Monta os filtros da api mgt conforme os filtros da tela
+    const where = this.filtersApplied.reduce((prev, curr) => {
+      prev[curr.name] = curr.value;
+      return prev;
+    }, {} as any);
 
-    console.log(await this.datasource.findAll());
-    /*
-(c: any) => {
-          this.cancelRequestCallback = c;
-        }
-*/
-    return [];
+    // Coleta as informações populate
+    const populate = this.columns
+      .filter((column) => column.colname.includes('.'))
+      .map((column) => column.colname.substring(0, column.colname.indexOf('.')));
+
+    //this.cancelRequestCallback = c;
+    return await this.datasource.findAll({ where, populate });
   };
 }
