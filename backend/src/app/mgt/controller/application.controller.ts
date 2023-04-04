@@ -9,6 +9,8 @@ import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
 import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
 import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityApplicationCreateDto, EntityApplicationUpdateDto, FindApplicationPropsDto } from './dto/application.dto';
+import { IamValidationPipe } from '../../../commons/validation.pipe';
+import { ApplicationFieldsValidationUseCase } from '../usecase/application-fields-validation.usecase';
 
 @UseGuards(AccessGuard)
 @Controller('mgt/application')
@@ -21,6 +23,7 @@ export class ApplicationController implements CRUDController<Application> {
     this.useCaseService.register(Application, BaseAddCreatedByUseCase);
     this.useCaseService.register(Application, BaseAddUpdatedByUseCase);
     this.useCaseService.register(Application, ApplicationNormalizeInitialsUseCase);
+    this.useCaseService.register(Application, ApplicationFieldsValidationUseCase);
   }
 
   /**
@@ -54,7 +57,7 @@ export class ApplicationController implements CRUDController<Application> {
    * @returns
    */
   @Post()
-  @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
+  @UsePipes(new IamValidationPipe({ transformOptions: { exposeUnsetFields: false } }))
   async create(@Body() props: EntityApplicationCreateDto, @Request() request: RequestInfo): Promise<EntityProps<Application>> {
     this.logger.log('Create Application');
 
@@ -111,23 +114,23 @@ export class ApplicationController implements CRUDController<Application> {
     props.user = request.user;
     const isUpdate = !!props.entity.uuid;
 
-    this.useCaseService.preValidate(Application, props, request);
+    await this.useCaseService.preValidate(Application, props, request);
 
     if (isUpdate) {
-      this.useCaseService.preUpdate(Application, props, request);
+      await this.useCaseService.preUpdate(Application, props, request);
     } else {
-      this.useCaseService.prePersist(Application, props, request);
+      await this.useCaseService.prePersist(Application, props, request);
     }
     this.useCaseService.preSave(Application, props, request);
 
     const entity = await this.applicationService.save(props);
 
     if (isUpdate) {
-      this.useCaseService.postUpdate(Application, props, request);
+      await this.useCaseService.postUpdate(Application, props, request);
     } else {
-      this.useCaseService.postPersist(Application, props, request);
+      await this.useCaseService.postPersist(Application, props, request);
     }
-    this.useCaseService.postSave(Application, props, request);
+    await this.useCaseService.postSave(Application, props, request);
 
     return {
       entity: entity,

@@ -105,23 +105,23 @@ export class UserController implements CRUDController<User> {
     props.user = request.user;
     const isUpdate = !!props.entity.uuid;
 
-    this.useCaseService.preValidate(User, props, request);
+    await this.useCaseService.preValidate(User, props, request);
 
     if (isUpdate) {
-      this.useCaseService.preUpdate(User, props, request);
+      await this.useCaseService.preUpdate(User, props, request);
     } else {
-      this.useCaseService.prePersist(User, props, request);
+      await this.useCaseService.prePersist(User, props, request);
     }
-    this.useCaseService.preSave(User, props, request);
+    await this.useCaseService.preSave(User, props, request);
 
     const entity = await this.userService.save(/*props*/);
 
     if (isUpdate) {
-      this.useCaseService.postUpdate(User, props, request);
+      await this.useCaseService.postUpdate(User, props, request);
     } else {
-      this.useCaseService.postPersist(User, props, request);
+      await this.useCaseService.postPersist(User, props, request);
     }
-    this.useCaseService.postSave(User, props, request);
+    await this.useCaseService.postSave(User, props, request);
 
     return {
       entity: entity,

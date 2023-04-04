@@ -1,4 +1,7 @@
 {
+  "initials.isNotEmpty": "Iniciais obrigatória",
+  "name.isNotEmpty": "Nome obrigatório",
+  "description.isNotEmpty": "Descrição obrigatória",
   "username.isNotEmpty": "Usuário obrigatório",
   "password.isNotEmpty": "Senha obrigatória",
   "redirect_uri.isUrl": "Redirect uri required",

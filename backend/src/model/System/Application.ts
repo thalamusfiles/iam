@@ -18,10 +18,7 @@ export class Application extends IamBaseEntityWithDelete {
   description!: string;
 
   @Property({ nullable: false })
-  privateSSO!: boolean;
-
-  @Property({ nullable: false })
-  oneRoleRequired!: boolean;
+  public!: boolean;
 
   @ManyToMany(() => Region, (region) => region.applications)
   regions = new Collection<Region>(this);

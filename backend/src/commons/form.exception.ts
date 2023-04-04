@@ -7,7 +7,7 @@ export class FormException extends HttpException {
     super(
       //
       {
-        message: message || errors.map((e) => e.error).join('\n'),
+        message: message || errors.map((e) => e.error).join(';'),
         errors,
       },
       status,

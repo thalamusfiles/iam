@@ -59,7 +59,7 @@ export class ApplicationService implements CRUDService<Application> {
 
     const uuid = element.entity.uuid;
     if (uuid) {
-      const ref = this.applicationRepository.getReference(uuid);
+      const ref = await this.applicationRepository.findOneOrFail({ uuid });
       element.entity = wrap(ref).assign(element.entity);
     } else {
       element.entity = this.applicationRepository.create(element.entity);

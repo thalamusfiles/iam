@@ -1,7 +1,9 @@
 import { ApplicationCRUDDatasource } from '@thalamus/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
+import { ErrosAsList, getFormExceptionErrosToObject } from '../../../../commons/error';
 import { TargetForm } from '../../../../commons/plugin.component';
 import { historyPush } from '../../../../commons/route';
+import type { ErrorListRecord } from '../../../../commons/types/ErrorListRecord';
 import { notify } from '../../../../components/Notification';
 import { CommonEditCtx } from '../../../generic/edit/ctrl';
 
@@ -9,7 +11,14 @@ export class ApplicationEditStore extends CommonEditCtx {
   datasource = new ApplicationCRUDDatasource();
 
   //Conteudo da tela
-  @observable content: any = {};
+  @observable content: any = {
+    initials: '',
+    name: '',
+    description: '',
+    public: false,
+  };
+  @observable erroMessages: string[] = [];
+  @observable erros: ErrorListRecord = {};
 
   constructor() {
     super(TargetForm.application_edit, false);
@@ -51,13 +60,17 @@ export class ApplicationEditStore extends CommonEditCtx {
       this.content = response.entity;
 
       notify.success('Saved successfully.');
-
-      if (isNew) {
-        historyPush('application_edit', this.content.id);
-      }
+      historyPush(-1);
     } catch (err) {
-      const message = (err as any).response?.data?.message || 'An error occurred while saving.';
-      notify.warn(message);
+      const data = (err as any).response?.data;
+
+      [this.erroMessages, this.erros] = getFormExceptionErrosToObject(data, {
+        splitByConstraints: true,
+        removeEntityPrefix: true,
+        ignoreKindsToMessage: ['initials', 'name', 'description'],
+      }) as ErrosAsList;
+
+      notify.warn(this.erroMessages.join(' '));
     }
 
     this.loading = false;

@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
+import { Alert } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
@@ -28,6 +29,16 @@ const AboutComp: React.FC = observer(() => {
       </h1>
       <p>{__('application.edit.about.description')}</p>
       <Form>
+        {!!ctrl.erroMessages?.length && (
+          <Alert variant="danger">
+            {ctrl.erroMessages.map((msg) => (
+              <>
+                {__(msg)} <br />
+              </>
+            ))}
+          </Alert>
+        )}
+
         <Row>
           <Col>
             <WmsFormGroup
@@ -36,7 +47,9 @@ const AboutComp: React.FC = observer(() => {
               title="Initials"
               type={AttributeType.Text}
               value={content.initials}
-              disabled
+              onChange={(value) => assignContent({ initials: value })}
+              disabled={content.uuid}
+              invalidFeed={ctrl.erros?.initials?.map(__)}
             />
           </Col>
           <Col>
@@ -47,6 +60,7 @@ const AboutComp: React.FC = observer(() => {
               type={AttributeType.Text}
               value={content.name}
               onChange={(value) => assignContent({ name: value })}
+              invalidFeed={ctrl.erros.name?.map(__)}
             />
           </Col>
         </Row>
@@ -59,6 +73,7 @@ const AboutComp: React.FC = observer(() => {
               type={AttributeType.Text}
               value={content.description}
               onChange={(value) => assignContent({ description: value })}
+              invalidFeed={ctrl.erros.description?.map(__)}
             />
           </Col>
         </Row>
@@ -72,6 +87,7 @@ const AboutComp: React.FC = observer(() => {
               checked={content.public}
               onChange={() => assignContent({ public: !content.public })}
               type={AttributeType.Boolean}
+              invalidFeed={ctrl.erros.public?.map(__)}
             />
           </Col>
         </Row>

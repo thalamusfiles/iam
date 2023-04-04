@@ -113,15 +113,14 @@ const List: React.FC = observer(() => {
               {/* Ações básicas da listagem */}
               <td className="pointer nowrap actions">
                 <ButtonGroup>
-                  <Button size="sm" variant="outline-secondary">
-                    &nbsp;
-                  </Button>
                   <Button size="sm" variant="outline-primary" onClick={() => ctrl!.onEditClick(yindex)}>
                     <FontAwesomeIcon size="1x" icon={'edit'} />
                   </Button>
-                  <Button size="sm" variant="outline-danger">
-                    <FontAwesomeIcon size="1x" icon={'trash'} />
-                  </Button>
+                  {ctrl.removeCallback && (
+                    <Button size="sm" variant="outline-danger" onClick={() => ctrl!.onRemoveClick(yindex)}>
+                      <FontAwesomeIcon size="1x" icon={'trash'} />
+                    </Button>
+                  )}
                 </ButtonGroup>
               </td>
               {/* Percorre as células da linha*/}

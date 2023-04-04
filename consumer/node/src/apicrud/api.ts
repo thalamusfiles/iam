@@ -7,11 +7,11 @@ type EntityPropsOptions = {
 
 export interface CRUDInterface {
   findAll(params?: { populate?: [] } | any): Promise<any[]>;
-  findById(id: number, options?: { populate: [] }): Promise<any>;
+  findById(uuid: string, options?: { populate: [] }): Promise<any>;
   create(entity: any, options?: EntityPropsOptions): Promise<EntityProps<any>>;
-  update(id: number, entity: any, options?: EntityPropsOptions): Promise<EntityProps<any>>;
+  update(uuid: string, entity: any, options?: EntityPropsOptions): Promise<EntityProps<any>>;
   updateAll(entities: any[], options?: EntityPropsOptions): Promise<EntityProps<any>[]>;
-  remove(id: number): Promise<any>;
+  remove(uuid: string): Promise<any>;
 }
 /**
  * API Generica que realiza as operações crud no servidor.
@@ -28,7 +28,7 @@ export abstract class CRUDDatasource implements CRUDInterface {
     }).then((axios) => axios.data);
   }
 
-  findById(id: number, options?: { populate: [] }) {
+  findById(uuid: string, options?: { populate: [] }) {
     return Apis.ApiMGT.get<any>(this.endpoint + '/' + id, {
       params: {
         populate: options?.populate,
@@ -40,7 +40,7 @@ export abstract class CRUDDatasource implements CRUDInterface {
     return Apis.ApiMGT.post<EntityProps<any>>(this.endpoint, { entity, options }).then((axios) => axios.data);
   }
 
-  update(id: number, entity: any, options?: EntityPropsOptions) {
+  update(uuid: string, entity: any, options?: EntityPropsOptions) {
     return Apis.ApiMGT.put<EntityProps<any>>(this.endpoint + '/' + id, { entity, options }).then((axios) => axios.data);
   }
 
@@ -48,7 +48,7 @@ export abstract class CRUDDatasource implements CRUDInterface {
     return Apis.ApiMGT.put<EntityProps<any>[]>(this.endpoint, { entities, options }).then((axios) => axios.data);
   }
 
-  remove(id: number) {
+  remove(uuid: string) {
     return Apis.ApiMGT.delete<void>(this.endpoint + '/' + id).then((axios) => axios.data);
   }
 }

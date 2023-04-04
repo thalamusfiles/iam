@@ -621,9 +621,9 @@ export class CommonListCtx {
   /**
    * Função acionada ao clicar no botão de remover
    */
-  onRemoveClick = (yindex: number, cell: TableCell) => {
-    if (this.onRemoveClick) {
-      this.onRemoveClick(this.response[yindex].uuid, cell);
+  onRemoveClick = (yindex: number) => {
+    if (this.removeCallback) {
+      this.removeCallback(this.response[yindex].uuid);
     }
   };
 }

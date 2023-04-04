@@ -113,23 +113,23 @@ export class PermissionController implements CRUDController<Permission> {
     props.user = request.user;
     const isUpdate = !!props.entity.uuid;
 
-    this.useCaseService.preValidate(Permission, props, request);
+    await this.useCaseService.preValidate(Permission, props, request);
 
     if (isUpdate) {
-      this.useCaseService.preUpdate(Permission, props, request);
+      await this.useCaseService.preUpdate(Permission, props, request);
     } else {
-      this.useCaseService.prePersist(Permission, props, request);
+      await this.useCaseService.prePersist(Permission, props, request);
     }
-    this.useCaseService.preSave(Permission, props, request);
+    await this.useCaseService.preSave(Permission, props, request);
 
     const entity = await this.permissionService.save(props);
 
     if (isUpdate) {
-      this.useCaseService.postUpdate(Permission, props, request);
+      await this.useCaseService.postUpdate(Permission, props, request);
     } else {
-      this.useCaseService.postPersist(Permission, props, request);
+      await this.useCaseService.postPersist(Permission, props, request);
     }
-    this.useCaseService.postSave(Permission, props, request);
+    await this.useCaseService.postSave(Permission, props, request);
 
     return {
       entity: entity,

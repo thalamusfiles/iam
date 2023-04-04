@@ -5,6 +5,7 @@ import { FormExceptionError } from './types/FormExceptionError';
 type GetFormExceptionErrosOptions = {
   splitByConstraints?: boolean;
   ignoreKindsToMessage?: string[];
+  removeEntityPrefix?: boolean;
 };
 
 export type Erros = [string[], ErrorRecord];
@@ -18,7 +19,7 @@ type ErrosObject = Erros | ErrosAsList;
  */
 export const getFormExceptionErrosToObject = (
   responseData: any,
-  { splitByConstraints, ignoreKindsToMessage }: GetFormExceptionErrosOptions = {},
+  { splitByConstraints, ignoreKindsToMessage, removeEntityPrefix }: GetFormExceptionErrosOptions = {},
 ): ErrosObject => {
   const messages: Array<string> = [];
   const erros: ErrorRecord | ErrorListRecord = {};
@@ -29,13 +30,19 @@ export const getFormExceptionErrosToObject = (
       const respErros: FormExceptionError[] = responseData.errors;
 
       // Percorre os erros e monta o objeto de retorno;
-      for (const { kind, error, constraints } of respErros) {
+      for (let { kind, error, constraints } of respErros) {
+        if (removeEntityPrefix) {
+          kind = kind.replace('entity.', '');
+        }
         if (splitByConstraints) {
           const constraintErros: string[] = constraints?.map((value) => `${kind}.${value}`) || [error];
-          erros[kind] = constraintErros;
+          // Só adiciona se tiver constraint
+          if (constraintErros) {
+            erros[kind] = constraintErros;
 
-          if (!ignoreKindsToMessage?.includes(kind) && error) {
-            constraintErros.forEach((value) => messages.push(value));
+            if (!ignoreKindsToMessage?.includes(kind) && error) {
+              constraintErros.forEach((value) => messages.push(value));
+            }
           }
         } else {
           if (kind) {

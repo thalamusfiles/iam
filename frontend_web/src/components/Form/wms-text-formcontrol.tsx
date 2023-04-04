@@ -13,6 +13,7 @@ export function WmsTextFormControl(props: WmsFormProps) {
       name={props.name}
       disabled={props.disabled}
       value={props.description || props.value || ''}
+      isInvalid={props.invalidFeed}
       onChange={(event) => props.onChange && props.onChange(event.target.value, event.target.value, event)}
     />
   );

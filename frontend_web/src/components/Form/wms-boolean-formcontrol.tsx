@@ -11,6 +11,7 @@ export function WmsBooleanFormControl(props: WmsFormProps) {
       label={props.placeholder}
       value={props.value || ''}
       checked={props.checked}
+      isInvalid={props.invalidFeed}
       onChange={(event) => props.onChange && props.onChange(event.target.checked, event.target.value, event)}
     />
   );

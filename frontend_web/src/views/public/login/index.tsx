@@ -64,7 +64,15 @@ const LoginPageProvided: React.FC = observer(() => {
                     {__('login.cardindo')}
                   </p>
                   <Form>
-                    {!!ctrl.erroMessages?.length && <Alert variant="danger">{ctrl.erroMessages.map(__)}</Alert>}
+                    {!!ctrl.erroMessages?.length && (
+                      <Alert variant="danger">
+                        {ctrl.erroMessages.map((msg) => (
+                          <>
+                            {__(msg)} <br />
+                          </>
+                        ))}
+                      </Alert>
+                    )}
 
                     <Form.Group controlId="login.application">
                       <Form.Label>{__('login.application')}</Form.Label>

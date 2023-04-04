@@ -1,4 +1,7 @@
 {
+  "initials.isNotEmpty": "Initials required",
+  "name.isNotEmpty": "Name required",
+  "description.isNotEmpty": "Description required",
   "username.isNotEmpty": "Username required",
   "password.isNotEmpty": "Password required",
   "redirect_uri.isUrl": "Redirect uri required",

@@ -109,23 +109,23 @@ export class RoleController implements CRUDController<Role> {
     props.user = request.user;
     const isUpdate = !!props.entity.uuid;
 
-    this.useCaseService.preValidate(Role, props, request);
+    await this.useCaseService.preValidate(Role, props, request);
 
     if (isUpdate) {
-      this.useCaseService.preUpdate(Role, props, request);
+      await this.useCaseService.preUpdate(Role, props, request);
     } else {
-      this.useCaseService.prePersist(Role, props, request);
+      await this.useCaseService.prePersist(Role, props, request);
     }
-    this.useCaseService.preSave(Role, props, request);
+    await this.useCaseService.preSave(Role, props, request);
 
     const entity = await this.roleService.save(props);
 
     if (isUpdate) {
-      this.useCaseService.postUpdate(Role, props, request);
+      await this.useCaseService.postUpdate(Role, props, request);
     } else {
-      this.useCaseService.postPersist(Role, props, request);
+      await this.useCaseService.postPersist(Role, props, request);
     }
-    this.useCaseService.postSave(Role, props, request);
+    await this.useCaseService.postSave(Role, props, request);
 
     return {
       entity: entity,

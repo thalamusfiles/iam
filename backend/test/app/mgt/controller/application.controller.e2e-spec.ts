@@ -39,8 +39,7 @@ describe('ApplicationController (e2e)', () => {
       initials: applicationNameCheck.toLocaleUpperCase(),
       name: applicationNameCheck,
       description: 'Aplicações cadastrada como teste',
-      privateSSO: true,
-      oneRoleRequired: false,
+      public: false,
     },
   };
   const applicationUpdateData2: Partial<Application> = {
@@ -116,8 +115,7 @@ describe('ApplicationController (e2e)', () => {
       },
     };
     // Não encaminhar os registros abaixo
-    delete applicationUpdate.entity.privateSSO;
-    delete applicationUpdate.entity.oneRoleRequired;
+    delete applicationUpdate.entity.public;
 
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).put(updateUrl)).send(applicationUpdate).expect(200);
 
@@ -133,8 +131,7 @@ describe('ApplicationController (e2e)', () => {
     expect(result2.body).toBeDefined();
     expect(result2.body.uuid).toEqual(uuidApplicationSaved);
     // Valores que não podem ser alterados
-    expect(result2.body.privateSSO).toEqual(applicationToCreate.entity.privateSSO);
-    expect(result2.body.oneRoleRequired).toEqual(applicationToCreate.entity.oneRoleRequired);
+    expect(result2.body.public).toEqual(applicationToCreate.entity.public);
   });
 
   it(`${applicationUrl}/ (Put) Atualiza a "initials" da aplicação (ignora novo valor)`, async () => {

@@ -38,6 +38,7 @@ export declare type WmsFormProps = {
   value?: any | [any] | null;
   description?: string;
   disabled?: boolean;
+  invalidFeed?: any;
 
   filters?: any;
   //propriedade do formGroup
@@ -100,6 +101,7 @@ export function WmsFormGroup(props: WmsFormProps) {
         </Form.Label>
       )}
       {Column}
+      <Form.Control.Feedback type="invalid">{props.invalidFeed}</Form.Control.Feedback>
     </Form.Group>
   );
 }

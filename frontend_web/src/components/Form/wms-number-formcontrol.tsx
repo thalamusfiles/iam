@@ -10,6 +10,7 @@ export function WmsIntegerFormControl(props: WmsFormProps) {
       name={props.name}
       disabled={props.disabled}
       value={props.description || props.value}
+      isInvalid={props.invalidFeed}
       onChange={(event) => {
         if (props.onChange) {
           const parser = numeral(event.target.value);
@@ -28,6 +29,7 @@ export function WmsDecimalFormControl(props: WmsFormProps) {
       name={props.name}
       disabled={props.disabled}
       value={props.description || props.value || ''}
+      isInvalid={props.invalidFeed}
       onChange={(event) => {
         if (props.onChange) {
           const parser = numeral(event.target.value);

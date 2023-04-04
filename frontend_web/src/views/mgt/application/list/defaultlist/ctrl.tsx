@@ -20,7 +20,6 @@ export class ApplicationListStore extends CommonListCtx {
       { colname: 'initials', title: 'Initials', type: AttributeType.Text, show: true },
       { colname: 'name', title: 'Name', type: AttributeType.Text, show: true },
       { colname: 'description', title: 'Description', type: AttributeType.Text },
-      { colname: 'regions.name', title: 'Name', type: AttributeType.Text, show: true },
     ],
     sort: { colname: 'name', title: '', type: AttributeType.Text },
     sortOrder: SortOrder.Up,
@@ -31,13 +30,22 @@ export class ApplicationListStore extends CommonListCtx {
 
     makeObservable(this);
   }
-  
+
   newCallback = () => {
     historyPush('application_new', { inModal: true, showSave: true });
   };
 
   editCallback = (uuid: number | string) => {
     historyPush('application_edit', { uuid, inModal: true, showSave: true });
+  };
+
+  removeCallback = (uuid: number | string) => {
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm('Você deseja remover este registro?') && confirm('Você realmente deseja remover este registro?')) {
+      this.datasource.remove(uuid as any).then(() => {
+        this.search();
+      });
+    }
   };
 
   execSearch = async () => {

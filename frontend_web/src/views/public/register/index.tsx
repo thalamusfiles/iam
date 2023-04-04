@@ -48,7 +48,7 @@ const RegisterPageProvided: React.FC = observer(() => {
   return (
     <div style={{ backgroundImage: `url(${bgImg})` }} className="bgImageCover">
       <div style={{ backgroundColor: 'rgba(90,90,90,.8)', width: '100%', padding: 20 }} className="bgImageCover">
-      <PermissionInfoModal ctrl={ctrl} />
+        <PermissionInfoModal ctrl={ctrl} />
 
         <Row>
           <Col md={{ span: 4, offset: 4 }} sm={{ span: 6, offset: 3 }} className="text-center text-white mb-5 mt-5">
@@ -65,7 +65,15 @@ const RegisterPageProvided: React.FC = observer(() => {
                   </p>
 
                   <Form>
-                    {!!ctrl.erroMessages?.length && <Alert variant="danger">{ctrl.erroMessages.map(__)}</Alert>}
+                    {!!ctrl.erroMessages?.length && (
+                      <Alert variant="danger">
+                        {ctrl.erroMessages.map((msg) => (
+                          <>
+                            {__(msg)} <br />
+                          </>
+                        ))}
+                      </Alert>
+                    )}
 
                     <Form.Group controlId="login.application">
                       <Form.Label>{__('login.application')}</Form.Label>

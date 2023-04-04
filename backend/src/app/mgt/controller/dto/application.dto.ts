@@ -19,6 +19,7 @@ export class FindApplicationPropsDto extends FindProps<Application> {
 class ApplicationCreateDto {
   @Expose()
   @IsString()
+  @IsNotEmpty()
   initials: string;
 
   @Expose()
@@ -64,11 +65,7 @@ class ApplicationUpdateDto {
 
   @Expose()
   @IsOptional()
-  privateSSO?: boolean;
-
-  @Expose()
-  @IsOptional()
-  oneRoleRequired?: boolean;
+  public?: boolean;
 }
 
 // DTO update Application
