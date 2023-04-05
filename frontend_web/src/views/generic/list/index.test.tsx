@@ -94,12 +94,12 @@ describe('GenericList', () => {
     //Troca para o filtro protocolo
     simulateInputClick(component.find(`input[name="sort"][value="${tableProtocolHead.colname}"]`));
     expect(ctrl!.sort?.colname).toEqual(tableProtocolHead.colname);
-    expect(ctrl!.sortOrder).toEqual(SortOrder.Down);
+    expect(ctrl!.sortOrder).toEqual(SortOrder.Desc);
 
     //Troca a ordem do filtro
     simulateInputClick(component.find(`input[name="sort"][value="${tableProtocolHead.colname}"]`));
     expect(ctrl!.sort?.colname).toEqual(tableProtocolHead.colname);
-    expect(ctrl!.sortOrder).toEqual(SortOrder.Up);
+    expect(ctrl!.sortOrder).toEqual(SortOrder.Asc);
   });
 
   //it('Exibe conteúdo da listagem?', async () => {
@@ -173,7 +173,7 @@ const customListDef: ListDefinition = {
   filters: [filterID, filterName],
   columns: [tableIDHead, tableNameHead, tableProtocolHead, tableCreatedAtHead],
   sort: tableNameHead,
-  sortOrder: SortOrder.Up,
+  sortOrder: SortOrder.Asc,
 };
 
 /**

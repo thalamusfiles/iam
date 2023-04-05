@@ -46,10 +46,10 @@ export class CommonListCtx {
   //Informação da listagem
   @observable sort: TableHead | null = null;
   //Informação da listagem
-  @observable sortOrder: SortOrder = SortOrder.Down;
+  @observable sortOrder: SortOrder = SortOrder.Desc;
   //Página
   @observable page: number = 1;
-  perPage: number | null = null;
+  perPage: number = 50;
 
   //Listagem (matrix) de dados processada
   //Uma célula pode ter um conteudo (uma informação);
@@ -289,7 +289,7 @@ export class CommonListCtx {
     }
 
     if (this.sort?.colname === head.colname) {
-      this.sortOrder = this.sortOrder === SortOrder.Down ? SortOrder.Up : SortOrder.Down;
+      this.sortOrder = this.sortOrder === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
     } else {
       this.sort = head;
     }

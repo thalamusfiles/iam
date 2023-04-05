@@ -18,7 +18,7 @@ export class PersonListStore extends CommonListCtx {
       { colname: 'roles', title: 'Roles', type: AttributeType.Text, sortable: false },
     ],
     sort: { colname: 'name', title: '', type: AttributeType.Text },
-    sortOrder: SortOrder.Up,
+    sortOrder: SortOrder.Asc,
   };
 
   constructor(...props: any) {

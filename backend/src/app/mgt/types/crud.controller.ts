@@ -1,3 +1,4 @@
+import { Expose } from 'class-transformer';
 import { IsArray, IsNotEmpty, IsObject, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { IamBaseEntity } from '../../../model/Base/IamBaseEntity';
 
@@ -8,6 +9,17 @@ export class FindProps<Type> {
   @IsOptional()
   @IsObject()
   where?: Partial<Type> | any;
+
+  @Expose()
+  @IsOptional()
+  limit?: number;
+
+  @Expose()
+  @IsOptional()
+  offset?: number;
+
+  @Expose()
+  order_by?: Array<string>;
 
   @IsOptional()
   @IsArray()

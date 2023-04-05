@@ -68,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ icon, title, searchBar }) => {
             <div className="navbar-spacer" />
 
             <Nav.Link href="https://docs.iam.thalamus.digital/" target="_blanck">
-              {__('menu.help')} <FontAwesomeIcon icon={'question-circle'} />
+              <FontAwesomeIcon icon={'question-circle'} /> {__('menu.help')}
             </Nav.Link>
 
             <NotificationProvider value={NotificationValue}>
@@ -79,10 +79,6 @@ const Header: React.FC<HeaderProps> = ({ icon, title, searchBar }) => {
 
             <NavDropdown title={<FontAwesomeIcon icon={'user-circle'} />} id="user-dd">
               <NavDropdown.Item onClick={() => historyPush('home_account')}>{context?.user.name}</NavDropdown.Item>
-              <NavDropdown title={__('menu.language')} bsPrefix="dropdown-item" id="i18n-dd">
-                <NavDropdown.Item onClick={() => UserCtxInstance.changeLanguage('en-US')}>{__('menu.english')}</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => UserCtxInstance.changeLanguage('pt-BR')}>{__('menu.portuguese')}</NavDropdown.Item>
-              </NavDropdown>
               <NavDropdown.Item onClick={() => UserCtxInstance.logout()}>{__('menu.logout')}</NavDropdown.Item>
             </NavDropdown>
           </Nav>

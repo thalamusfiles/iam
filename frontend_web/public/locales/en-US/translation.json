@@ -10,6 +10,13 @@
     "user_not_found": "User does not exists",
     "password_invalid": "Password invalid"
   },
+  
+  "languages": {
+    "pt-BR": "Portuguese (Brazil)",
+    "en-US": "English"
+  },
+
+  "footer": {},
 
   "login": {
     "title":"Thalamus IAM",
@@ -70,6 +77,11 @@
     "list": {
       "title": "Applications",
       "about.description": "Applications list"
+    },
+    "edit": {
+      "about.title": "Application",
+      "about.description": "Enter the fields below to create/modify the application.",
+      "about.initials_append": "After saving this field cannot be changed"
     }
   },
   "menu": {
@@ -113,6 +125,7 @@
     }
   },
   "info": {
+    "uninformed": "Uninformed",
     "notloaded": "Not loaded",
     "thereXmorerecords": "There are {{number}} more records",
     "loadingsettings": "Loading settings"

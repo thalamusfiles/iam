@@ -1,6 +1,6 @@
-import { EntityRepository, FindOptions, wrap } from '@mikro-orm/core';
+import { EntityRepository, FindOptions, QueryOrder, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { Application } from '../../../model/System/Application';
 import { EntityProps, FindProps } from '../types/crud.controller';
 import { CRUDService } from '../types/crud.service';
@@ -24,10 +24,19 @@ export class ApplicationService implements CRUDService<Application> {
   async find(query?: FindProps<Application>): Promise<Application[]> {
     this.logger.verbose('Find all');
 
-    const options: FindOptions<Application> = {};
+    const options: FindOptions<Application> = {
+      orderBy: {},
+      limit: query.limit,
+      offset: query.offset,
+    };
     if (query.populate) {
       Object.assign(options, { populate: query.populate });
     }
+
+    query.order_by?.forEach((orderBy) => {
+      const [by, order] = orderBy.split(':');
+      options.orderBy[by] = order.toUpperCase() === QueryOrder.ASC ? QueryOrder.ASC : QueryOrder.DESC;
+    });
 
     return this.applicationRepository.find(query?.where, options);
   }
@@ -78,7 +87,12 @@ export class ApplicationService implements CRUDService<Application> {
   async delete(uuid: string, _element: EntityProps<Application>): Promise<void> {
     this.logger.verbose('Delete');
 
-    const entity = this.applicationRepository.getReference(uuid);
-    return this.applicationRepository.removeAndFlush(entity);
+    const entity = await this.applicationRepository.findOneOrFail(uuid);
+    if (!entity) {
+      this.logger.error('Tentativa de remoção de aplicação inexistente');
+      throw new UnauthorizedException('This application does not exists');
+    }
+
+    await this.applicationRepository.nativeUpdate({ uuid }, { deletedAt: new Date() });
   }
 }

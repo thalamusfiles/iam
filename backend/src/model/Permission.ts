@@ -1,10 +1,11 @@
-import { Check, Collection, Entity, ManyToMany, ManyToOne, Property, Unique } from '@mikro-orm/core';
+import { Check, Collection, Entity, Filter, ManyToMany, ManyToOne, Property, Unique } from '@mikro-orm/core';
 import { IamBaseEntityWithDelete } from './Base/IamBaseEntityWithDelete';
 import { Role } from './Role';
 import { Application } from './System/Application';
 
 @Entity()
 @Unique({ properties: ['application', 'initials'] })
+@Filter({ name: 'deletedAtIsNull', cond: { deletedAt: { $eq: null } }, default: true })
 export class Permission extends IamBaseEntityWithDelete {
   @Check({ expression: 'LENGTH(initials) >= 3' })
   @Property({ nullable: false })

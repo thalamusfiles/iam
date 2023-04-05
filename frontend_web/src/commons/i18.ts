@@ -24,5 +24,6 @@ i18next
 registerLocale('pt-BR', ptBR);
 registerLocale('en-US', enUS);
 
+export const useLanguage = () => i18next.language;
 export const useI18N = () => useTranslation().t as (name: string, values?: any) => string;
 export const currentLocale = () => i18next.language;

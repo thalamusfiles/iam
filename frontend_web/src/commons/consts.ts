@@ -40,6 +40,8 @@ export const IconsDef = {
   // Atividades
   tokensActive: 'mobile-alt' as IconName,
   history: 'history' as IconName,
+  // Outros
+  language: 'earth-americas' as IconName,
 };
 
 //Constantes e identificadores de armazenamentos locais

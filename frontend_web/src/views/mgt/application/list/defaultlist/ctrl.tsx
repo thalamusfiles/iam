@@ -21,8 +21,8 @@ export class ApplicationListStore extends CommonListCtx {
       { colname: 'name', title: 'Name', type: AttributeType.Text, show: true },
       { colname: 'description', title: 'Description', type: AttributeType.Text },
     ],
-    sort: { colname: 'name', title: '', type: AttributeType.Text },
-    sortOrder: SortOrder.Up,
+    sort: { colname: 'name' } as any,
+    sortOrder: SortOrder.Asc,
   };
 
   constructor() {
@@ -60,7 +60,11 @@ export class ApplicationListStore extends CommonListCtx {
       .filter((column) => column.colname.includes('.'))
       .map((column) => column.colname.substring(0, column.colname.indexOf('.')));
 
+    const limit = this.perPage;
+    const offset = (this.page - 1) * this.perPage;
+    const order_by = [`${this.sort?.colname}:${SortOrder[this.sortOrder]}`]
+
     //this.cancelRequestCallback = c;
-    return await this.datasource.findAll({ where, populate });
+    return await this.datasource.findAll({ where, populate, order_by, limit, offset });
   };
 }

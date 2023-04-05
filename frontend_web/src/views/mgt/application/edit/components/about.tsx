@@ -25,7 +25,7 @@ const AboutComp: React.FC = observer(() => {
         {IconsDef.applications.map((icon, idx) => (
           <FontAwesomeIcon icon={icon} key={idx} />
         ))}
-        &nbsp; {__('application.edit.about.title')}: {content.name}
+        &nbsp; {__('application.edit.about.title')}: {content.name || __('info.uninformed')}
       </h1>
       <p>{__('application.edit.about.description')}</p>
       <Form>
@@ -49,6 +49,7 @@ const AboutComp: React.FC = observer(() => {
               value={content.initials}
               onChange={(value) => assignContent({ initials: value })}
               disabled={content.uuid}
+              appendFeed={__('application.edit.about.initials_append')}
               invalidFeed={ctrl.erros?.initials?.map(__)}
             />
           </Col>

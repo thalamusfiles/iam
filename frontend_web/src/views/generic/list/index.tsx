@@ -91,7 +91,7 @@ const List: React.FC = observer(() => {
                   {head.title} {/* ilustração da ordem da listagem*/}
                   {(head.sortable || head.sortable === undefined) &&
                     ctrl!.sort?.colname === head.colname &&
-                    (ctrl!.sortOrder === SortOrder.Down ? (
+                    (ctrl!.sortOrder === SortOrder.Desc ? (
                       <FontAwesomeIcon size="xs" icon="sort-amount-down" />
                     ) : (
                       <FontAwesomeIcon size="xs" icon="sort-amount-up" />

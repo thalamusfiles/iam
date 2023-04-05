@@ -18,7 +18,7 @@ export class PermissionListStore extends CommonListCtx {
       { colname: 'region.name', title: 'Region', type: AttributeType.Text, sortable: false },
     ],
     sort: { colname: 'name', title: '', type: AttributeType.Text },
-    sortOrder: SortOrder.Up,
+    sortOrder: SortOrder.Asc,
   };
 
   constructor() {

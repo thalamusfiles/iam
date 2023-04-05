@@ -2,6 +2,8 @@
   "name": "thalamus_iam",
   "version": "0.1.0",
   "author": "Thalamus",
+  "since": "2022",
+  "url": "https://thalamus.digital/",
   "private": false,
   "engines": {
     "node": ">=14.0"

@@ -11,6 +11,13 @@
     "password_invalid": "Senha incorreta"
   },
 
+  "languages": {
+    "pt-BR": "Português (Brasil)",
+    "en-US": "Inglês"
+  },
+
+  "footer": {},
+
   "login": {
     "title":"Thalamus IAM",
     "subtitle":"Gerenciamento de identidades e acesso.",
@@ -70,6 +77,11 @@
     "list": {
       "title": "Aplicações",
       "about.description": "Listagem de aplicações"
+    },
+    "edit": {
+      "about.title": "Aplicação",
+      "about.description": "Informe os campos abaixo para criar/modificar a aplicação.",
+      "about.initials_append": "Após salvar, este campo não poderá ser alterado"
     }
   },
   "menu": {
@@ -113,6 +125,7 @@
     }
   },
   "info": {
+    "uninformed": "Não informado(a)",
     "notloaded": "Não carregado",
     "thereXmorerecords": "Existe mais {{number}} registros",
     "loadingsettings": "Carregando configurações"

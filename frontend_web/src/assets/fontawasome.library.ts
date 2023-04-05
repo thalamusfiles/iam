@@ -13,6 +13,7 @@ import {
   faColumns,
   faDesktop,
   faDoorOpen,
+  faEarthAmericas,
   faEdit,
   faEye,
   faFile,
@@ -95,4 +96,5 @@ library.add(
   faList,
   faTable,
   faDoorOpen,
+  faEarthAmericas,
 );

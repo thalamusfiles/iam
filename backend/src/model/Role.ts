@@ -1,4 +1,4 @@
-import { Check, Collection, Entity, ManyToMany, ManyToOne, Property, Unique } from '@mikro-orm/core';
+import { Check, Collection, Entity, Filter, ManyToMany, ManyToOne, Property, Unique } from '@mikro-orm/core';
 import { IamBaseEntityWithDelete } from './Base/IamBaseEntityWithDelete';
 import { Permission } from './Permission';
 import { Application } from './System/Application';
@@ -6,6 +6,7 @@ import { User } from './User';
 
 @Entity()
 @Unique({ properties: ['application', 'initials'] })
+@Filter({ name: 'deletedAtIsNull', cond: { deletedAt: { $eq: null } }, default: true })
 export class Role extends IamBaseEntityWithDelete {
   @ManyToOne(() => Application, { nullable: false })
   application?: Application;
