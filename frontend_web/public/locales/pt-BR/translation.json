@@ -93,7 +93,6 @@
     "list": "Lista",
     "filters": "Filtros",
     "sort": "Ordem",
-    "save-list": "Salvar Listagem",
     "columns": "Colunas",
     "brand": "IAM",
     "home": "Início",
@@ -149,6 +148,13 @@
     "import": "Importar",
     "addcolumn": "Adicionar colunas",
     "applycolumns": "Exibir estas colunas"
+  },
+  "generic": {
+    "list": {
+      "save-list.title": "Salvar Listagem",
+      "save-list.desc": "Revise os campos e nomeia a nova aba. Clique em salvar para registrar as definições da listagem.",
+      "name": "Table name"
+    }
   },
   "person": {
     "new.title": "Novo Usuário",

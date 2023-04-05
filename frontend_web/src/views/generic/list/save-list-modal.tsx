@@ -21,13 +21,13 @@ export const SaveListModal: React.FC = observer(() => {
   return (
     <Modal size="lg" animation={false} show={ctrl!.showSaveList} onHide={() => ctrl!.toggleShowSaveList()}>
       <Modal.Header closeButton>
-        <Modal.Title>{__('menu.save-list')}</Modal.Title>
+        <Modal.Title>{__('generic.list.save-list.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container>
-          <p>{__('msg.save-list.dest')}</p>
+          <p>{__('generic.list.save-list.desc')}</p>
           <WmsFormGroup
-            title={__('field.name')}
+            title={__('generic.list.name')}
             type={AttributeType.Text}
             name="listname"
             value={ctrl!.newCustomListDefs.name}
@@ -35,7 +35,7 @@ export const SaveListModal: React.FC = observer(() => {
           />
           <br />
           <p>
-            <strong>{__('msg.filterby')}: </strong>
+            <strong>{__('menu.filters')}: </strong>
             <br />
             {ctrl!.newCustomListDefs.filters
               ?.filter((filter: any) => filter.value !== undefined)
@@ -46,12 +46,12 @@ export const SaveListModal: React.FC = observer(() => {
               ))}
           </p>
           <p>
-            <strong>{__('msg.orderby')}: </strong>
+            <strong>{__('menu.sort')}: </strong>
             <br />
             {ctrl!.newCustomListDefs.sort?.title}
           </p>
           <p>
-            <strong>{__('msg.showcolumns')}: </strong>
+            <strong>{__('menu.columns')}: </strong>
             <br />
             {ctrl!.newCustomListDefs.columns
               ?.filter((head: any) => head.show)

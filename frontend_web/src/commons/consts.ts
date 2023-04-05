@@ -48,9 +48,12 @@ export const IconsDef = {
 const lsKey = 'iam_v001';
 export const localStorageDef = {
   key: lsKey,
+  // User
   userContextKey: `${lsKey}_user`, //Identificador de armazenamento do usuário
   tokenKey: `${lsKey}_token`, //Identificador de armazenamento do usuário
   expiresIn: `${lsKey}_expires_in`, //Identificador de armazenamento do usuário
+  // Listagens genéricas
+  genericListTabs: `${lsKey}_generic_list_tabs`,
 };
 
 //Qauntidade de itens por página

@@ -14,6 +14,7 @@ import bgRotate03 from '../../../assets/bg_rotate_03.jpeg';
 import bgRotate04 from '../../../assets/bg_rotate_04.jpeg';
 import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
+import Footer from '../../../components/Footer';
 import { LoginCtrl, LoginProvider, useLoginStore } from './ctrl';
 import PermissionInfoModal from './permissions.modal';
 
@@ -55,7 +56,9 @@ const LoginPageProvided: React.FC = observer(() => {
             <h2>{__('login.title')}</h2>
             <h4>{__('login.subtitle')}</h4>
           </Col>
-          <Col md={{ span: 4, offset: 4 }} sm={{ span: 6, offset: 3 }}>
+        </Row>
+        <Row>
+          <Col xxl={{ span: 4, offset: 4 }} lg={{ span: 6, offset: 3 }}  sm={{ span: 8, offset: 2 }} xs={12}>
             <Col xs={{ span: 10, offset: 1 }}>
               <Card id="login_card" border="info" className="cdShadow">
                 <Card.Body>
@@ -131,6 +134,7 @@ const LoginPageProvided: React.FC = observer(() => {
             </Col>
           </Col>
         </Row>
+        <Footer center />
       </div>
     </div>
   );

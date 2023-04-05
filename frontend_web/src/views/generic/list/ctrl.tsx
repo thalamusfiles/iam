@@ -2,10 +2,11 @@ import { default as axios, default as Axios } from 'axios';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
 import { AttributeType } from '../../../commons/attribute-type';
-import { ColorsDef } from '../../../commons/consts';
+import { ColorsDef, localStorageDef } from '../../../commons/consts';
 import { SortOrder } from '../../../commons/enums/sort-order.enum';
 import { formatDate, formatDatetime, formatDecimal, formatInteger, formatTime } from '../../../commons/formatters';
 import { historySearch, historySearchReplace } from '../../../commons/route';
+import Storage from '../../../commons/storage';
 import { PartOf } from '../../../commons/types/PartOf';
 import { WmsFormEvent } from '../../../components/Form';
 import { notify } from '../../../components/Notification';
@@ -136,11 +137,11 @@ export class CommonListCtx {
 
       this.toggleCustomList(this.defaultListDefs, false);
       this.loadFiltersFromUrl();
+      this.loadCustomsList();
     } catch (err) {
+      console.error(err);
       if (axios.isAxiosError(err)) {
         notify.danger(err.response?.data?.message, 'An error occurred while loading the settings');
-        this.customListDefs = [];
-        console.error(err);
       }
     }
   };
@@ -589,8 +590,35 @@ export class CommonListCtx {
       this.showSaveList = true;
       return false;
     } else {
-      //isNew = true;
+      this.showSaveList = false;
+
+      // Carrega as listagens customizadas
+      const customListDefs = this.loadCustomsList(false);
+
+      // Adiciona o tab à listagens customizadas
+      const id = (newCustomListDefs.id = newCustomListDefs.name.replace(/[ |^"'`]/g, '_'));
+      customListDefs[id] = newCustomListDefs;
+
+      // Salva a listagem customizada
+      Storage.set(localStorageDef.genericListTabs, this.constructor.name, customListDefs);
+      this.customListDefs = Object.values(customListDefs);
     }
+  };
+
+  /**
+   * Carrega um objeto com todas as listagens salvas
+   * @returns
+   */
+  loadCustomsList = (reload: boolean = true): Record<string, ListDefinition> => {
+    // Carrega as listagens customizadas
+    const ctrlName = this.constructor.name;
+    const customListDefs = Storage.get(localStorageDef.genericListTabs, ctrlName, {});
+
+    if (reload) {
+      this.customListDefs = Object.values(customListDefs);
+    }
+    
+    return customListDefs;
   };
 
   /**

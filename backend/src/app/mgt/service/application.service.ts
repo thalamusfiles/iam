@@ -29,10 +29,23 @@ export class ApplicationService implements CRUDService<Application> {
       limit: query.limit,
       offset: query.offset,
     };
+
+    // Ilike Initials
+    if (query.where.initials) {
+      query.where.initials = { $like: `%${query.where.initials}%` };
+    }
+
+    // Ilike name
+    if (query.where.name) {
+      query.where.name = { $like: `%${query.where.name}%` };
+    }
+
+    // Adiciona campos adicionais
     if (query.populate) {
       Object.assign(options, { populate: query.populate });
     }
 
+    // Formata os filtros
     query.order_by?.forEach((orderBy) => {
       const [by, order] = orderBy.split(':');
       options.orderBy[by] = order.toUpperCase() === QueryOrder.ASC ? QueryOrder.ASC : QueryOrder.DESC;

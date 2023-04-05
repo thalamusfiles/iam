@@ -93,7 +93,6 @@
     "list": "List",
     "filters": "Filters",
     "sort": "Sort",
-    "save-list": "Save List",
     "columns": "Columns",
     "brand": "IAM",
     "home": "Home",
@@ -149,6 +148,13 @@
     "import": "Import",
     "addcolumn": "Add Columns",
     "applycolumns": "Apply Columns"
+  },
+  "generic": {
+    "list": {
+      "save-list.title": "Save List",
+      "save-list.desc": "Review the fields and name the new tab. Click save to register the listing definitions.",
+      "name": "Nome da tabela"
+    }
   },
   "person": {
     "new.title": "New User",

@@ -31,7 +31,7 @@ class Stg {
   }
 
   get(path: string, key: string, def: any = null) {
-    return this.getItem(`${path}/${key}`);
+    return this.getItem(`${path}/${key}`, def);
   }
 }
 

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import moment from 'moment';
 import React, { useState } from 'react';
-import Toast from 'react-bootstrap/Toast';
+import { Toast } from 'react-bootstrap';
 import NotificationValue, { NotificationProps, NotificationProvider, useNotificationStore } from './ctrl';
 
 /**

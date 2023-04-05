@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { NavDropdown } from 'react-bootstrap';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -11,14 +11,14 @@ import UserCtxInstance from '../../store/userContext';
 
 const { author, since, url, version } = json as any;
 
-const Footer: React.FC = () => {
+const Footer: React.FC<{ center?: boolean }> = ({ center }) => {
   const language = useLanguage();
   const __ = useI18N();
   return (
     <Container className="footer text-center">
       <Row>
-        <Col md={{ span: 2, offset: 6 }}>
-          <NavDropdown
+        <Col md={{ span: 2, offset: center ? 3 : 6 }}>
+          <DropdownButton
             title={
               <>
                 <FontAwesomeIcon icon={IconsDef.language} /> {__(`languages.${language}`)}{' '}
@@ -27,11 +27,11 @@ const Footer: React.FC = () => {
             bsPrefix="dropdown-item"
             id="i18n-dd"
           >
-            <NavDropdown.Item disabled>{__('menu.language')}</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item onClick={() => UserCtxInstance.changeLanguage(__('en-US'))}>{__('menu.english')}</NavDropdown.Item>
-            <NavDropdown.Item onClick={() => UserCtxInstance.changeLanguage(__('pt-BR'))}>{__('menu.portuguese')}</NavDropdown.Item>
-          </NavDropdown>
+            <Dropdown.Item disabled>{__('menu.language')}</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={() => UserCtxInstance.changeLanguage(__('en-US'))}>{__('menu.english')}</Dropdown.Item>
+            <Dropdown.Item onClick={() => UserCtxInstance.changeLanguage(__('pt-BR'))}>{__('menu.portuguese')}</Dropdown.Item>
+          </DropdownButton>
         </Col>
         <Col md={{ span: 2 }}>
           <strong>IAM {version}</strong>

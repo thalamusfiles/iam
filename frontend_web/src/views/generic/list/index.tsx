@@ -239,7 +239,7 @@ const TopTabsBar: React.FC = observer(() => {
         <Nav.Link disabled>#</Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link href={`#${ctrl!.defaultListDefs?.name}`} onClick={() => ctrl!.toggleCustomList(ctrl!.defaultListDefs)} active>
+        <Nav.Link href={`#${ctrl!.defaultListDefs?.name}`} onClick={() => ctrl!.toggleCustomList(ctrl!.defaultListDefs)}>
           {__('menu.list')}
         </Nav.Link>
       </Nav.Item>
