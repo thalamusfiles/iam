@@ -1,4 +1,4 @@
-import { EntityRepository, FindOptions, wrap } from '@mikro-orm/core';
+import { EntityRepository, FindOptions, QueryOrder, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, Logger } from '@nestjs/common';
 import { Role } from '../../../model/Role';
@@ -24,10 +24,27 @@ export class RoleService implements CRUDService<Role> {
   async find(query?: FindProps<Role>): Promise<Role[]> {
     this.logger.verbose('Find all');
 
-    const options: FindOptions<Role> = {};
+    const options: FindOptions<Role> = {
+      orderBy: {},
+      limit: query.limit,
+      offset: query.offset,
+    };
+
+    // Ilike name
+    if (query?.where?.name) {
+      query.where.name = { $ilike: `%${query.where.name}%` };
+    }
+
+    // Adiciona joins/campos adicionais
     if (query.populate) {
       Object.assign(options, { populate: query.populate });
     }
+
+    // Formata os filtros
+    query.order_by?.forEach((orderBy) => {
+      const [by, order] = orderBy.split(':');
+      options.orderBy[by] = order.toUpperCase() === QueryOrder.ASC ? QueryOrder.ASC : QueryOrder.DESC;
+    });
 
     return this.roleRepository.find(query?.where, options);
   }

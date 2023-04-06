@@ -32,15 +32,15 @@ export class ApplicationService implements CRUDService<Application> {
 
     // Ilike Initials
     if (query?.where?.initials) {
-      query.where.initials = { $like: `%${query.where.initials}%` };
+      query.where.initials = { $ilike: `%${query.where.initials}%` };
     }
 
     // Ilike name
     if (query?.where?.name) {
-      query.where.name = { $like: `%${query.where.name}%` };
+      query.where.name = { $ilike: `%${query.where.name}%` };
     }
 
-    // Adiciona campos adicionais
+    // Adiciona joins/campos adicionais
     if (query.populate) {
       Object.assign(options, { populate: query.populate });
     }

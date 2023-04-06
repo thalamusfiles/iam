@@ -84,6 +84,16 @@
       "about.initials_append": "After saving this field cannot be changed"
     }
   },
+  "role": {
+    "list": {
+      "title": "Scopes / Roles / Profiles / Positions",
+      "about.description": "Listing of scopes and profiles.."
+    },
+    "edit": {
+      "about.title": "Scope",
+      "about.description": "Enter the fields below to create/modify the scope."
+    }
+  },
   "menu": {
     "messages": "Messages",
     "both":"Both",

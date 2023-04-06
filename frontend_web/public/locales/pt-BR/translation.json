@@ -84,6 +84,16 @@
       "about.initials_append": "Após salvar, este campo não poderá ser alterado"
     }
   },
+  "role": {
+    "list": {
+      "title": "Escopos / Perfis / Papeis / Cargos",
+      "about.description": "Listagem de escopos e perfis."
+    },
+    "edit": {
+      "about.title": "Escopo",
+      "about.description": "Informe os campos abaixo para criar/modificar o escopo."
+    }
+  },
   "menu": {
     "messages": "Mensagens",
     "both":"Ambos",
