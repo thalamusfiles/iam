@@ -31,12 +31,12 @@ export class ApplicationService implements CRUDService<Application> {
     };
 
     // Ilike Initials
-    if (query.where.initials) {
+    if (query?.where?.initials) {
       query.where.initials = { $like: `%${query.where.initials}%` };
     }
 
     // Ilike name
-    if (query.where.name) {
+    if (query?.where?.name) {
       query.where.name = { $like: `%${query.where.name}%` };
     }
 

@@ -117,7 +117,7 @@
       "region": "Region",
       "applications": "Aplicações",
       "person": "Usuários",
-      "roles": "Perfis / Papeis / Cargos",
+      "roles": "Escopos / Perfis / Papeis / Cargos",
       "permissions": "Permissões / Recursos",
       "my_devices_connected": "Meus dispositivos conectados",
       "my_logins": "Meus logins realizados"
@@ -154,6 +154,9 @@
       "save-list.title": "Salvar Listagem",
       "save-list.desc": "Revise os campos e nomeia a nova aba. Clique em salvar para registrar as definições da listagem.",
       "name": "Table name"
+    },
+    "tooltip": {
+      "filter-remove": "Clique para remover o filtro"
     }
   },
   "person": {
@@ -171,7 +174,7 @@
       "about.description": "Sobre a Usuário/Pessoa",
       "auth.title": "Autenticação",
       "auth.description": "",
-      "roles.title": "Perfis / Papeis / Cargos",
+      "roles.title": "Escopos / Perfis / Papeis / Cargos",
       "roles.description": "Um usuário pode ter um ou mais perfis."
     }
   }

@@ -21,6 +21,7 @@ import {
   faHistory,
   faLaptop,
   faList,
+  faLockOpen,
   faMapMarked,
   faMobileAlt,
   faObjectGroup,
@@ -97,4 +98,5 @@ library.add(
   faTable,
   faDoorOpen,
   faEarthAmericas,
+  faLockOpen,
 );

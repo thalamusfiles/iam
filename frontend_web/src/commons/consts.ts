@@ -34,7 +34,7 @@ export const IconsDef = {
   attachment: 'file' as IconName,
   person: ['user', 'building'] as Array<IconName>,
   roles: 'file' as IconName,
-  permissions: 'file' as IconName,
+  permissions: 'lock-open' as IconName,
   region: 'map-marked' as IconName,
   applications: ['desktop', 'laptop'] as Array<IconName>,
   // Atividades

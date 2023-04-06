@@ -39,8 +39,8 @@ export const SaveListModal: React.FC = observer(() => {
             <br />
             {ctrl!.newCustomListDefs.filters
               ?.filter((filter: any) => filter.value !== undefined)
-              .map((filter: any) => (
-                <p>
+              .map((filter: any, idx) => (
+                <p key={idx}>
                   {filter.title}: {filter.description || filter.value}
                 </p>
               ))}

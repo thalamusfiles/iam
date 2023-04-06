@@ -551,6 +551,8 @@ export class CommonListCtx {
     this.filtersDefs = customList.filters || [];
     this.columnsDefs = customList.columns;
 
+    this.newCustomListDefs = customList;
+
     this.applyFilters(false, saveFilters);
     this.applyColumns(false);
 
@@ -584,12 +586,14 @@ export class CommonListCtx {
   @action saveCustomList = (newCustomListDefs: ListDefinition | null = null) => {
     //let isNew = false;
     if (this.activeListDefs !== this.defaultListDefs?.name) {
-      this.newCustomListDefs = this.customListDefs.find((custom) => custom.name === this.activeListDefs) || null;
+      newCustomListDefs = this.customListDefs.find((custom) => custom.name === this.activeListDefs) || null;
     } else if (!newCustomListDefs) {
       this.startNewCustomList();
       this.showSaveList = true;
       return false;
-    } else {
+    }
+
+    if (newCustomListDefs) {
       this.showSaveList = false;
 
       // Carrega as listagens customizadas
@@ -617,7 +621,7 @@ export class CommonListCtx {
     if (reload) {
       this.customListDefs = Object.values(customListDefs);
     }
-    
+
     return customListDefs;
   };
 

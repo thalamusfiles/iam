@@ -174,7 +174,7 @@ export const CellComp: React.FC<{ cell: TableCellInfo | TableCellInfo[] | TableG
 const FunctionsTabBar: React.FC = observer(() => {
   const ctrl = useCommonListStore();
   const __ = useI18N();
-  const filtersLg = ctrl!.filtersApplied.length;
+  const filtersLength = ctrl!.filtersApplied.length;
   return (
     <>
       <SortModal />
@@ -184,8 +184,8 @@ const FunctionsTabBar: React.FC = observer(() => {
       <Nav className="p-1" variant="pills" style={{ justifyContent: 'space-between' }}>
         <Nav>
           <Nav.Item onClick={() => ctrl!.toggleShowFilters()} id="tg_filters">
-            <Button size="sm" variant={filtersLg ? 'outline-primary' : 'link'}>
-              <FontAwesomeIcon size="xs" icon="filter" /> {filtersLg ? filtersLg : null} {__('menu.filters')}
+            <Button size="sm" variant={filtersLength ? 'outline-primary' : 'link'}>
+              <FontAwesomeIcon size="xs" icon="filter" /> {filtersLength ? filtersLength : null} {__('menu.filters')}
             </Button>
           </Nav.Item>
           <Nav.Item onClick={() => ctrl!.toggleShowSort()} id="tg_sort">

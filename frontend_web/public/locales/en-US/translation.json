@@ -117,7 +117,7 @@
       "region": "Região",
       "applications": "Applications",
       "person": "Users",
-      "roles": "Roles / Profiles / Positions",
+      "roles": "Scopes / Roles / Profiles / Positions",
       "permissions": "Permissions / Resources",
       "my_devices_connected": "My connected devices",
       "my_logins": "My logins performed"
@@ -154,6 +154,9 @@
       "save-list.title": "Save List",
       "save-list.desc": "Review the fields and name the new tab. Click save to register the listing definitions.",
       "name": "Nome da tabela"
+    },
+    "tooltip": {
+      "filter-remove": "Clique para remover o filtro"
     }
   },
   "person": {
@@ -171,7 +174,7 @@
       "about.description": "About User/Person",
       "auth.title": "Authentication",
       "auth.description": "",
-      "roles.title": "Roles / Profiles / Positions",
+      "roles.title": "Scopes / Roles / Profiles / Positions",
       "roles.description": "A user can have one or more roles in the system"
     }
   }

@@ -29,7 +29,7 @@ export abstract class CRUDDatasource implements CRUDInterface {
   }
 
   findById(uuid: string, options?: { populate: [] }) {
-    return Apis.ApiMGT.get<any>(this.endpoint + '/' + id, {
+    return Apis.ApiMGT.get<any>(this.endpoint + '/' + uuid, {
       params: {
         populate: options?.populate,
       },
@@ -41,7 +41,7 @@ export abstract class CRUDDatasource implements CRUDInterface {
   }
 
   update(uuid: string, entity: any, options?: EntityPropsOptions) {
-    return Apis.ApiMGT.put<EntityProps<any>>(this.endpoint + '/' + id, { entity, options }).then((axios) => axios.data);
+    return Apis.ApiMGT.put<EntityProps<any>>(this.endpoint + '/' + uuid, { entity, options }).then((axios) => axios.data);
   }
 
   updateAll(entities: any[], options?: EntityPropsOptions) {
@@ -49,6 +49,6 @@ export abstract class CRUDDatasource implements CRUDInterface {
   }
 
   remove(uuid: string) {
-    return Apis.ApiMGT.delete<void>(this.endpoint + '/' + id).then((axios) => axios.data);
+    return Apis.ApiMGT.delete<void>(this.endpoint + '/' + uuid).then((axios) => axios.data);
   }
 }
