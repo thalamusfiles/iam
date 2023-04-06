@@ -6,7 +6,7 @@ import { useI18N } from '../../commons/i18';
 import { useUserStore } from '../../store/userContext';
 import { ApplicationInfoCtrl, ApplicationInfoProvider, useApplicationInfoStore } from './ctrl';
 
-const ApplicationInfo: React.FC = () => {
+const ApplicationInfo: React.FC = observer(() => {
   const ctrl = new ApplicationInfoCtrl();
   const userCtx = useUserStore();
 
@@ -19,7 +19,7 @@ const ApplicationInfo: React.FC = () => {
       <ApplicationInfoProvided />
     </ApplicationInfoProvider>
   );
-};
+});
 
 const ApplicationInfoProvided: React.FC = observer(() => {
   const __ = useI18N();

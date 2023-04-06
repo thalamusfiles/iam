@@ -1,6 +1,7 @@
 import { EntityRepository, FindOptions, QueryOrder, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, Logger } from '@nestjs/common';
+import { Permission } from '../../../model/Permission';
 import { Role } from '../../../model/Role';
 import { EntityProps, FindProps } from '../types/crud.controller';
 import { CRUDService } from '../types/crud.service';
@@ -12,6 +13,8 @@ export class RoleService implements CRUDService<Role> {
   constructor(
     @InjectRepository(Role)
     private readonly roleRepository: EntityRepository<Role>,
+    @InjectRepository(Permission)
+    private readonly permissionRepository: EntityRepository<Permission>,
   ) {
     this.logger.log('starting');
   }
@@ -75,8 +78,13 @@ export class RoleService implements CRUDService<Role> {
     this.logger.verbose('Save');
 
     const uuid = element.entity.uuid;
+
+    if (element.entity.permissions) {
+      element.entity.permissions = (element.entity.permissions as any).map((perm) => this.permissionRepository.getReference(perm.uuid));
+    }
+
     if (uuid) {
-      const ref = this.roleRepository.getReference(uuid);
+      const ref = await this.roleRepository.findOneOrFail({ uuid });
       element.entity = wrap(ref).assign(element.entity);
     } else {
       element.entity = this.roleRepository.create(element.entity);

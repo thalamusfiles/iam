@@ -57,4 +57,4 @@ export const localStorageDef = {
 };
 
 //Qauntidade de itens por página
-export const defaultPageSize = 35;
+export const defaultPageSize = 50;

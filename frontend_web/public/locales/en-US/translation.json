@@ -91,7 +91,10 @@
     },
     "edit": {
       "about.title": "Scope",
-      "about.description": "Enter the fields below to create/modify the scope."
+      "about.description": "Enter the fields below to create/modify the scope.",
+      "about.initials_append": "After saving this field cannot be changed",
+      "permissions.title": "Permission",
+      "permissions.description": "Application permissions listing available for association."
     }
   },
   "menu": {

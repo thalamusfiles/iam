@@ -2,7 +2,7 @@ import { default as axios, default as Axios } from 'axios';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
 import { AttributeType } from '../../../commons/attribute-type';
-import { ColorsDef, localStorageDef } from '../../../commons/consts';
+import { ColorsDef, defaultPageSize, localStorageDef } from '../../../commons/consts';
 import { SortOrder } from '../../../commons/enums/sort-order.enum';
 import { formatDate, formatDatetime, formatDecimal, formatInteger, formatTime } from '../../../commons/formatters';
 import { historySearch, historySearchReplace } from '../../../commons/route';
@@ -50,7 +50,7 @@ export class CommonListCtx {
   @observable sortOrder: SortOrder = SortOrder.Desc;
   //Página
   @observable page: number = 1;
-  perPage: number = 50;
+  perPage: number = defaultPageSize;
 
   //Listagem (matrix) de dados processada
   //Uma célula pode ter um conteudo (uma informação);

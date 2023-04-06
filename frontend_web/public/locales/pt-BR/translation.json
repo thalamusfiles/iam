@@ -91,7 +91,9 @@
     },
     "edit": {
       "about.title": "Escopo",
-      "about.description": "Informe os campos abaixo para criar/modificar o escopo."
+      "about.description": "Informe os campos abaixo para criar/modificar o escopo.",
+      "permissions.title": "Permissões",
+      "permissions.description": "Listagem de permissões da aplicação disponível para associação."
     }
   },
   "menu": {

@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { IsUUID, IsString, IsNotEmpty, IsIn, IsOptional } from 'class-validator';
+import { IsUUID, IsString, IsNotEmpty, IsIn, IsOptional, IsArray } from 'class-validator';
 import { Role } from '../../../../model/Role';
 import { EntityProps, FindProps } from '../../types/crud.controller';
 
@@ -13,6 +13,14 @@ export class FindRolePropsDto extends FindProps<Role> {
   @Type(() => String)
   @IsIn(['application', 'permissions', 'createdBy', 'updatedBy'], { each: true })
   populate?: Array<string>;
+}
+
+@Exclude()
+class RolePermissionDto {
+  @Expose()
+  @IsUUID()
+  @IsNotEmpty()
+  uuid: string;
 }
 
 @Exclude()
@@ -31,6 +39,11 @@ class RoleCreateDto {
   @IsString()
   @IsNotEmpty()
   description: string;
+
+  @Expose()
+  @IsArray()
+  @Type(() => RolePermissionDto)
+  permissions: Array<RolePermissionDto>;
 }
 
 // DTO create Role
@@ -42,7 +55,7 @@ export class EntityRoleCreateDto extends EntityProps<RoleCreateDto> {
 @Exclude()
 class RoleUpdateDto {
   @Expose()
-  @IsUUID('4')
+  @IsUUID()
   @IsNotEmpty()
   uuid: string;
 
@@ -60,6 +73,11 @@ class RoleUpdateDto {
   @IsString()
   @IsOptional()
   description?: string;
+
+  @Expose()
+  @IsArray()
+  @Type(() => RolePermissionDto)
+  permissions: Array<RolePermissionDto>;
 }
 
 // DTO update Role

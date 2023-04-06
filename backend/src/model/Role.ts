@@ -1,4 +1,4 @@
-import { Check, Collection, Entity, Filter, ManyToMany, ManyToOne, Property, Unique } from '@mikro-orm/core';
+import { Cascade, Check, Collection, Entity, Filter, ManyToMany, ManyToOne, Property, Unique } from '@mikro-orm/core';
 import { IamBaseEntityWithDelete } from './Base/IamBaseEntityWithDelete';
 import { Permission } from './Permission';
 import { Application } from './System/Application';
@@ -26,6 +26,6 @@ export class Role extends IamBaseEntityWithDelete {
   @ManyToMany(() => User, (user) => user.roles)
   users = new Collection<User>(this);
 
-  @ManyToMany(() => Permission, 'roles', { owner: true, pivotTable: 'role_permission' })
+  @ManyToMany(() => Permission, 'roles', { owner: true, pivotTable: 'role_permission', cascade: [Cascade.ALL] })
   permissions = new Collection<Permission>(this);
 }

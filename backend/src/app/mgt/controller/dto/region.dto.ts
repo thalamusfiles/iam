@@ -41,7 +41,7 @@ export class EntityRegionCreateDto extends EntityProps<RegionCreateDto> {
 @Exclude()
 class RegionUpdateDto {
   @Expose()
-  @IsUUID('4')
+  @IsUUID()
   uuid: string;
 
   @Expose()

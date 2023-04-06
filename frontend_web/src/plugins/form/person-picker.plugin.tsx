@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { PickersNames } from '../../commons/attribute-type';
 import { defaultPageSize } from '../../commons/consts';
+import { SortOrder } from '../../commons/enums/sort-order.enum';
 import { WmsFormComponent, WmsFormPlugin } from '../../commons/plugin.component';
 import { historyPush } from '../../commons/route';
 import { WmsPicker } from '../../components/Form/wms-picker';
@@ -52,11 +53,13 @@ export class PersonPickerPlugin extends WmsFormComponent {
 
 export class PersonPicker extends WmsPicker<{ filters: any }> {
   search = (): void => {
-    const filters = (this.props as any).filters || {};
-    filters.name = `%${this.state.search}%`;
-    filters.take = Math.floor(defaultPageSize / 2);
+    const where = (this.props as any).filters || {};
+    where.name = `%${this.state.search}%`;
 
-    new PersonCRUDDatasource().findAll(filters).then((response: any) => {
+    const limit = Math.floor(defaultPageSize / 2);
+    const order_by = [`name:${SortOrder[SortOrder.Asc]}`];
+
+    new PersonCRUDDatasource().findAll({ where, order_by, limit }).then((response: any) => {
       const options = response.map((result: any) => ({
         value: result,
         columns: [result.name],

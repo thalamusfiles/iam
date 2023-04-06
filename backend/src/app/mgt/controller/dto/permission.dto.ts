@@ -42,7 +42,7 @@ export class EntityPermissionCreateDto extends EntityProps<PermissionCreateDto> 
 @Exclude()
 class PermissionUpdateDto {
   @Expose()
-  @IsUUID('4')
+  @IsUUID()
   @IsNotEmpty()
   uuid: string;
 

@@ -10,6 +10,7 @@ import { RoleAddAplicationUseCase } from '../usecase/role-addapplication.usecase
 import { RoleNormalizeInitialsUseCase } from '../usecase/role-normalize-initials.usecase';
 import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityRoleCreateDto, EntityRoleUpdateDto, FindRolePropsDto } from './dto/role.dto';
+import { RoleFieldsValidationUseCase } from '../usecase/role-fields-validation.usecase';
 
 @UseGuards(AccessGuard)
 @Controller('mgt/role')
@@ -22,6 +23,7 @@ export class RoleController implements CRUDController<Role> {
     this.useCaseService.register(Role, BaseAddCreatedByUseCase);
     this.useCaseService.register(Role, BaseAddUpdatedByUseCase);
     this.useCaseService.register(Role, RoleNormalizeInitialsUseCase);
+    this.useCaseService.register(Role, RoleFieldsValidationUseCase);
     this.useCaseService.register(Role, RoleAddAplicationUseCase);
   }
 

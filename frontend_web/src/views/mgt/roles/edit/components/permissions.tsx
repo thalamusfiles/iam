@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -13,11 +14,9 @@ import { useCommonEditStore } from '../../../../generic/edit/ctrl';
 import { RoleEditStore } from '../ctrl';
 
 const PermissionComp: React.FC = () => {
-  const ctrl = useCommonEditStore<RoleEditStore>();
   const __ = useI18N();
   const [view, setView] = useState('table');
 
-  const { permissions } = ctrl;
   const showList = view === 'list';
   const showTable = view === 'table';
   const showhierarchy = view === 'hierarchy';
@@ -25,8 +24,8 @@ const PermissionComp: React.FC = () => {
     <>
       <Row>
         <Col>
-          <h2 id="person_permissions">{__('person.edit.permissions.title')}:</h2>
-          <p>{__('person.edit.permissions.description')}</p>
+          <h2 id="role_permissions">{__('role.edit.permissions.title')}</h2>
+          <p>{__('role.edit.permissions.description')}</p>
         </Col>
         <Col md={2}>
           <ButtonGroup>
@@ -45,9 +44,9 @@ const PermissionComp: React.FC = () => {
       <Form>
         <Row>
           <Col>
-            {showList && <ListView permissions={permissions} />}
-            {showTable && <ListTable permissions={permissions} />}
-            {showhierarchy && <ListHierarchy permissions={permissions} />}
+            {showList && <ListView />}
+            {showTable && <ListTable />}
+            {showhierarchy && <ListHierarchy />}
           </Col>
         </Row>
       </Form>
@@ -55,52 +54,41 @@ const PermissionComp: React.FC = () => {
   );
 };
 
-const ListView: React.FC<{ permissions: any[] }> = ({ permissions }) => {
+const ListView: React.FC = observer(() => {
+  const ctrl = useCommonEditStore<RoleEditStore>();
+  const { permissions } = ctrl;
+
+  const makeListGroup = (perm: any) => (
+    <ListGroup.Item onClick={() => ctrl.togglePermission(perm.uuid)}>
+      <Form.Check
+        type="checkbox"
+        name={perm.initials}
+        label={perm.on + ' ' + perm.action}
+        checked={ctrl.contentPermissionsUuids.includes(perm.uuid)}
+      />
+    </ListGroup.Item>
+  );
+
   return (
     <ListGroup>
       <Row>
-        <Col>
-          {permissions
-            .filter((_, idx) => idx % 3 === 0)
-            .map((perm) => (
-              <ListGroup.Item>
-                <Form.Check type="checkbox" readOnly checked={false} name={perm.name} label={perm.on + ' ' + perm.action} />
-              </ListGroup.Item>
-            ))}
-        </Col>
-        <Col>
-          {permissions
-            .filter((_, idx) => idx % 3 === 1)
-            .map((perm) => (
-              <ListGroup.Item>
-                <Form.Check type="checkbox" readOnly checked={false} name={perm.name} label={perm.on + ' ' + perm.action} />
-              </ListGroup.Item>
-            ))}
-        </Col>
-        <Col>
-          {permissions
-            .filter((_, idx) => idx % 3 === 2)
-            .map((perm) => (
-              <ListGroup.Item>
-                <Form.Check type="checkbox" readOnly checked={false} name={perm.name} label={perm.on + ' ' + perm.action} />
-              </ListGroup.Item>
-            ))}
-        </Col>
+        <Col>{permissions.filter((_, idx) => idx % 3 === 0).map(makeListGroup)}</Col>
+        <Col>{permissions.filter((_, idx) => idx % 3 === 1).map(makeListGroup)}</Col>
+        <Col>{permissions.filter((_, idx) => idx % 3 === 2).map(makeListGroup)}</Col>
       </Row>
     </ListGroup>
   );
-};
+});
 
-const ListTable: React.FC<{ permissions: any[] }> = ({ permissions }) => {
-  const ons = permissions.map((perm) => perm.on).filter((v, idx, self) => self.indexOf(v) === idx);
-  const acts = permissions.map((perm) => perm.action).filter((v, idx, self) => self.indexOf(v) === idx);
+const ListTable: React.FC = observer(() => {
+  const ctrl = useCommonEditStore<RoleEditStore>();
 
   return (
     <Table responsive striped size="sm">
       <thead>
         <tr>
           <th></th>
-          <th colSpan={acts.length} className="text-center">
+          <th colSpan={ctrl.permissionsActs.length} className="text-center">
             Actions
           </th>
         </tr>
@@ -108,52 +96,71 @@ const ListTable: React.FC<{ permissions: any[] }> = ({ permissions }) => {
       <thead>
         <tr>
           <th>On</th>
-          {acts.map((act) => (
+          {ctrl.permissionsActs.map((act) => (
             <th>{act}</th>
           ))}
         </tr>
       </thead>
       <tbody>
-        {ons.map((on) => (
+        {ctrl.permissionsOns.map((on) => (
           <tr>
             <td>{on}</td>
-            {acts.map((act) => (
-              <td>
-                <Form.Check type="checkbox" readOnly checked={false} name={on + '_' + act} />
-              </td>
-            ))}
+            {ctrl.permissionsActs.map((act) => {
+              const key = `${on}.${act}`;
+              const perm = ctrl.permissionsByOnAct[key];
+              return (
+                <td>
+                  <Form.Check
+                    type="checkbox"
+                    name={on + '_' + act}
+                    disabled={!perm}
+                    checked={ctrl.contentPermissionsUuids.includes(perm?.uuid)}
+                    onClick={() => ctrl.togglePermission(perm?.uuid)}
+                  />
+                </td>
+              );
+            })}
           </tr>
         ))}
       </tbody>
     </Table>
   );
-};
+});
 
-const ListHierarchy: React.FC<{ permissions: any[] }> = ({ permissions }) => {
-  const ons = permissions.map((perm) => perm.on).filter((v, idx, self) => self.indexOf(v) === idx);
-  const acts = permissions.map((perm) => perm.action).filter((v, idx, self) => self.indexOf(v) === idx);
+const ListHierarchy: React.FC = observer(() => {
+  const ctrl = useCommonEditStore<RoleEditStore>();
 
   return (
     <ul>
-      {ons.map((on) => (
+      {ctrl.permissionsOnActTree.map(([on, acts]) => (
         <li>
           {on}
           <ul>
-            {acts.map((act) => (
-              <li>
-                <Form.Check type="checkbox" readOnly checked={false} name={on + '_' + act} label={act} />
-              </li>
-            ))}
+            {acts.map((act) => {
+              const key = `${on}.${act}`;
+              const perm = ctrl.permissionsByOnAct[key];
+              return (
+                <li>
+                  <Form.Check
+                    type="checkbox"
+                    name={on + '_' + act}
+                    label={act}
+                    checked={ctrl.contentPermissionsUuids.includes(perm?.uuid)}
+                    onClick={() => ctrl.togglePermission(perm?.uuid)}
+                  />
+                </li>
+              );
+            })}
           </ul>
         </li>
       ))}
     </ul>
   );
-};
+});
 
 addPagePlugin({
   component: PermissionComp,
-  name: 'person_permissions',
+  name: 'role_permissions',
   sidebarTitle: 'Permissions',
   target: TargetForm.role_edit,
   order: 30,

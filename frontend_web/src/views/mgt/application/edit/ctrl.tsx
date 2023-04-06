@@ -59,7 +59,7 @@ export class ApplicationEditStore extends CommonEditCtx {
       }
       this.content = response.entity;
 
-      notify.success('Saved successfully.');
+      notify.success('Salvo com sucesso.');
       historyPush(-1);
     } catch (err) {
       const data = (err as any).response?.data;

@@ -1,3 +1,4 @@
+import { RequiredEntityData } from '@mikro-orm/core';
 import { Expose } from 'class-transformer';
 import { IsArray, IsNotEmpty, IsObject, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { IamBaseEntity } from '../../../model/Base/IamBaseEntity';
@@ -39,7 +40,7 @@ export class EntityProps<Type> {
   @IsObject()
   @IsNotEmpty()
   @ValidateNested()
-  entity: Partial<Type>;
+  entity: RequiredEntityData<Type>;
 
   user?: any;
 }
