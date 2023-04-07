@@ -33,8 +33,6 @@ export class Ctx {
   logout() {
     this.saveUser({}, null, null);
 
-    Storage.clear();
-
     historyPush('/');
   }
 

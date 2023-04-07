@@ -1,6 +1,6 @@
 import { EntityRepository, FindOptions, QueryOrder, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { Permission } from '../../../model/Permission';
 import { Role } from '../../../model/Role';
 import { EntityProps, FindProps } from '../types/crud.controller';
@@ -77,12 +77,11 @@ export class RoleService implements CRUDService<Role> {
   async save(element: EntityProps<Role>): Promise<Role> {
     this.logger.verbose('Save');
 
-    const uuid = element.entity.uuid;
-
     if (element.entity.permissions) {
       element.entity.permissions = (element.entity.permissions as any).map((perm) => this.permissionRepository.getReference(perm.uuid));
     }
 
+    const uuid = element.entity.uuid;
     if (uuid) {
       const ref = await this.roleRepository.findOneOrFail({ uuid });
       element.entity = wrap(ref).assign(element.entity);
@@ -103,7 +102,12 @@ export class RoleService implements CRUDService<Role> {
   async delete(uuid: string, _element: EntityProps<Role>): Promise<void> {
     this.logger.verbose('Delete');
 
-    const entity = this.roleRepository.getReference(uuid);
-    return this.roleRepository.removeAndFlush(entity);
+    const entity = await this.roleRepository.findOneOrFail(uuid);
+    if (!entity) {
+      this.logger.error('Tentativa de remoção de aplicação inexistente');
+      throw new UnauthorizedException('This application does not exists');
+    }
+
+    await this.roleRepository.nativeUpdate({ uuid }, { deletedAt: new Date() });
   }
 }

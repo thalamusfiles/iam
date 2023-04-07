@@ -12,10 +12,9 @@ export class RoleListStore extends CommonListCtx {
   defaultListDefs: ListDefinition = {
     id: 'roles_list',
     name: 'roles_list',
-    filters: [
-      { name: 'name', title: 'Name', type: AttributeType.Text },
-    ],
+    filters: [{ name: 'name', title: 'Name', type: AttributeType.Text }],
     columns: [
+      { colname: 'initials', title: 'Scope / Perfil', type: AttributeType.Text, show: true },
       { colname: 'name', title: 'Name', type: AttributeType.Text, show: true },
       { colname: 'description', title: 'Description', type: AttributeType.Text, show: true },
       { colname: 'application.name', title: 'Application', type: AttributeType.Text, sortable: false },

@@ -49,7 +49,7 @@ const AboutComp: React.FC = observer(() => {
               value={content.application?.name}
               onChange={(value) => assignContent({ application: value })}
               disabled={content.uuid}
-              appendFeed={__('application.edit.about.initials_append')}
+              appendFeed={__('role.edit.about.initials_append')}
               invalidFeed={ctrl.erros?.application?.map(__)}
             />
           </Col>
@@ -62,7 +62,7 @@ const AboutComp: React.FC = observer(() => {
               value={content.initials}
               onChange={(value) => assignContent({ initials: value.replace(/[ ^"]/g, '_') })}
               disabled={content.uuid}
-              appendFeed={__('application.edit.about.initials_append')}
+              appendFeed={__('role.edit.about.initials_append')}
               invalidFeed={ctrl.erros?.initials?.map(__)}
             />
           </Col>

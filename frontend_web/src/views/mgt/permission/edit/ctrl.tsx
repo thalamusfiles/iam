@@ -1,8 +1,9 @@
 import { PermissionCRUDDatasource } from '@thalamus/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
-import { useParams } from 'react-router-dom';
+import { ErrosAsList, getFormExceptionErrosToObject } from '../../../../commons/error';
 import { TargetForm } from '../../../../commons/plugin.component';
 import { historyPush } from '../../../../commons/route';
+import type { ErrorListRecord } from '../../../../commons/types/ErrorListRecord';
 import { notify } from '../../../../components/Notification';
 import { CommonEditCtx } from '../../../generic/edit/ctrl';
 
@@ -10,20 +11,20 @@ export class PermissionEditStore extends CommonEditCtx {
   datasource = new PermissionCRUDDatasource();
 
   //Conteudo da tela
-  @observable content: any = {};
+  @observable content: any = {
+    initials: '',
+    on: '',
+    action: '',
+    description: '',
+  };
+  @observable erroMessages: string[] = [];
+  @observable erros: ErrorListRecord = {};
 
   constructor() {
     super(TargetForm.permission_edit, false);
 
     makeObservable(this);
   }
-
-  afterBuild = async () => {
-    const { id } = useParams();
-    if (id) {
-      this.loadContent(id);
-    }
-  };
 
   /**
    * Carregas o conteudo da tela
@@ -34,7 +35,7 @@ export class PermissionEditStore extends CommonEditCtx {
 
     try {
       //Carrega o conteudo
-      this.content = await this.datasource.findById(id);
+      this.content = await this.datasource.findById(id, { populate: ['application'] });
     } catch (error) {
       console.error(error);
       notify.warn('An error occurred while updating the listing.');
@@ -58,14 +59,18 @@ export class PermissionEditStore extends CommonEditCtx {
       }
       this.content = response.entity;
 
-      notify.success('Saved successfully.');
-
-      if (isNew) {
-        historyPush('permission_edit', this.content.id);
-      }
+      notify.success('Salvo com sucesso.');
+      historyPush(-1);
     } catch (err) {
-      const message = (err as any).response?.data?.message || 'An error occurred while saving.';
-      notify.warn(message);
+      const data = (err as any).response?.data;
+
+      [this.erroMessages, this.erros] = getFormExceptionErrosToObject(data, {
+        splitByConstraints: true,
+        removeEntityPrefix: true,
+        ignoreKindsToMessage: ['initials', 'name', 'description'],
+      }) as ErrosAsList;
+
+      notify.warn(this.erroMessages.join(' '));
     }
 
     this.loading = false;

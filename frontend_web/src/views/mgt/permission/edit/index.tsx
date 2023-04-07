@@ -1,15 +1,23 @@
-import GenericEdit from '../../../generic/edit';
+import { useParams } from 'react-router-dom';
+import GenericEdit, { GenericEditProps } from '../../../generic/edit';
 import { CommonEditContextProvider } from '../../../generic/edit/ctrl';
 import { PermissionEditStore } from './ctrl';
 
 export * from './components/about';
 
-const PermissionEdit: React.FC = () => {
+const PermissionEdit: React.FC<GenericEditProps> = (props) => {
   const ctrl = new PermissionEditStore();
+  const { uuid } = useParams();
+
+  ctrl.afterBuild = async () => {
+    if (uuid) {
+      ctrl.loadContent(uuid);
+    }
+  };
 
   return (
     <CommonEditContextProvider value={ctrl}>
-      <GenericEdit />
+    <GenericEdit inModal={props.inModal} />
     </CommonEditContextProvider>
   );
 };

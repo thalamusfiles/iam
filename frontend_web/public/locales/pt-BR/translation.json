@@ -92,8 +92,21 @@
     "edit": {
       "about.title": "Escopo",
       "about.description": "Informe os campos abaixo para criar/modificar o escopo.",
+      "about.initials_append": "Após salvar, este campo não poderá ser alterado",
       "permissions.title": "Permissões",
       "permissions.description": "Listagem de permissões da aplicação disponível para associação."
+    }
+  },
+  "permission": {
+    "list": {
+      "title": "Permissões",
+      "about.description": "Listagem de permissões."
+    },
+    "edit": {
+      "about.title": "Permissão",
+      "about.description": "Informe os campos abaixo para criar/modificar a permissão.",
+      "about.application_append": "Após salvar, este campo não poderá ser alterado",
+      "about.initials_append": "A informação deste campo é composta pela junção dos campos ON e Action."
     }
   },
   "menu": {

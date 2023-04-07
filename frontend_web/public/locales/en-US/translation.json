@@ -97,6 +97,18 @@
       "permissions.description": "Application permissions listing available for association."
     }
   },
+  "permission": {
+    "list": {
+      "title": "Permissions",
+      "about.description": "Listing of permissions."
+    },
+    "edit": {
+      "about.title": "Permission",
+      "about.description": "Enter the fields below to create/modify the permission.",
+      "about.application_append": "After saving this field cannot be changed",
+      "about.initials_append": "The information in this field is composed by the combination of the fields ON and Action."
+    }
+  },
   "menu": {
     "messages": "Messages",
     "both":"Both",
