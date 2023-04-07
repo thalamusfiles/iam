@@ -8,11 +8,14 @@ import FormControl from 'react-bootstrap/FormControl';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import * as json from '../../../package.json';
 import { useI18N } from '../../commons/i18';
 import { historyPush } from '../../commons/route';
 import ApplicationInfo from '../../components/ApplicationInfo';
 import NotificationValue, { NotificationProvider, useNotificationStore } from '../../components/Notification/ctrl';
 import UserCtxInstance, { useUserStore } from '../../store/userContext';
+
+const { docUrl } = json as any;
 
 type HeaderProps = {
   title?: string;
@@ -67,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ icon, title, searchBar }) => {
 
             <div className="navbar-spacer" />
 
-            <Nav.Link href="https://docs.iam.thalamus.digital/" target="_blanck">
+            <Nav.Link href={docUrl} target="_blanck">
               <FontAwesomeIcon icon={'question-circle'} /> {__('menu.help')}
             </Nav.Link>
 

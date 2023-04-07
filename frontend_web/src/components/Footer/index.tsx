@@ -9,7 +9,7 @@ import { IconsDef } from '../../commons/consts';
 import { useI18N, useLanguage } from '../../commons/i18';
 import UserCtxInstance from '../../store/userContext';
 
-const { author, since, url, version } = json as any;
+const { author, since, url, docUrl, version } = json as any;
 
 const Footer: React.FC<{ center?: boolean }> = ({ center }) => {
   const language = useLanguage();
@@ -34,10 +34,12 @@ const Footer: React.FC<{ center?: boolean }> = ({ center }) => {
           </DropdownButton>
         </Col>
         <Col md={{ span: 2 }}>
-          <strong>IAM {version}</strong>
+          <a href={docUrl} target="_blank" rel="noopener noreferrer" className="text-body" style={{ color: 'red', textDecoration: 'none' }}>
+            IAM {version}
+          </a>
         </Col>
         <Col md={{ span: 2 }}>
-          <a href={url} target="_blank" rel="noopener noreferrer" className="text-body" style={{ textDecoration: 'decoration' }}>
+          <a href={url} target="_blank" rel="noopener noreferrer" className="text-body" style={{ textDecoration: 'none' }}>
             © {author} {since}
           </a>
         </Col>

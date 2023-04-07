@@ -4,6 +4,7 @@
   "author": "Thalamus",
   "since": "2022",
   "url": "https://thalamus.digital/",
+  "docUrl": "https://docs.iam.thalamus.digital/",
   "private": false,
   "engines": {
     "node": ">=14.0"
