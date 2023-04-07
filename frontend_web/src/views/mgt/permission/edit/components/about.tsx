@@ -24,7 +24,7 @@ const AboutComp: React.FC = observer(() => {
     <>
       <h1 id="permission_about">
         <FontAwesomeIcon icon={IconsDef.permissions} />
-        &nbsp; {__('permission.edit.about.title')}: {content.on + content.action || __('info.uninformed')}
+        &nbsp; {__('permission.edit.about.title')}: {content.initials || content.on + content.action || __('info.uninformed')}
         <ApplicationInfo />
       </h1>
       <p>{__('permission.edit.about.description')}</p>

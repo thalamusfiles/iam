@@ -1,4 +1,4 @@
-import { PermissionCRUDDatasource } from '@thalamus/iam-consumer';
+import { PermissionCRUDDatasource, RoleCRUDDatasource } from '@thalamus/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { ErrosAsList, getFormExceptionErrosToObject } from '../../../../commons/error';
 import { TargetForm } from '../../../../commons/plugin.component';
@@ -9,8 +9,9 @@ import { CommonEditCtx } from '../../../generic/edit/ctrl';
 
 export class PermissionEditStore extends CommonEditCtx {
   datasource = new PermissionCRUDDatasource();
+  roleDatasource = new RoleCRUDDatasource();
 
-  //Conteudo da tela
+  // Conteúdo da tela
   @observable content: any = {
     initials: '',
     on: '',
@@ -20,6 +21,9 @@ export class PermissionEditStore extends CommonEditCtx {
   @observable erroMessages: string[] = [];
   @observable erros: ErrorListRecord = {};
 
+  // Escopes/Perfis associados
+  @observable contentRoles: any[] = [];
+
   constructor() {
     super(TargetForm.permission_edit, false);
 
@@ -28,20 +32,32 @@ export class PermissionEditStore extends CommonEditCtx {
 
   /**
    * Carregas o conteudo da tela
-   * @param id
+   * @param uuid
    */
-  loadContent = async (id: any) => {
+  loadContent = async (uuid: string) => {
     this.loading = true;
 
     try {
       //Carrega o conteudo
-      this.content = await this.datasource.findById(id, { populate: ['application'] });
+      this.content = await this.datasource.findById(uuid, { populate: ['application'] });
     } catch (error) {
       console.error(error);
-      notify.warn('An error occurred while updating the listing.');
+      notify.warn('An error occurred while loading register.');
     }
 
     this.loading = false;
+  };
+
+  /**
+   *
+   */
+  loadRoles = async (uuid: string) => {
+    try {
+      this.contentRoles = await this.roleDatasource.findAll();
+    } catch (error) {
+      console.error(error);
+      notify.warn('An error occurred while loading roles.');
+    }
   };
 
   onSave = async () => {

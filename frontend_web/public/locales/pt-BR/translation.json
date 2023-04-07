@@ -87,7 +87,9 @@
   "role": {
     "list": {
       "title": "Escopos / Perfis / Papeis / Cargos",
-      "about.description": "Listagem de escopos e perfis."
+      "about.description": "Listagem de escopos e perfis.",
+      "initials": "Iniciais",
+      "name": "Nome"
     },
     "edit": {
       "about.title": "Escopo",
@@ -106,7 +108,9 @@
       "about.title": "Permissão",
       "about.description": "Informe os campos abaixo para criar/modificar a permissão.",
       "about.application_append": "Após salvar, este campo não poderá ser alterado",
-      "about.initials_append": "A informação deste campo é composta pela junção dos campos ON e Action."
+      "about.initials_append": "A informação deste campo é composta pela junção dos campos ON e Action.",
+      "roles.title": "Escopos / Perfis",
+      "roles.description": "Listagem de escopos/perfis associados."
     }
   },
   "menu": {

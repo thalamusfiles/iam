@@ -4,6 +4,7 @@ import { CommonEditContextProvider } from '../../../generic/edit/ctrl';
 import { PermissionEditStore } from './ctrl';
 
 export * from './components/about';
+export * from './components/roles';
 
 const PermissionEdit: React.FC<GenericEditProps> = (props) => {
   const ctrl = new PermissionEditStore();
@@ -11,13 +12,14 @@ const PermissionEdit: React.FC<GenericEditProps> = (props) => {
 
   ctrl.afterBuild = async () => {
     if (uuid) {
+      ctrl.loadRoles(uuid);
       ctrl.loadContent(uuid);
     }
   };
 
   return (
     <CommonEditContextProvider value={ctrl}>
-    <GenericEdit inModal={props.inModal} />
+      <GenericEdit inModal={props.inModal} />
     </CommonEditContextProvider>
   );
 };

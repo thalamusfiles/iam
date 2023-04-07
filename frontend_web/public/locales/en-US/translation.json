@@ -87,7 +87,9 @@
   "role": {
     "list": {
       "title": "Scopes / Roles / Profiles / Positions",
-      "about.description": "Listing of scopes and profiles.."
+      "about.description": "Listing of scopes and profiles..",
+      "initials": "Initials",
+      "name": "Name"
     },
     "edit": {
       "about.title": "Scope",
@@ -106,7 +108,9 @@
       "about.title": "Permission",
       "about.description": "Enter the fields below to create/modify the permission.",
       "about.application_append": "After saving this field cannot be changed",
-      "about.initials_append": "The information in this field is composed by the combination of the fields ON and Action."
+      "about.initials_append": "The information in this field is composed by the combination of the fields ON and Action.",
+      "roles.title": "Scopes/ Roles",
+      "roles.description": "List of associated scopes/profiles."
     }
   },
   "menu": {
