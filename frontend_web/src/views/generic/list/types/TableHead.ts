@@ -5,7 +5,7 @@ export const TableHeadSeparator = 'separator';
 
 export interface TableHead {
   colname: string;
-  type: AttributeType | ColumnSeparator | TableHead[];
+  type: AttributeType | ColumnSeparator;
   title: string;
   order?: number;
   colored?: boolean;

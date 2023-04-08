@@ -13,7 +13,6 @@ import { notify } from '../../../components/Notification';
 import { FilterDef } from './types/FilterDef';
 import type { ListDefinition } from './types/ListDefinition';
 import { TableCell, TableCellInfo } from './types/TableCellInfo';
-import { TableGroupCellInfo } from './types/TableGroupCellInfo';
 import { TableHead } from './types/TableHead';
 
 /**
@@ -189,33 +188,13 @@ export class CommonListCtx {
    * @param response
    */
   formatList(response: any[]) {
+    // Percore cada linha do json e formata
     this.list = response.map((responseRow) => {
       const row: TableCell[] = [];
 
       for (const head of this.columns) {
-        if (Array.isArray(head.type)) {
-          //Célula agrupada. Duas ou mais colunas em uma só.
-          const cells: (TableCellInfo | TableCellInfo[])[] = [];
-          for (const subhead of head.type) {
-            const cell = this.makeCellInfo(responseRow, subhead);
-            cells.push(cell);
-          }
-          //Mescla cada item das colunas agrupdas
-          const cellSize = (cells[0] as TableCellInfo[]).length;
-          const groupsCell: TableGroupCellInfo[] = [];
-          for (let j = 0; j < cellSize; j++) {
-            const groupCell: TableGroupCellInfo = { cells: [] };
-            (head.type as TableHead[]).reduce((last, curr, idxHeader) => {
-              last.cells.push((cells[idxHeader] as TableCellInfo[])[j]);
-              return last;
-            }, groupCell);
-            groupsCell.push(groupCell);
-          }
-          row.push(groupsCell);
-        } else {
-          //Célula não agrupada
-          row.push(this.makeCellInfo(responseRow, head));
-        }
+        //Célula não agrupada
+        row.push(this.makeCellInfo(responseRow, head));
       }
       return row;
     });

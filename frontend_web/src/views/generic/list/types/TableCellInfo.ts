@@ -1,4 +1,3 @@
-import { TableGroupCellInfo } from './TableGroupCellInfo';
 import { TableHead } from './TableHead';
 
 export interface TableCellInfo {
@@ -9,4 +8,4 @@ export interface TableCellInfo {
   colorName?: string;
 }
 
-export type TableCell = TableCellInfo | TableCellInfo[] | TableGroupCellInfo[];
+export type TableCell = TableCellInfo | TableCellInfo[];

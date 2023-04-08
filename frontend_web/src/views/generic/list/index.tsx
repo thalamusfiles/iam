@@ -19,7 +19,6 @@ import { SaveListModal } from './save-list-modal';
 import { SortModal } from './sort-modal';
 import { TableResizer } from './table-resizer';
 import { TableCellInfo } from './types/TableCellInfo';
-import { TableGroupCellInfo } from './types/TableGroupCellInfo';
 import { TableHead } from './types/TableHead';
 
 const GenericList: React.FC = () => {
@@ -144,21 +143,13 @@ const List: React.FC = observer(() => {
   );
 });
 
-export const CellComp: React.FC<{ cell: TableCellInfo | TableCellInfo[] | TableGroupCellInfo | TableGroupCellInfo[] }> = (props) => {
+export const CellComp: React.FC<{ cell: TableCellInfo | TableCellInfo[] }> = (props) => {
   if (Array.isArray(props.cell)) {
-    return (props.cell as (TableCellInfo | TableGroupCellInfo)[]).map((cell, idx) => (
+    return (props.cell as TableCellInfo[]).map((cell, idx) => (
       <React.Fragment key={idx}>
-        <CellComp cell={cell as TableCellInfo | TableGroupCellInfo} />{' '}
+        <CellComp cell={cell as TableCellInfo} />{' '}
       </React.Fragment>
     ));
-  } else if ((props.cell as TableGroupCellInfo).cells) {
-    return (
-      <>
-        {'[ '}
-        <CellComp cell={(props.cell as TableGroupCellInfo).cells} />
-        {' ]'}
-      </>
-    );
   } else if ((props.cell as TableCellInfo).colorName) {
     return (
       <Badge bg={(props.cell as TableCellInfo).colorName}>{(props.cell as TableCellInfo).description || (props.cell as TableCellInfo).value}</Badge>
