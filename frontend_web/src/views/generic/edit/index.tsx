@@ -9,18 +9,17 @@ import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 import { historySearch } from '../../../commons/route';
 import Loader from '../../../components/Loader';
+import { SideBar } from '../../../components/SideBar/SideBar';
 import { SideBarAction } from '../../../components/SideBar/SideBarAction';
 import { useCommonEditStore } from './ctrl';
 
 export type GenericEditProps = {
-  sideBarSpan?: number;
   inModal?: boolean; //Se a tela esta sendo exibida dentro de um modal
 };
 
-const GenericEdit: React.FC<GenericEditProps> = observer(({ sideBarSpan, inModal }) => {
+const GenericEdit: React.FC<GenericEditProps> = observer(({ inModal }) => {
   const ctrl = useCommonEditStore();
   const __ = useI18N();
-  const sideBar = <GenericSideBarEdit />;
   const { show_save } = historySearch();
 
   useEffect(() => {
@@ -34,8 +33,8 @@ const GenericEdit: React.FC<GenericEditProps> = observer(({ sideBarSpan, inModal
   return (
     <Container fluid>
       <Row>
-        {!inModal && <Col md={{ span: sideBarSpan || 2 }}>{sideBar}</Col>}
-        <Col md={inModal ? 12 : 12 - (sideBarSpan || 2)}>
+        {!inModal && <GenericSideBarEdit />}
+        <Col md={inModal ? 12 : 10}>
           <GenericBody />
         </Col>
       </Row>
@@ -74,18 +73,18 @@ const GenericSideBarEdit: React.FC = () => {
   const __ = useI18N();
 
   return (
-    <>
+    <SideBar colSize={2}>
       <div className="title">{__('menu.actions')}</div>
-      
+
       <SideBarAction faicon={IconsDef.save} title={__('actions.save')} variant="outline-success" onClick={ctrl!.onSave} />
       <SideBarAction faicon={IconsDef.goBack} title={__('actions.back')} variant="outline-secondary" onClick={ctrl!.onBack} />
 
       <div className="title">{__('menu.quickaccess')}</div>
-      
+
       {ctrl!.componentsLoaded.map((comp) => (
         <SideBarAction title={comp.sidebarTitle} link={'#' + comp.name} key={comp.name} />
       ))}
-    </>
+    </SideBar>
   );
 };
 

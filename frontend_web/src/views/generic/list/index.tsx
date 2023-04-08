@@ -107,7 +107,7 @@ const List: React.FC = observer(() => {
         </thead>
         <tbody>
           {/* Percorre as linhas da listagem */}
-          {ctrl!.list.map((tableCells: any, yindex: number) => (
+          {ctrl!.list.map((tableCells, yindex: number) => (
             <tr key={yindex}>
               {/* Ações básicas da listagem */}
               <td className="pointer nowrap actions">
@@ -123,8 +123,8 @@ const List: React.FC = observer(() => {
                 </ButtonGroup>
               </td>
               {/* Percorre as células da linha*/}
-              {tableCells.map((cell: any, xindex: number) => (
-                <td className="nowrap" style={{ maxWidth: (cell as TableCellInfo)?.head?.maxWidth }} key={xindex}>
+              {tableCells.map((cell, xindex: number) => (
+                <td className="nowrap" style={{ maxWidth: cell[0].head?.maxWidth }} key={xindex}>
                   <CellComp cell={cell} />
                 </td>
               ))}
@@ -145,17 +145,15 @@ const List: React.FC = observer(() => {
 
 export const CellComp: React.FC<{ cell: TableCellInfo | TableCellInfo[] }> = (props) => {
   if (Array.isArray(props.cell)) {
-    return (props.cell as TableCellInfo[]).map((cell, idx) => (
+    return props.cell.map((cell, idx) => (
       <React.Fragment key={idx}>
-        <CellComp cell={cell as TableCellInfo} />{' '}
+        <CellComp cell={cell} />{' '}
       </React.Fragment>
     ));
-  } else if ((props.cell as TableCellInfo).colorName) {
-    return (
-      <Badge bg={(props.cell as TableCellInfo).colorName}>{(props.cell as TableCellInfo).description || (props.cell as TableCellInfo).value}</Badge>
-    );
+  } else if (props.cell.colorName) {
+    return <Badge bg={props.cell.colorName}>{props.cell.description || props.cell.value}</Badge>;
   } else {
-    return (props.cell as TableCellInfo).description || (props.cell as TableCellInfo).value;
+    return props.cell.description || props.cell.value;
   }
 };
 

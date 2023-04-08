@@ -13,12 +13,14 @@ const AuthorizationComp: React.FC = () => {
 
   return (
     <>
-      <h2 id="user_authorization">{__('user.edit.auth.title')}:</h2>
+      <h2 id="user_authorization">{__('user.edit.auth.title')}</h2>
       <p>{__('user.edit.auth.description')}</p>
       <Form>
         <Row>
           <Col>
-            <Button variant="outline-warning">Password reset</Button>
+            <Button variant="outline-warning" onClick={() => alert('Fincionalidade indisponível')}>
+              Redefinir senha.
+            </Button>
           </Col>
         </Row>
       </Form>

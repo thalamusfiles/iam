@@ -31,11 +31,11 @@ export class UserListStore extends CommonListCtx {
   }
 
   newCallback = () => {
-    historyPush('user_new', { inModal: true, showSave: true });
+    historyPush('user_new');
   };
 
   editCallback = (uuid: number | string) => {
-    historyPush('user_edit', { uuid, inModal: true, showSave: true });
+    historyPush('user_edit', { uuid });
   };
 
   removeCallback = (uuid: number | string) => {

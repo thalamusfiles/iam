@@ -1,5 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
+import { Alert } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
@@ -11,7 +13,7 @@ import { WmsFormGroup } from '../../../../../components/Form';
 import { useCommonEditStore } from '../../../../generic/edit/ctrl';
 import { UserEditStore } from '../ctrl';
 
-const AboutComp: React.FC = () => {
+const AboutComp: React.FC = observer(() => {
   const ctrl = useCommonEditStore<UserEditStore>();
   const __ = useI18N();
 
@@ -27,6 +29,16 @@ const AboutComp: React.FC = () => {
       </h1>
       <p>{__('user.edit.about.description')}</p>
       <Form>
+        {!!ctrl.erroMessages?.length && (
+          <Alert variant="danger">
+            {ctrl.erroMessages.map((msg) => (
+              <>
+                {__(msg)} <br />
+              </>
+            ))}
+          </Alert>
+        )}
+
         <Row>
           <Col>
             <WmsFormGroup
@@ -36,19 +48,16 @@ const AboutComp: React.FC = () => {
               type={AttributeType.Text}
               value={content.name}
               onChange={(value) => assignContent({ name: value })}
+              invalidFeed={ctrl.erros?.application?.map(__)}
+              disabled
             />
           </Col>
-          {/*<Col md={3}>
-              <Figure>
-                <Figure.Image width={171} height={180} alt="171x180" src="holder.js/171x180" />
-                <Figure.Caption>User or Company Image</Figure.Caption>
-              </Figure>
-          </Col>*/}
         </Row>
       </Form>
+      <br />
     </>
   );
-};
+});
 
 addPagePlugin({
   component: AboutComp,

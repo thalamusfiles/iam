@@ -20,3 +20,23 @@ export const toIlikeRegex = (text: string, toregexp: boolean = true): string | R
 
   return toregexp ? new RegExp(`.*${text}.*`, 'i') : `/.*${text}.*/i`;
 };
+
+/**
+ * Coleta as informações do objeto conforme o caminho informato
+ * @param objectArray
+ * @param path
+ * @returns
+ */
+export const flatFromPath = (objectArray: any | any[], path: string[]): any => {
+  const nextPath = path.shift()!;
+  const data = objectArray[nextPath];
+  if (Array.isArray(data)) {
+    return data.map((rowData) => flatFromPath(rowData, path)).flat();
+  } else {
+    if (path.length) {
+      return flatFromPath(data, path);
+    } else {
+      return data;
+    }
+  }
+};

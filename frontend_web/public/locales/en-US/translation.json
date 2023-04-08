@@ -191,8 +191,8 @@
   "user": {
     "new.title": "New User",
     "list": {
-      "title": "User listing",
-      "about.description": "Users"
+      "title": "Users",
+      "about.description": "User listing"
     },
     "permissions.list": {
       "title": "List of users and permissions"
@@ -204,7 +204,9 @@
       "auth.title": "Authentication",
       "auth.description": "",
       "roles.title": "Scopes / Roles / Profiles / Positions",
-      "roles.description": "A user can have one or more roles in the system"
+      "roles.description": "A user can have one or more roles in the system",
+      "permissions.title": "Permissões",
+      "permissions.description": "Listing of permissions associated with this user. Public applications do not require permission release."
     }
   }
 }

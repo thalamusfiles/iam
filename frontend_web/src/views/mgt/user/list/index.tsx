@@ -47,12 +47,12 @@ export const SideBarEdit: React.FC = () => {
 
       <div className="title">{__('menu.lists')}</div>
       <SideBarAction faicon={IconsDef.user[0]} title={__('user.list.title')} variant="light" onClick={() => historySearchReplace({ list: 'user' })} />
-      <SideBarAction
+      {/*<SideBarAction
         faicon={IconsDef.permissions}
         title={__('user.permissions.list.title')}
         variant="light"
         onClick={() => historySearchReplace({ list: 'user_permissions' })}
-      />
+      />*/}
     </SideBar>
   );
 };

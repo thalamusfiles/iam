@@ -8,4 +8,4 @@ export interface TableCellInfo {
   colorName?: string;
 }
 
-export type TableCell = TableCellInfo | TableCellInfo[];
+export type TableCell = TableCellInfo[];

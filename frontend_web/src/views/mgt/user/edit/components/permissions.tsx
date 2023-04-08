@@ -25,7 +25,7 @@ const PermissionComp: React.FC = () => {
     <>
       <Row>
         <Col>
-          <h2 id="user_permissions">{__('user.edit.permissions.title')}:</h2>
+          <h2 id="user_permissions">{__('user.edit.permissions.title')}</h2>
           <p>{__('user.edit.permissions.description')}</p>
         </Col>
         <Col md={1}>
@@ -51,6 +51,7 @@ const PermissionComp: React.FC = () => {
           </Col>
         </Row>
       </Form>
+      <br />
     </>
   );
 };

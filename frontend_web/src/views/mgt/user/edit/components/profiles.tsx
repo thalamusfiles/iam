@@ -29,7 +29,7 @@ const ProfilesComp: React.FC = () => {
 
   return (
     <>
-      <h2 id="user_roles">{__('user.edit.roles.title')}:</h2>
+      <h2 id="user_roles">{__('user.edit.roles.title')}</h2>
       <p>{__('user.edit.roles.description')}</p>
       <Form>
         
@@ -47,6 +47,7 @@ const ProfilesComp: React.FC = () => {
           ))}
         
       </Form>
+      <br />
     </>
   );
 };

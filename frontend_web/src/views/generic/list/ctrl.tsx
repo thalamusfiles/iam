@@ -2,11 +2,12 @@ import { default as axios, default as Axios } from 'axios';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
 import { AttributeType } from '../../../commons/attribute-type';
-import { ColorsDef, defaultPageSize, localStorageDef } from '../../../commons/consts';
+import { defaultPageSize, localStorageDef } from '../../../commons/consts';
 import { SortOrder } from '../../../commons/enums/sort-order.enum';
 import { formatDate, formatDatetime, formatDecimal, formatInteger, formatTime } from '../../../commons/formatters';
 import { historySearch, historySearchReplace } from '../../../commons/route';
 import Storage from '../../../commons/storage';
+import { flatFromPath } from '../../../commons/tools';
 import { PartOf } from '../../../commons/types/PartOf';
 import { WmsFormEvent } from '../../../components/Form';
 import { notify } from '../../../components/Notification';
@@ -205,7 +206,7 @@ export class CommonListCtx {
    * @param responseRow
    * @param head
    */
-  makeCellInfo(responseRow: any, head: TableHead): TableCellInfo | TableCellInfo[] {
+  makeCellInfo(responseRow: any, head: TableHead): TableCellInfo[] {
     const col: TableCellInfo = {
       head: head,
       colname: head.colname.replace('.', '_'),
@@ -214,26 +215,15 @@ export class CommonListCtx {
     };
 
     const relations = head.colname.split('.');
-    let value = relations.reduce((last, curr) => last?.[curr], responseRow);
+    let value = flatFromPath(responseRow, relations);
+    value = Array.isArray(value) ? value : [value];
 
-    if (value !== undefined) {
-      if (Array.isArray(value)) {
-        return value.map((j) => {
-          const colCopy = Object.assign({}, col);
-          colCopy.value = j;
-          colCopy.description = this.formatAttribute(head, j);
-          return colCopy;
-        });
-      } else {
-        if (head.colored) {
-          col.colorName = value?.colorName || ColorsDef.defaultBadgeVariant;
-          value = value.value;
-        }
-        col.value = value;
-        col.description = this.formatAttribute(head, value);
-      }
-    }
-    return col;
+    return value.map((j: any) => {
+      const colCopy = Object.assign({}, col);
+      colCopy.value = j;
+      colCopy.description = this.formatAttribute(head, j);
+      return colCopy;
+    });
   }
 
   /**

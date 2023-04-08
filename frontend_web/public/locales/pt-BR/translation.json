@@ -81,7 +81,7 @@
     "edit": {
       "about.title": "Aplicação",
       "about.description": "Informe os campos abaixo para criar/modificar a aplicação.",
-      "about.initials_append": "Após salvar, este campo não poderá ser alterado"
+      "about.initials_append": "Após salvar este campo não poderá ser alterado."
     }
   },
   "role": {
@@ -94,7 +94,7 @@
     "edit": {
       "about.title": "Escopo",
       "about.description": "Informe os campos abaixo para criar/modificar o escopo.",
-      "about.initials_append": "Após salvar, este campo não poderá ser alterado",
+      "about.initials_append": "Após salvar este campo não poderá ser alterado.",
       "permissions.title": "Permissões",
       "permissions.description": "Listagem de permissões da aplicação disponível para associação."
     }
@@ -107,7 +107,7 @@
     "edit": {
       "about.title": "Permissão",
       "about.description": "Informe os campos abaixo para criar/modificar a permissão.",
-      "about.application_append": "Após salvar, este campo não poderá ser alterado",
+      "about.application_append": "Após salvar este campo não poderá ser alterado.",
       "about.initials_append": "A informação deste campo é composta pela junção dos campos ON e Action.",
       "roles.title": "Escopos / Perfis",
       "roles.description": "Listagem de escopos/perfis associados."
@@ -191,8 +191,8 @@
   "user": {
     "new.title": "Novo Usuário",
     "list": {
-      "title": "Listagem de Usuários",
-      "about.description": "Usuários"
+      "title": "Usuários",
+      "about.description": "Listagem de Usuários"
     },
     "permissions.list": {
       "title": "Listagem de usuários e permissões"
@@ -204,7 +204,9 @@
       "auth.title": "Autenticação",
       "auth.description": "",
       "roles.title": "Escopos / Perfis / Papeis / Cargos",
-      "roles.description": "Um usuário pode ter um ou mais perfis."
+      "roles.description": "Um usuário pode ter um ou mais perfis.",
+      "permissions.title": "Permissões",
+      "permissions.description": "Listagem de permissões associadas a este usuário. Aplicações públicas não necessitam de liberação de permissão."
     }
   }
 }
