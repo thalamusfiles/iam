@@ -1,4 +1,4 @@
-import { ApplicationCRUDDatasource, PermissionCRUDDatasource, PersonCRUDDatasource, RegionCRUDDatasource, RoleCRUDDatasource } from './apicrud';
+import { ApplicationCRUDDatasource, PermissionCRUDDatasource, UserCRUDDatasource, RegionCRUDDatasource, RoleCRUDDatasource } from './apicrud';
 import Apis from './apis';
 import { OauthDataSource, AuthDataSource, OauthFieldsDto, RegisterDto, LoginDto, ApplicationInfo, ScopeInfo } from './auth';
 import { MeDataSource, TokenDataSource, UserInfo, TokenInfo } from './iam';
@@ -11,7 +11,7 @@ export {
   MeDataSource,
   TokenDataSource,
   // Apis Mgt
-  PersonCRUDDatasource,
+  UserCRUDDatasource,
   RoleCRUDDatasource,
   PermissionCRUDDatasource,
   RegionCRUDDatasource,

@@ -8,8 +8,8 @@ import { notify } from '../components/Notification';
  */
 export enum TargetForm {
   //management
-  person_edit,
-  person_list,
+  user_edit,
+  user_list,
   role_edit,
   role_list,
   permission_edit,
@@ -64,7 +64,7 @@ export function findComponents(target: TargetForm | null): PagePluginProps[] {
 }
 
 /**
- * Classe base para formulários personalizáveis
+ * Classe base para formulários useralizáveis
  * @type WmsFormProps define as propriedades que o componente deve aceitar.
  */
 export abstract class WmsFormComponent extends React.Component<WmsFormProps> {}

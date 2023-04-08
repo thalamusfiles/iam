@@ -1,9 +1,7 @@
 import Apis from '../apis';
 import { EntityProps } from './types/entity-props';
 
-type EntityPropsOptions = {
-  loadBeforSave?: true;
-};
+type EntityPropsOptions = any;
 
 export interface CRUDInterface {
   findAll(params?: { populate?: string[] } | any): Promise<any[]>;

@@ -18,7 +18,7 @@ class EndpointsConfigure {
   apiIAMTokenActive = '/token/active';
   // API MGT Urls
   apiMGT = null as string | null;
-  apiMGTPerson = `/person`;
+  apiMGTUser = `/user`;
   apiMGTRole = `/role`;
   apiMGTPermission = `/permission`;
   apiMGTRegion = `/region`;

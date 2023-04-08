@@ -2,11 +2,11 @@ import Endpoints from '../endpoints';
 import { CRUDDatasource } from './api';
 
 /**
- * Person
+ * User
  */
-export class PersonCRUDDatasource extends CRUDDatasource {
+export class UserCRUDDatasource extends CRUDDatasource {
   constructor() {
-    super(Endpoints.apiMGTPerson);
+    super(Endpoints.apiMGTUser);
   }
 }
 

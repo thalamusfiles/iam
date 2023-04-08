@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { PersonCRUDDatasource } from '@thalamus/iam-consumer';
+import { UserCRUDDatasource } from '@thalamus/iam-consumer';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { PickersNames } from '../../commons/attribute-type';
@@ -10,14 +10,14 @@ import { historyPush } from '../../commons/route';
 import { WmsPicker } from '../../components/Form/wms-picker';
 
 @WmsFormPlugin({
-  name: PickersNames.person,
+  name: PickersNames.user,
 })
-export class PersonPickerPlugin extends WmsFormComponent {
+export class UserPickerPlugin extends WmsFormComponent {
   pickerRef: any = null;
 
   viewClick = () => {
     if (this.props.value) {
-      historyPush('person_edit', { id: this.props.value.id, inModal: true });
+      historyPush('user_edit', { id: this.props.value.id, inModal: true });
     }
   };
 
@@ -38,7 +38,7 @@ export class PersonPickerPlugin extends WmsFormComponent {
             <FontAwesomeIcon color={'gray'} size="xs" icon={'eye'} />
           </InputGroup.Text>
         </InputGroup>
-        <PersonPicker
+        <UserPicker
           onSel={(value: any | null, row: any, event: any) => this.props.onChange && this.props.onChange(value, row, event)}
           filters={this.props.filters}
           title={this.props.title}
@@ -51,7 +51,7 @@ export class PersonPickerPlugin extends WmsFormComponent {
   }
 }
 
-export class PersonPicker extends WmsPicker<{ filters: any }> {
+export class UserPicker extends WmsPicker<{ filters: any }> {
   search = (): void => {
     const where = (this.props as any).filters || {};
     where.name = `%${this.state.search}%`;
@@ -59,7 +59,7 @@ export class PersonPicker extends WmsPicker<{ filters: any }> {
     const limit = Math.floor(defaultPageSize / 2);
     const order_by = [`name:${SortOrder[SortOrder.Asc]}`];
 
-    new PersonCRUDDatasource().findAll({ where, order_by, limit }).then((response: any) => {
+    new UserCRUDDatasource().findAll({ where, order_by, limit }).then((response: any) => {
       const options = response.map((result: any) => ({
         value: result,
         columns: [result.name],

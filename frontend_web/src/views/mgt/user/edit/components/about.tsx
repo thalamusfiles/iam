@@ -9,23 +9,23 @@ import { useI18N } from '../../../../../commons/i18';
 import { addPagePlugin, TargetForm } from '../../../../../commons/plugin.component';
 import { WmsFormGroup } from '../../../../../components/Form';
 import { useCommonEditStore } from '../../../../generic/edit/ctrl';
-import { PersonEditStore } from '../ctrl';
+import { UserEditStore } from '../ctrl';
 
 const AboutComp: React.FC = () => {
-  const ctrl = useCommonEditStore<PersonEditStore>();
+  const ctrl = useCommonEditStore<UserEditStore>();
   const __ = useI18N();
 
   const { content, assignContent } = ctrl;
 
   return (
     <>
-      <h1 id="person_about">
-        {IconsDef.person.map((icon) => (
+      <h1 id="user_about">
+        {IconsDef.user.map((icon) => (
           <FontAwesomeIcon icon={icon} />
         ))}
-        &nbsp; {__('person.edit.about.title')}: {content.name}
+        &nbsp; {__('user.edit.about.title')}: {content.name}
       </h1>
-      <p>{__('person.edit.about.description')}</p>
+      <p>{__('user.edit.about.description')}</p>
       <Form>
         <Row>
           <Col>
@@ -41,7 +41,7 @@ const AboutComp: React.FC = () => {
           {/*<Col md={3}>
               <Figure>
                 <Figure.Image width={171} height={180} alt="171x180" src="holder.js/171x180" />
-                <Figure.Caption>Person or Company Image</Figure.Caption>
+                <Figure.Caption>User or Company Image</Figure.Caption>
               </Figure>
           </Col>*/}
         </Row>
@@ -52,9 +52,9 @@ const AboutComp: React.FC = () => {
 
 addPagePlugin({
   component: AboutComp,
-  name: 'person_about',
+  name: 'user_about',
   sidebarTitle: 'About',
-  target: TargetForm.person_edit,
+  target: TargetForm.user_edit,
   order: 0,
   displayInModal: true,
 });

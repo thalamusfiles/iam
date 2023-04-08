@@ -63,10 +63,10 @@ const Register: React.FC = () => {
       <Row>
         <Col sm={6}>
           <ListTile
-            variant={ColorsDef.personVariant}
-            faicon={IconsDef.person}
-            title={__('menu.mgt.person')}
-            onClick={() => historyPush('person_list')}
+            variant={ColorsDef.userVariant}
+            faicon={IconsDef.user}
+            title={__('menu.mgt.user')}
+            onClick={() => historyPush('user_list')}
           />
         </Col>
         <Col sm={6}>

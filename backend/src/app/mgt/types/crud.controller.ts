@@ -28,9 +28,7 @@ export class FindProps<Type> {
   populate?: Array<string>;
 }
 
-type EntityPropsOptions = {
-  loadBeforSave?: true;
-};
+type EntityPropsOptions = any;
 
 export class EntityProps<Type> {
   @IsObject()

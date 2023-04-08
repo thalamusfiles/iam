@@ -17,7 +17,7 @@ export class ApplicationPickerPlugin extends WmsFormComponent {
 
   viewClick = () => {
     if (this.props.value) {
-      historyPush('person_edit', { id: this.props.value.id, inModal: true });
+      historyPush('user_edit', { id: this.props.value.id, inModal: true });
     }
   };
 

@@ -6,31 +6,31 @@ import { useI18N } from '../../../../../commons/i18';
 import { addPagePlugin, TargetForm } from '../../../../../commons/plugin.component';
 import { WmsFormGroup } from '../../../../../components/Form';
 import { useCommonEditStore } from '../../../../generic/edit/ctrl';
-import { PersonEditStore } from '../ctrl';
+import { UserEditStore } from '../ctrl';
 
 const ProfilesComp: React.FC = () => {
-  const ctrl = useCommonEditStore<PersonEditStore>();
+  const ctrl = useCommonEditStore<UserEditStore>();
   const __ = useI18N();
 
   const { content, roles, assignContent } = ctrl;
 
-  const togglePersonRole = (role: any) => {
-    const personRoles = content.personRoles || [];
-    const idx = personRoles.findIndex((personRole: number) => personRole === role.id);
+  const toggleUserRole = (role: any) => {
+    const userRoles = content.userRoles || [];
+    const idx = userRoles.findIndex((userRole: number) => userRole === role.id);
     if (idx > -1) {
-      personRoles.splice(idx, 1);
+      userRoles.splice(idx, 1);
     } else {
-      personRoles.push(role.id);
+      userRoles.push(role.id);
     }
     assignContent({
-      personRoles: personRoles,
+      userRoles: userRoles,
     });
   };
 
   return (
     <>
-      <h2 id="person_roles">{__('person.edit.roles.title')}:</h2>
-      <p>{__('person.edit.roles.description')}</p>
+      <h2 id="user_roles">{__('user.edit.roles.title')}:</h2>
+      <p>{__('user.edit.roles.description')}</p>
       <Form>
         
           {roles.map((role: any, idx) => (
@@ -40,8 +40,8 @@ const ProfilesComp: React.FC = () => {
               name={role.name}
               title={role.name}
               value={role.id}
-              checked={content.personRoles?.includes(role.id)}
-              onChange={() => togglePersonRole(role)}
+              checked={content.userRoles?.includes(role.id)}
+              onChange={() => toggleUserRole(role)}
               type={AttributeType.Boolean}
             />
           ))}
@@ -53,8 +53,8 @@ const ProfilesComp: React.FC = () => {
 
 addPagePlugin({
   component: ProfilesComp,
-  name: 'person_roles',
+  name: 'user_roles',
   sidebarTitle: 'Roles',
-  target: TargetForm.person_edit,
+  target: TargetForm.user_edit,
   order: 20,
 });

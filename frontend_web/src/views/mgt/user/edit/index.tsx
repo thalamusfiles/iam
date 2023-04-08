@@ -1,14 +1,14 @@
 import GenericEdit from '../../../generic/edit';
 import { CommonEditContextProvider } from '../../../generic/edit/ctrl';
-import { PersonEditStore } from './ctrl';
+import { UserEditStore } from './ctrl';
 
 export * from './components/about';
 export * from './components/authorization';
 export * from './components/permissions';
 export * from './components/profiles';
 
-const PersonEdit: React.FC = () => {
-  const ctrl = new PersonEditStore();
+const UserEdit: React.FC = () => {
+  const ctrl = new UserEditStore();
 
   return (
     <CommonEditContextProvider value={ctrl}>
@@ -17,4 +17,4 @@ const PersonEdit: React.FC = () => {
   );
 };
 
-export default PersonEdit;
+export default UserEdit;

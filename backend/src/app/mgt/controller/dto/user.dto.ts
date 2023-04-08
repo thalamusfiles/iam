@@ -11,7 +11,7 @@ export class FindUserPropsDto extends FindProps<User> {
 
   @Expose()
   @Type(() => String)
-  @IsIn(['roles', 'roles.permissions', 'createdBy', 'updatedBy'], { each: true })
+  @IsIn(['roles', 'roles.permissions', 'userLogins', 'createdBy', 'updatedBy'], { each: true })
   populate?: Array<string>;
 }
 

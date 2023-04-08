@@ -6,30 +6,29 @@ import Row from 'react-bootstrap/Row';
 import { IconsDef } from '../../../../commons/consts';
 import { useI18N } from '../../../../commons/i18';
 import { historyPush, historySearch, historySearchReplace } from '../../../../commons/route';
+import { SideBar } from '../../../../components/SideBar/SideBar';
 import { SideBarAction } from '../../../../components/SideBar/SideBarAction';
-import PersonDefaultList from './defaultlist';
+import UserDefaultList from './defaultlist';
 
-export const PersonList: React.FC = () => {
+export const UserList: React.FC = () => {
   const __ = useI18N();
   const { list } = historySearch();
 
   return (
     <Container fluid>
       <Row>
-        <Col md={2}>
-          <SideBarEdit />
-        </Col>
-        {(!list || list === 'person') && (
+        <SideBarEdit />
+        {(!list || list === 'user') && (
           <Col md={10}>
-            <h1 id="person_about">
-              {IconsDef.person.map((icon) => (
-                <FontAwesomeIcon icon={icon} />
+            <h1 id="user_about">
+              {IconsDef.user.map((icon, idx) => (
+                <FontAwesomeIcon icon={icon} key={idx} />
               ))}
-              &nbsp; {__('person.list.title')}
+              &nbsp; {__('user.list.title')}
             </h1>
-            <p>{__('person.list.about.description')}</p>
+            <p>{__('user.list.about.description')}</p>
 
-            <PersonDefaultList />
+            <UserDefaultList />
           </Col>
         )}
       </Row>
@@ -41,26 +40,21 @@ export const SideBarEdit: React.FC = () => {
   const __ = useI18N();
 
   return (
-    <>
+    <SideBar colSize={2}>
       <div className="title">{__('menu.actions')}</div>
-      <SideBarAction faicon={IconsDef.new} title={__('actions.new')} variant="outline-primary" onClick={() => historyPush('person_new')} />
+      <SideBarAction faicon={IconsDef.new} title={__('actions.new')} variant="outline-primary" onClick={() => historyPush('user_new')} />
       <SideBarAction faicon={IconsDef.goBack} title={__('actions.back')} variant="outline-secondary" onClick={() => historyPush(-1)} />
 
       <div className="title">{__('menu.lists')}</div>
-      <SideBarAction
-        faicon={IconsDef.person[0]}
-        title={__('person.list.title')}
-        variant="light"
-        onClick={() => historySearchReplace({ list: 'person' })}
-      />
+      <SideBarAction faicon={IconsDef.user[0]} title={__('user.list.title')} variant="light" onClick={() => historySearchReplace({ list: 'user' })} />
       <SideBarAction
         faicon={IconsDef.permissions}
-        title={__('person.permissions.list.title')}
+        title={__('user.permissions.list.title')}
         variant="light"
-        onClick={() => historySearchReplace({ list: 'person_permissions' })}
+        onClick={() => historySearchReplace({ list: 'user_permissions' })}
       />
-    </>
+    </SideBar>
   );
 };
 
-export default PersonList;
+export default UserList;

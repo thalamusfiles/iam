@@ -1,8 +1,9 @@
 import { Check, Entity, Enum, Index, ManyToOne, Property } from '@mikro-orm/core';
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { IamBaseEntity } from './Base/IamBaseEntity';
 import { User } from './User';
 
+@Exclude()
 @Entity({ schema: 'public' })
 @Index({
   name: 'user_login_unique_type_by_user',
@@ -19,20 +20,20 @@ export class UserLogin extends IamBaseEntity {
   @ManyToOne(() => User, { nullable: true })
   user!: User;
 
+  @Expose()
   @Enum(() => UserLoginType)
   @Property({ nullable: false })
   type!: string;
 
+  @Expose()
   @Check({ expression: 'LENGTH(username) >= 6' })
   @Property({ nullable: true, length: 128 })
   username!: string;
 
-  @Exclude()
   @Check({ expression: 'LENGTH(_salt) = 64' })
   @Property({ nullable: true, length: 64 })
   _salt!: string;
 
-  @Exclude()
   @Check({ expression: 'LENGTH(_password) >= 128' })
   @Property({ nullable: false, length: 512 })
   _password!: string;

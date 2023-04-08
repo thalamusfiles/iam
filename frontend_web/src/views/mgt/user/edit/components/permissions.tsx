@@ -10,10 +10,10 @@ import Table from 'react-bootstrap/Table';
 import { useI18N } from '../../../../../commons/i18';
 import { addPagePlugin, TargetForm } from '../../../../../commons/plugin.component';
 import { useCommonEditStore } from '../../../../generic/edit/ctrl';
-import { PersonEditStore } from '../ctrl';
+import { UserEditStore } from '../ctrl';
 
 const PermissionComp: React.FC = () => {
-  const ctrl = useCommonEditStore<PersonEditStore>();
+  const ctrl = useCommonEditStore<UserEditStore>();
   const __ = useI18N();
   const [view, setView] = useState('table');
 
@@ -25,8 +25,8 @@ const PermissionComp: React.FC = () => {
     <>
       <Row>
         <Col>
-          <h2 id="person_permissions">{__('person.edit.permissions.title')}:</h2>
-          <p>{__('person.edit.permissions.description')}</p>
+          <h2 id="user_permissions">{__('user.edit.permissions.title')}:</h2>
+          <p>{__('user.edit.permissions.description')}</p>
         </Col>
         <Col md={1}>
           <ButtonGroup>
@@ -153,8 +153,8 @@ const ListHierarchy: React.FC<{ permissions: any[] }> = ({ permissions }) => {
 
 addPagePlugin({
   component: PermissionComp,
-  name: 'person_permissions',
+  name: 'user_permissions',
   sidebarTitle: 'Permissions',
-  target: TargetForm.person_edit,
+  target: TargetForm.user_edit,
   order: 30,
 });

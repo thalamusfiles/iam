@@ -6,9 +6,9 @@ export type RoutesName =
   | 'home_account'
   // MGT
   | 'home'
-  | 'person_list'
-  | 'person_edit'
-  | 'person_new'
+  | 'user_list'
+  | 'user_edit'
+  | 'user_new'
   | 'role_list'
   | 'role_edit'
   | 'role_new'

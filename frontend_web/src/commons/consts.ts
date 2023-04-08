@@ -4,7 +4,7 @@ export const ColorsDef = {
   // Listagem
   defaultBadgeVariant: 'info',
   // Cadastros
-  personVariant: 'info',
+  userVariant: 'info',
   rolesVariant: 'success',
   permissionsVariant: 'outline-dark',
   // Sistemas
@@ -32,7 +32,7 @@ export const IconsDef = {
   management: 'tasks' as IconName,
   // Cadastros
   attachment: 'file' as IconName,
-  person: ['user', 'building'] as Array<IconName>,
+  user: ['user', 'building'] as Array<IconName>,
   roles: 'file' as IconName,
   permissions: 'lock-open' as IconName,
   region: 'map-marked' as IconName,

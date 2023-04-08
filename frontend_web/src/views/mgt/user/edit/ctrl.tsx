@@ -1,4 +1,4 @@
-import { PersonCRUDDatasource } from '@thalamus/iam-consumer';
+import { UserCRUDDatasource } from '@thalamus/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { useParams } from 'react-router-dom';
 import { TargetForm } from '../../../../commons/plugin.component';
@@ -6,8 +6,8 @@ import { historyPush } from '../../../../commons/route';
 import { notify } from '../../../../components/Notification';
 import { CommonEditCtx } from '../../../generic/edit/ctrl';
 
-export class PersonEditStore extends CommonEditCtx {
-  datasource = new PersonCRUDDatasource();
+export class UserEditStore extends CommonEditCtx {
+  datasource = new UserCRUDDatasource();
 
   //Conteudo da tela
   @observable content: any = {};
@@ -34,7 +34,7 @@ export class PersonEditStore extends CommonEditCtx {
   ];
 
   constructor() {
-    super(TargetForm.person_edit, false);
+    super(TargetForm.user_edit, false);
 
     makeObservable(this);
   }
@@ -83,7 +83,7 @@ export class PersonEditStore extends CommonEditCtx {
       notify.success('Saved successfully.');
 
       if (isNew) {
-        historyPush('person_edit', this.content.id);
+        historyPush('user_edit', this.content.id);
       }
     } catch (err) {
       const message = (err as any).response?.data?.message || 'An error occurred while saving.';
@@ -109,7 +109,7 @@ export class PersonEditStore extends CommonEditCtx {
 
   loadProfileRoles = () => {
     /*const { roles } = this.props!.ctrl;
-    new ConfigPersonRoleCRUDDatasource().findAll().then((response) => {
+    new ConfigUserRoleCRUDDatasource().findAll().then((response) => {
       if (response)
         roles = response
     });*/

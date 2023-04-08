@@ -12,8 +12,8 @@ export enum AttributeType {
 }
 
 export const PickersNames = {
-  person: 'person_picker',
+  user: 'user_picker',
   application: 'application_picker',
 };
 
-export type PickerType = 'person_picker' | string;
+export type PickerType = 'user_picker' | string;

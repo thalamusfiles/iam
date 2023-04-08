@@ -37,14 +37,14 @@ export function getLinkTo(owner: RoutesName | string | number, options: { uuid: 
     case 'home':
       push = '/mgt/home';
       break;
-    case 'person_list':
-      push = '/mgt/person/list';
+    case 'user_list':
+      push = '/mgt/user/list';
       break;
-    case 'person_edit':
-      push = '/mgt/person/edit/:uuid'.replace(':uuid', options.uuid);
+    case 'user_edit':
+      push = '/mgt/user/edit/:uuid'.replace(':uuid', options.uuid);
       break;
-    case 'person_new':
-      push = '/mgt/person/new';
+    case 'user_new':
+      push = '/mgt/user/new';
       break;
     case 'role_list':
       push = '/mgt/role/list';

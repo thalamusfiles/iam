@@ -7,8 +7,8 @@ import LoginsPage from '../account/logins';
 import { ApplicationEdit, ApplicationList } from './application';
 import Home from './home';
 import { PermissionEdit, PermissionList } from './permission';
-import { PersonEdit, PersonList } from './person';
 import { RoleEdit, RoleList } from './roles';
+import { UserEdit, UserList } from './user';
 
 /**
  * Definições das rotas.
@@ -20,10 +20,10 @@ export const routes: RouteDefinitions = {
   //
   devices_connected: { title: '', path: '/devices/connected', component: DevicesConnectedPage },
   logins_history: { title: '', path: '/logins/history', component: LoginsPage },
-  //// Person
-  person_list: { title: 'person.list.title', icon: IconsDef.person, path: '/person/list', component: PersonList },
-  person_edit: { title: 'person.edit.title', icon: IconsDef.person, path: '/person/edit/:uuid', component: PersonEdit },
-  person_new: { title: 'person.new.title', icon: IconsDef.person, path: '/person/new', component: PersonEdit },
+  //// User
+  user_list: { title: 'user.list.title', icon: IconsDef.user, path: '/user/list', component: UserList },
+  user_edit: { title: 'user.edit.title', icon: IconsDef.user, path: '/user/edit/:uuid', component: UserEdit },
+  user_new: { title: 'user.new.title', icon: IconsDef.user, path: '/user/new', component: UserEdit },
   // Role
   role_list: { title: 'roles.list.title', icon: IconsDef.roles, path: '/role/list', component: RoleList },
   role_edit: { title: 'roles.edit.title', path: '/role/edit/:uuid', component: RoleEdit },

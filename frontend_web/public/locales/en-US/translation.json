@@ -145,7 +145,7 @@
       "systems": "Systems",
       "region": "Região",
       "applications": "Applications",
-      "person": "Users",
+      "user": "Users",
       "roles": "Scopes / Roles / Profiles / Positions",
       "permissions": "Permissions / Resources",
       "my_devices_connected": "My connected devices",
@@ -188,7 +188,7 @@
       "filter-remove": "Clique para remover o filtro"
     }
   },
-  "person": {
+  "user": {
     "new.title": "New User",
     "list": {
       "title": "User listing",
