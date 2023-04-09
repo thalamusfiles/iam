@@ -58,8 +58,8 @@ const ListView: React.FC = observer(() => {
   const ctrl = useCommonEditStore<RoleEditStore>();
   const { permissions } = ctrl;
 
-  const makeListGroup = (perm: any) => (
-    <ListGroup.Item onClick={() => ctrl.togglePermission(perm.uuid)}>
+  const makeListGroup = (perm: any, idx: number) => (
+    <ListGroup.Item onClick={() => ctrl.togglePermission(perm.uuid)} key={idx}>
       <Form.Check
         type="checkbox"
         name={perm.initials}
@@ -96,8 +96,8 @@ const ListTable: React.FC = observer(() => {
       <thead>
         <tr>
           <th>On</th>
-          {ctrl.permissionsActs.map((act) => (
-            <th>{act}</th>
+          {ctrl.permissionsActs.map((act, idx) => (
+            <th key={idx}>{act}</th>
           ))}
         </tr>
       </thead>
@@ -109,7 +109,7 @@ const ListTable: React.FC = observer(() => {
               const key = `${on}.${act}`;
               const perm = ctrl.permissionsByOnAct[key];
               return (
-                <td>
+                <td key={key}>
                   <Form.Check
                     type="checkbox"
                     name={on + '_' + act}

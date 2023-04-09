@@ -30,6 +30,7 @@ export class ApplicationEditStore extends CommonEditCtx {
    * Carregas o conteudo da tela
    * @param id
    */
+  @action
   loadContent = async (uuid: any) => {
     this.loading = true;
 
@@ -44,6 +45,7 @@ export class ApplicationEditStore extends CommonEditCtx {
     this.loading = false;
   };
 
+  @action
   onSave = async () => {
     this.loading = true;
 

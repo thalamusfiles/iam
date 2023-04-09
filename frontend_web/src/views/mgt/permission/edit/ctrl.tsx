@@ -34,6 +34,7 @@ export class PermissionEditStore extends CommonEditCtx {
    * Carregas o conteudo da tela
    * @param uuid
    */
+  @action
   loadContent = async (uuid: string) => {
     this.loading = true;
 
@@ -51,6 +52,7 @@ export class PermissionEditStore extends CommonEditCtx {
   /**
    *
    */
+  @action
   loadRoles = async (uuid: string) => {
     try {
       this.contentRoles = await this.roleDatasource.findAll();
@@ -60,6 +62,7 @@ export class PermissionEditStore extends CommonEditCtx {
     }
   };
 
+  @action
   onSave = async () => {
     this.loading = true;
 

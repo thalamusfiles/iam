@@ -66,6 +66,7 @@ export class RoleEditStore extends CommonEditCtx {
    * Carregas o conteudo da tela
    * @param id
    */
+  @action
   loadContent = async (id: any) => {
     this.loading = true;
 
@@ -85,6 +86,7 @@ export class RoleEditStore extends CommonEditCtx {
    * Check ou descheca a permissão
    * @param uuid
    */
+  @action
   togglePermission = (uuid: string) => {
     const idx = this.contentPermissionsUuids.indexOf(uuid);
     if (idx > -1) {
@@ -94,6 +96,7 @@ export class RoleEditStore extends CommonEditCtx {
     }
   };
 
+  @action
   onSave = async () => {
     this.loading = true;
 

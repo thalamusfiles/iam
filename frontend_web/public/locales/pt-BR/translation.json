@@ -68,7 +68,7 @@
   },
   "logins": {
     "title": "Todos os logins realizados",
-    "description": "Listagem de dispositivos conectados no momento",
+    "description": "Histórico de logins realizados.",
     "device": "Dispositivo",
     "to_application": "Aplicação",
     "login_at": "Realizado em"

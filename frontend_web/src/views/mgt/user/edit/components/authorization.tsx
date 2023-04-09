@@ -7,9 +7,7 @@ import { useI18N } from '../../../../../commons/i18';
 import { addPagePlugin, TargetForm } from '../../../../../commons/plugin.component';
 
 const AuthorizationComp: React.FC = () => {
-  //const ctrl = useCommonEditStore<UserEditStore>();
   const __ = useI18N();
-  //const { content, assignContent } = ctrl;
 
   return (
     <>
