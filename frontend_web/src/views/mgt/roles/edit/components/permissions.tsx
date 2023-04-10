@@ -102,8 +102,8 @@ const ListTable: React.FC = observer(() => {
         </tr>
       </thead>
       <tbody>
-        {ctrl.permissionsOns.map((on) => (
-          <tr>
+        {ctrl.permissionsOns.map((on, idx) => (
+          <tr key={idx}>
             <td>{on}</td>
             {ctrl.permissionsActs.map((act) => {
               const key = `${on}.${act}`;

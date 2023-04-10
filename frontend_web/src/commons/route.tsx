@@ -37,6 +37,9 @@ export function getLinkTo(owner: RoutesName | string | number, options: { uuid: 
     case 'home':
       push = '/mgt/home';
       break;
+    case 'change_application':
+      push = '/mgt/context/change_application';
+      break;
     case 'user_list':
       push = '/mgt/user/list';
       break;
@@ -63,15 +66,6 @@ export function getLinkTo(owner: RoutesName | string | number, options: { uuid: 
       break;
     case 'permission_new':
       push = '/mgt/permission/new';
-      break;
-    case 'region_list':
-      push = '/mgt/region/list';
-      break;
-    case 'region_edit':
-      push = '/mgt/region/edit/:uuid'.replace(':uuid', options.uuid);
-      break;
-    case 'region_new':
-      push = '/mgt/region/new';
       break;
     case 'application_list':
       push = '/mgt/application/list';

@@ -53,6 +53,12 @@
       "tologin":"Entrar com conta existente"
     }
   },
+  "changeapplication": {
+    "title": "Gerenciar aplicação",
+    "subtitle": "Selecione a aplicação que você pretende gerenciar.",
+    "application": "Aplicação",
+    "description": "Descrição da aplicação"
+  },
   "account" : {
     "home": {
       "title": "Bem vindo {{name}}!",

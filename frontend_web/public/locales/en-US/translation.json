@@ -53,6 +53,12 @@
       "tologin":"Login with existing account"
     }
   },
+  "changeapplication": {
+    "title": "Aplication to manager",
+    "subtitle": "Select the application that you would like to manager.",
+    "application": "Application",
+    "description": "Description of application"
+  },
   "account" : {
     "home": {
       "title": "Welcome {{name}}!",

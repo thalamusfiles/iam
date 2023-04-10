@@ -1,8 +1,10 @@
-import { ApplicationInfo, OauthDataSource } from '@thalamus/iam-consumer';
+import { ApplicationCRUDDatasource, ApplicationInfo } from '@thalamus/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
 
 export class ApplicationInfoCtrl {
+  datasource = new ApplicationCRUDDatasource();
+
   constructor() {
     // Modifica classe pra ser observável
     makeObservable(this);
@@ -24,9 +26,9 @@ export class ApplicationInfoCtrl {
   };
 
   @action
-  loadApplicationInfo = () => {
-    new OauthDataSource().applicationInfo(this.applicationUuid!).then((response) => {
-      this.appInfo = response.data;
+  loadApplicationInfo = async () => {
+    this.datasource.findById(this.applicationUuid!).then((response) => {
+      this.appInfo = response;
     });
   };
 }

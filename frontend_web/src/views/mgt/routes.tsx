@@ -5,6 +5,7 @@ import { InModal } from '../../components/Modal';
 import DevicesConnectedPage from '../account/devices';
 import LoginsPage from '../account/logins';
 import { ApplicationEdit, ApplicationList } from './application';
+import ChangeApplication from './context/changeapplication';
 import Home from './home';
 import { PermissionEdit, PermissionList } from './permission';
 import { RoleEdit, RoleList } from './roles';
@@ -17,6 +18,7 @@ import { UserEdit, UserList } from './user';
 export const routes: RouteDefinitions = {
   // Home
   home: { title: 'menu.home', path: '/home', component: Home, index: true },
+  context_change_application: { title: 'menu.home', path: '/context/change_application', component: ChangeApplication, index: true },
   //
   devices_connected: { title: '', path: '/devices/connected', component: DevicesConnectedPage },
   logins_history: { title: '', path: '/logins/history', component: LoginsPage },

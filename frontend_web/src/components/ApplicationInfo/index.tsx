@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { useI18N } from '../../commons/i18';
+import { historyPush } from '../../commons/route';
 import { useUserStore } from '../../store/userContext';
 import { ApplicationInfoCtrl, ApplicationInfoProvider, useApplicationInfoStore } from './ctrl';
 
@@ -11,7 +12,7 @@ const ApplicationInfo: React.FC = observer(() => {
   const userCtx = useUserStore();
 
   useEffect(() => {
-    ctrl.setParams(userCtx.user.applicationLogged);
+    ctrl.setParams(userCtx.application?.uuid || userCtx.user.applicationLogged);
   });
 
   return (
@@ -27,7 +28,14 @@ const ApplicationInfoProvided: React.FC = observer(() => {
 
   return (
     <ButtonGroup style={{ float: 'right' }} id="application_info">
-      <Button size="sm" variant="outline-secondary" title={__('login.application')}>
+      <Button
+        size="sm"
+        variant="outline-secondary"
+        title={__('login.application')}
+        onClick={() => {
+          historyPush('change_application', { inModal: true });
+        }}
+      >
         {ctrl.appInfo?.name || __('info.notloaded')}
       </Button>
     </ButtonGroup>
