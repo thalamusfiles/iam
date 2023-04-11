@@ -36,5 +36,7 @@ export class Migration20230210300000_application extends Migration {
     this.addSql('alter table "system"."application" add constraint "application_initials_unique" unique ("initials");');
   }
 
-  async down(): Promise<void> {}
+  async down(): Promise<void> {
+    this.addSql('drop table if exists "user" application;');
+  }
 }
