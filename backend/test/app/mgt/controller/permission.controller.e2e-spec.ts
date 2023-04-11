@@ -96,9 +96,9 @@ describe('PermissionController (e2e)', () => {
     expect(result.body.entity).toBeDefined();
     expect(result.body.entity.uuid).toBeTruthy();
     expect(result.body.entity.uuid).toEqual(uuidPermissionSaved);
-    expect(result.body.entity.on).not.toBeTruthy();
-    expect(result.body.entity.action).not.toBeTruthy();
-    expect(result.body.entity.initials).not.toBeTruthy();
+    expect(result.body.entity.on).toBeTruthy();
+    expect(result.body.entity.action).toBeTruthy();
+    expect(result.body.entity.initials).toEqual(initialsPermissionCheck);
     expect(result.body.entity.description).toEqual(permissionUpdateData.description);
   });
 
@@ -123,7 +123,7 @@ describe('PermissionController (e2e)', () => {
     expect(result.body.entity.on).toBeTruthy();
     expect(result.body.entity.action).toBeTruthy();
     expect(result.body.entity.initials).toEqual(initialsPermission02Check);
-    expect(result.body.entity.description).not.toBeTruthy();
+    expect(result.body.entity.description).toBeTruthy();
   });
 
   it(`${permissionUrl}/ (Put) Tenta atualiza a aplicação do registro modificando header (não pode)`, async () => {

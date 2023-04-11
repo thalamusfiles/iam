@@ -41,9 +41,10 @@ class RoleCreateDto {
   description: string;
 
   @Expose()
+  @IsOptional()
   @IsArray()
   @Type(() => RolePermissionDto)
-  permissions: Array<RolePermissionDto>;
+  permissions?: Array<RolePermissionDto>;
 }
 
 // DTO create Role
@@ -75,9 +76,10 @@ class RoleUpdateDto {
   description?: string;
 
   @Expose()
+  @IsOptional()
   @IsArray()
   @Type(() => RolePermissionDto)
-  permissions: Array<RolePermissionDto>;
+  permissions?: Array<RolePermissionDto>;
 }
 
 // DTO update Role

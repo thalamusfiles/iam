@@ -69,8 +69,9 @@ describe('AuthController (e2e)', () => {
       }),
     );
     expect(result.body.info.applicationLogged).toEqual(registerDto01.cliente_id);
+    expect(result.body.access_token).toBeDefined();
+    expect(result.body.info).toBeDefined();
 
-    accessToken = result.body.access_token;
     userInfo = result.body.info;
   });
 
@@ -109,6 +110,9 @@ describe('AuthController (e2e)', () => {
       }),
     );
     expect(result.body.info.applicationLogged).toEqual(registerDto01.cliente_id);
+
+    accessToken = result.body.access_token;
+
   });
 
   it(`${authUrl}/login (Post) Realiza o login com o primeiro usuário`, async () => {

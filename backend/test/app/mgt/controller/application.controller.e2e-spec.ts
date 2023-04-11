@@ -98,7 +98,7 @@ describe('ApplicationController (e2e)', () => {
     expect(result.body.entity).toBeDefined();
     expect(result.body.entity.uuid).toBeTruthy();
     expect(result.body.entity.uuid).toEqual(uuidApplicationSaved);
-    expect(result.body.entity.initials).not.toBeTruthy();
+    expect(result.body.entity.initials).toEqual(initialsApplicationCheck);
     expect(result.body.entity.name).toEqual(applicationUpdateData2.name);
 
     // Verifica os dados não informados
@@ -170,7 +170,7 @@ describe('ApplicationController (e2e)', () => {
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).delete(deleteUrl)).expect(200);
   });
 
-  it(`${applicationUrl}/ (Get) Busca aplicação (principal) com "createdBy" e "updatedBy`, async () => {
+  it(`${applicationUrl}/ (Get) Busca aplicações (where: %initial% ) com "createdBy" e "updatedBy`, async () => {
     const initials = iamConfig.MAIN_APP_IAM;
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(applicationUrl))
       .query({
@@ -180,7 +180,7 @@ describe('ApplicationController (e2e)', () => {
       .expect(200);
 
     expect(result.body).toBeTruthy();
-    expect(result.body.length).toEqual(1);
+    expect(result.body.length).toEqual(2);
     expect(result.body[0].initials).toEqual(initials);
     expect(result.body[0].createdBy).toBeTruthy();
     expect(result.body[0].updatedBy).toBeTruthy();
