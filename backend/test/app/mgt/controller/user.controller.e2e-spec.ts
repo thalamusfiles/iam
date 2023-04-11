@@ -112,29 +112,9 @@ describe('UserController (e2e)', () => {
     //await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).delete(deleteUrl)).expect(200);
   });
 
-  /*it(`${userUrl}/ (Get) Busca usuário (principal) com "roles.permissions"`, async () => {
-    const initials = iamConfig.MAIN_REGION;
-    const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(userUrl))
-      .query({
-        where: { initials: initials },
-        populate: ['roles', 'roles.permissions', 'createdBy', 'updatedBy'],
-      })
-      .expect(200);
-
-    expect(result.body).toBeTruthy();
-    expect(result.body.length).toEqual(1);
-    expect(result.body[0].initials).toEqual(initials);
-    expect(result.body[0].createdBy).toBeTruthy();
-    expect(result.body[0].updatedBy).toBeTruthy();
-    expect(result.body[0].roles.length).toBeGreaterThanOrEqual(1);
-    expect(result.body[0].roles[0].permissions).toBeGreaterThanOrEqual(1);
-  });*/
-
   it(`${userUrl}/ (Get) Busca usuário (principal) com "roles" e "roles.users" (não pode)`, async () => {
-    const initials = iamConfig.MAIN_REGION;
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(userUrl))
       .query({
-        where: { initials: initials },
         populate: ['roles', 'roles.users'],
       })
       .expect(400);

@@ -14,8 +14,6 @@ export enum TargetForm {
   role_list,
   permission_edit,
   permission_list,
-  region_edit,
-  region_list,
   application_edit,
   application_list,
 }

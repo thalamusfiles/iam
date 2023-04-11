@@ -7,7 +7,7 @@ import { EntityProps } from '../../../../src/app/mgt/types/crud.controller';
 import { AccessGuard } from '../../../../src/app/auth/passaport/access.guard';
 import { JTWGuardMockAdmin } from '../../../mocks/jwt.mock';
 import { faker } from '@faker-js/faker';
-import { addGlobalIAMMgtRequestHeader, addRegionAppRequestHeader } from '../../../utils/setheader.utils';
+import { addGlobalIAMMgtRequestHeader, addAppRequestHeader } from '../../../utils/setheader.utils';
 import iamConfig from '../../../../src/config/iam.config';
 
 describe('PermissionController (e2e)', () => {
@@ -136,7 +136,7 @@ describe('PermissionController (e2e)', () => {
       },
     };
     // Informa o Header de outra aplicação
-    await addRegionAppRequestHeader(request(app.getHttpServer()).put(updateUrl)).send(permissionUpdate).expect(200);
+    await addAppRequestHeader(request(app.getHttpServer()).put(updateUrl)).send(permissionUpdate).expect(200);
 
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(findByUrl)).expect(200);
     expect(result.body).toBeDefined();

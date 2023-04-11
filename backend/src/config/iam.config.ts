@@ -22,8 +22,6 @@ const iamConfig = {
 
   // Scopo principal
   MAIN_SCOPE_IAM: 'iam_all',
-  // Região Principal
-  MAIN_REGION: 'global',
   // Aplicação de authenticação SSO
   MAIN_APP_IAM: 'iam',
   MAIN_APP_IAM_ID: '11111111-1111-1111-1111-111111111111',

@@ -31,4 +31,3 @@ asd
 | /roles            | GET    |             |
 | /permissions      | GET    |             |
 | /applications     | GET    |             |
-| /regions          | GET    |             |

@@ -4,7 +4,6 @@ import { User } from '../model/User';
 import { UserLogin } from '../model/UserLogin';
 import { Permission } from '../model/Permission';
 import { Role } from '../model/Role';
-import { Region } from '../model/System/Region';
 import { Application } from '../model/System/Application';
 import { UserToken } from '../model/UserToken';
 
@@ -20,7 +19,6 @@ const defaultModelConfig = {
 const modelConfig: MikroOrmModuleSyncOptions = {
   entities: [
     // System
-    Region,
     Application,
     // Base
     User,

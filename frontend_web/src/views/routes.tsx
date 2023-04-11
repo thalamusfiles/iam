@@ -10,7 +10,7 @@ const Account = React.lazy(() => import('./account'));
 const Mgt = React.lazy(() => import('./mgt'));
 
 const accountLoginRoute = `/public/app/${iamConfig.MAIN_APP_IAM_ID}/login?scope=${iamConfig.DEFAULT_SCOPE}&redirectTo=${window.location.origin}/account`;
-const mgtLoginRoute = `/public/app/${iamConfig.MAIN_APP_IAM_MGT_ID}/login?scope=${iamConfig.DEFAULT_SCOPE}&redirectTo=${window.location.origin}/mgt`;
+const mgtLoginRoute = `/public/app/${iamConfig.MAIN_APP_IAM_MGT_ID}/login?scope=${iamConfig.DEFAULT_SCOPE}&redirectTo=${window.location.origin}/mgt/home/modal/context/change_application`;
 
 const routes = (
   <>

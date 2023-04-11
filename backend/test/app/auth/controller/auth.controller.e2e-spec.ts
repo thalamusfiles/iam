@@ -147,7 +147,6 @@ describe('AuthController (e2e)', () => {
 
     // Modifica conteudo do JTW
     const payloadData = JSON.parse(Buffer.from(payload, 'base64').toString());
-    payloadData.regionLogged = 'xxxx';
     payloadData.applicationLogged = 'xxxx';
 
     // Gera novo conteúdo (Payload)

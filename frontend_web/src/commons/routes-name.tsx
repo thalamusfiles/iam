@@ -5,7 +5,7 @@ export type RoutesName =
   // ACCOUNT
   | 'home_account'
   // MGT
-  | 'home'
+  | 'home_mgt'
   | 'user_list'
   | 'user_edit'
   | 'user_new'

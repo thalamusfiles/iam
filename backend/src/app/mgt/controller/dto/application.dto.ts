@@ -11,7 +11,7 @@ export class FindApplicationPropsDto extends FindProps<Application> {
 
   @Expose()
   @Type(() => String)
-  @IsIn(['regions', 'createdBy', 'updatedBy'], { each: true })
+  @IsIn(['createdBy', 'updatedBy'], { each: true })
   populate?: Array<string>;
 }
 
@@ -35,10 +35,6 @@ class ApplicationCreateDto {
   @Expose()
   @IsNotEmpty()
   public: boolean;
-
-  /*@Expose()
-  @IsArray()
-  regions: Array<{ uuid: string }> | Array<string>;*/
 }
 
 // DTO create Application

@@ -8,7 +8,6 @@ export const ColorsDef = {
   rolesVariant: 'success',
   permissionsVariant: 'outline-dark',
   // Sistemas
-  regionVariant: 'outline-warning',
   applicationsVariant: 'outline-danger',
   // Atividades
   historyVariant: 'light',
@@ -35,7 +34,6 @@ export const IconsDef = {
   user: ['user', 'building'] as Array<IconName>,
   roles: 'file' as IconName,
   permissions: 'lock-open' as IconName,
-  region: 'map-marked' as IconName,
   applications: ['desktop', 'laptop'] as Array<IconName>,
   // Atividades
   tokensActive: 'mobile-alt' as IconName,

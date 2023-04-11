@@ -21,7 +21,6 @@ class EndpointsConfigure {
   apiMGTUser = `/user`;
   apiMGTRole = `/role`;
   apiMGTPermission = `/permission`;
-  apiMGTRegion = `/region`;
   apiMGTApplication = `/application`;
 
   configureEndpoint = (baseUrl: string = 'localhost', basePort: string = '3000') => {

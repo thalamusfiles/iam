@@ -36,13 +36,3 @@ export class ApplicationCRUDDatasource extends CRUDDatasource {
     super(Endpoints.apiMGTApplication);
   }
 }
-
-
-/**
- * Region
- */
-export class RegionCRUDDatasource extends CRUDDatasource {
-  constructor() {
-    super(Endpoints.apiMGTRegion);
-  }
-}

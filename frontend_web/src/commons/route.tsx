@@ -34,7 +34,7 @@ export function getLinkTo(owner: RoutesName | string | number, options: { uuid: 
       push = '/logins/history';
       break;
     // MGT
-    case 'home':
+    case 'home_mgt':
       push = '/mgt/home';
       break;
     case 'change_application':

@@ -9,26 +9,12 @@ import { JTWGuardMockAdmin } from '../../../mocks/jwt.mock';
 import { faker } from '@faker-js/faker';
 import { addGlobalIAMMgtRequestHeader } from '../../../utils/setheader.utils';
 import iamConfig from '../../../../src/config/iam.config';
-import { Region } from '../../../../src/model/System/Region';
 
 describe('ApplicationController (e2e)', () => {
   let app: INestApplication;
 
   // Registros utilizado nos testes
-  const regionUrl = '/mgt/region';
   const applicationUrl = '/mgt/application';
-
-  // Cadastros de testes
-  // Região
-  let uuidRegionSaved = null;
-  const regionName = 'Reg Tst' + faker.address.country();
-  const regionToCreate: EntityProps<Region> = {
-    entity: {
-      initials: regionName.toLocaleUpperCase(),
-      name: regionName,
-      description: 'Região de aplicações com único servidor',
-    },
-  };
 
   // Aplicação
   let uuidApplicationSaved = null;
@@ -65,18 +51,7 @@ describe('ApplicationController (e2e)', () => {
   });
 
   // Inicio dos testes
-  it(`${regionUrl}/ (Post) Cria a região utilizada nos testes de aplicação`, async () => {
-    const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(regionUrl)).send(regionToCreate).expect(201);
-
-    expect(result.body.entity).toBeDefined();
-    expect(result.body.entity.uuid).toBeTruthy();
-
-    uuidRegionSaved = result.body.entity.uuid;
-  });
-
-  // Inicio dos testes
   it(`${applicationUrl}/ (Post) Cria nova aplicação`, async () => {
-    //applicationToCreate.entity.regions = uuidRegionSaved as any;
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(applicationUrl)).send(applicationToCreate).expect(201);
 
     expect(result.body.user).toBeDefined();
@@ -195,37 +170,19 @@ describe('ApplicationController (e2e)', () => {
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).delete(deleteUrl)).expect(200);
   });
 
-  it(`${applicationUrl}/ (Get) Busca aplicação (principal) com "regions"`, async () => {
+  it(`${applicationUrl}/ (Get) Busca aplicação (principal) com "createdBy" e "updatedBy`, async () => {
     const initials = iamConfig.MAIN_APP_IAM;
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(applicationUrl))
       .query({
         where: { initials: initials },
-        populate: ['regions', 'createdBy', 'updatedBy'],
+        populate: ['createdBy', 'updatedBy'],
       })
       .expect(200);
 
     expect(result.body).toBeTruthy();
     expect(result.body.length).toEqual(1);
     expect(result.body[0].initials).toEqual(initials);
-    expect(result.body[0].regions.length).toBeGreaterThanOrEqual(1);
-    expect(result.body[0].regions).toContainEqual(expect.objectContaining({ initials: iamConfig.MAIN_REGION }));
     expect(result.body[0].createdBy).toBeTruthy();
     expect(result.body[0].updatedBy).toBeTruthy();
-  });
-
-  it(`${applicationUrl}/ (Get) Busca aplicação (principal) com "regions" e "regions.applications" (não pode)`, async () => {
-    const initials = iamConfig.MAIN_APP_IAM;
-    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(applicationUrl))
-      .query({
-        where: { initials: initials },
-        populate: ['regions', 'regions.applications'],
-      })
-      .expect(400);
-  });
-
-  it(`${regionUrl}/ (Delete) Remover registro da região utilizada nos testes`, async () => {
-    const deleteUrl = `${regionUrl}/${uuidRegionSaved}`;
-
-    await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).delete(deleteUrl)).expect(200);
   });
 });

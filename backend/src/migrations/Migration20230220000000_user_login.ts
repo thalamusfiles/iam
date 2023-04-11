@@ -40,13 +40,6 @@ export class Migration20230220000000_user_login extends Migration {
     this.addSql('alter table "user" drop constraint user_name_check;');
     this.addSql('alter table "user" add constraint user_name_check check(LENGTH(name) >= 4);');
 
-    this.addSql('alter table "system"."region" drop constraint region_initials_check;');
-    this.addSql('alter table "system"."region" drop constraint region_name_check;');
-    this.addSql('alter table "system"."region" drop constraint region_description_check;');
-    this.addSql('alter table "system"."region" add constraint region_initials_check check(LENGTH(initials) >= 4);');
-    this.addSql('alter table "system"."region" add constraint region_name_check check(LENGTH(initials) >= 4);');
-    this.addSql('alter table "system"."region" add constraint region_description_check check(LENGTH(initials) >= 10);');
-
     this.addSql('alter table "system"."application" drop constraint application_initials_check;');
     this.addSql('alter table "system"."application" drop constraint application_name_check;');
     this.addSql('alter table "system"."application" drop constraint application_description_check;');
