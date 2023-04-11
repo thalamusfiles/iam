@@ -24,7 +24,17 @@ export class UserService implements CRUDService<User> {
   async find(query?: FindProps<User>): Promise<User[]> {
     this.logger.verbose('Find all');
 
-    const options: FindOptions<User> = {};
+    const options: FindOptions<User> = {
+      orderBy: {},
+      limit: query.limit,
+      offset: query.offset,
+    };
+
+    // Ilike name
+    if (query?.where?.name) {
+      query.where.name = { $ilike: `%${query.where.name}%` };
+    }
+
     if (query.populate) {
       Object.assign(options, { populate: query.populate });
     }

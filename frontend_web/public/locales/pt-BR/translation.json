@@ -86,7 +86,11 @@
     "edit": {
       "about.title": "Aplicação",
       "about.description": "Informe os campos abaixo para criar/modificar a aplicação.",
-      "about.initials_append": "Após salvar este campo não poderá ser alterado."
+      "about.initials_append": "Após salvar este campo não poderá ser alterado.",
+      "managers.title": "Gerentes",
+      "managers.description": "Usuários com permissão para alterar os escopos/perfis e permissões deste aplicação.",
+      "manager": "Gerente",
+      "username": "Login"
     }
   },
   "role": {
@@ -186,7 +190,8 @@
     "list": {
       "save-list.title": "Salvar Listagem",
       "save-list.desc": "Revise os campos e nomeia a nova aba. Clique em salvar para registrar as definições da listagem.",
-      "name": "Table name"
+      "name": "Table name",
+      "empty": "Listagem vazia"
     },
     "tooltip": {
       "filter-remove": "Clique para remover o filtro"

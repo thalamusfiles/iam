@@ -1,5 +1,6 @@
-import { Check, Entity, Filter, Property, Unique } from '@mikro-orm/core';
+import { Check, Collection, Entity, Filter, ManyToMany, Property, Unique } from '@mikro-orm/core';
 import { IamBaseEntityWithDelete } from '../Base/IamBaseEntityWithDelete';
+import { User } from '../User';
 
 @Entity({ schema: 'system' })
 @Unique({ properties: ['initials'] })
@@ -19,4 +20,7 @@ export class Application extends IamBaseEntityWithDelete {
 
   @Property({ nullable: false })
   public!: boolean;
+
+  @ManyToMany(() => User)
+  managers = new Collection<User>(this);
 }

@@ -23,6 +23,16 @@ export class Migration20230211000000_create_user extends Migration {
         '11111111-1111-1111-1111-111111111111', CURRENT_DATE, CURRENT_DATE, '11111111-1111-1111-1111-111111111111',
         '${UserLoginType.LOCAL}', '${iamConfig.FIRST_USER_EMAIL}', '${_salt}','${_password}');`,
     );
+
+    // Associa como gerente das aplicações
+    this.addSql(
+      `insert into "system"."application_managers" ("application_uuid", "user_uuid")
+       values ('${iamConfig.MAIN_APP_IAM_ID}', (select user_uuid from user_login ul where username = '${iamConfig.FIRST_USER_EMAIL}'));`,
+    );
+    this.addSql(
+      `insert into "system"."application_managers" ("application_uuid", "user_uuid")
+       values ('${iamConfig.MAIN_APP_IAM_MGT_ID}', (select user_uuid from user_login ul where username = '${iamConfig.FIRST_USER_EMAIL}'));`,
+    );
   }
 
   async down(): Promise<void> {

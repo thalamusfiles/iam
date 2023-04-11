@@ -4,7 +4,7 @@ import { createContext, useContext } from 'react';
 import { AttributeType } from '../../../commons/attribute-type';
 import { defaultPageSize, localStorageDef } from '../../../commons/consts';
 import { SortOrder } from '../../../commons/enums/sort-order.enum';
-import { formatDate, formatDatetime, formatDecimal, formatInteger, formatTime } from '../../../commons/formatters';
+import { formatBoolean, formatDate, formatDatetime, formatDecimal, formatInteger, formatTime } from '../../../commons/formatters';
 import { historySearch, historySearchReplace } from '../../../commons/route';
 import Storage from '../../../commons/storage';
 import { flatFromPath } from '../../../commons/tools';
@@ -197,6 +197,7 @@ export class CommonListCtx {
         //Célula não agrupada
         row.push(this.makeCellInfo(responseRow, head));
       }
+
       return row;
     });
   }
@@ -242,6 +243,8 @@ export class CommonListCtx {
         return formatDecimal(value);
       case AttributeType.Integer:
         return formatInteger(value);
+      case AttributeType.Boolean:
+        return formatBoolean(value);
       case AttributeType.Text:
       default:
         return value;

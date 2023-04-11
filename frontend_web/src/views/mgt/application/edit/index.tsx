@@ -4,6 +4,7 @@ import { CommonEditContextProvider } from '../../../generic/edit/ctrl';
 import { ApplicationEditStore } from './ctrl';
 
 export * from './components/about';
+export * from './components/managers';
 
 const ApplicationEdit: React.FC<GenericEditProps> = (props) => {
   const ctrl = new ApplicationEditStore();

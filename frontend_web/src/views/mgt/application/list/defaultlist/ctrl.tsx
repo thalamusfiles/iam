@@ -19,7 +19,9 @@ export class ApplicationListStore extends CommonListCtx {
     columns: [
       { colname: 'initials', title: 'Initials', type: AttributeType.Text, show: true },
       { colname: 'name', title: 'Name', type: AttributeType.Text, show: true },
+      { colname: 'public', title: 'Public?', type: AttributeType.Boolean, show: true },
       { colname: 'description', title: 'Description', type: AttributeType.Text },
+      { colname: 'managers.name', title: 'Managers', type: AttributeType.Text, show: true },
     ],
     sort: { colname: 'name' } as any,
     sortOrder: SortOrder.Asc,

@@ -113,18 +113,18 @@ const List: React.FC = observer(() => {
               <td className="pointer nowrap actions">
                 <ButtonGroup>
                   <Button size="sm" variant="outline-primary" onClick={() => ctrl!.onEditClick(yindex)}>
-                    <FontAwesomeIcon size="1x" icon={'edit'} />
+                    <FontAwesomeIcon size="1x" icon={IconsDef.edit} />
                   </Button>
                   {ctrl.removeCallback && (
                     <Button size="sm" variant="outline-danger" onClick={() => ctrl!.onRemoveClick(yindex)}>
-                      <FontAwesomeIcon size="1x" icon={'trash'} />
+                      <FontAwesomeIcon size="1x" icon={IconsDef.delete} />
                     </Button>
                   )}
                 </ButtonGroup>
               </td>
               {/* Percorre as células da linha*/}
               {tableCells.map((cell, xindex: number) => (
-                <td className="nowrap" style={{ maxWidth: cell[0].head?.maxWidth }} key={xindex}>
+                <td className="nowrap" style={{ maxWidth: cell[0]?.head?.maxWidth }} key={xindex}>
                   <CellComp cell={cell} />
                 </td>
               ))}

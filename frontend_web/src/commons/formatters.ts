@@ -1,6 +1,10 @@
 import moment from 'moment';
 import numeral from 'numeral';
 
+export const formatBoolean = (value: string | number | boolean): string => {
+  return value ? 'Sim' : 'Não';
+};
+
 export const formatInteger = (number: string | number): string => {
   const f = numeral(number);
   return f.format();

@@ -2,6 +2,7 @@ import { Migration } from '@mikro-orm/migrations';
 
 export class Migration20230210300000_application extends Migration {
   async up(): Promise<void> {
+    // System Applicaton
     this.addSql(
       `create table "system"."application" (
         "uuid" uuid default uuid_generate_v4() not null, 
@@ -34,9 +35,28 @@ export class Migration20230210300000_application extends Migration {
     );
 
     this.addSql('alter table "system"."application" add constraint "application_initials_unique" unique ("initials");');
+
+    // Managers
+    this.addSql(
+      `create table "system"."application_managers" (
+        "application_uuid" uuid not null, 
+        "user_uuid" uuid not null, 
+        
+        constraint "application_managers_pkey" primary key ("application_uuid", "user_uuid")
+      );`,
+    );
+
+    this.addSql(
+      'alter table "system"."application_managers" add constraint "application_managers_application_uuid_foreign" foreign key ("application_uuid") references "system"."application" ("uuid") on update cascade on delete cascade;',
+    );
+    this.addSql(
+      'alter table "system"."application_managers" add constraint "application_managers_user_uuid_foreign" foreign key ("user_uuid") references "user" ("uuid") on update cascade on delete cascade;',
+    );
   }
 
   async down(): Promise<void> {
+    this.addSql('drop table if exists "system"."application_managers" cascade;');
+
     this.addSql('drop table if exists "user" application;');
   }
 }

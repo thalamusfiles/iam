@@ -1,4 +1,5 @@
 import React from 'react';
+import { InputGroup } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import { AttributeType, PickerType } from '../../commons/attribute-type';
@@ -60,6 +61,10 @@ export declare type WmsFormProps = {
   onChange?: WmsFormEventHandler;
 };
 
+export declare type IampFormGroupProps = {
+  append: any;
+} & WmsFormProps;
+
 export function WmsFormGroup(props: WmsFormProps) {
   let Control, Column;
   switch (props.type) {
@@ -106,5 +111,55 @@ export function WmsFormGroup(props: WmsFormProps) {
       <Form.Control.Feedback type="invalid">{props.invalidFeed}</Form.Control.Feedback>
       {props.appendFeed && <Form.Text muted>{props.appendFeed}</Form.Text>}
     </Form.Group>
+  );
+}
+
+export function IamInputGroup(props: IampFormGroupProps) {
+  let Control, Column;
+  switch (props.type) {
+    case AttributeType.Text:
+      Control = WmsTextFormControl(props);
+      break;
+    case AttributeType.Integer:
+      Control = WmsIntegerFormControl(props);
+      break;
+    case AttributeType.Decimal:
+      Control = WmsDecimalFormControl(props);
+      break;
+    case AttributeType.Boolean:
+      Control = WmsBooleanFormControl(props);
+      break;
+    case AttributeType.MultiChoice:
+      props.multi = true;
+      Control = WmsChoiceFormControl(props);
+      break;
+    case AttributeType.Choice:
+      Control = WmsChoiceFormControl(props);
+      break;
+    case AttributeType.Time:
+      Control = WmsTimeFormControl(props);
+      break;
+    case AttributeType.DateTime:
+      Control = WmsDateTimeFormControl(props);
+      break;
+    case AttributeType.Date:
+      Control = WmsDateFormControl(props);
+      break;
+    default:
+      Control = findWmsFormPlugin(props.type as PickerType, props);
+  }
+  Column = props.column ? <Col>{Control}</Col> : Control;
+  return (
+    <InputGroup as={props.groupAs}>
+      {props.title && (
+        <Form.Label column={props.column} sm={props.column ? 2 : undefined}>
+          {props.title}
+        </Form.Label>
+      )}
+      {Column}
+      <Form.Control.Feedback type="invalid">{props.invalidFeed}</Form.Control.Feedback>
+      {props.appendFeed && <Form.Text muted>{props.appendFeed}</Form.Text>}
+      {props.append}
+    </InputGroup>
   );
 }

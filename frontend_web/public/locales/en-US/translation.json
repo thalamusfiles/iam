@@ -86,7 +86,11 @@
     "edit": {
       "about.title": "Application",
       "about.description": "Enter the fields below to create/modify the application.",
-      "about.initials_append": "After saving this field cannot be changed"
+      "about.initials_append": "After saving this field cannot be changed",
+      "managers.title": "Managers",
+      "managers.description": "Users allowed to change this application's scopes/profiles and permissions.",
+      "manager": "Manager",
+      "username": "Logins"
     }
   },
   "role": {
@@ -186,7 +190,8 @@
     "list": {
       "save-list.title": "Save List",
       "save-list.desc": "Review the fields and name the new tab. Click save to register the listing definitions.",
-      "name": "Nome da tabela"
+      "name": "Nome da tabela",
+      "empty": "Empty list"
     },
     "tooltip": {
       "filter-remove": "Clique para remover o filtro"

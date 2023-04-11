@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { IsUUID, IsString, IsNotEmpty, IsIn, IsOptional } from 'class-validator';
+import { IsUUID, IsString, IsNotEmpty, IsIn, IsOptional, IsArray } from 'class-validator';
 import { Application } from '../../../../model/System/Application';
 import { EntityProps, FindProps } from '../../types/crud.controller';
 
@@ -11,8 +11,16 @@ export class FindApplicationPropsDto extends FindProps<Application> {
 
   @Expose()
   @Type(() => String)
-  @IsIn(['createdBy', 'updatedBy'], { each: true })
+  @IsIn(['managers', 'managers.userLogins', 'createdBy', 'updatedBy'], { each: true })
   populate?: Array<string>;
+}
+
+@Exclude()
+class ApplicationManagerDto {
+  @Expose()
+  @IsUUID()
+  @IsNotEmpty()
+  uuid: string;
 }
 
 @Exclude()
@@ -35,6 +43,12 @@ class ApplicationCreateDto {
   @Expose()
   @IsNotEmpty()
   public: boolean;
+
+  @Expose()
+  @IsOptional()
+  @IsArray()
+  @Type(() => ApplicationManagerDto)
+  managers?: Array<ApplicationManagerDto>;
 }
 
 // DTO create Application
@@ -62,6 +76,12 @@ class ApplicationUpdateDto {
   @Expose()
   @IsOptional()
   public?: boolean;
+
+  @Expose()
+  @IsOptional()
+  @IsArray()
+  @Type(() => ApplicationManagerDto)
+  managers?: Array<ApplicationManagerDto>;
 }
 
 // DTO update Application

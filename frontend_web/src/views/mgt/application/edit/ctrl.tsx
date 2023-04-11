@@ -20,6 +20,8 @@ export class ApplicationEditStore extends CommonEditCtx {
   @observable erroMessages: string[] = [];
   @observable erros: ErrorListRecord = {};
 
+  @observable managerSelected: {} | null = null;
+
   constructor() {
     super(TargetForm.application_edit, false);
 
@@ -36,7 +38,7 @@ export class ApplicationEditStore extends CommonEditCtx {
 
     try {
       //Carrega o conteudo
-      this.content = await this.datasource.findById(uuid);
+      this.content = await this.datasource.findById(uuid, { populate: ['managers.userLogins'] });
     } catch (error) {
       console.error(error);
       notify.warn('An error occurred while updating the listing.');
@@ -89,6 +91,30 @@ export class ApplicationEditStore extends CommonEditCtx {
       this.content = Object.assign({}, values);
     } else {
       this.content = Object.assign({}, this.content, values);
+    }
+  };
+
+  @action
+  onChangeManager = (manager: any) => {
+    this.managerSelected = manager;
+  };
+
+  @action
+  onAddManager = () => {
+    if (this.managerSelected) {
+      this.content.managers.push(this.managerSelected);
+      
+      this.managerSelected = null;
+    }
+  };
+
+  @action 
+  onRemoveManager = (manager: any, idx: number) => {
+    if (this.content.managers[idx] === manager) {
+      // eslint-disable-next-line no-restricted-globals
+      if (confirm('Você deseja remover este registro?') && confirm('Você realmente deseja remover este registro?')) {
+        this.content.managers.splice(idx, 1);
+      }
     }
   };
 }

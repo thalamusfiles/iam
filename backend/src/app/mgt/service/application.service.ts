@@ -2,6 +2,7 @@ import { EntityRepository, FindOptions, QueryOrder, wrap } from '@mikro-orm/core
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { Application } from '../../../model/System/Application';
+import { User } from '../../../model/User';
 import { EntityProps, FindProps } from '../types/crud.controller';
 import { CRUDService } from '../types/crud.service';
 
@@ -12,6 +13,8 @@ export class ApplicationService implements CRUDService<Application> {
   constructor(
     @InjectRepository(Application)
     private readonly applicationRepository: EntityRepository<Application>,
+    @InjectRepository(User)
+    private readonly userRepository: EntityRepository<User>,
   ) {
     this.logger.log('starting');
   }
@@ -64,11 +67,13 @@ export class ApplicationService implements CRUDService<Application> {
     this.logger.verbose('Find by Id');
 
     const options: FindOptions<Application> = {};
+
+    // Adiciona joins/campos adicionais
     if (query.populate) {
       Object.assign(options, { populate: query.populate });
     }
 
-    return this.applicationRepository.findOne(id);
+    return this.applicationRepository.findOne(id, options);
   }
 
   /**
@@ -78,6 +83,10 @@ export class ApplicationService implements CRUDService<Application> {
    */
   async save(element: EntityProps<Application>): Promise<Application> {
     this.logger.verbose('Save');
+
+    if (element.entity.managers) {
+      element.entity.managers = (element.entity.managers as any).map((user) => this.userRepository.getReference(user.uuid));
+    }
 
     const uuid = element.entity.uuid;
     if (uuid) {

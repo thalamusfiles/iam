@@ -1,7 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { UserCRUDDatasource } from '@thalamus/iam-consumer';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import { PickersNames } from '../../commons/attribute-type';
 import { defaultPageSize } from '../../commons/consts';
 import { SortOrder } from '../../commons/enums/sort-order.enum';
@@ -30,14 +28,16 @@ export class UserPickerPlugin extends WmsFormComponent {
 
     return (
       <>
-        <InputGroup>
-          <Form.Control autoComplete="off" as="select" name={this.props.name} value={this.props.value} onMouseDown={() => this.pickerRef.show()}>
-            <option>{option}</option>
-          </Form.Control>
-          <InputGroup.Text onClick={this.viewClick}>
-            <FontAwesomeIcon color={'gray'} size="xs" icon={'eye'} />
-          </InputGroup.Text>
-        </InputGroup>
+        <Form.Control
+          autoComplete="off"
+          as="select"
+          placeholder={this.props.placeholder}
+          name={this.props.name}
+          value={this.props.value}
+          onMouseDown={() => this.pickerRef.show()}
+        >
+          <option>{option}</option>
+        </Form.Control>
         <UserPicker
           onSel={(value: any | null, row: any, event: any) => this.props.onChange && this.props.onChange(value, row, event)}
           filters={this.props.filters}
