@@ -1,4 +1,4 @@
-import { ApplicationCRUDDatasource } from '@thalamus/iam-consumer';
+import { ApplicationCRUDDatasource, IamApisConfigure } from '@thalamus/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { TargetForm } from '../../../../commons/plugin.component';
 import { historyPush } from '../../../../commons/route';
@@ -40,6 +40,7 @@ export class ApplicationEditStore extends CommonEditCtx {
   @action
   changeApplication = (application: any) => {
     UserCtxInstance.saveApplication(application);
+    IamApisConfigure.setGlobalApplication(application.uuid);
     historyPush('home_mgt');
   };
 }

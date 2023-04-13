@@ -54,7 +54,6 @@ export class PermissionService implements CRUDService<Permission> {
       options.orderBy[by] = order.toUpperCase() === QueryOrder.ASC ? QueryOrder.ASC : QueryOrder.DESC;
     });
 
-
     return this.permissionRepository.find(query?.where, options);
   }
 
@@ -67,12 +66,19 @@ export class PermissionService implements CRUDService<Permission> {
   async findById(id: string, query?: FindProps<Permission>): Promise<Permission> {
     this.logger.verbose('Find by Id');
 
+    const where: Partial<Permission> = {
+      uuid: id,
+      ...query.where,
+    };
+
     const options: FindOptions<Permission> = {};
+
+    // Adiciona joins/campos adicionais
     if (query.populate) {
       Object.assign(options, { populate: query.populate });
     }
 
-    return this.permissionRepository.findOne(id, options);
+    return this.permissionRepository.findOneOrFail(where, options);
   }
 
   /**

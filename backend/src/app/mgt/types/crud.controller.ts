@@ -51,11 +51,11 @@ export interface CRUDController<Type extends IamBaseEntity> {
   /**
    * Buscar lista de registros
    */
-  find(query?: FindProps<Type>): Promise<Type[]>;
+  find(query?: FindProps<Type>, request?: any): Promise<Type[]>;
   /**
    * Buscar um único registro
    */
-  findById(uuid: string, query?: FindProps<Type>): Promise<Type>;
+  findById(uuid: string, query?: FindProps<Type>, request?: any): Promise<Type>;
   /**
    * Criar registro
    * e retorno registro atualizado

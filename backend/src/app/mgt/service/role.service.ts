@@ -61,12 +61,17 @@ export class RoleService implements CRUDService<Role> {
   async findById(id: string, query?: FindProps<Role>): Promise<Role> {
     this.logger.verbose('Find by Id');
 
+    const where: Partial<Permission> = {
+      uuid: id,
+      ...query.where,
+    };
+
     const options: FindOptions<Role> = {};
     if (query.populate) {
       Object.assign(options, { populate: query.populate });
     }
 
-    return this.roleRepository.findOne(id, options);
+    return this.roleRepository.findOne(where, options);
   }
 
   /**

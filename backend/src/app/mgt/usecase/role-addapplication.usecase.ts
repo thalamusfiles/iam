@@ -4,7 +4,8 @@ import { UseCasePlugin, UseCasePluginMetadata } from '../../../commons/usecase';
 import { RequestInfo } from '../../../commons/request-info';
 
 /**
- * Padroniza a inicial da role para sempre estar em minúsculo
+ * Adiciona a aplicação vinda via header e validada via headers-check.middleware
+ * Impede a edição da applicação
  */
 export class RoleAddAplicationUseCase extends UseCasePlugin<Role> {
   prePersist = async (data: UseCasePluginMetadata<Role>, request: RequestInfo): Promise<void> => {

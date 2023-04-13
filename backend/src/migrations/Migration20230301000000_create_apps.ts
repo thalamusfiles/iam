@@ -20,7 +20,7 @@ export class Migration20230211100000_create_apps extends Migration {
         '${iamConfig.MAIN_APP_IAM}', '${iamConfig.MAIN_APP_IAM_NAME}', 'Sistema de visualização de acessos', true);`,
     );
 
-    // Cria o vínculo da região com a aplicação
+    // Cria o vínculo do escopo/perfil com a aplicação
     this.addSql(
       `insert into "role"  (
         uuid, created_at, updated_at, created_by_uuid, updated_by_uuid, 

@@ -41,7 +41,7 @@ export class AuthController {
    */
   @Post('register')
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(new IamValidationPipe())
   async localRegister(
     @Body() body: AuthRegisterDto,
     @Req() request: RequestInfo,
@@ -109,10 +109,6 @@ export class AuthController {
       expiresIn: null,
     };
 
-    /*const oldCookieId = this.cookieService.getSSOCookie(request);
-    if (oldCookieId) {
-      this.authService.invalidateSession(oldCookieId);
-    }*/
     const cookieId = this.cookieService.createOrRefreshSSOCookie(request, response, true);
     appInfo.sessionToken = cookieId;
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UseGuards, UsePipes } from '@nestjs/common';
 import { Permission } from '../../../model/Permission';
 import { AccessGuard } from '../../auth/passaport/access.guard';
 import { PermissionService } from '../service/permission.service';
@@ -10,6 +10,7 @@ import { PermissionAddAplicationUseCase } from '../usecase/permission-addapplica
 import { PermissionNormalizeInitialsUseCase } from '../usecase/permission-normalize-initials.usecase';
 import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityPermissionCreateDto, EntityPermissionUpdateDto, FindPermissionPropsDto } from './dto/permission.dto';
+import { IamValidationPipe } from '../../../commons/validation.pipe';
 
 @UseGuards(AccessGuard)
 @Controller('mgt/permission')
@@ -26,37 +27,43 @@ export class PermissionController implements CRUDController<Permission> {
   }
 
   /**
-   * Buscar por várias regiões
+   * Buscar por várias permissões
    * @param query
    * @returns
    */
   @Get()
-  @UsePipes(new ValidationPipe({ transform: true }))
-  find(@Query() query?: FindPermissionPropsDto): Promise<Permission[]> {
+  @UsePipes(new IamValidationPipe())
+  find(@Query() query?: FindPermissionPropsDto, @Request() request?: RequestInfo): Promise<Permission[]> {
     this.logger.log('Find all');
+
+    if (!query.where) query.where = {};
+    query.where.application = request.applicationRef;
 
     return this.permissionService.find(query);
   }
 
   /**
-   * Busca a Região pelo identificador
+   * Busca a Permissão pelo identificador
    */
   @Get(':uuid')
-  @UsePipes(new ValidationPipe({ transform: true }))
-  async findById(@Param('uuid') uuid: string, @Query() query?: FindPermissionPropsDto): Promise<Permission> {
+  @UsePipes(new IamValidationPipe())
+  async findById(@Param('uuid') uuid: string, @Query() query?: FindPermissionPropsDto, @Request() request?: RequestInfo): Promise<Permission> {
     this.logger.log(`Find By Id ${uuid}`);
+
+    if (!query.where) query.where = {};
+    query.where.application = request.applicationRef;
 
     return this.permissionService.findById(uuid, query);
   }
 
   /**
-   * Valida e cria uma nova Região
+   * Valida e cria uma nova Permissão
    * @param props
    * @param request
    * @returns
    */
   @Post()
-  @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
+  @UsePipes(new IamValidationPipe({ transformOptions: { exposeUnsetFields: false } }))
   async create(@Body() props: EntityPermissionCreateDto, @Request() request: RequestInfo): Promise<EntityProps<Permission>> {
     this.logger.log('Create Permission');
 
@@ -68,14 +75,14 @@ export class PermissionController implements CRUDController<Permission> {
   }
 
   /**
-   * Valida e atualiza a região
+   * Valida e atualiza a Permissão
    * @param uuid
    * @param props
    * @param request
    * @returns
    */
   @Put(':uuid')
-  @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
+  @UsePipes(new IamValidationPipe({ transformOptions: { exposeUnsetFields: false } }))
   async update(
     @Param('uuid') uuid: string,
     @Body() props: EntityPermissionUpdateDto,
@@ -94,7 +101,7 @@ export class PermissionController implements CRUDController<Permission> {
   }
 
   /**
-   * Remove a região a partir do identificador único
+   * Remove a Permissão a partir do identificador único
    * @param uuid
    * @param props
    * @returns

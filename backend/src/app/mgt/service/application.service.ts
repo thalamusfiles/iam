@@ -66,6 +66,11 @@ export class ApplicationService implements CRUDService<Application> {
   async findById(id: string, query?: FindProps<Application>): Promise<Application> {
     this.logger.verbose('Find by Id');
 
+    const where: Partial<Application> = {
+      uuid: id,
+      ...query.where,
+    };
+
     const options: FindOptions<Application> = {};
 
     // Adiciona joins/campos adicionais
@@ -73,7 +78,7 @@ export class ApplicationService implements CRUDService<Application> {
       Object.assign(options, { populate: query.populate });
     }
 
-    return this.applicationRepository.findOne(id, options);
+    return this.applicationRepository.findOneOrFail(where, options);
   }
 
   /**

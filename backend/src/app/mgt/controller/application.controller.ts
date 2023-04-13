@@ -27,31 +27,37 @@ export class ApplicationController implements CRUDController<Application> {
   }
 
   /**
-   * Buscar por várias regiões
+   * Buscar por várias aplicações
    * @param query
    * @returns
    */
   @Get()
-  @UsePipes(new ValidationPipe({ transform: true }))
-  find(@Query() query?: FindApplicationPropsDto): Promise<Application[]> {
+  @UsePipes(new IamValidationPipe())
+  find(@Query() query?: FindApplicationPropsDto, @Request() request?: RequestInfo): Promise<Application[]> {
     this.logger.log('Find all');
+
+    if (!query.where) query.where = {};
+    query.where.managers = [request.user.uuid];
 
     return this.applicationService.find(query);
   }
 
   /**
-   * Busca a Região pelo identificador
+   * Busca a Applicação pelo identificador
    */
   @Get(':uuid')
-  @UsePipes(new ValidationPipe({ transform: true }))
-  async findById(@Param('uuid') uuid: string, @Query() query?: FindApplicationPropsDto): Promise<Application> {
+  @UsePipes(new IamValidationPipe())
+  async findById(@Param('uuid') uuid: string, @Query() query?: FindApplicationPropsDto, @Request() request?: RequestInfo): Promise<Application> {
     this.logger.log(`Find By Id ${uuid}`);
+
+    if (!query.where) query.where = {};
+    query.where.managers = [request.user.uuid];
 
     return this.applicationService.findById(uuid, query);
   }
 
   /**
-   * Valida e cria uma nova Região
+   * Valida e cria uma nova Applicação
    * @param props
    * @param request
    * @returns
@@ -69,14 +75,14 @@ export class ApplicationController implements CRUDController<Application> {
   }
 
   /**
-   * Valida e atualiza a região
+   * Valida e atualiza a Applicação
    * @param uuid
    * @param props
    * @param request
    * @returns
    */
   @Put(':uuid')
-  @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
+  @UsePipes(new IamValidationPipe({ transformOptions: { exposeUnsetFields: false } }))
   async update(
     @Param('uuid') uuid: string,
     @Body() props: EntityApplicationUpdateDto,
@@ -95,7 +101,7 @@ export class ApplicationController implements CRUDController<Application> {
   }
 
   /**
-   * Remove a região a partir do identificador único
+   * Remove a Applicação a partir do identificador único
    * @param uuid
    * @param props
    * @returns

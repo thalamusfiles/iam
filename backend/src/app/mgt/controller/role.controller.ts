@@ -11,6 +11,7 @@ import { RoleNormalizeInitialsUseCase } from '../usecase/role-normalize-initials
 import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityRoleCreateDto, EntityRoleUpdateDto, FindRolePropsDto } from './dto/role.dto';
 import { RoleFieldsValidationUseCase } from '../usecase/role-fields-validation.usecase';
+import { IamValidationPipe } from '../../../commons/validation.pipe';
 
 @UseGuards(AccessGuard)
 @Controller('mgt/role')
@@ -28,23 +29,26 @@ export class RoleController implements CRUDController<Role> {
   }
 
   /**
-   * Buscar por várias regiões
+   * Buscar por várias escpopos/perfis
    * @param query
    * @returns
    */
   @Get()
-  @UsePipes(new ValidationPipe({ transform: true }))
-  find(@Query() query?: FindRolePropsDto): Promise<Role[]> {
+  @UsePipes(new IamValidationPipe())
+  find(@Query() query?: FindRolePropsDto, @Request() request?: RequestInfo): Promise<Role[]> {
     this.logger.log('Find all');
+
+    if (!query.where) query.where = {};
+    query.where.application = request.applicationRef;
 
     return this.roleService.find(query);
   }
 
   /**
-   * Busca a Região pelo identificador
+   * Busca o Escopo/Perfil pelo identificador
    */
   @Get(':uuid')
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(new IamValidationPipe())
   async findById(@Param('uuid') uuid: string, @Query() query?: FindRolePropsDto): Promise<Role> {
     this.logger.log(`Find By Id ${uuid}`);
 
@@ -52,13 +56,13 @@ export class RoleController implements CRUDController<Role> {
   }
 
   /**
-   * Valida e cria uma nova Região
+   * Valida e cria uma nova Escopo/Perfil
    * @param props
    * @param request
    * @returns
    */
   @Post()
-  @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
+  @UsePipes(new IamValidationPipe({ transformOptions: { exposeUnsetFields: false } }))
   async create(@Body() props: EntityRoleCreateDto, @Request() request: RequestInfo): Promise<EntityProps<Role>> {
     this.logger.log('Create Role');
 
@@ -70,14 +74,14 @@ export class RoleController implements CRUDController<Role> {
   }
 
   /**
-   * Valida e atualiza a região
+   * Valida e atualiza a Escopo/Perfil
    * @param uuid
    * @param props
    * @param request
    * @returns
    */
   @Put(':uuid')
-  @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
+  @UsePipes(new IamValidationPipe({ transformOptions: { exposeUnsetFields: false } }))
   async update(@Param('uuid') uuid: string, @Body() props: EntityRoleUpdateDto, @Request() request: RequestInfo): Promise<EntityProps<Role>> {
     this.logger.log('Update Role');
 
@@ -92,7 +96,7 @@ export class RoleController implements CRUDController<Role> {
   }
 
   /**
-   * Remove a região a partir do identificador único
+   * Remove a Escopo/Perfil a partir do identificador único
    * @param uuid
    * @param props
    * @returns

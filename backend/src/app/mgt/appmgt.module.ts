@@ -14,7 +14,7 @@ import { ApplicationController } from './controller/application.controller';
 import { RoleController } from './controller/role.controller';
 import { PermissionController } from './controller/permission.controller';
 import { UserController } from './controller/user.controller';
-import { GlobalIamHeadersCheckMiddleware, AppHeadersCheckMiddleware } from './middleware/headers-check.middleware';
+import { AppHeadersCheckMiddleware } from './middleware/headers-check.middleware';
 import { UseCaseMGTService } from './service/usecasemgt.service';
 
 @Module({
@@ -45,7 +45,6 @@ export class AppMgtModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     this.logger.log('configure');
 
-    consumer.apply(GlobalIamHeadersCheckMiddleware).forRoutes(ApplicationController);
-    consumer.apply(AppHeadersCheckMiddleware).forRoutes(UserController, RoleController, PermissionController);
+    consumer.apply(AppHeadersCheckMiddleware).forRoutes(ApplicationController, UserController, RoleController, PermissionController);
   }
 }

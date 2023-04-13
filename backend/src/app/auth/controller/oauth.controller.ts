@@ -8,6 +8,7 @@ import { AuthOauthFieldsUseCase } from '../usecase/auth-oauth-fields.usecase';
 import { AuthLoginClientIdUseCase } from '../usecase/auth-register-client_id.usecase';
 import { ApplicationInfoDto, AuthRegisterDto, ScopeInfoDto } from './dto/auth.dto';
 import { OauthInfoService } from '../service/oauthinfo.service';
+import { IamValidationPipe } from '../../../commons/validation.pipe';
 
 @Controller('auth')
 export class OauthController {
@@ -29,7 +30,7 @@ export class OauthController {
    */
   @Get('application/info')
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(new IamValidationPipe())
   async applicationInfo(@Query() query?: ApplicationInfoDto): Promise<{ uuid: string; name: string }> {
     this.logger.log('Application info');
 
@@ -44,7 +45,7 @@ export class OauthController {
    */
   @Get('scope/info')
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(new IamValidationPipe())
   async scopeInfo(@Query() query?: ScopeInfoDto): Promise<any> {
     this.logger.log('Scope info');
 

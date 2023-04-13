@@ -8,6 +8,7 @@ import { BaseAddCreatedByUseCase } from '../usecase/base-addcreatedby.usecase';
 import { BaseAddUpdatedByUseCase } from '../usecase/base-addupdatedby.usecase';
 import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityUserCreateDto, EntityUserUpdateDto, FindUserPropsDto } from './dto/user.dto';
+import { IamValidationPipe } from '../../../commons/validation.pipe';
 
 @UseGuards(AccessGuard)
 @Controller('mgt/user')
@@ -22,12 +23,12 @@ export class UserController implements CRUDController<User> {
   }
 
   /**
-   * Buscar por várias regiões
+   * Buscar por várias usuários
    * @param query
    * @returns
    */
   @Get()
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(new IamValidationPipe())
   find(@Query() query?: FindUserPropsDto): Promise<User[]> {
     this.logger.log('Find all');
 
@@ -35,10 +36,10 @@ export class UserController implements CRUDController<User> {
   }
 
   /**
-   * Busca a Região pelo identificador
+   * Busca o Usuário pelo identificador
    */
   @Get(':uuid')
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @UsePipes(new IamValidationPipe())
   async findById(@Param('uuid') uuid: string, @Query() query?: FindUserPropsDto): Promise<User> {
     this.logger.log(`Find By Id ${uuid}`);
 
@@ -46,13 +47,13 @@ export class UserController implements CRUDController<User> {
   }
 
   /**
-   * Valida e cria uma nova Região
+   * Valida e cria uma nova Usuário
    * @param props
    * @param request
    * @returns
    */
   @Post()
-  @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
+  @UsePipes(new IamValidationPipe({ transformOptions: { exposeUnsetFields: false } }))
   async create(@Body() props: EntityUserCreateDto, @Request() request: RequestInfo): Promise<EntityProps<User>> {
     this.logger.log('Create User');
 
@@ -71,7 +72,7 @@ export class UserController implements CRUDController<User> {
    * @returns
    */
   @Put(':uuid')
-  @UsePipes(new ValidationPipe({ transform: true, transformOptions: { exposeUnsetFields: false } }))
+  @UsePipes(new IamValidationPipe({ transformOptions: { exposeUnsetFields: false } }))
   async update(@Param('uuid') uuid: string, @Body() props: EntityUserUpdateDto, @Request() request: RequestInfo): Promise<EntityProps<User>> {
     this.logger.log('Update User');
 

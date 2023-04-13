@@ -3,7 +3,7 @@ import { UseCasePlugin, UseCasePluginMetadata } from '../../../commons/usecase';
 import { FormExceptionError } from '../../../commons/form.exception';
 
 /**
- * Padroniza a inicial da região para sempre estar em minúsculo
+ * Padroniza a inicial do escopo/perfil para sempre estar em minúsculo
  */
 export class RoleFieldsValidationUseCase extends UseCasePlugin<Application> {
   preValidate = async (data: UseCasePluginMetadata<Application>): Promise<Array<FormExceptionError>> => {

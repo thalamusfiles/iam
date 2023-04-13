@@ -1,7 +1,7 @@
 import { Request } from 'supertest';
 import iamConfig from '../../src/config/iam.config';
 
-// Header obrigatório para incluir região ou applicação
+// Header obrigatório para incluir applicação
 export const addGlobalIAMMgtRequestHeader = <T extends Request>(req: T): T => {
   req //
     .set('application', iamConfig.MAIN_APP_IAM_MGT_ID)
@@ -9,7 +9,7 @@ export const addGlobalIAMMgtRequestHeader = <T extends Request>(req: T): T => {
   return req;
 };
 
-// Header obrigatório para incluir região ou applicação
+// Header obrigatório para incluir applicação
 export const addAppRequestHeader = <T extends Request>(req: T): T => {
   req //
     .set('application', iamConfig.MAIN_APP_IAM_ID)

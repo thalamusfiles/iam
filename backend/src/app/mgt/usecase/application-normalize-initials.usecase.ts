@@ -2,7 +2,7 @@ import { Application } from '../../../model/System/Application';
 import { UseCasePlugin, UseCasePluginMetadata } from '../../../commons/usecase';
 
 /**
- * Padroniza a inicial da região para sempre estar em minúsculo
+ * Padroniza a inicial da aplicação para sempre estar em minúsculo
  */
 export class ApplicationNormalizeInitialsUseCase extends UseCasePlugin<Application> {
   prePersist = async (data: UseCasePluginMetadata<Application>): Promise<void> => {

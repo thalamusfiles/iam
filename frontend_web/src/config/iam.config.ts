@@ -2,7 +2,7 @@ const iamConfig = {
   PRODCTION_MODE: process.env.NODE_ENV === 'production',
   // Default Login Scope
   DEFAULT_SCOPE: 'iam_all',
-  // Região Principal
+  // Applicação Principal
   MAIN_APP_IAM: 'iam',
   MAIN_APP_IAM_ID: '11111111-1111-1111-1111-111111111111',
   // Aplicação de gestão do IAM SSO

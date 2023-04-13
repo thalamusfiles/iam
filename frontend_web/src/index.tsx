@@ -10,7 +10,8 @@ import UserCtxInstance, { UserProvider } from './store/userContext';
 import routes from './views/routes';
 
 UserCtxInstance.loadUser();
-apiConfigure(UserCtxInstance.token, UserCtxInstance.user.applicationLogged);
+UserCtxInstance.loadApplication();
+apiConfigure(UserCtxInstance.token, UserCtxInstance.application.uuid);
 
 const router = createBaseRouter(createRoutesFromElements(routes));
 
