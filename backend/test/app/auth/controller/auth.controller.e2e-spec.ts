@@ -16,7 +16,7 @@ describe('AuthController (e2e)', () => {
   const authUrl = '/auth';
 
   // Cadastros de testes
-  const password = faker.internet.password(16);
+  const password = '1Ab' + faker.internet.password(16);
   const oauth = {
     cliente_id: iamConfig.MAIN_APP_IAM_ID,
     response_type: 'cookie',
@@ -112,7 +112,6 @@ describe('AuthController (e2e)', () => {
     expect(result.body.info.applicationLogged).toEqual(registerDto01.cliente_id);
 
     accessToken = result.body.access_token;
-
   });
 
   it(`${authUrl}/login (Post) Realiza o login com o primeiro usuário`, async () => {
