@@ -82,5 +82,5 @@ export interface CRUDController<Type extends IamBaseEntity> {
    * @param uuid
    * @param request Requisição NestJs
    */
-  delete(uuid: string, request: any): Promise<void>;
+  delete(uuid: string, props: EntityProps<Type>, request: any): Promise<void>;
 }

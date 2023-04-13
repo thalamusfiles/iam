@@ -1,4 +1,4 @@
-import { EntityRepository, MikroORM, EntityProperty } from '@mikro-orm/core';
+import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -12,8 +12,6 @@ import { FormException } from '../../../commons/form.exception';
 import { AuthLoginRespDto } from '../controller/dto/auth.dto';
 import { AccessUserInfo } from '../passaport/access-user-info';
 import { CryptService } from './crypt.service';
-import { MikroORM as PostgreSqlMikroORM } from '@mikro-orm/postgresql';
-import { Application } from '../../../model/System/Application';
 
 export type LoginInfo = {
   userUuid: string;
@@ -34,7 +32,6 @@ export type LoginInfo = {
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
-  private readonly applicationManagersProperty: EntityProperty;
 
   constructor(
     @InjectRepository(User) private readonly userRepository: EntityRepository<User>,
@@ -42,12 +39,8 @@ export class AuthService {
     @InjectRepository(UserToken) private readonly userTokenRepository: EntityRepository<UserToken>,
     private readonly jwtService: JwtService,
     private readonly cryptService: CryptService,
-    private readonly orm: MikroORM,
   ) {
     this.logger.log('starting');
-
-    const applicationMeta = this.orm.getMetadata().get(Application.name);
-    this.applicationManagersProperty = applicationMeta.properties.managers;
   }
 
   /**
@@ -218,24 +211,6 @@ export class AuthService {
     } else {
       throw new FormException([{ kind: 'password', error: 'server.password_invalid' }]);
     }
-  }
-
-  async checkUserApplicationPermition(userUuid: string, applicationUuid: string): Promise<boolean> {
-    const appUserPivot = this.applicationManagersProperty.pivotTable;
-    const join = this.applicationManagersProperty.joinColumns[0];
-    const inverseJoin = this.applicationManagersProperty.inverseJoinColumns[0];
-
-    const rs = await (this.orm as PostgreSqlMikroORM).em.raw(
-      `select true from "system".${appUserPivot}
-      where ${join} = :application_uuid
-      and ${inverseJoin} = :user_uuid`,
-      {
-        application_uuid: applicationUuid,
-        user_uuid: userUuid,
-      },
-    );
-
-    return rs.rows.length > 0;
   }
 
   private userInfo(user: User, { clientId: application }: LoginInfo): AccessUserInfo {

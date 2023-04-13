@@ -3,6 +3,7 @@ import { makeObservable } from 'mobx';
 import { AttributeType } from '../../../../../commons/attribute-type';
 import { SortOrder } from '../../../../../commons/enums/sort-order.enum';
 import { historyPush } from '../../../../../commons/route';
+import { notify } from '../../../../../components/Notification';
 import { CommonListCtx } from '../../../../generic/list/ctrl';
 import { ListDefinition } from '../../../../generic/list/types/ListDefinition';
 
@@ -44,9 +45,15 @@ export class ApplicationListStore extends CommonListCtx {
   removeCallback = (uuid: number | string) => {
     // eslint-disable-next-line no-restricted-globals
     if (confirm('Você deseja remover este registro?') && confirm('Você realmente deseja remover este registro?')) {
-      this.datasource.remove(uuid as any).then(() => {
-        this.search();
-      });
+      this.datasource
+        .remove(uuid as any)
+        .then(() => {
+          this.search();
+        })
+        .catch((error) => {
+          const response = error.response;
+          notify.danger(response.data?.message || error.message);
+        });
     }
   };
 
@@ -64,7 +71,7 @@ export class ApplicationListStore extends CommonListCtx {
 
     const limit = this.perPage;
     const offset = (this.page - 1) * this.perPage;
-    const order_by = [`${this.sort?.colname}:${SortOrder[this.sortOrder]}`]
+    const order_by = [`${this.sort?.colname}:${SortOrder[this.sortOrder]}`];
 
     //this.cancelRequestCallback = c;
     return await this.datasource.findAll({ where, populate, order_by, limit, offset });

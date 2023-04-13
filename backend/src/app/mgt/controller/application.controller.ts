@@ -1,4 +1,19 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Logger,
+  Param,
+  Post,
+  Put,
+  Query,
+  Request,
+  UnauthorizedException,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Application } from '../../../model/System/Application';
 import { AccessGuard } from '../../auth/passaport/access.guard';
 import { ApplicationService } from '../service/application.service';
@@ -11,13 +26,19 @@ import { UseCaseMGTService } from '../service/usecasemgt.service';
 import { EntityApplicationCreateDto, EntityApplicationUpdateDto, FindApplicationPropsDto } from './dto/application.dto';
 import { IamValidationPipe } from '../../../commons/validation.pipe';
 import { ApplicationFieldsValidationUseCase } from '../usecase/application-fields-validation.usecase';
+import { RequestService } from '../../auth/service/request.service';
+import iamConfig from '../../../config/iam.config';
 
 @UseGuards(AccessGuard)
 @Controller('mgt/application')
 export class ApplicationController implements CRUDController<Application> {
   private readonly logger = new Logger(ApplicationController.name);
 
-  constructor(private readonly applicationService: ApplicationService, private readonly useCaseService: UseCaseMGTService) {
+  constructor(
+    private readonly applicationService: ApplicationService,
+    private readonly useCaseService: UseCaseMGTService,
+    private readonly requestService: RequestService,
+  ) {
     this.logger.log('starting');
 
     this.useCaseService.register(Application, BaseAddCreatedByUseCase);
@@ -33,11 +54,15 @@ export class ApplicationController implements CRUDController<Application> {
    */
   @Get()
   @UsePipes(new IamValidationPipe())
-  find(@Query() query?: FindApplicationPropsDto, @Request() request?: RequestInfo): Promise<Application[]> {
+  async find(@Query() query?: FindApplicationPropsDto, @Request() request?: RequestInfo): Promise<Application[]> {
     this.logger.log('Find all');
 
-    if (!query.where) query.where = {};
-    query.where.managers = [request.user.uuid];
+    // Se não for gerente principal deixa editar apenas as aplicações associadas
+    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.uuid, iamConfig.MAIN_APP_IAM_MGT_ID);
+    if (!isMainManager) {
+      if (!query.where) query.where = {};
+      query.where.managers = [request.user.uuid];
+    }
 
     return this.applicationService.find(query);
   }
@@ -50,8 +75,12 @@ export class ApplicationController implements CRUDController<Application> {
   async findById(@Param('uuid') uuid: string, @Query() query?: FindApplicationPropsDto, @Request() request?: RequestInfo): Promise<Application> {
     this.logger.log(`Find By Id ${uuid}`);
 
-    if (!query.where) query.where = {};
-    query.where.managers = [request.user.uuid];
+    // Se não for gerente principal deixa editar apenas as aplicações associadas
+    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.uuid, iamConfig.MAIN_APP_IAM_MGT_ID);
+    if (!isMainManager) {
+      if (!query.where) query.where = {};
+      query.where.managers = [request.user.uuid];
+    }
 
     return this.applicationService.findById(uuid, query);
   }
@@ -107,12 +136,19 @@ export class ApplicationController implements CRUDController<Application> {
    * @returns
    */
   @Delete(':uuid')
-  async delete(@Param('uuid') uuid: string, @Body() props: EntityProps<Application>): Promise<void> {
+  async delete(@Param('uuid') uuid: string, @Body() props: EntityProps<Application>, @Request() request?: RequestInfo): Promise<void> {
     this.logger.log('Delete Application');
 
     if (!uuid) {
       this.logger.error('Tentativa de remoção de registro sem uuid informado');
+      throw new UnauthorizedException('Uuid required');
     }
+
+    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.uuid, iamConfig.MAIN_APP_IAM_MGT_ID);
+    if (!isMainManager) {
+      throw new UnauthorizedException('Main manager privilege required');
+    }
+
     return this.applicationService.delete(uuid, props);
   }
 
