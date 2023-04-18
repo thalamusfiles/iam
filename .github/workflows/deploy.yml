@@ -21,7 +21,7 @@ on:
 jobs:
   app_publish_docs:
     runs-on: ubuntu-latest
-    if: ${{ ['todos','docs'].includes(github.event.inputs.update) }}
+    if: ${{ github.event.inputs.update == 'todos' || github.event.inputs.update == 'docs' }}
 
     steps:
       # Baixa a release informada
@@ -53,7 +53,7 @@ jobs:
 
   app_publish_frontend_web:
     runs-on: ubuntu-latest
-    if: ${{ ['todos','frontend_web'].includes(github.event.inputs.update) }}
+    if: ${{ github.event.inputs.update == 'todos' || github.event.inputs.update == 'frontend_web' }}
 
     steps:
       # Baixa a release informada
@@ -85,7 +85,7 @@ jobs:
 
   app_publish_backend:
     runs-on: ubuntu-latest
-    if: ${{ ['todos','backend'].includes(github.event.inputs.update) }}
+    if: ${{ github.event.inputs.update == 'todos' || github.event.inputs.update == 'backend' }}
 
     steps:
       # Baixa a release informada
