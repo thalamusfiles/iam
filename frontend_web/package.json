@@ -7,7 +7,7 @@
   "docUrl": "https://docs.iam.thalamus.digital/",
   "private": false,
   "engines": {
-    "node": ">=14.0"
+    "node": ">=18.0"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.3.0",

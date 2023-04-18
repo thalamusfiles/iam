@@ -2,11 +2,6 @@ name: CI / Testar e Empacotar
 on:
   workflow_dispatch:
     inputs:
-      buildDocs:
-        description: 'Buildar documentação?'
-        type: boolean
-        required: true
-        default: true
       buildBackend:
         description: 'Buildar backend?'
         type: boolean
@@ -14,6 +9,11 @@ on:
         default: true
       buildFrontend:
         description: 'Buildar frontend?'
+        type: boolean
+        required: true
+        default: true
+      buildDocs:
+        description: 'Buildar documentação?'
         type: boolean
         required: true
         default: true
@@ -102,15 +102,23 @@ jobs:
       - name: Use Node.js 
         uses: actions/setup-node@v3
         with:
-          node-version: 14.17
+          node-version: 18.12
       # Builda Frontend
       - name: Build Frontend
         shell: bash
-        run: ./bin/local-build-frontend.sh
+        run: ./bin/local-build-backend.sh
       # Compacta Docs
       - name: Compact Build Frontend
         shell: bash
         run: zip -r backend backend/dist
+      # Gera o release
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: "v${{ needs.upgrade_version.outputs.tag }}"
+          files: frontend_web.zip
   
   run_build_frontend:
     runs-on: ubuntu-latest
@@ -124,7 +132,7 @@ jobs:
       - name: Use Node.js 
         uses: actions/setup-node@v3
         with:
-          node-version: 14.17
+          node-version: 18.12
       # Trocar versão node
       - name: Copy default Build
         shell: bash
@@ -136,7 +144,15 @@ jobs:
       # Compacta Docs
       - name: Compact Build Frontend
         shell: bash
-        run: zip -r frontend_web frontend_web/build
+        run: zip -r frontend_web frontend_web/build 
+      # Gera o release
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: "v${{ needs.upgrade_version.outputs.tag }}"
+          files: frontend_web.zip
 
   run_build_docs:
     runs-on: ubuntu-latest
