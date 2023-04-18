@@ -1,8 +1,9 @@
 export default {
-  baseUrl: 'http://localhost',
-  basePort: 3000,
-  //baseUrl: 'http://wms.thalamus.digital',
-  //basePort: 80
-  //Exibir log do i18n
+  // Local Dev
+  //baseUrl: 'http://localhost',
+  //basePort: 3000,
+  //
+  baseUrl: '/',
+  basePort: 80,
   i18nLog: false,
 };

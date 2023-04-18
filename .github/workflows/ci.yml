@@ -7,6 +7,11 @@ on:
         type: boolean
         required: true
         default: true
+      buildBackend:
+        description: 'Buildar backend?'
+        type: boolean
+        required: true
+        default: true
       buildFrontend:
         description: 'Buildar frontend?'
         type: boolean
@@ -85,6 +90,24 @@ jobs:
     outputs:
       tag: ${{ steps.tag_name.outputs.TAG }}
   
+  run_build_backend:
+    runs-on: ubuntu-latest
+    needs: [upgrade_version]
+    if: ${{ github.event.inputs.buildBackend == 'true' }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      # Trocar versão node
+      - name: Use Node.js 
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14.17
+      # Builda Frontend
+      - name: Build Frontend
+        shell: bash
+        run: ./bin/local-build-frontend.sh
+  
   run_build_frontend:
     runs-on: ubuntu-latest
     needs: [upgrade_version]
@@ -98,8 +121,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.17
+      # Trocar versão node
+      - name: Copy default Build
+        shell: bash
+        run: cp ./frontend_web/src/.env.default.js ./frontend_web/src/.env.js
       # Builda Frontend
-      - name: Build Docs
+      - name: Build Frontend
         shell: bash
         run: ./bin/local-build-frontend.sh
 
