@@ -14,13 +14,14 @@ on:
         type: choice
         options:
           - todos
-          - servidor
+          - backend
           - frontend_web
           - docs
 
 jobs:
-  app_publish_server:
+  app_publish_docs:
     runs-on: ubuntu-latest
+    if: ${{ ['todos','docs'].includes(github.event.inputs.update) }}
 
     steps:
       # Baixa a release informada
@@ -31,7 +32,7 @@ jobs:
           version: "tags/${{ github.event.inputs.releasetag }}"
           file: 'docs.zip'
           token: ${{ secrets.GITHUB_TOKEN }}
-      # Descompacta
+      # Descompacta docs
       - name: Descompact Zip
         shell: bash
         run: unzip docs.zip 
@@ -49,3 +50,67 @@ jobs:
       #Atualiza servidor
       - name: Atualiza servidor
         run: rsync -e "ssh -i keypair.pem" -av docs/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}
+
+  app_publish_frontend_web:
+    runs-on: ubuntu-latest
+    if: ${{ ['todos','frontend_web'].includes(github.event.inputs.update) }}
+
+    steps:
+      # Baixa a release informada
+      - name: Download Release
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: 'thalamusfiles/iam'
+          version: "tags/${{ github.event.inputs.releasetag }}"
+          file: 'frontend_web.zip'
+          token: ${{ secrets.GITHUB_TOKEN }}
+      # Descompacta frontend_web
+      - name: Descompact Zip
+        shell: bash
+        run: unzip frontend_web.zip 
+      # SSH Key
+      - name: Baixa KeyPair
+        run: |
+          echo "${{ secrets.KEYPAIR_PEM }}" > keypair.pem
+          sudo chmod 400 keypair.pem
+      - name: Adiciona ao known_hosts
+        shell: bash
+        run: |
+          mkdir -p ~/.ssh/
+          ssh-keyscan -H ${{ secrets.HOST_URL }} >> ~/.ssh/known_hosts
+          sudo chmod 600 ~/.ssh/known_hosts
+      #Atualiza servidor
+      - name: Atualiza servidor
+        run: rsync -e "ssh -i keypair.pem" -av frontend_web/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}
+
+  app_publish_backend:
+    runs-on: ubuntu-latest
+    if: ${{ ['todos','backend'].includes(github.event.inputs.update) }}
+
+    steps:
+      # Baixa a release informada
+      - name: Download Release
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: 'thalamusfiles/iam'
+          version: "tags/${{ github.event.inputs.releasetag }}"
+          file: 'backend.zip'
+          token: ${{ secrets.GITHUB_TOKEN }}
+      # Descompacta backend
+      - name: Descompact Zip
+        shell: bash
+        run: unzip backend.zip 
+      # SSH Key
+      - name: Baixa KeyPair
+        run: |
+          echo "${{ secrets.KEYPAIR_PEM }}" > keypair.pem
+          sudo chmod 400 keypair.pem
+      - name: Adiciona ao known_hosts
+        shell: bash
+        run: |
+          mkdir -p ~/.ssh/
+          ssh-keyscan -H ${{ secrets.HOST_URL }} >> ~/.ssh/known_hosts
+          sudo chmod 600 ~/.ssh/known_hosts
+      #Atualiza servidor
+      - name: Atualiza servidor
+        run: rsync -e "ssh -i keypair.pem" -av backend/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}
