@@ -107,6 +107,10 @@ jobs:
       - name: Build Frontend
         shell: bash
         run: ./bin/local-build-frontend.sh
+      # Compacta Docs
+      - name: Compact Build Frontend
+        shell: bash
+        run: zip -r backend backend/dist
   
   run_build_frontend:
     runs-on: ubuntu-latest
@@ -129,6 +133,10 @@ jobs:
       - name: Build Frontend
         shell: bash
         run: ./bin/local-build-frontend.sh
+      # Compacta Docs
+      - name: Compact Build Frontend
+        shell: bash
+        run: zip -r frontend_web frontend_web/build
 
   run_build_docs:
     runs-on: ubuntu-latest
