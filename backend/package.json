@@ -1,6 +1,6 @@
 {
   "name": "iam_api",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "IAM Frontend Web",
   "private": true,
   "license": "MIT",
