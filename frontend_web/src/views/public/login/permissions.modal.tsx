@@ -18,7 +18,7 @@ const PermissionInfoModal: React.FC<{ ctrl: LoginCtrl | RegisterCtrl }> = observ
         <p>{__('login.permissions.subtitle')}</p>
 
         <ListGroup as="ol" numbered>
-          {(ctrl.scopeInfo || []).map((info, idx) => (
+          {ctrl.scopeInfo?.map((info, idx) => (
             <ListGroup.Item as="li" className="d-flex justify-content-between align-items-start" key={idx}>
               <div className="ms-2 me-auto">
                 <div className="fw-bold">{info.permission.description}</div>
