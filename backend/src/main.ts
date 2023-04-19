@@ -7,7 +7,6 @@ import { NotFoundExceptionFilter } from './commons/catch.exception';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    cors: true,
     logger: createNestLogger(),
   });
 
