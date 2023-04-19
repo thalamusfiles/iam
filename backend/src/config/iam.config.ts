@@ -5,6 +5,7 @@ const defaultIamConfig = {
 const iamConfig = {
   PRODCTION_MODE: process.env.NODE_ENV === 'production',
   PORT: process.env.PORT || 3000,
+  STATIC_FILE_MAX_AGE: 2 * 24 * 60 * 60 * 1000,
 
   // Salt adicional na gerão do password
   IAM_PASS_SECRET_SALT: process.env.IAM_PASS_SECRET_SALT || defaultIamConfig.IAM_PASS_SECRET_SALT,

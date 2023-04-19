@@ -9,10 +9,10 @@ import { StaticFileModule } from './staticfiles.module';
   imports: [
     //
     ModelModule,
-    StaticFileModule,
     AuthModule,
     AppIamModule,
     AppMgtModule,
+    StaticFileModule,
   ],
   controllers: [],
   providers: [],
