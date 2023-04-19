@@ -15,7 +15,7 @@ i18next
     initImmediate: false,
     fallbackLng: 'en',
     lng: 'pt-BR',
-    debug: env.i18nLog,
+    debug: env.I18N_LOG,
     interpolation: {
       escapeValue: false,
     },

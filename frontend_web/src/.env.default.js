@@ -3,7 +3,7 @@ export default {
   //baseUrl: 'http://localhost',
   //basePort: 3000,
   //
-  baseUrl: '/',
-  basePort: 80,
-  i18nLog: false,
+  BASE_URL: '/',
+  BASE_PORT: '80',
+  I18N_LOG: false,
 };
