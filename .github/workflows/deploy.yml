@@ -49,7 +49,7 @@ jobs:
           sudo chmod 600 ~/.ssh/known_hosts
       #Atualiza servidor
       - name: Atualiza servidor
-        run: rsync -e "ssh -i keypair.pem" -av docs/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}/docs
+        run: rsync -e "ssh -i keypair.pem" -avz docs/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}/docs
 
   app_publish_frontend_web:
     runs-on: ubuntu-latest
@@ -81,7 +81,7 @@ jobs:
           sudo chmod 600 ~/.ssh/known_hosts
       #Atualiza frontend
       - name: Atualiza frontend
-        run: rsync -e "ssh -i keypair.pem" -av frontend_web/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}/frontend_web
+        run: rsync -e "ssh -i keypair.pem" -avz frontend_web/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}/frontend_web
 
   app_publish_backend:
     runs-on: ubuntu-latest
@@ -109,11 +109,8 @@ jobs:
         shell: bash
         run: |
           mkdir -p ~/.ssh/
-          ssh-keyscan -H ${{ secrets.HOST_URL }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.HOST_URL }}{% endraw%} >> ~/.ssh/known_hosts
           sudo chmod 600 ~/.ssh/known_hosts
       #Atualiza servidor
-      - name: Testa conexão com o servidor
-        run: curl -v telnet://${{ secrets.HOST_URL }}:443
-      #Atualiza servidor
       - name: Atualiza servidor
-        run: rsync -e "ssh -i keypair.pem" -av backend/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}/backend
+        run: rsync -e "ssh -i keypair.pem" -avz backend/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}/backend
