@@ -7,6 +7,7 @@ import { NotFoundExceptionFilter } from './commons/catch.exception';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
+    cors: true,
     logger: createNestLogger(),
   });
 
@@ -14,9 +15,9 @@ async function bootstrap() {
   app.use(cookieParser());
 
   // Habilita o cors para uso local da ferramente
-  if (!iamConfig.PRODCTION_MODE) {
-    app.enableCors();
-  }
+  //if (!iamConfig.PRODCTION_MODE) {
+  app.enableCors();
+  //}
 
   // Filtro de exceção do ORM
   app.useGlobalFilters(new NotFoundExceptionFilter());

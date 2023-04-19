@@ -24,7 +24,8 @@ class EndpointsConfigure {
   apiMGTApplication = `/application`;
 
   configureEndpoint = (baseUrl: string = 'localhost', basePort: string = '3000') => {
-    const baseEndpoint = `${baseUrl}:${basePort}`;
+    const baseEndpoint = basePort ? `${baseUrl}:${basePort}` : baseUrl;
+
     const apiAuth = `${baseEndpoint}/auth`;
     const apiIAM = `${baseEndpoint}/iam`;
     const apiMGT = `${baseEndpoint}/mgt`;
