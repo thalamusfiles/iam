@@ -21,6 +21,6 @@ async function bootstrap() {
   // Filtro de exceção do ORM
   app.useGlobalFilters(new NotFoundExceptionFilter());
 
-  await app.listen(3000);
+  await app.listen(iamConfig.PORT);
 }
 bootstrap();
