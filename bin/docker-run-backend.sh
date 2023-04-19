@@ -8,6 +8,10 @@ cd "$parent_path"
 
 # Criandos pastas configurações
 mkdir -p ../backend/tmp/postgres
+mkdir -p ../backend/frontend
+
+# Troca para a pasta docs
+yes | cp -rf ../frontend_web/build/* ../backend/frontend 
 
 # Troca para a pasta docs
 cd ../backend/docker
