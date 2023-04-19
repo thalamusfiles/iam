@@ -112,5 +112,8 @@ jobs:
           ssh-keyscan -H ${{ secrets.HOST_URL }} >> ~/.ssh/known_hosts
           sudo chmod 600 ~/.ssh/known_hosts
       #Atualiza servidor
+      - name: Testa conexão com o servidor
+        run: curl -v telnet://${{ secrets.HOST_URL }}:443
+      #Atualiza servidor
       - name: Atualiza servidor
         run: rsync -e "ssh -i keypair.pem" -av backend/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}/backend
