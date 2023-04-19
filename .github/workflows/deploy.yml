@@ -113,4 +113,4 @@ jobs:
           sudo chmod 600 ~/.ssh/known_hosts
       #Atualiza servidor
       - name: Atualiza servidor
-        run: rsync -azP -e "ssh -i keypair.pem" -av backend/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}/backend
+        run: rsync -e "ssh -i keypair.pem" -av backend/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}/backend
