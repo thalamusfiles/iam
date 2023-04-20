@@ -6,6 +6,7 @@ import { Permission } from '../model/Permission';
 import { Role } from '../model/Role';
 import { Application } from '../model/System/Application';
 import { UserToken } from '../model/UserToken';
+import iamConfig from './iam.config';
 
 const defaultModelConfig = {
   host: 'localhost',
@@ -17,6 +18,11 @@ const defaultModelConfig = {
 };
 
 const modelConfig: MikroOrmModuleSyncOptions = {
+  migrations: {
+    disableForeignKeys: false,
+    path: 'dist/migrations',
+    pathTs: 'src/migrations',
+  },
   entities: [
     // System
     Application,
@@ -38,11 +44,13 @@ const modelConfig: MikroOrmModuleSyncOptions = {
   password: process.env.DATABASE_PASS || defaultModelConfig.password,
   charset: process.env.DATABASE_CHARSET || defaultModelConfig.charset,
   driverOptions: {
-    connection: {
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    },
+    connection: iamConfig.PRODCTION_MODE
+      ? {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        }
+      : undefined,
   },
 };
 

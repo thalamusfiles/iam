@@ -3,11 +3,11 @@ import iamConfig from '../config/iam.config';
 
 export class Migration20230211100000_create_apps extends Migration {
   async up(): Promise<void> {
-    await this.upIamSSO();
-    await this.upIamMgt();
+    this.upIamSSO();
+    this.upIamMgt();
   }
 
-  async upIamSSO(): Promise<void> {
+  upIamSSO(): void {
     // Aplicação Principal (SSO)
     this.addSql(
       `insert into "system"."application" (
@@ -18,6 +18,12 @@ export class Migration20230211100000_create_apps extends Migration {
         '${iamConfig.MAIN_APP_IAM_ID}', CURRENT_DATE, CURRENT_DATE, 
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111',
         '${iamConfig.MAIN_APP_IAM}', '${iamConfig.MAIN_APP_IAM_NAME}', 'Sistema de visualização de acessos', true);`,
+    );
+
+    // Associa como gerente das aplicações
+    this.addSql(
+      `insert into "system"."application_managers" ("application_uuid", "user_uuid")
+       values ('${iamConfig.MAIN_APP_IAM_ID}', (select user_uuid from user_login ul where username = '${iamConfig.FIRST_USER_EMAIL}'));`,
     );
 
     // Cria o vínculo do escopo/perfil com a aplicação
@@ -67,7 +73,7 @@ export class Migration20230211100000_create_apps extends Migration {
     `);
   }
 
-  async upIamMgt(): Promise<void> {
+  upIamMgt(): void {
     // Aplicação de gestão do IAM SSO
     this.addSql(
       `insert into "system"."application" (
@@ -78,6 +84,12 @@ export class Migration20230211100000_create_apps extends Migration {
         '${iamConfig.MAIN_APP_IAM_MGT_ID}', CURRENT_DATE, CURRENT_DATE, 
         '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111',
         '${iamConfig.MAIN_APP_IAM_MGT}', '${iamConfig.MAIN_APP_IAM_MGT_NAME}', 'Description by ${iamConfig.MAIN_APP_IAM_MGT}', false);`,
+    );
+
+    // Associa como gerente das aplicações
+    this.addSql(
+      `insert into "system"."application_managers" ("application_uuid", "user_uuid")
+           values ('${iamConfig.MAIN_APP_IAM_MGT_ID}', (select user_uuid from user_login ul where username = '${iamConfig.FIRST_USER_EMAIL}'));`,
     );
   }
 
