@@ -70,7 +70,7 @@
     "typescript": "^4.7.4"
   },
   "mikro-orm": {
-    "useTsNode": true,
+    "useTsNode": false,
     "configPaths": [
       "src/config/model.config.ts",
       "dist/config/model.config.js"

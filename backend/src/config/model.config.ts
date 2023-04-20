@@ -37,6 +37,13 @@ const modelConfig: MikroOrmModuleSyncOptions = {
   user: process.env.DATABASE_USER || defaultModelConfig.user,
   password: process.env.DATABASE_PASS || defaultModelConfig.password,
   charset: process.env.DATABASE_CHARSET || defaultModelConfig.charset,
+  driverOptions: {
+    connection: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
+  },
 };
 
 export default modelConfig;

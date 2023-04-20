@@ -114,7 +114,7 @@ jobs:
       # Compacta Docs
       - name: Compact Build Frontend
         shell: bash
-        run: zip -r backend backend/dist backend/package.json backend/yarn.lock
+        run: zip -r backend backend/dist backend/package.json backend/yarn.lock backend/tsconfig.json
       # Gera o release
       - name: Release
         uses: softprops/action-gh-release@v1
