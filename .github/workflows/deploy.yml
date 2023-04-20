@@ -114,3 +114,24 @@ jobs:
       #Atualiza servidor
       - name: Atualiza servidor
         run: rsync -e "ssh -i keypair.pem" -avz backend/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}/backend
+
+#  restart_server:
+#    runs-on: ubuntu-latest
+#    needs: [app_publish_backend, app_publish_frontend_web, app_publish_docs]
+#    steps:
+#      # SSH Key
+#      - name: Baixa KeyPair
+#        run: |
+#          echo "${{ secrets.KEYPAIR_PEM }}" > keypair.pem
+#          sudo chmod 400 keypair.pem
+#      - name: Adiciona ao known_hosts
+#        shell: bash
+#        run: |
+#          mkdir -p ~/.ssh/
+#          ssh-keyscan -H ${{ secrets.HOST_URL }} >> ~/.ssh/known_hosts
+#          sudo chmod 600 ~/.ssh/known_hosts
+#      # Reuniciar servidor
+#      - name: Reiniciar serviços
+#        run: ssh -i keypair.pem ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }} "bash -i pm2 restart iam"
+
+
