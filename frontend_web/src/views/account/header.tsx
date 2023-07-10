@@ -3,6 +3,7 @@ import { Container } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useI18N } from '../../commons/i18';
+import ThalamusLinksMenu from '../../components/NavBar/thalamus-links-menu';
 import UserCtxInstance from '../../store/userContext';
 
 const HeaderAccount: React.FC = () => {
@@ -16,6 +17,9 @@ const HeaderAccount: React.FC = () => {
           {__('menu.brand')} - {__('login.subtitle')}
         </Navbar.Brand>
         <Nav>
+          <ThalamusLinksMenu />
+          <div className="navbar-spacer" />
+
           <Nav.Item onClick={() => UserCtxInstance.logout()}>{__('menu.logout')}</Nav.Item>
         </Nav>
       </Container>

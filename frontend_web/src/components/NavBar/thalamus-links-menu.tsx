@@ -6,7 +6,7 @@ import { thalamusLinks } from '../../config/thalamus.data';
 
 const ThalamusLinksMenu: React.FC = () => {
   return (
-    <NavDropdown className="nav_menu_thalamus" title={<FontAwesomeIcon icon={'list'} />}>
+    <NavDropdown className="nav_menu_thalamus" title={<FontAwesomeIcon icon={'table-cells'} />}>
       <ul>
         {Object.values(thalamusLinks).map((link, idx) => (
           <li className="text-center">

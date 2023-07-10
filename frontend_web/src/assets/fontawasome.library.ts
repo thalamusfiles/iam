@@ -37,6 +37,7 @@ import {
   faSortAmountUp,
   faSync,
   faTable,
+  faTableCells,
   faTasks,
   faTh,
   faThLarge,
@@ -99,4 +100,5 @@ library.add(
   faDoorOpen,
   faEarthAmericas,
   faLockOpen,
+  faTableCells,
 );
