@@ -9,7 +9,7 @@ const Mgt: React.FC = () => {
     <>
       <NotificationMenu />
 
-      <Header searchBar />
+      <Header />
 
       <MgtModalRoutes />
       <div className="mainContainer topSpace">

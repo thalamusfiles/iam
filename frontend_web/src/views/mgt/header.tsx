@@ -1,4 +1,3 @@
-import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import React from 'react';
@@ -12,21 +11,15 @@ import * as json from '../../../package.json';
 import { useI18N } from '../../commons/i18';
 import { historyPush } from '../../commons/route';
 import ApplicationInfo from '../../components/ApplicationInfo';
+import ThalamusLinksMenu from '../../components/NavBar/thalamus-links-menu';
 import NotificationValue, { NotificationProvider, useNotificationStore } from '../../components/Notification/ctrl';
 import UserCtxInstance, { useUserStore } from '../../store/userContext';
 
 const { docUrl } = json as any;
 
-type HeaderProps = {
-  title?: string;
-  icon?: IconName | Array<IconName>;
-  searchBar?: boolean;
-};
-
-const Header: React.FC<HeaderProps> = ({ icon, title, searchBar }) => {
+const Header: React.FC = () => {
   const __ = useI18N();
   const context = useUserStore();
-  const isArray = Array.isArray(icon);
 
   return (
     <Navbar className="header" bg="warning" expand="lg" fixed="top">
@@ -43,27 +36,11 @@ const Header: React.FC<HeaderProps> = ({ icon, title, searchBar }) => {
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto" style={{ minWidth: 150 }}>
             <Nav.Link href="/mgt/home">{__('menu.home')}</Nav.Link>
-            {title !== 'menu.home' && (
-              <Navbar.Text>
-                <strong>
-                  {icon &&
-                    (isArray ? (
-                      (icon as Array<IconName>).map((icon: IconName, idx: any) => <FontAwesomeIcon key={idx} size="sm" icon={icon} />)
-                    ) : (
-                      <FontAwesomeIcon icon={icon as IconName} />
-                    ))}
-                  &nbsp;
-                  {__(title || '')}
-                </strong>
-              </Navbar.Text>
-            )}
           </Nav>
 
-          {searchBar && (
-            <Form className="me-auto">
-              <FormControl type="text" placeholder={__('menu.search')} className="mr-sm-2" />
-            </Form>
-          )}
+          <Form className="me-auto">
+            <FormControl type="text" placeholder={__('menu.search')} className="mr-sm-2" />
+          </Form>
 
           <Nav className="me-end">
             <ApplicationInfo />
@@ -77,7 +54,9 @@ const Header: React.FC<HeaderProps> = ({ icon, title, searchBar }) => {
             <NotificationProvider value={NotificationValue}>
               <NotificationBell />
             </NotificationProvider>
+            <div className="navbar-spacer" />
 
+            <ThalamusLinksMenu />
             <div className="navbar-spacer" />
 
             <NavDropdown title={<FontAwesomeIcon icon={'user-circle'} />} id="user-dd">

@@ -12,34 +12,8 @@ $nav-link-padding-y: .25rem !default;
 $form-group-margin-bottom: .5rem;
 $label-margin-bottom: .05rem;
 
-$gray-800: #333333 !default;
-$gray-900: #2F2F2F !default;
-$input-color: #0F0F0F;
-
-$red:     #d84251 !default;
-
-/*
-$blue:    #007bff !default;
-$indigo:  #6610f2 !default;
-$purple:  #6f42c1 !default;
-$pink:    #e83e8c !default;
-$orange:  #fd7e14 !default;
-$yellow:  #ffc107 !default;
-$green:   #28a745 !default;
-$teal:    #20c997 !default;
-$cyan:    #17a2b8 !default;
-
-$theme-colors: (
-  "primary":    $primary,
-  "secondary":  $secondary,
-  "success":    $success,
-  "info":       $info,
-  "warning":    $warning,
-  "danger":     $danger,
-  "light":      $light,
-  "dark":       $dark
-);
-*/
+@import "thalamus";
+@import "ticons";
 
 @import "~bootstrap/scss/bootstrap";
 @import "scss/loader";
