@@ -6,9 +6,9 @@ export const ColorsDef = {
   // Cadastros
   userVariant: 'info',
   rolesVariant: 'success',
-  permissionsVariant: 'outline-dark',
+  permissionsVariant: 'dark',
   // Sistemas
-  applicationsVariant: 'outline-danger',
+  applicationsVariant: 'danger',
   // Atividades
   historyVariant: 'light',
 };

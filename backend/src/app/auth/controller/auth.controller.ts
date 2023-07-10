@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Ip, Logger, Post, Req, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Ip, Logger, Post, Req, Res, UseGuards, UsePipes } from '@nestjs/common';
 import { FormException } from '../../../commons/form.exception';
 import { AuthService, LoginInfo } from '../service/auth.service';
 import { AuthRegisterNameUseCase } from '../usecase/auth-register-name.usecase';

@@ -94,7 +94,7 @@ export class Migration20230211100000_create_apps extends Migration {
   }
 
   async down(): Promise<void> {
-    this.addSql(`delete from "system"."application" where "uuid" = '22222222-2222-2222-2222-222222222222'`);
-    this.addSql(`delete from "system"."application" where "uuid" = '11111111-1111-1111-1111-111111111111'`);
+    this.addSql(`delete from "system"."application" where "uuid" = '${iamConfig.MAIN_APP_IAM_MGT_ID}'`);
+    this.addSql(`delete from "system"."application" where "uuid" = '${iamConfig.MAIN_APP_IAM_ID}'`);
   }
 }

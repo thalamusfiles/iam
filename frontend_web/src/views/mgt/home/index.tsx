@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Card } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
@@ -8,7 +9,8 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import { ColorsDef, IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 import { historyPush } from '../../../commons/route';
-import ListTile from '../../../components/listtile';
+import TCard from '../../../components/Card/card';
+import TCardTile from '../../../components/Card/card-tile';
 import SideBarHome from './sidebarhome';
 
 const Home: React.FC = () => {
@@ -28,7 +30,7 @@ const Home: React.FC = () => {
       </Container>
     </div>
   );
-}
+};
 
 const QuickAccess: React.FC = () => {
   const __ = useI18N();
@@ -53,7 +55,7 @@ const QuickAccess: React.FC = () => {
       <br />
     </>
   );
-}
+};
 
 const Register: React.FC = () => {
   const __ = useI18N();
@@ -61,29 +63,49 @@ const Register: React.FC = () => {
     <>
       <h1>{__('menu.mgt.register')}</h1>
       <Row>
-        <Col sm={6}>
-          <ListTile
-            variant={ColorsDef.userVariant}
+        <Col sm={12} lg={4}>
+          <TCard
+            border={ColorsDef.userVariant}
             faicon={IconsDef.user}
             title={__('menu.mgt.user')}
+            subtitle={__('menu.mgt.user')}
             onClick={() => historyPush('user_list')}
-          />
+          >
+            <Card.Body>
+              <Card.Text>{__('menu.mgt.user_description')}</Card.Text>
+            </Card.Body>
+          </TCard>
         </Col>
-        <Col sm={6}>
-          <ListTile
-            variant={ColorsDef.permissionsVariant}
+        <Col sm={12} lg={4}>
+          <TCard
+            border={ColorsDef.rolesVariant}
+            faicon={IconsDef.roles}
+            title={__('menu.mgt.roles')}
+            subtitle={__('menu.mgt.roles')}
+            onClick={() => historyPush('role_list')}
+          >
+            <Card.Body>
+              <Card.Text>{__('menu.mgt.roles_description')}</Card.Text>
+            </Card.Body>
+          </TCard>
+        </Col>
+        <Col sm={12} lg={4}>
+          <TCard
+            border={ColorsDef.permissionsVariant}
             faicon={IconsDef.permissions}
             title={__('menu.mgt.permissions')}
+            subtitle={__('menu.mgt.permissions')}
             onClick={() => historyPush('permission_list')}
-          />
-        </Col>
-        <Col sm={6}>
-          <ListTile variant={ColorsDef.rolesVariant} faicon={IconsDef.roles} title={__('menu.mgt.roles')} onClick={() => historyPush('role_list')} />
+          >
+            <Card.Body>
+              <Card.Text>{__('menu.mgt.permissions_description')}</Card.Text>
+            </Card.Body>
+          </TCard>
         </Col>
       </Row>
     </>
   );
-}
+};
 
 const Systems: React.FC = () => {
   const __ = useI18N();
@@ -92,16 +114,17 @@ const Systems: React.FC = () => {
       <h1>{__('menu.mgt.systems')}</h1>
       <Row>
         <Col sm={6}>
-          <ListTile
+          <TCardTile
             variant={ColorsDef.applicationsVariant}
             faicon={IconsDef.applications}
             title={__('menu.mgt.applications')}
+            subtitle={__('menu.mgt.applications')}
             onClick={() => historyPush('application_list')}
           />
         </Col>
       </Row>
     </>
   );
-}
+};
 
 export default Home;

@@ -155,8 +155,11 @@
       "systems": "Systems",
       "applications": "Applications",
       "user": "Users",
+      "user_description": "Listing and visualization of users. Profiles and permissions associated with users.",
       "roles": "Scopes / Roles / Profiles / Positions",
+      "roles_description": "Listing and editing system scopes and profiles. Links to the permissions and list of users associated with the profile.",
       "permissions": "Permissions / Resources",
+      "permissions_description": "Listing and editing access permissions to application resources.",
       "my_devices_connected": "My connected devices",
       "my_logins": "My logins performed"
     }

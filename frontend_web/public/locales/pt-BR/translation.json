@@ -155,8 +155,11 @@
       "systems": "Sistemas",
       "applications": "Aplicações",
       "user": "Usuários",
+      "user_description": "Listagem e visualização dos usuários. Perfís e permissões associados aos usuários.",
       "roles": "Escopos / Perfis / Papeis / Cargos",
+      "roles_description": "Listagem e edição de escopos e perfis do sistema. Vínculos com as permissões e lista de usuários associados ao perfil.",
       "permissions": "Permissões / Recursos",
+      "permissions_description": "Listagem e edição de permissões de acesso aos recursos das aplicações.",
       "my_devices_connected": "Meus dispositivos conectados",
       "my_logins": "Meus logins realizados"
     }
