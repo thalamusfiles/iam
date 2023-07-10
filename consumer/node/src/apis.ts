@@ -28,6 +28,10 @@ class IamApisConfigure {
     return api;
   };
 
+  axiosInstances = (): Array<AxiosInstance> => {
+    return [this.ApiAuth, this.ApiIAM, this.ApiMGT];
+  };
+
   initApis = () => {
     this.ApiAuth = this.axiosStart({
       baseURL: Endpoint.apiAuth!,

@@ -12,6 +12,8 @@ import { FormException } from '../../../commons/form.exception';
 import { AuthLoginRespDto } from '../controller/dto/auth.dto';
 import { AccessUserInfo } from '../passaport/access-user-info';
 import { CryptService } from './crypt.service';
+import { Application } from '../../../model/System/Application';
+import { Role } from '../../../model/Role';
 
 export type LoginInfo = {
   userUuid: string;
@@ -37,6 +39,8 @@ export class AuthService {
     @InjectRepository(User) private readonly userRepository: EntityRepository<User>,
     @InjectRepository(UserLogin) private readonly userLoginRepository: EntityRepository<UserLogin>,
     @InjectRepository(UserToken) private readonly userTokenRepository: EntityRepository<UserToken>,
+    @InjectRepository(Application) private readonly applicationRepository: EntityRepository<Application>,
+    @InjectRepository(Role) private readonly roleRepository: EntityRepository<Role>,
     private readonly jwtService: JwtService,
     private readonly cryptService: CryptService,
   ) {
@@ -100,6 +104,32 @@ export class AuthService {
   }
 
   /**
+   * Verifica se o usuário tem permissão para acessar a aplicação se ela não for publica
+   * @param userUuid
+   * @param clientId
+   */
+  async verifyApplicationUserAccess(userUuid: string, clientId: string): Promise<void> {
+    const application = await this.applicationRepository.findOne({
+      $and: [
+        { uuid: clientId }, // Aplicação
+        {
+          $or: [
+            { public: true }, // Aplicação publica
+            { managers: { $in: [userUuid] } }, // Usuário gerente da aplicação
+          ],
+        },
+      ],
+    });
+    if (!application) {
+      // Verifica se o usuário tem algum perfil na aplicação.
+      const role = await this.roleRepository.findOne({ application: clientId, users: { $in: [userUuid] } });
+      if (!role) {
+        throw new FormException([{ kind: 'username', error: 'server.application_not_public' }]);
+      }
+    }
+  }
+
+  /**
    * Remove o token anterior e gera um novo
    * @param accessToken
    * @returns
@@ -122,6 +152,13 @@ export class AuthService {
     return null;
   }
 
+  /**
+   * Cria json com uuids do usuários e o token para acessar os sistemas
+   * @param user
+   * @param userLogin
+   * @param appInfo
+   * @returns
+   */
   async createAccessToken(user: User, userLogin: UserLogin, appInfo: LoginInfo): Promise<AuthLoginRespDto> {
     const expiresIn = DateTime.now().plus({ seconds: jwtConfig.MAX_AGE }).toJSDate();
 
@@ -213,12 +250,12 @@ export class AuthService {
     }
   }
 
-  private userInfo(user: User, { clientId: application }: LoginInfo): AccessUserInfo {
+  private userInfo(user: User, { clientId }: LoginInfo): AccessUserInfo {
     return {
       iat: DateTime.now().valueOf(),
       uuid: user.uuid,
       name: user.name,
-      applicationLogged: application,
+      applicationLogged: clientId,
     };
   }
 

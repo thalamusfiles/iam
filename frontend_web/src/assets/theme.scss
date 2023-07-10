@@ -86,7 +86,7 @@ $theme-colors: (
 }
 
 .header {
-  border-bottom: 2px solid $gray-100;
+  border-bottom: 2px solid $gray-200;
 
   .fa-layers-counter {
     background-color: $secondary;
@@ -175,7 +175,7 @@ $theme-colors: (
 .table-resizer {
   position: absolute;
   margin-left: math.div($table-cell-padding-y-sm, 2);
-  width: $table-border-width * 4;
+  width: $table-cell-padding-y-sm * 4;
   height: $line-height-sm * 1em;
 
   &:hover {

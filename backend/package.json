@@ -1,7 +1,7 @@
 {
   "name": "iam_api",
   "version": "0.1.1",
-  "description": "IAM Frontend Web",
+  "description": "Thalamus IAM Backend",
   "private": true,
   "license": "MIT",
   "scripts": {

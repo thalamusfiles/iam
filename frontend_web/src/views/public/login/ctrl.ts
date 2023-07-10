@@ -45,16 +45,22 @@ export class LoginCtrl {
 
   @action
   loadApplicationInfo = () => {
-    new OauthDataSource().applicationInfo(this.applicationUuid!).then((response) => {
-      this.appInfo = response.data;
-    });
+    new OauthDataSource()
+      .applicationInfo(this.applicationUuid!)
+      .then((response) => {
+        this.appInfo = response.data;
+      })
+      .catch(() => {});
   };
 
   @action
   loadScopeInfo = () => {
-    new OauthDataSource().scopeInfo(this.scope!).then((response) => {
-      this.scopeInfo = response.data;
-    });
+    new OauthDataSource()
+      .scopeInfo(this.scope!)
+      .then((response) => {
+        this.scopeInfo = response.data;
+      })
+      .catch(() => {});
   };
 
   @action

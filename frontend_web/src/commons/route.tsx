@@ -12,7 +12,7 @@ export type RouteDefinitions = { [key: string]: RouteDefinition };
 let router: RemixRouter;
 export const createBaseRouter = (routes: RouteObject[]): RemixRouter => (router = createBrowserRouter(routes));
 
-export function getLinkTo(owner: RoutesName | string | number, options: { uuid: string } & any): string {
+export function getLinkTo(owner: RoutesName | string | number, options: { uuid: string } & any = {}): string {
   let push;
   switch (owner as RoutesName) {
     // PUBLIC

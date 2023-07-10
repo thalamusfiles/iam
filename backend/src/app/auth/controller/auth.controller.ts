@@ -42,7 +42,7 @@ export class AuthController {
   @Post('register')
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   @UsePipes(new IamValidationPipe())
-  async localRegister(
+  async register(
     @Body() body: AuthRegisterDto,
     @Req() request: RequestInfo,
     @Res({ passthrough: true }) response: ResponseInfo,
@@ -65,7 +65,7 @@ export class AuthController {
 
     await this.authService.register(body);
 
-    return this.localLogin(body, request, response, userAgent, ip);
+    return this.login(body, request, response, userAgent, ip);
   }
 
   /**
@@ -76,7 +76,7 @@ export class AuthController {
   @Post('login')
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   @UsePipes(new IamValidationPipe())
-  async localLogin(
+  async login(
     @Body() body: AuthLoginDto,
     @Req() request: RequestInfo,
     @Res({ passthrough: true }) response: ResponseInfo,
@@ -114,6 +114,8 @@ export class AuthController {
 
     // Procura usuários e cria token de acesso
     const authResp = await this.authService.findAndCreateAccessToken(body.username, body.password, appInfo);
+    // Verifica se é uma aplicação pública e se o usuário tem acesso
+    await this.authService.verifyApplicationUserAccess(authResp.info.uuid, appInfo.clientId);
     // Remove todos os logins anteriores da máquina
     await this.authService.removeOldTokens(authResp.info.uuid, userAgent, ip);
     // Salva o registro do novo login
