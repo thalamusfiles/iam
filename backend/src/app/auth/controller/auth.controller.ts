@@ -15,6 +15,7 @@ import { CookieService } from '../service/cookie.service';
 import { AuthOauthFieldsUseCase } from '../usecase/auth-oauth-fields.usecase';
 import { AuthLoginClientIdUseCase } from '../usecase/auth-register-client_id.usecase';
 import { IamValidationPipe } from '../../../commons/validation.pipe';
+import { OauthInfoService } from '../service/oauthinfo.service';
 
 @Controller('auth')
 export class AuthController {
@@ -23,12 +24,14 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly cookieService: CookieService,
+    private readonly oauthInfoService: OauthInfoService,
+    // Use cases
     private readonly authRegisterNameUseCase: AuthRegisterNameUseCase,
     private readonly authRegisterUsernameUseCase: AuthRegisterUsernameUseCase,
     private readonly authRegisterPasswordUseCase: AuthRegisterPasswordUseCase,
     private readonly authRegisterMaxRegisterIpUseCase: AuthRegisterMaxRegisterIpUseCase,
     private readonly authOauthFieldsUseCase: AuthOauthFieldsUseCase,
-    private readonly authLoginClienteId: AuthLoginClientIdUseCase,
+    private readonly authLoginClienteIdUseCase: AuthLoginClientIdUseCase,
   ) {
     this.logger.log('starting');
   }
@@ -89,7 +92,7 @@ export class AuthController {
     const allErros = [].concat(
       //
       await this.authOauthFieldsUseCase.execute(body),
-      await this.authLoginClienteId.execute(body),
+      await this.authLoginClienteIdUseCase.execute(body),
     );
     if (allErros.length) {
       throw new FormException(allErros);
@@ -98,12 +101,14 @@ export class AuthController {
     const appInfo: LoginInfo = {
       userUuid: null,
       userLoginUuid: null,
-      clientId: body.cliente_id,
+      clientId: body.client_id,
       userAgent,
       ip,
       responseType: body.response_type,
       redirectUri: body.redirect_uri,
       scope: body.scope,
+      codeChallenge: body.code_challenge,
+      codeChallengeMethod: body.code_challenge_method,
       sessionToken: null,
       accessToken: null,
       expiresIn: null,
@@ -114,10 +119,18 @@ export class AuthController {
 
     // Procura usuários e cria token de acesso
     const authResp = await this.authService.findAndCreateAccessToken(body.username, body.password, appInfo);
+    // Criar código de autorização para coleta de token entre aplicações e criptografa o code challange com esse código
+    let code = null;
+    if (appInfo.codeChallenge) {
+      code = this.oauthInfoService.generateAuthorizationCode();
+      appInfo.codeChallenge = this.oauthInfoService.encriptCodeChallengWithSalt(appInfo.codeChallenge, code);
+    }
     // Verifica se é uma aplicação pública e se o usuário tem acesso
     await this.authService.verifyApplicationUserAccess(authResp.info.uuid, appInfo.clientId);
     // Remove todos os logins anteriores da máquina
     await this.authService.removeOldTokens(authResp.info.uuid, userAgent, ip);
+    // Format redirect Uril
+    authResp.callbackUri = await this.oauthInfoService.createCallbackUri(body.redirect_uri, body.response_type, body.state, code);
     // Salva o registro do novo login
     await this.authService.saveUserToken(appInfo);
 
@@ -141,6 +154,8 @@ export class AuthController {
       responseType: 'token',
       redirectUri: null,
       scope: null,
+      codeChallenge: null,
+      codeChallengeMethod: null,
       sessionToken: null,
       accessToken: null,
       expiresIn: null,

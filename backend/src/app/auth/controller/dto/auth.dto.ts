@@ -1,12 +1,12 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IsNotEmpty, IsString, IsUrl, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUrl, IsUUID } from 'class-validator';
 import iamConfig from '../../../../config/iam.config';
 import { AccessUserInfo } from '../../passaport/access-user-info';
 
-class OauthFieldsDto {
+export class OauthFieldsDto {
   @Expose()
   @IsUUID()
-  cliente_id: string;
+  client_id: string;
 
   @Expose()
   @IsString()
@@ -19,6 +19,21 @@ class OauthFieldsDto {
   @Expose()
   @IsString()
   scope: string;
+
+  @Expose()
+  @IsString()
+  @IsOptional()
+  state: string;
+
+  @Expose()
+  @IsString()
+  @IsOptional()
+  code_challenge: string;
+
+  @Expose()
+  @IsString()
+  @IsOptional()
+  code_challenge_method: string;
 }
 
 /**
@@ -83,6 +98,7 @@ export type AuthLoginRespDto = {
   token_type: string;
   access_token?: string;
   scope: string;
+  callbackUri: string;
   expires_in: number;
   info?: AccessUserInfo;
 };

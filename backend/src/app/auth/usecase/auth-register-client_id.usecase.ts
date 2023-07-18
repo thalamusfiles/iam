@@ -6,12 +6,12 @@ import { RequestService } from '../service/request.service';
 export class AuthLoginClientIdUseCase {
   constructor(private readonly requestService: RequestService) {}
 
-  execute = async ({ cliente_id }: any): Promise<Array<FormExceptionError>> => {
+  execute = async ({ client_id }: any): Promise<Array<FormExceptionError>> => {
     const erros = [];
-    if (cliente_id) {
-      if (!(await this.requestService.checkApplicationClientId(cliente_id))) {
-        const error = 'O cliente_id não existe.';
-        erros.push({ kind: 'cliente_id', error: error });
+    if (client_id) {
+      if (!(await this.requestService.checkApplicationClientId(client_id))) {
+        const error = 'O client_id não existe.';
+        erros.push({ kind: 'client_id', error: error });
       }
     }
     return erros;

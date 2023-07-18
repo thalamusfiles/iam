@@ -30,8 +30,12 @@ const LoginPage: React.FC = () => {
     ctrl.setParams(
       //
       app as string,
-      searchParams.get('redirectTo'),
+      searchParams.get('response_type'),
+      searchParams.get('redirect_uri'),
       searchParams.get('scope'),
+      searchParams.get('state'),
+      searchParams.get('code_challenge'),
+      searchParams.get('code_challenge_method'),
     );
   });
 
@@ -58,7 +62,7 @@ const LoginPageProvided: React.FC = observer(() => {
           </Col>
         </Row>
         <Row>
-          <Col xxl={{ span: 4, offset: 4 }} lg={{ span: 6, offset: 3 }}  sm={{ span: 8, offset: 2 }} xs={12}>
+          <Col xxl={{ span: 4, offset: 4 }} lg={{ span: 6, offset: 3 }} sm={{ span: 8, offset: 2 }} xs={12}>
             <Col xs={{ span: 10, offset: 1 }}>
               <Card id="login_card" border="info" className="cdShadow">
                 <Card.Body>

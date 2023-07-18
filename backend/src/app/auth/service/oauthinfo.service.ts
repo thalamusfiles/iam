@@ -1,8 +1,11 @@
 import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, Logger } from '@nestjs/common';
+import iamConfig from '../../../config/iam.config';
 import { Role } from '../../../model/Role';
 import { Application } from '../../../model/System/Application';
+import { OauthFieldsDto } from '../controller/dto/auth.dto';
+import { CryptService } from './crypt.service';
 
 type ScopeInfo = { scope: string; app: { name: string; description: string }; permission: { description: string } };
 
@@ -11,6 +14,7 @@ export class OauthInfoService {
   private readonly logger = new Logger(OauthInfoService.name);
 
   constructor(
+    private readonly cryptService: CryptService,
     @InjectRepository(Application)
     private readonly applicationRepository: EntityRepository<Application>,
     @InjectRepository(Role)
@@ -28,6 +32,44 @@ export class OauthInfoService {
     this.logger.verbose('Find all');
 
     return this.applicationRepository.findOneOrFail({ uuid });
+  }
+
+  createCallbackUri(redirectUri: string, response_type: string, state: string, code: string): string {
+    const types = response_type.split(' ');
+    const params = [] as string[];
+    if (types.includes('code')) {
+      params.push(`code=${code}`);
+    }
+    if (state) {
+      params.push(`state=${state}`);
+    }
+    return redirectUri + '?' + params.join('&');
+  }
+
+  createOauthParams(query: OauthFieldsDto): string {
+    const { state, code_challenge, code_challenge_method } = query;
+
+    const baseUrl = `response_type=${query.response_type}&scope=${query.scope}&redirect_uri=${query.redirect_uri}&client_id=${query.client_id}`;
+    const params = [] as string[];
+    if (state) params.push(`&state=${state}`);
+    if (code_challenge) params.push(`&code_challenge=${code_challenge}`);
+    if (code_challenge_method) params.push(`&code_challenge_method=${code_challenge_method}`);
+
+    return baseUrl + params.join();
+  }
+
+  /**
+   * Gera um código para posterior autenticação entre aplicações
+   */
+  generateAuthorizationCode(): string {
+    return this.cryptService.generateRandomString(128);
+  }
+
+  /**
+   * Encripta o code challenge com um salt
+   */
+  encriptCodeChallengWithSalt(codeChallenge: string, salt: string): string {
+    return this.cryptService.encrypt(iamConfig.IAM_PASS_SECRET_SALT, salt, codeChallenge).substring(0, 256);
   }
 
   /**

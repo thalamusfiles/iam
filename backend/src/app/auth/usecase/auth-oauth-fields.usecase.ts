@@ -4,15 +4,13 @@ import { ResponseTypes } from '../types/response-type';
 
 @Injectable({ scope: Scope.REQUEST })
 export class AuthOauthFieldsUseCase {
-  execute = async ({ cliente_id, response_type, scope }: any): Promise<Array<FormExceptionError>> => {
+  execute = async ({ client_id, response_type, scope, code_challenge, code_challenge_method }: any): Promise<Array<FormExceptionError>> => {
     const erros = [];
-    if (!cliente_id) {
-      const error = 'O cliente_id é obrigatório.';
-      erros.push({ kind: 'cliente_id', error: error });
+    if (!client_id) {
+      erros.push({ kind: 'client_id', error: 'O client_id é obrigatório.' });
     }
     if (!response_type) {
-      const error = 'O response_type é obrigatório.';
-      erros.push({ kind: 'response_type', error: error });
+      erros.push({ kind: 'response_type', error: 'O response_type é obrigatório.' });
     } else {
       const type: string[] = response_type.split(' ');
       const check = type.filter((t) => ResponseTypes.includes(t));
@@ -20,10 +18,14 @@ export class AuthOauthFieldsUseCase {
         const error = 'O response_type deve ser do tipo:' + ResponseTypes.join(' ');
         erros.push({ kind: 'response_type', error: error });
       }
+
+      if (type.includes('code') && (!code_challenge || !code_challenge_method)) {
+        erros.push({ kind: 'code_challenge', error: 'O code_challenge é obrigatório' });
+        erros.push({ kind: 'code_challenge_method', error: 'O code_challenge_method é obrigatório' });
+      }
     }
     if (!scope) {
-      const error = 'O scope é obrigatório.';
-      erros.push({ kind: 'scope', error: error });
+      erros.push({ kind: 'scope', error: 'O scope é obrigatório.' });
     }
     return erros;
   };

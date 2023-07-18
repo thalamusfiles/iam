@@ -18,7 +18,7 @@ describe('AuthController (e2e)', () => {
   // Cadastros de testes
   const password = '1Ab' + faker.internet.password(16);
   const oauth = {
-    cliente_id: iamConfig.MAIN_APP_IAM_ID,
+    client_id: iamConfig.MAIN_APP_IAM_ID,
     response_type: 'cookie',
     redirect_uri: 'https://localhost:8080/',
     scope: 'all',
@@ -68,7 +68,7 @@ describe('AuthController (e2e)', () => {
         },
       }),
     );
-    expect(result.body.info.applicationLogged).toEqual(registerDto01.cliente_id);
+    expect(result.body.info.applicationLogged).toEqual(registerDto01.client_id);
     expect(result.body.access_token).toBeDefined();
     expect(result.body.info).toBeDefined();
 
@@ -109,7 +109,7 @@ describe('AuthController (e2e)', () => {
         },
       }),
     );
-    expect(result.body.info.applicationLogged).toEqual(registerDto01.cliente_id);
+    expect(result.body.info.applicationLogged).toEqual(registerDto01.client_id);
 
     accessToken = result.body.access_token;
   });

@@ -29,20 +29,36 @@ export class RegisterCtrl {
   @observable scopeInfo: ScopeInfo[] | null = null;
 
   // Oauth
-  @observable redirectTo = null as string | null;
+  @observable response_type = null as string | null;
+  @observable redirect_uri = null as string | null;
   @observable applicationUuid = null as string | null;
   @observable scope = null as string | null;
+  @observable state = null as string | null;
+  @observable code_challenge = null as string | null;
+  @observable code_challenge_method = null as string | null;
 
   // Modals
   @observable permissionModalDisplay: boolean = false;
 
   @action
-  setParams = (applicationUuid: string, redirectTo: string | null, scope: string | null) => {
+  setParams = (
+    applicationUuid: string,
+    response_type: string | null,
+    redirect_uri: string | null,
+    scope: string | null,
+    state: string | null,
+    code_challenge: string | null,
+    code_challenge_method: string | null,
+  ) => {
     const isChange = this.applicationUuid !== applicationUuid;
 
     this.applicationUuid = applicationUuid;
-    this.redirectTo = redirectTo;
+    this.response_type = response_type;
+    this.redirect_uri = redirect_uri;
     this.scope = scope;
+    this.state = state;
+    this.code_challenge = code_challenge;
+    this.code_challenge_method = code_challenge_method;
 
     if (isChange) {
       this.loadApplicationInfo();
@@ -106,10 +122,13 @@ export class RegisterCtrl {
       .register(
         { name: this.name, username: this.username, password: this.password, password_confirmed: this.passwordConfirmed },
         {
-          response_type: 'cookie',
+          response_type: this.response_type || 'cookie',
+          redirect_uri: this.redirect_uri || undefined,
+          client_id: this.applicationUuid!,
           scope: this.scope!,
-          cliente_id: this.applicationUuid!,
-          redirect_uri: this.redirectTo || undefined,
+          state: this.state || undefined,
+          code_challenge: this.code_challenge || undefined,
+          code_challenge_method: this.code_challenge_method || undefined,
         },
       )
       .then((response) => {
@@ -120,8 +139,8 @@ export class RegisterCtrl {
         // Regista o Register no contexto do usuário
         UserCtxInstance.login(responseData.info, responseData.access_token, responseData.info.expires_in);
 
-        if (this.redirectTo) {
-          window.location.href = this.redirectTo;
+        if (responseData.callbackUri) {
+          window.location.href = responseData.callbackUri;
         }
       })
       .catch((error: any) => {
@@ -135,7 +154,7 @@ export class RegisterCtrl {
   };
 
   toLogin = () => {
-    historyPush('login', { app: this.applicationUuid, search: { scope: this.scope, redirectTo: this.redirectTo } });
+    historyPush('login', { app: this.applicationUuid, search: { scope: this.scope, redirect_uri: this.redirect_uri } });
   };
 }
 

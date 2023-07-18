@@ -29,8 +29,12 @@ const RegisterPage: React.FC = () => {
     ctrl.setParams(
       //
       app as string,
-      searchParams.get('redirectTo'),
+      searchParams.get('response_type'),
+      searchParams.get('redirect_uri'),
       searchParams.get('scope'),
+      searchParams.get('state'),
+      searchParams.get('code_challenge'),
+      searchParams.get('code_challenge_method'),
     );
   });
 

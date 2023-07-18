@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Query, Req, Res, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Logger, Query, Req, Res, UsePipes } from '@nestjs/common';
 import { FormException } from '../../../commons/form.exception';
 import { Throttle } from '@nestjs/throttler';
 import iamConfig from '../../../config/iam.config';
@@ -6,7 +6,7 @@ import { RequestInfo } from '../../../commons/request-info';
 import { CookieService } from '../service/cookie.service';
 import { AuthOauthFieldsUseCase } from '../usecase/auth-oauth-fields.usecase';
 import { AuthLoginClientIdUseCase } from '../usecase/auth-register-client_id.usecase';
-import { ApplicationInfoDto, AuthRegisterDto, ScopeInfoDto } from './dto/auth.dto';
+import { ApplicationInfoDto, OauthFieldsDto, ScopeInfoDto } from './dto/auth.dto';
 import { OauthInfoService } from '../service/oauthinfo.service';
 import { IamValidationPipe } from '../../../commons/validation.pipe';
 
@@ -54,31 +54,58 @@ export class OauthController {
 
   @Get('oauth2/authorize')
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
-  async oauth2Authorize(@Req() request: RequestInfo, @Res() res, @Body() body: AuthRegisterDto): Promise<string> {
+  async oauth2Authorize(@Req() request: RequestInfo, @Res() res, @Query() query: OauthFieldsDto): Promise<any> {
     this.logger.log('Oauth2 authorize');
 
     //Executa os casos de uso com validações
     const allErros = [].concat(
       //
-      await this.authOauthFieldsUseCase.execute(body),
-      await this.authLoginClienteId.execute(body),
+      await this.authOauthFieldsUseCase.execute(query),
+      await this.authLoginClienteId.execute(query),
     );
 
     if (allErros.length) {
       throw new FormException(allErros);
     }
 
+    //Coleta o cookie para verificar se já esta autênticado
     const cookieId = this.cookieService.getSSOCookie(request);
+
     if (cookieId) {
-      return res.redirect(body.redirect_uri);
+      let code = null;
+      if (query.code_challenge) {
+        code = this.oauthInfoService.generateAuthorizationCode();
+        query.code_challenge = this.oauthInfoService.encriptCodeChallengWithSalt(query.code_challenge, code);
+      }
+
+      const redirectUri = this.oauthInfoService.createCallbackUri(query.redirect_uri, query.response_type, query.state, code);
+      return res.redirect(redirectUri);
     } else {
-      return res.redirect('/login');
+      const baseUrl = `/public/app/${query.client_id}/login`;
+      const params = this.oauthInfoService.createOauthParams(query);
+
+      return res.redirect(baseUrl + '?' + params);
     }
   }
 
   @Get('oauth2/token')
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   async oauth2Token(@Req() request: RequestInfo): Promise<string> {
+    this.logger.log('Oauth2 token');
+
     return '' + request;
+  }
+
+  @Get('.well-known/openid-configuration')
+  async openIDConfig() {
+    this.logger.log('OpenID Configuration');
+    return {
+      issuer: 'thalamus_iam',
+      authorization_endpoint: '/auth/oauth2/authorize',
+      token_endpoint: '/auth/oauth2/token',
+      userinfo_endpoint: null,
+      grant_types_supported: ['authorization_code'],
+      response_types_supported: ['token', 'code', 'cookie'],
+    };
   }
 }

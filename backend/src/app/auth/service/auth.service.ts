@@ -25,6 +25,8 @@ export type LoginInfo = {
   responseType: string;
   redirectUri: string;
   scope: string;
+  codeChallenge: string;
+  codeChallengeMethod: string;
 
   sessionToken: string;
   accessToken: string;
@@ -173,6 +175,7 @@ export class AuthService {
     return {
       token_type: appInfo.responseType,
       scope: appInfo.scope,
+      callbackUri: '',
       expires_in: jwtConfig.MAX_AGE,
       access_token,
       info,
@@ -209,6 +212,8 @@ export class AuthService {
       responseType: appInfo.responseType,
       redirectUri: appInfo.redirectUri,
       scope: appInfo.scope,
+      codeChallenge: appInfo.codeChallenge,
+      codeChallengeMethod: appInfo.codeChallengeMethod || null,
       // TOKENS
       sessionToken: appInfo.sessionToken,
       accessToken: appInfo.accessToken,
@@ -228,7 +233,7 @@ export class AuthService {
   }
 
   /**
-   * Carrega o usuário e verifica seu senha
+   * Carrega o usuário e verifica sua senha
    * @param username
    * @param password
    * @returns

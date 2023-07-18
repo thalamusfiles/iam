@@ -15,7 +15,7 @@ describe('OauthController (e2e)', () => {
 
   // Cadastros de testes
   const oauth = {
-    cliente_id: iamConfig.MAIN_APP_IAM_ID,
+    client_id: iamConfig.MAIN_APP_IAM_ID,
     response_type: 'cookie',
     redirect_uri: 'https://localhost:8080/',
     scope: 'all',

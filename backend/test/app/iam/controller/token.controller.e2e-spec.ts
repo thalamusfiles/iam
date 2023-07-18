@@ -31,7 +31,7 @@ describe('MeController (e2e)', () => {
   it(`/auth/login (Post) Realiza o login`, async () => {
     const loginUrl = `/auth/login`;
     const oauth = {
-      cliente_id: iamConfig.MAIN_APP_IAM_ID,
+      client_id: iamConfig.MAIN_APP_IAM_ID,
       response_type: 'cookie',
       redirect_uri: 'https://localhost:8080/',
       scope: 'all',
