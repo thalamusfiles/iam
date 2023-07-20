@@ -52,7 +52,7 @@ export class AuthController {
     @Headers('User-Agent') userAgent,
     @Ip() ip: string,
   ): Promise<AuthLoginRespDto> {
-    this.logger.log('Registro Local de Usuários');
+    this.logger.log('Auth register');
 
     //Executa os casos de uso com validações
     const allErros = [].concat(
@@ -86,7 +86,7 @@ export class AuthController {
     @Headers('User-Agent') userAgent,
     @Ip() ip: string,
   ): Promise<AuthLoginRespDto> {
-    this.logger.log('Login Local');
+    this.logger.log('Auth login');
 
     //Executa os casos de uso com validações
     const allErros = [].concat(
@@ -175,6 +175,7 @@ export class AuthController {
   @Get('logout')
   @UseGuards(AccessGuard)
   async logout(@Req() request: RequestInfo, @Res({ passthrough: true }) response: ResponseInfo): Promise<void> {
+    this.logger.log('Auth logout');
     this.cookieService.clearCookies(request, response);
   }
 }

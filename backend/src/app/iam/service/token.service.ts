@@ -63,6 +63,7 @@ export class TokenService {
         populate: ['application'],
         limit: maxPerPage,
         offset: page * maxPerPage,
+        orderBy: { createdAt: 'DESC' },
       })) || [];
 
     return tokens.map((token) => ({

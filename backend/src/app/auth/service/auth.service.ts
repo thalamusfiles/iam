@@ -106,6 +106,20 @@ export class AuthService {
   }
 
   /**
+   * Carrega o usuário a partir da sessão
+   * @param username
+   * @param password
+   * @returns
+   */
+  async findLocalUserBySession(sessionToken: string): Promise<UserLogin | null> {
+    this.logger.verbose('AuthService.findLocalUserBySession');
+
+    const userToken = await this.userTokenRepository.findOne({ sessionToken }, { populate: ['login', 'login.user'] });
+
+    return userToken?.login || null;
+  }
+
+  /**
    * Verifica se o usuário tem permissão para acessar a aplicação se ela não for publica
    * @param userUuid
    * @param clientId
@@ -239,7 +253,7 @@ export class AuthService {
    * @returns
    */
   private async findLocalUserByLogin(username: string, password: string): Promise<UserLogin> {
-    this.logger.verbose('Valida login Local');
+    this.logger.verbose('AuthService.findLocalUserByLogin');
 
     const userLogin = await this.userLoginRepository.findOne({ username, type: UserLoginType.LOCAL }, { populate: ['user'] });
     if (!userLogin) {

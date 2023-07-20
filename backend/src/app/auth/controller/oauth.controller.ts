@@ -9,6 +9,7 @@ import { AuthLoginClientIdUseCase } from '../usecase/auth-register-client_id.use
 import { ApplicationInfoDto, OauthFieldsDto, ScopeInfoDto } from './dto/auth.dto';
 import { OauthInfoService } from '../service/oauthinfo.service';
 import { IamValidationPipe } from '../../../commons/validation.pipe';
+import { AuthService } from '../service/auth.service';
 
 @Controller('auth')
 export class OauthController {
@@ -17,6 +18,7 @@ export class OauthController {
   constructor(
     private readonly cookieService: CookieService,
     private readonly oauthInfoService: OauthInfoService,
+    private readonly authService: AuthService,
     private readonly authOauthFieldsUseCase: AuthOauthFieldsUseCase,
     private readonly authLoginClienteId: AuthLoginClientIdUseCase,
   ) {
@@ -53,7 +55,7 @@ export class OauthController {
   }
 
   @Get('oauth2/authorize')
-  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
+  //@Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   async oauth2Authorize(@Req() request: RequestInfo, @Res() res, @Query() query: OauthFieldsDto): Promise<any> {
     this.logger.log('Oauth2 authorize');
 
@@ -72,20 +74,27 @@ export class OauthController {
     const cookieId = this.cookieService.getSSOCookie(request);
 
     if (cookieId) {
-      let code = null;
-      if (query.code_challenge) {
-        code = this.oauthInfoService.generateAuthorizationCode();
-        query.code_challenge = this.oauthInfoService.encriptCodeChallengWithSalt(query.code_challenge, code);
+      const userLogin = await this.authService.findLocalUserBySession(cookieId);
+      if (userLogin) {
+        // Criar código de autorização para coleta de token entre aplicações e criptografa o code challange com esse código
+        let code = null;
+        if (query.code_challenge) {
+          code = this.oauthInfoService.generateAuthorizationCode();
+          query.code_challenge = this.oauthInfoService.encriptCodeChallengWithSalt(query.code_challenge, code);
+        }
+
+        // Verifica se é uma aplicação pública e se o usuário tem acesso
+        await this.authService.verifyApplicationUserAccess(userLogin.user.uuid, query.client_id);
+
+        const redirectUri = this.oauthInfoService.createCallbackUri(query.redirect_uri, query.response_type, query.state, code);
+        return res.redirect(redirectUri);
       }
-
-      const redirectUri = this.oauthInfoService.createCallbackUri(query.redirect_uri, query.response_type, query.state, code);
-      return res.redirect(redirectUri);
-    } else {
-      const baseUrl = `/public/app/${query.client_id}/login`;
-      const params = this.oauthInfoService.createOauthParams(query);
-
-      return res.redirect(baseUrl + '?' + params);
     }
+
+    const baseUrl = `/public/app/${query.client_id}/login`;
+    const params = this.oauthInfoService.createOauthParams(query);
+
+    return res.redirect(baseUrl + '?' + params);
   }
 
   @Get('oauth2/token')
@@ -101,8 +110,8 @@ export class OauthController {
     this.logger.log('OpenID Configuration');
     return {
       issuer: 'thalamus_iam',
-      authorization_endpoint: '/auth/oauth2/authorize',
-      token_endpoint: '/auth/oauth2/token',
+      authorization_endpoint: iamConfig.HOST + '/auth/oauth2/authorize',
+      token_endpoint: iamConfig.HOST + '/auth/oauth2/token',
       userinfo_endpoint: null,
       grant_types_supported: ['authorization_code'],
       response_types_supported: ['token', 'code', 'cookie'],
