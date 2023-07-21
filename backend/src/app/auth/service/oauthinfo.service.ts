@@ -35,6 +35,8 @@ export class OauthInfoService {
   }
 
   createCallbackUri(redirectUri: string, response_type: string, state: string, code: string): string {
+    this.logger.verbose('createCallbackUri');
+
     const types = response_type.split(' ');
     const params = [] as string[];
     if (types.includes('code')) {
@@ -47,6 +49,8 @@ export class OauthInfoService {
   }
 
   createOauthParams(query: OauthFieldsDto): string {
+    this.logger.verbose('createOauthParams');
+
     const { state, code_challenge, code_challenge_method } = query;
 
     const baseUrl = `response_type=${query.response_type}&scope=${query.scope}&redirect_uri=${query.redirect_uri}&client_id=${query.client_id}`;
@@ -78,7 +82,7 @@ export class OauthInfoService {
    * @returns
    */
   async findScopesInfo(scope: string): Promise<ScopeInfo[]> {
-    this.logger.verbose('Find all');
+    this.logger.verbose('findScopesInfo');
 
     const apps: Record<string, Application> = {};
     const appAndRoles: { scope: string; app: Application; role: string }[] = [];

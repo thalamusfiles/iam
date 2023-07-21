@@ -1,4 +1,4 @@
-import { Controller, Get, Logger, Query, Req, Res, UsePipes } from '@nestjs/common';
+import { Controller, Get, Headers, Ip, Logger, Post, Query, Req, Res, UsePipes } from '@nestjs/common';
 import { FormException } from '../../../commons/form.exception';
 import { Throttle } from '@nestjs/throttler';
 import iamConfig from '../../../config/iam.config';
@@ -56,7 +56,13 @@ export class OauthController {
 
   @Get('oauth2/authorize')
   //@Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
-  async oauth2Authorize(@Req() request: RequestInfo, @Res() res, @Query() query: OauthFieldsDto): Promise<any> {
+  async oauth2Authorize(
+    @Req() request: RequestInfo,
+    @Res() res,
+    @Query() query: OauthFieldsDto,
+    @Headers('User-Agent') userAgent,
+    @Ip() ip: string,
+  ): Promise<any> {
     this.logger.log('Oauth2 authorize');
 
     //Executa os casos de uso com validações
@@ -74,19 +80,39 @@ export class OauthController {
     const cookieId = this.cookieService.getSSOCookie(request);
 
     if (cookieId) {
-      const userLogin = await this.authService.findLocalUserBySession(cookieId);
-      if (userLogin) {
+      const userToken = await this.authService.findUserTokenBySession(cookieId, query.scope);
+      if (userToken) {
+        const loginInfo = this.authService.startLoginInfo({
+          userAgent,
+          ip,
+          userUuid: userToken.user.uuid,
+          userLoginUuid: userToken.login.uuid,
+          clientId: query.client_id,
+          responseType: query.response_type,
+          redirectUri: query.redirect_uri,
+          scope: query.scope,
+          codeChallenge: query.code_challenge,
+          codeChallengeMethod: query.code_challenge_method,
+          sessionToken: cookieId,
+        });
+        // Procura usuários e cria token de acesso
+        await this.authService.createAccessToken(userToken.user, userToken.login, loginInfo);
+
         // Criar código de autorização para coleta de token entre aplicações e criptografa o code challange com esse código
         let code = null;
         if (query.code_challenge) {
           code = this.oauthInfoService.generateAuthorizationCode();
-          query.code_challenge = this.oauthInfoService.encriptCodeChallengWithSalt(query.code_challenge, code);
+          loginInfo.codeChallenge = this.oauthInfoService.encriptCodeChallengWithSalt(loginInfo.codeChallenge, code);
         }
 
         // Verifica se é uma aplicação pública e se o usuário tem acesso
-        await this.authService.verifyApplicationUserAccess(userLogin.user.uuid, query.client_id);
+        await this.authService.verifyApplicationUserAccess(userToken.user.uuid, query.client_id);
 
         const redirectUri = this.oauthInfoService.createCallbackUri(query.redirect_uri, query.response_type, query.state, code);
+
+        // Salva o registro do novo login
+        await this.authService.saveUserToken(loginInfo);
+
         return res.redirect(redirectUri);
       }
     }
@@ -100,7 +126,15 @@ export class OauthController {
   @Get('oauth2/token')
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   async oauth2Token(@Req() request: RequestInfo): Promise<string> {
-    this.logger.log('Oauth2 token');
+    this.logger.log('oauth2Token');
+
+    return '' + request;
+  }
+
+  @Post('oauth2/token')
+  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
+  async oauth2Token2(@Req() request: RequestInfo): Promise<string> {
+    this.logger.log('oauth2Token');
 
     return '' + request;
   }
@@ -108,6 +142,7 @@ export class OauthController {
   @Get('.well-known/openid-configuration')
   async openIDConfig() {
     this.logger.log('OpenID Configuration');
+
     return {
       issuer: 'thalamus_iam',
       authorization_endpoint: iamConfig.HOST + '/auth/oauth2/authorize',

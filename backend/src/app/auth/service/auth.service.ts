@@ -49,6 +49,27 @@ export class AuthService {
     this.logger.log('starting');
   }
 
+  startLoginInfo(loginInfo: Partial<LoginInfo>): LoginInfo {
+    return {
+      userUuid: null,
+      userLoginUuid: null,
+
+      clientId: null,
+      userAgent: null,
+      ip: null,
+      responseType: null,
+      redirectUri: null,
+      scope: null,
+      codeChallenge: null,
+      codeChallengeMethod: null,
+
+      sessionToken: null,
+      accessToken: null,
+      expiresIn: null,
+      ...loginInfo,
+    };
+  }
+
   /**
    * Registra um novo usuário no sistema
    * @param props
@@ -98,7 +119,7 @@ export class AuthService {
    * @returns
    */
   async findAndCreateAccessToken(username: string, password: string, appInfo: LoginInfo): Promise<AuthLoginRespDto> {
-    this.logger.verbose('Login Local');
+    this.logger.verbose('findAndCreateAccessToken');
 
     const userLogin = await this.findLocalUserByLogin(username, password);
 
@@ -111,12 +132,15 @@ export class AuthService {
    * @param password
    * @returns
    */
-  async findLocalUserBySession(sessionToken: string): Promise<UserLogin | null> {
-    this.logger.verbose('AuthService.findLocalUserBySession');
+  async findUserTokenBySession(sessionToken: string, scope: string): Promise<UserToken | null> {
+    this.logger.verbose('findUserTokenBySession');
 
-    const userToken = await this.userTokenRepository.findOne({ sessionToken }, { populate: ['login', 'login.user'] });
+    const userToken = await this.userTokenRepository.findOne(
+      { sessionToken, scope },
+      { populate: ['login', 'login.user'], orderBy: { expiresIn: 'DESC' } },
+    );
 
-    return userToken?.login || null;
+    return this.validateUserToken(userToken) ? userToken : null;
   }
 
   /**
@@ -125,6 +149,8 @@ export class AuthService {
    * @param clientId
    */
   async verifyApplicationUserAccess(userUuid: string, clientId: string): Promise<void> {
+    this.logger.verbose('verifyApplicationUserAccess');
+
     const application = await this.applicationRepository.findOne({
       $and: [
         { uuid: clientId }, // Aplicação
@@ -151,6 +177,8 @@ export class AuthService {
    * @returns
    */
   async refreshAccessToken(accessToken: string, appInfo: LoginInfo): Promise<AuthLoginRespDto> {
+    this.logger.verbose('refreshAccessToken');
+
     const userToken = await this.userTokenRepository.findOne({ accessToken }, { populate: ['application', 'user', 'login'] });
 
     if (userToken) {
@@ -176,6 +204,8 @@ export class AuthService {
    * @returns
    */
   async createAccessToken(user: User, userLogin: UserLogin, appInfo: LoginInfo): Promise<AuthLoginRespDto> {
+    this.logger.verbose('createAccessToken');
+
     const expiresIn = DateTime.now().plus({ seconds: jwtConfig.MAX_AGE }).toJSDate();
 
     const info = this.userInfo(user, appInfo);
@@ -203,35 +233,44 @@ export class AuthService {
    * @returns
    */
   async validateAccessToken(accessToken: string): Promise<boolean> {
+    this.logger.verbose('validateAccessToken');
+
     const userToken = await this.userTokenRepository.findOne({ accessToken });
-    if (userToken?.expiresIn) {
-      return DateTime.now() < DateTime.fromJSDate(userToken.expiresIn);
-    }
-    return false;
+
+    return this.validateUserToken(userToken);
+  }
+
+  validateUserToken(userToken: UserToken): boolean {
+    this.logger.verbose('validateUserToken');
+
+    const notExpiresIn = DateTime.now() < DateTime.fromJSDate(userToken.expiresIn);
+    return !userToken.deletedAt && notExpiresIn;
   }
 
   /**
    * Salva o registro do token no banco de dados
-   * @param appInfo
+   * @param loginInfo
    */
-  async saveUserToken(appInfo: LoginInfo) {
+  async saveUserToken(loginInfo: LoginInfo) {
+    this.logger.verbose('saveUserToken');
+
     this.userTokenRepository.create({
       // USER
-      user: this.userRepository.getReference(appInfo.userUuid),
-      login: this.userLoginRepository.getReference(appInfo.userLoginUuid),
+      user: this.userRepository.getReference(loginInfo.userUuid),
+      login: this.userLoginRepository.getReference(loginInfo.userLoginUuid),
       // OAUTH
-      application: appInfo.clientId,
-      ip: appInfo.ip,
-      userAgent: appInfo.userAgent,
-      responseType: appInfo.responseType,
-      redirectUri: appInfo.redirectUri,
-      scope: appInfo.scope,
-      codeChallenge: appInfo.codeChallenge,
-      codeChallengeMethod: appInfo.codeChallengeMethod || null,
+      application: loginInfo.clientId,
+      ip: loginInfo.ip,
+      userAgent: loginInfo.userAgent,
+      responseType: loginInfo.responseType,
+      redirectUri: loginInfo.redirectUri,
+      scope: loginInfo.scope,
+      codeChallenge: loginInfo.codeChallenge,
+      codeChallengeMethod: loginInfo.codeChallengeMethod || null,
       // TOKENS
-      sessionToken: appInfo.sessionToken,
-      accessToken: appInfo.accessToken,
-      expiresIn: appInfo.expiresIn,
+      sessionToken: loginInfo.sessionToken,
+      accessToken: loginInfo.accessToken,
+      expiresIn: loginInfo.expiresIn,
     });
     await this.userTokenRepository.flush();
   }
@@ -242,6 +281,8 @@ export class AuthService {
    * @returns
    */
   async checkLocalUsernameExists(username: string): Promise<boolean> {
+    this.logger.verbose('checkLocalUsernameExists');
+
     const userLogin = await this.userLoginRepository.findOne({ username, type: UserLoginType.LOCAL });
     return !!userLogin;
   }
@@ -253,7 +294,7 @@ export class AuthService {
    * @returns
    */
   private async findLocalUserByLogin(username: string, password: string): Promise<UserLogin> {
-    this.logger.verbose('AuthService.findLocalUserByLogin');
+    this.logger.verbose('findLocalUserByLogin');
 
     const userLogin = await this.userLoginRepository.findOne({ username, type: UserLoginType.LOCAL }, { populate: ['user'] });
     if (!userLogin) {
@@ -270,6 +311,8 @@ export class AuthService {
   }
 
   private userInfo(user: User, { clientId }: LoginInfo): AccessUserInfo {
+    this.logger.verbose('userInfo');
+
     return {
       iat: DateTime.now().valueOf(),
       uuid: user.uuid,
@@ -279,6 +322,8 @@ export class AuthService {
   }
 
   private generateJwt(user: AccessUserInfo, expiresInSeconds: number): string {
+    this.logger.verbose('generateJwt');
+
     return this.jwtService.sign(user, { expiresIn: expiresInSeconds });
   }
 }

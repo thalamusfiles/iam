@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Headers, Ip, Logger, Post, Req, Res, UseGuards, UsePipes } from '@nestjs/common';
 import { FormException } from '../../../commons/form.exception';
-import { AuthService, LoginInfo } from '../service/auth.service';
+import { AuthService } from '../service/auth.service';
 import { AuthRegisterNameUseCase } from '../usecase/auth-register-name.usecase';
 import { AuthRegisterPasswordUseCase } from '../usecase/auth-register-password.usecase';
 import { AuthRegisterUsernameUseCase } from '../usecase/auth-register-username.usecase';
@@ -98,41 +98,36 @@ export class AuthController {
       throw new FormException(allErros);
     }
 
-    const appInfo: LoginInfo = {
-      userUuid: null,
-      userLoginUuid: null,
-      clientId: body.client_id,
+    const loginInfo = this.authService.startLoginInfo({
       userAgent,
       ip,
+      clientId: body.client_id,
       responseType: body.response_type,
       redirectUri: body.redirect_uri,
       scope: body.scope,
       codeChallenge: body.code_challenge,
       codeChallengeMethod: body.code_challenge_method,
-      sessionToken: null,
-      accessToken: null,
-      expiresIn: null,
-    };
+    });
 
     const cookieId = this.cookieService.createOrRefreshSSOCookie(request, response, true);
-    appInfo.sessionToken = cookieId;
+    loginInfo.sessionToken = cookieId;
 
     // Procura usuários e cria token de acesso
-    const authResp = await this.authService.findAndCreateAccessToken(body.username, body.password, appInfo);
-    // Criar código de autorização para coleta de token entre aplicações e criptografa o code challange com esse código
+    const authResp = await this.authService.findAndCreateAccessToken(body.username, body.password, loginInfo);
+    // Se necessário cria código de autorização para coleta de token entre aplicaçõe. Criptografa o code challange com esse código
     let code = null;
-    if (appInfo.codeChallenge) {
+    if (loginInfo.codeChallenge) {
       code = this.oauthInfoService.generateAuthorizationCode();
-      appInfo.codeChallenge = this.oauthInfoService.encriptCodeChallengWithSalt(appInfo.codeChallenge, code);
+      loginInfo.codeChallenge = this.oauthInfoService.encriptCodeChallengWithSalt(loginInfo.codeChallenge, code);
     }
     // Verifica se é uma aplicação pública e se o usuário tem acesso
-    await this.authService.verifyApplicationUserAccess(authResp.info.uuid, appInfo.clientId);
+    await this.authService.verifyApplicationUserAccess(authResp.info.uuid, loginInfo.clientId);
     // Remove todos os logins anteriores da máquina
     await this.authService.removeOldTokens(authResp.info.uuid, userAgent, ip);
     // Format redirect Uril
     authResp.callbackUri = await this.oauthInfoService.createCallbackUri(body.redirect_uri, body.response_type, body.state, code);
     // Salva o registro do novo login
-    await this.authService.saveUserToken(appInfo);
+    await this.authService.saveUserToken(loginInfo);
 
     return authResp;
   }
@@ -143,27 +138,18 @@ export class AuthController {
   @Get('refresh')
   @UseGuards(AccessGuard)
   async refresh(@Req() request: RequestInfo, @Ip() ip: string): Promise<AuthLoginRespDto> {
+    this.logger.log('refresh');
+
     const token = request.headers.authorization.substring(7);
 
-    const appInfo: LoginInfo = {
-      userUuid: null,
-      userLoginUuid: null,
-      clientId: null,
-      userAgent: null,
+    const loginInfo = this.authService.startLoginInfo({
       ip,
       responseType: 'token',
-      redirectUri: null,
-      scope: null,
-      codeChallenge: null,
-      codeChallengeMethod: null,
-      sessionToken: null,
-      accessToken: null,
-      expiresIn: null,
-    };
+    });
 
-    const authResp = await this.authService.refreshAccessToken(token, appInfo);
+    const authResp = await this.authService.refreshAccessToken(token, loginInfo);
 
-    await this.authService.saveUserToken(appInfo);
+    await this.authService.saveUserToken(loginInfo);
 
     return authResp;
   }
@@ -175,7 +161,8 @@ export class AuthController {
   @Get('logout')
   @UseGuards(AccessGuard)
   async logout(@Req() request: RequestInfo, @Res({ passthrough: true }) response: ResponseInfo): Promise<void> {
-    this.logger.log('Auth logout');
+    this.logger.log('logout');
+
     this.cookieService.clearCookies(request, response);
   }
 }
