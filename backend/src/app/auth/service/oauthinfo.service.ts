@@ -1,10 +1,10 @@
 import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, ServiceUnavailableException } from '@nestjs/common';
 import iamConfig from '../../../config/iam.config';
 import { Role } from '../../../model/Role';
 import { Application } from '../../../model/System/Application';
-import { OauthFieldsDto } from '../controller/dto/auth.dto';
+import { OauthFieldsDto } from '../controller/dto/oauth.dto';
 import { CryptService } from './crypt.service';
 
 type ScopeInfo = { scope: string; app: { name: string; description: string }; permission: { description: string } };
@@ -67,6 +67,16 @@ export class OauthInfoService {
    */
   generateAuthorizationCode(): string {
     return this.cryptService.generateRandomString(128);
+  }
+
+  /**
+   * Encripta o code challenge com um salt
+   */
+  encriptCodeVerifierToChallenge(codeVerifier: string, method: 'S256' = 'S256'): string {
+    if (method === 'S256') {
+      return this.cryptService.encryptFromAlgorithm(codeVerifier, 'sha256', 'base64url') as string;
+    }
+    throw new ServiceUnavailableException('Este módulo não permite a atualização do usuário');
   }
 
   /**

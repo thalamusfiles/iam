@@ -25,11 +25,13 @@ import { AuthOauthFieldsUseCase } from './usecase/auth-oauth-fields.usecase';
 import { OauthInfoService } from './service/oauthinfo.service';
 import { OauthController } from './controller/oauth.controller';
 import { Role } from '../../model/Role';
+import { AuthOauthAuthorizeFieldsUseCase } from './usecase/auth-oauth-authorize-fields.usecase';
 
 @Module({
   imports: [
     //
     PassportModule.register({ session: true }),
+    //JwtModule.register({ secretOrPrivateKey: jwtConfig.SECRET, signOptions: { algorithm: 'RS256' } }),
     JwtModule.register({ secret: jwtConfig.SECRET }),
     ThrottlerModule.forRoot(/*{ limit: iamConfig.REGISTER_RATE_LIMITE, ttl: iamConfig.REGISTER_RATE_LIMITE_REST_TIME }*/),
     MikroOrmModule.forFeature([Application, User, UserLogin, UserToken, Role]),
@@ -51,6 +53,7 @@ import { Role } from '../../model/Role';
     AuthRegisterPasswordUseCase,
     AuthRegisterMaxRegisterIpUseCase,
     AuthOauthFieldsUseCase,
+    AuthOauthAuthorizeFieldsUseCase,
     AuthLoginClientIdUseCase,
   ],
   exports: [AuthService, RequestService],

@@ -1,4 +1,4 @@
-import { Controller, Get, Headers, Ip, Logger, Post, Query, Req, Res, UsePipes } from '@nestjs/common';
+import { Body, Controller, Get, Headers, HttpCode, Ip, Logger, Post, Query, Req, Res, UsePipes } from '@nestjs/common';
 import { FormException } from '../../../commons/form.exception';
 import { Throttle } from '@nestjs/throttler';
 import iamConfig from '../../../config/iam.config';
@@ -6,10 +6,12 @@ import { RequestInfo } from '../../../commons/request-info';
 import { CookieService } from '../service/cookie.service';
 import { AuthOauthFieldsUseCase } from '../usecase/auth-oauth-fields.usecase';
 import { AuthLoginClientIdUseCase } from '../usecase/auth-register-client_id.usecase';
-import { ApplicationInfoDto, OauthFieldsDto, ScopeInfoDto } from './dto/auth.dto';
+import { ApplicationInfoDto, ScopeInfoDto } from './dto/auth.dto';
 import { OauthInfoService } from '../service/oauthinfo.service';
 import { IamValidationPipe } from '../../../commons/validation.pipe';
 import { AuthService } from '../service/auth.service';
+import { AuthOauthAuthorizeFieldsUseCase } from '../usecase/auth-oauth-authorize-fields.usecase';
+import { OauthFieldsDto, OauthTokenDto } from './dto/oauth.dto';
 
 @Controller('auth')
 export class OauthController {
@@ -20,6 +22,7 @@ export class OauthController {
     private readonly oauthInfoService: OauthInfoService,
     private readonly authService: AuthService,
     private readonly authOauthFieldsUseCase: AuthOauthFieldsUseCase,
+    private readonly authOauthAuthorizeFieldsUseCase: AuthOauthAuthorizeFieldsUseCase,
     private readonly authLoginClienteId: AuthLoginClientIdUseCase,
   ) {
     this.logger.log('starting');
@@ -123,20 +126,35 @@ export class OauthController {
     return res.redirect(baseUrl + '?' + params);
   }
 
-  @Get('oauth2/token')
-  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
-  async oauth2Token(@Req() request: RequestInfo): Promise<string> {
-    this.logger.log('oauth2Token');
-
-    return '' + request;
-  }
-
   @Post('oauth2/token')
+  @HttpCode(200)
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
-  async oauth2Token2(@Req() request: RequestInfo): Promise<string> {
+  async oauth2Token2(@Req() request: RequestInfo, @Body() body): Promise<OauthTokenDto> {
     this.logger.log('oauth2Token');
 
-    return '' + request;
+    //Executa os casos de uso com validações
+    const allErros = [].concat(
+      //
+      await this.authOauthAuthorizeFieldsUseCase.execute(body),
+    );
+
+    if (allErros.length) {
+      throw new FormException(allErros);
+    }
+
+    // Gera o code challeng encriptado
+    const codeChallenge = this.oauthInfoService.encriptCodeVerifierToChallenge(body.code_verifier);
+    const codeChallengeEncripted = this.oauthInfoService.encriptCodeChallengWithSalt(codeChallenge, body.code);
+
+    //TODO: verificar secret da aplicação.
+    //Coleta o usuário a partir do code challeng
+    const userToken = await this.authService.findUserTokenByCodeChalleng(codeChallengeEncripted);
+    const idToken = await this.authService.createIdToken(userToken.user, userToken.application.uuid);
+
+    return {
+      id_token: idToken,
+      access_token: userToken.accessToken,
+    };
   }
 
   @Get('.well-known/openid-configuration')

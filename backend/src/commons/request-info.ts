@@ -1,8 +1,8 @@
-import { AccessUserInfo } from '../app/auth/passaport/access-user-info';
+import { IdTokenInfo } from '../app/auth/passaport/access-user-info';
 import { Request } from 'express';
 
 export type RequestInfo = {
   //
-  user: AccessUserInfo;
+  user: IdTokenInfo;
   applicationRef: { uuid: string };
 } & Request;

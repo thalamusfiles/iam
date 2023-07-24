@@ -1,11 +1,13 @@
-export class AccessUserInfo {
-  //iss: 'iam';
+export class IdTokenInfo {
+  iss: 'iam';
+  // Created at
   iat: number;
-  //exp: number;
+  // Expires In
+  exp?: number;
 
-  uuid: string; /*sub*/
+  sub: string; /*sub*/
 
   name: string;
-
-  applicationLogged: string;
+  //Aplication / ClientId
+  aud: string;
 }

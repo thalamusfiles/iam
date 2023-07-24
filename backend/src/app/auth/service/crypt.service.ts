@@ -1,4 +1,4 @@
-import { createHmac, randomBytes } from 'crypto';
+import { BinaryToTextEncoding, createHash, createHmac, randomBytes } from 'crypto';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
@@ -7,6 +7,20 @@ export class CryptService {
 
   constructor() {
     this.logger.log('starting');
+  }
+
+  /**
+   * Gera o Hash da senha a partir de 2 salt e a senha, um aleatório gerado no cadastro e outro fixo e secreto.
+   * @param salt
+   * @param password
+   * @returns
+   */
+  public encryptFromAlgorithm(value: string, algorithm: string, digest: BinaryToTextEncoding): Buffer | string {
+    const hash = createHash(algorithm).update(value);
+    if (digest === 'base64url') {
+      return hash.digest('base64url');
+    }
+    return hash.digest();
   }
 
   /**

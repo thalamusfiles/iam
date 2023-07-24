@@ -1,6 +1,6 @@
 import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { AccessUserInfo } from '../../src/app/auth/passaport/access-user-info';
+import { IdTokenInfo } from '../../src/app/auth/passaport/access-user-info';
 import { DateTime } from 'luxon';
 import iamConfig from '../../src/config/iam.config';
 
@@ -10,12 +10,12 @@ export class JTWGuardMockAdmin extends AuthGuard('jwt') {
     return super.canActivate(context);
   }
 
-  handleRequest(err, user: AccessUserInfo /*, info*/) {
+  handleRequest(err, user: IdTokenInfo /*, info*/) {
     user = {
       iat: DateTime.now().valueOf(),
-      uuid: '11111111-1111-1111-1111-111111111111',
+      sub: '11111111-1111-1111-1111-111111111111',
       name: iamConfig.FIRST_USER_NAME,
-      applicationLogged: iamConfig.MAIN_APP_IAM,
+      aud: iamConfig.MAIN_APP_IAM,
     };
 
     return user as any;

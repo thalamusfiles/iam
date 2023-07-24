@@ -58,10 +58,10 @@ export class ApplicationController implements CRUDController<Application> {
     this.logger.log('Find all');
 
     // Se não for gerente principal deixa editar apenas as aplicações associadas
-    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.uuid, iamConfig.MAIN_APP_IAM_MGT_ID);
+    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.sub, iamConfig.MAIN_APP_IAM_MGT_ID);
     if (!isMainManager) {
       if (!query.where) query.where = {};
-      query.where.managers = [request.user.uuid];
+      query.where.managers = [request.user.sub];
     }
 
     return this.applicationService.find(query);
@@ -76,10 +76,10 @@ export class ApplicationController implements CRUDController<Application> {
     this.logger.log(`Find By Id ${uuid}`);
 
     // Se não for gerente principal deixa editar apenas as aplicações associadas
-    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.uuid, iamConfig.MAIN_APP_IAM_MGT_ID);
+    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.sub, iamConfig.MAIN_APP_IAM_MGT_ID);
     if (!isMainManager) {
       if (!query.where) query.where = {};
-      query.where.managers = [request.user.uuid];
+      query.where.managers = [request.user.sub];
     }
 
     return this.applicationService.findById(uuid, query);
@@ -144,7 +144,7 @@ export class ApplicationController implements CRUDController<Application> {
       throw new UnauthorizedException('Uuid required');
     }
 
-    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.uuid, iamConfig.MAIN_APP_IAM_MGT_ID);
+    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.sub, iamConfig.MAIN_APP_IAM_MGT_ID);
     if (!isMainManager) {
       throw new UnauthorizedException('Main manager privilege required');
     }

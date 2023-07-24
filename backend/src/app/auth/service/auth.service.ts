@@ -10,7 +10,7 @@ import { UserLogin, UserLoginType } from '../../../model/UserLogin';
 import { UserToken } from '../../../model/UserToken';
 import { FormException } from '../../../commons/form.exception';
 import { AuthLoginRespDto } from '../controller/dto/auth.dto';
-import { AccessUserInfo } from '../passaport/access-user-info';
+import { IdTokenInfo } from '../passaport/access-user-info';
 import { CryptService } from './crypt.service';
 import { Application } from '../../../model/System/Application';
 import { Role } from '../../../model/Role';
@@ -113,17 +113,26 @@ export class AuthService {
   }
 
   /**
-   * Valida o login e gera o token acesso
+   * Carrega o usuário e verifica sua senha
    * @param username
    * @param password
    * @returns
    */
-  async findAndCreateAccessToken(username: string, password: string, appInfo: LoginInfo): Promise<AuthLoginRespDto> {
-    this.logger.verbose('findAndCreateAccessToken');
+  public async findUserLoginByUsername(username: string, password: string): Promise<UserLogin> {
+    this.logger.verbose('findLocalUserByLogin');
 
-    const userLogin = await this.findLocalUserByLogin(username, password);
+    const userLogin = await this.userLoginRepository.findOne({ username, type: UserLoginType.LOCAL }, { populate: ['user'] });
+    if (!userLogin) {
+      throw new FormException([{ kind: 'username', error: 'server.user_not_found' }]);
+    }
 
-    return this.createAccessToken(userLogin.user, userLogin, appInfo);
+    const _password = this.cryptService.encrypt(iamConfig.IAM_PASS_SECRET_SALT, userLogin._salt, password);
+
+    if (_password === userLogin._password) {
+      return userLogin;
+    } else {
+      throw new FormException([{ kind: 'password', error: 'server.password_invalid' }]);
+    }
   }
 
   /**
@@ -139,6 +148,20 @@ export class AuthService {
       { sessionToken, scope },
       { populate: ['login', 'login.user'], orderBy: { expiresIn: 'DESC' } },
     );
+
+    return this.validateUserToken(userToken) ? userToken : null;
+  }
+
+  /**
+   * Carrega o usuário a partir do code challeng
+   * @param username
+   * @param password
+   * @returns
+   */
+  async findUserTokenByCodeChalleng(codeChallengeEncripted: string): Promise<UserToken | null> {
+    this.logger.verbose('findUserTokenByCodeChalleng');
+
+    const userToken = await this.userTokenRepository.findOne({ codeChallenge: codeChallengeEncripted });
 
     return this.validateUserToken(userToken) ? userToken : null;
   }
@@ -207,9 +230,10 @@ export class AuthService {
     this.logger.verbose('createAccessToken');
 
     const expiresIn = DateTime.now().plus({ seconds: jwtConfig.MAX_AGE }).toJSDate();
+    const _salt = this.cryptService.generateRandomString(64);
 
-    const info = this.userInfo(user, appInfo);
-    const access_token = this.generateJwt(info, jwtConfig.MAX_AGE);
+    const id_token = this.createIdToken(user, appInfo.clientId);
+    const access_token = this.cryptService.encrypt(iamConfig.IAM_PASS_SECRET_SALT, id_token, _salt);
 
     appInfo.userUuid = user.uuid;
     appInfo.userLoginUuid = userLogin.uuid;
@@ -217,12 +241,12 @@ export class AuthService {
     appInfo.expiresIn = expiresIn;
 
     return {
+      id_token,
+      access_token,
       token_type: appInfo.responseType,
       scope: appInfo.scope,
-      callbackUri: '',
       expires_in: jwtConfig.MAX_AGE,
-      access_token,
-      info,
+      callbackUri: '',
     };
   }
 
@@ -243,8 +267,8 @@ export class AuthService {
   validateUserToken(userToken: UserToken): boolean {
     this.logger.verbose('validateUserToken');
 
-    const notExpiresIn = DateTime.now() < DateTime.fromJSDate(userToken.expiresIn);
-    return !userToken.deletedAt && notExpiresIn;
+    const notExpiresIn = DateTime.now() < DateTime.fromJSDate(userToken?.expiresIn);
+    return userToken && !userToken?.deletedAt && notExpiresIn;
   }
 
   /**
@@ -288,40 +312,30 @@ export class AuthService {
   }
 
   /**
-   * Carrega o usuário e verifica sua senha
-   * @param username
-   * @param password
+   * Cria o ID Token (JWT com as informações do usuário)
+   * @param user
+   * @param appInfo
    * @returns
    */
-  private async findLocalUserByLogin(username: string, password: string): Promise<UserLogin> {
-    this.logger.verbose('findLocalUserByLogin');
-
-    const userLogin = await this.userLoginRepository.findOne({ username, type: UserLoginType.LOCAL }, { populate: ['user'] });
-    if (!userLogin) {
-      throw new FormException([{ kind: 'username', error: 'server.user_not_found' }]);
-    }
-
-    const _password = this.cryptService.encrypt(iamConfig.IAM_PASS_SECRET_SALT, userLogin._salt, password);
-
-    if (_password === userLogin._password) {
-      return userLogin;
-    } else {
-      throw new FormException([{ kind: 'password', error: 'server.password_invalid' }]);
-    }
+  createIdToken(user: User, clientId: string): string {
+    const info = this.userInfo(user, clientId);
+    return this.generateJwt(info, jwtConfig.MAX_AGE);
   }
 
-  private userInfo(user: User, { clientId }: LoginInfo): AccessUserInfo {
+  private userInfo(user: User, clientId: string): IdTokenInfo {
     this.logger.verbose('userInfo');
 
     return {
+      iss: 'iam',
       iat: DateTime.now().valueOf(),
-      uuid: user.uuid,
+      //exp: 0,
+      sub: user.uuid,
       name: user.name,
-      applicationLogged: clientId,
+      aud: clientId,
     };
   }
 
-  private generateJwt(user: AccessUserInfo, expiresInSeconds: number): string {
+  private generateJwt(user: IdTokenInfo, expiresInSeconds: number): string {
     this.logger.verbose('generateJwt');
 
     return this.jwtService.sign(user, { expiresIn: expiresInSeconds });
