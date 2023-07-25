@@ -1,5 +1,5 @@
 export class IdTokenInfo {
-  iss: 'iam';
+  iss: string;
   // Created at
   iat: number;
   // Expires In

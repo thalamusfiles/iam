@@ -161,7 +161,7 @@ export class AuthService {
   async findUserTokenByCodeChalleng(codeChallengeEncripted: string): Promise<UserToken | null> {
     this.logger.verbose('findUserTokenByCodeChalleng');
 
-    const userToken = await this.userTokenRepository.findOne({ codeChallenge: codeChallengeEncripted });
+    const userToken = await this.userTokenRepository.findOne({ codeChallenge: codeChallengeEncripted }, { populate: ['user', 'login'] });
 
     return this.validateUserToken(userToken) ? userToken : null;
   }
@@ -326,7 +326,7 @@ export class AuthService {
     this.logger.verbose('userInfo');
 
     return {
-      iss: 'iam',
+      iss: jwtConfig.ISS,
       iat: DateTime.now().valueOf(),
       //exp: 0,
       sub: user.uuid,
@@ -337,7 +337,6 @@ export class AuthService {
 
   private generateJwt(user: IdTokenInfo, expiresInSeconds: number): string {
     this.logger.verbose('generateJwt');
-
     return this.jwtService.sign(user, { expiresIn: expiresInSeconds });
   }
 }
