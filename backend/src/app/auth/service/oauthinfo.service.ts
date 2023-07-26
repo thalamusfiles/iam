@@ -59,7 +59,7 @@ export class OauthInfoService {
     if (code_challenge) params.push(`&code_challenge=${code_challenge}`);
     if (code_challenge_method) params.push(`&code_challenge_method=${code_challenge_method}`);
 
-    return baseUrl + params.join();
+    return baseUrl + params.join('');
   }
 
   /**

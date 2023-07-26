@@ -162,9 +162,9 @@ export class AuthController {
    */
   @Get('logout')
   @UseGuards(AccessGuard)
-  async logout(@Req() request: RequestInfo, @Res({ passthrough: true }) response: ResponseInfo): Promise<void> {
+  async logout(@Res({ passthrough: true }) response: ResponseInfo): Promise<void> {
     this.logger.log('logout');
 
-    this.cookieService.clearCookies(request, response);
+    this.cookieService.clearCookies(response);
   }
 }

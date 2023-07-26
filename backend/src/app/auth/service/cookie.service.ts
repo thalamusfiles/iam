@@ -49,7 +49,7 @@ export class CookieService {
     return request.cookies?.iam_sso;
   }
 
-  clearCookies(request: RequestInfo, response: ResponseInfo): void {
+  clearCookies(response: ResponseInfo): void {
     response.clearCookie(cookieConfig.NAME);
   }
 }
