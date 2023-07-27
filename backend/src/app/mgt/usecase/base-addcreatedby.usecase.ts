@@ -6,6 +6,6 @@ import { IamBaseEntityWithUser } from '../../../model/Base/IamBaseEntityWithUser
  */
 export class BaseAddCreatedByUseCase extends UseCasePlugin<IamBaseEntityWithUser> {
   prePersist = async (data: UseCasePluginMetadata<IamBaseEntityWithUser>): Promise<void> => {
-    data.entity.createdBy = data.user.uuid;
+    data.entity.createdBy = data.user.sub;
   };
 }

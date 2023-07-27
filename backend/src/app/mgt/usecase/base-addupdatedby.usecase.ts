@@ -6,6 +6,6 @@ import { IamBaseEntityWithUser } from '../../../model/Base/IamBaseEntityWithUser
  */
 export class BaseAddUpdatedByUseCase extends UseCasePlugin<IamBaseEntityWithUser> {
   preSave = async (data: UseCasePluginMetadata<IamBaseEntityWithUser>): Promise<void> => {
-    data.entity.updatedBy = data.user.uuid;
+    data.entity.updatedBy = data.user.sub;
   };
 }

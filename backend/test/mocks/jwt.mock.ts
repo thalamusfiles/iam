@@ -3,6 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { IdTokenInfo } from '../../src/app/auth/passaport/access-user-info';
 import { DateTime } from 'luxon';
 import iamConfig from '../../src/config/iam.config';
+import jwtConfig from '../../src/config/jwt.config';
 
 @Injectable()
 export class JTWGuardMockAdmin extends AuthGuard('jwt') {
@@ -12,6 +13,7 @@ export class JTWGuardMockAdmin extends AuthGuard('jwt') {
 
   handleRequest(err, user: IdTokenInfo /*, info*/) {
     user = {
+      iss: jwtConfig.ISS,
       iat: DateTime.now().valueOf(),
       sub: '11111111-1111-1111-1111-111111111111',
       name: iamConfig.FIRST_USER_NAME,

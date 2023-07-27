@@ -2,6 +2,7 @@ import { RequiredEntityData } from '@mikro-orm/core';
 import { Expose } from 'class-transformer';
 import { IsArray, IsNotEmpty, IsObject, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { IamBaseEntity } from '../../../model/Base/IamBaseEntity';
+import { IdTokenInfo } from '../../auth/passaport/access-user-info';
 
 export class FindProps<Type> {
   /**
@@ -40,7 +41,7 @@ export class EntityProps<Type> {
   @ValidateNested()
   entity: RequiredEntityData<Type>;
 
-  user?: any;
+  user?: Partial<IdTokenInfo>;
 }
 
 /***

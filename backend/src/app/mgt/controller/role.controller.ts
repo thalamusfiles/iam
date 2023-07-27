@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UseGuards, UsePipes } from '@nestjs/common';
 import { Role } from '../../../model/Role';
 import { AccessGuard } from '../../auth/passaport/access.guard';
 import { RoleService } from '../service/role.service';
@@ -135,7 +135,7 @@ export class RoleController implements CRUDController<Role> {
 
     return {
       entity: entity,
-      user: { uuid: props.user.uuid },
+      user: { sub: props.user.sub },
     };
   }
 }

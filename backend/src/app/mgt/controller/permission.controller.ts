@@ -140,7 +140,7 @@ export class PermissionController implements CRUDController<Permission> {
 
     return {
       entity: entity,
-      user: { uuid: props.user.uuid },
+      user: { sub: props.user.sub },
     };
   }
 }

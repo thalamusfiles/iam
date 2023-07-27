@@ -161,7 +161,7 @@ export class ApplicationController implements CRUDController<Application> {
 
     return {
       entity: entity,
-      user: { uuid: props.user.uuid },
+      user: { sub: props.user.sub },
     };
   }
 }

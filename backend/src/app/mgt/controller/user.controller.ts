@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query, Request, UseGuards, UsePipes} from '@nestjs/common';
 import { User } from '../../../model/User';
 import { AccessGuard } from '../../auth/passaport/access.guard';
 import { UserService } from '../service/user.service';
@@ -126,7 +126,7 @@ export class UserController implements CRUDController<User> {
 
     return {
       entity: entity,
-      user: { uuid: props.user.uuid },
+      user: { sub: props.user.sub },
     };
   }
 }
