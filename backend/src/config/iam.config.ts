@@ -1,3 +1,5 @@
+const port = parseInt(process.env.SYSTEM_PORT) || 3000;
+
 const defaultIamConfig = {
   IAM_PASS_SECRET_SALT: 'IAM_PASS_SECRET_SALT_2VTga2Vr4m',
 };
@@ -5,8 +7,10 @@ const defaultIamConfig = {
 const iamConfig = {
   PRODCTION_MODE: process.env.NODE_ENV === 'production',
   HOST: process.env.HOST || `http://iam_backend:${process.env.SYSTEM_PORT}`,
-  PORT: process.env.SYSTEM_PORT || 3000,
+  PORT: port,
   STATIC_FILE_MAX_AGE: 2 * 24 * 60 * 60 * 1000,
+  // Dev configs
+  DEV_URL: `http://localhost:${port + 1000}`,
 
   // Salt adicional na gerão do password
   IAM_PASS_SECRET_SALT: process.env.IAM_PASS_SECRET_SALT || defaultIamConfig.IAM_PASS_SECRET_SALT,

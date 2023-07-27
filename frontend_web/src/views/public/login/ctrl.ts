@@ -1,4 +1,5 @@
 import { ApplicationInfo, AuthDataSource, IamApisConfigure, OauthDataSource, ScopeInfo } from '@thalamus/iam-consumer';
+import { AuthLoginRespDto } from '@thalamus/iam-consumer/dist/auth';
 import { Buffer } from 'buffer';
 import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
@@ -21,6 +22,7 @@ export class LoginCtrl {
   @observable erros: ErrorListRecord = { username: null as string[] | null, password: null as string[] | null };
   @observable appInfo: ApplicationInfo | null = null;
   @observable scopeInfo: ScopeInfo[] | null = null;
+  @observable oldLogin: Partial<AuthLoginRespDto> | null = null;
 
   // Oauth
   @observable response_type = null as string | null;
@@ -55,9 +57,22 @@ export class LoginCtrl {
     this.code_challenge_method = code_challenge_method;
 
     if (isChange) {
+      this.loadSSO();
       this.loadApplicationInfo();
       this.loadScopeInfo();
     }
+  };
+
+  @action
+  loadSSO = () => {
+    new AuthDataSource()
+      .token()
+      .then((response) => {
+        if (response.data) {
+          this.oldLogin = response.data;
+        }
+      })
+      .catch(() => {});
   };
 
   @action

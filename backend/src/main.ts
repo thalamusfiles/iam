@@ -15,7 +15,10 @@ async function bootstrap() {
 
   // Habilita o cors para uso local da ferramente
   //if (!iamConfig.PRODCTION_MODE) {
-  app.enableCors();
+  app.enableCors({
+    origin: iamConfig.DEV_URL,
+    credentials: true,
+  });
   //}
 
   // Filtro de exceção do ORM

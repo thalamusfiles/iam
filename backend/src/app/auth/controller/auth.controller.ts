@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Ip, Logger, Post, Req, Res, UseGuards, UsePipes } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Ip, Logger, Post, Req, Request, Res, UseGuards, UsePipes } from '@nestjs/common';
 import { FormException } from '../../../commons/form.exception';
 import { AuthService } from '../service/auth.service';
 import { AuthRegisterNameUseCase } from '../usecase/auth-register-name.usecase';
@@ -136,25 +136,29 @@ export class AuthController {
   }
 
   /**
-   * Refresca o token, inviabiliza o access token anterior e gera um novo.
+   * Retorno da chamada do IAM com a chave de autorização
+   * Com a chave de autorização é coletado o token do usuário.
+   * @param body
+   * @returns
    */
-  @Get('refresh')
-  @UseGuards(AccessGuard)
-  async refresh(@Req() request: RequestInfo, @Ip() ip: string): Promise<AuthLoginRespDto> {
-    this.logger.log('refresh');
+  @Get('token')
+  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
+  async token(@Request() request): Promise<Partial<AuthLoginRespDto>> {
+    this.logger.log('token');
 
-    const token = request.headers.authorization.substring(7);
+    const cookieId = this.cookieService.getSSOCookie(request);
 
-    const loginInfo = this.authService.startLoginInfo({
-      ip,
-      responseType: 'token',
-    });
-
-    const authResp = await this.authService.refreshAccessToken(token, loginInfo);
-
-    await this.authService.saveUserToken(loginInfo);
-
-    return authResp;
+    if (cookieId) {
+      const userToken = await this.authService.findUserTokenBySession(cookieId, undefined);
+      if (userToken) {
+        return {
+          access_token: userToken.accessToken,
+          scope: userToken.scope,
+          expires_in: userToken.expiresIn.getTime(),
+        };
+      }
+    }
+    return null;
   }
 
   /**

@@ -9,6 +9,8 @@ class EndpointsConfigure {
   apiAuth = null as string | null;
   apiAuthLogin = '/login';
   apiAuthRegister = '/register';
+  apiAuthToken = '/token';
+  apiAuthLogout = '/logout';
   apiOauthApplicationInfo = 'application/info';
   apiOauthScopeInfo = 'scope/info';
   // IAM Urls

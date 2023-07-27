@@ -40,6 +40,10 @@ interface AuthDataSourceI {
   register(register: LoginDto, oauth: OauthFieldsDto): Promise<AxiosResponse<AuthLoginRespDto>>;
   // Autêntica usuário no servidor via oauth
   login(login: LoginDto, oauth: OauthFieldsDto): Promise<AxiosResponse<AuthLoginRespDto>>;
+  // Coleta o token de acesso da sessão
+  token(): Promise<AxiosResponse<Partial<AuthLoginRespDto>>>;
+  // Desloga da sessão e access token
+  logout(): Promise<AxiosResponse<void>>;
 }
 
 interface OauthDataSourceI {
@@ -66,6 +70,14 @@ export class AuthDataSource implements AuthDataSourceI {
       password,
       ...oauth,
     });
+  }
+
+  async token(): Promise<AxiosResponse<Partial<AuthLoginRespDto>>> {
+    return await Apis.ApiAuth.get(`${Endpoints.apiAuthToken}`);
+  }
+
+  async logout(): Promise<AxiosResponse<void>> {
+    return await Apis.ApiAuth.get(`${Endpoints.apiAuthLogout}`);
   }
 }
 

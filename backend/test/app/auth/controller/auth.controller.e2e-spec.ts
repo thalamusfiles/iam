@@ -138,48 +138,6 @@ describe('AuthController (e2e)', () => {
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).post(registerUrl)).send(loginDto).expect(201);
   });
 
-  it(`${authUrl}/refresh (Get) Refresca o token/sessão de acesso`, async () => {
-    const registerUrl = `${authUrl}/refresh`;
-
-    const getRequest = request(app.getHttpServer()).get(registerUrl);
-    const getRequestWithAuth = addBearerAuthorization(getRequest, accessToken);
-    const getRequestWithApp = addGlobalIAMMgtRequestHeader(getRequestWithAuth);
-
-    const result = await getRequestWithApp.expect(200);
-
-    expect(result.body).toBeDefined();
-    expect(result.body).toHaveProperty('access_token');
-    expect(result.body).toHaveProperty('id_token');
-    expect(result.body.access_token).not.toEqual(accessToken);
-
-    const jwtPayload = JSON.parse(Buffer.from(result.body.id_token.split('.')[1], 'base64').toString('utf8'));
-
-    expect(jwtPayload.sub).toEqual(userInfo.sub);
-    expect(jwtPayload.aud).toEqual(userInfo.aud);
-  });
-
-  it(`${authUrl}/refresh (Get) Tenta utilizar um token inválido`, async () => {
-    const registerUrl = `${authUrl}/refresh`;
-
-    const [header, payload, verify] = accessToken.split('.');
-
-    // Modifica conteudo do JTW
-    const payloadData = JSON.parse(Buffer.from(payload, 'base64').toString());
-    payloadData.applicationLogged = 'xxxx';
-
-    // Gera novo conteúdo (Payload)
-    const newPayload = Buffer.from(JSON.stringify(payloadData)).toString('base64');
-
-    // Gera token corrompido
-    const corruptedAccessToken = `${header}${newPayload}.${verify}`;
-
-    const getRequest = request(app.getHttpServer()).get(registerUrl);
-    const getRequestWithAuth = addBearerAuthorization(getRequest, corruptedAccessToken);
-    const getRequestWithApp = addGlobalIAMMgtRequestHeader(getRequestWithAuth);
-
-    await getRequestWithApp.expect(401);
-  });
-
   it(`${authUrl}/register (Post) Testa limite de registros por ip por minuto`, async () => {
     const registerUrl = `${authUrl}/register`;
 

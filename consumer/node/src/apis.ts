@@ -20,8 +20,8 @@ class IamApisConfigure {
 
   axiosStart = (config: AxiosRequestConfig): AxiosInstance => {
     // Default Headers
-    axios.defaults.headers.common['Access-Control-Allow-Credentials'] = true;
-    axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+    //axios.defaults.headers.common['Access-Control-Allow-Credentials'] = true;
+    //axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
     const api = axios.create(config);
     api.interceptors.request.use(this.requestInterceptors);
@@ -36,6 +36,7 @@ class IamApisConfigure {
     this.ApiAuth = this.axiosStart({
       baseURL: Endpoint.apiAuth!,
       timeout: Endpoint.timeout,
+      withCredentials: true,
     });
 
     this.ApiIAM = this.axiosStart({

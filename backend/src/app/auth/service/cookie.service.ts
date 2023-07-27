@@ -21,8 +21,9 @@ export class CookieService {
    * @param response
    */
   createOrRefreshSSOCookie(request: RequestInfo, response: ResponseInfo, force = false): string {
-    let cookieValue = this.getSSOCookie(request);
+    this.logger.verbose('createOrRefreshSSOCookie');
 
+    let cookieValue = this.getSSOCookie(request);
     if (!cookieValue || force) {
       const sessionValue = this.cryptService.generateRandomString(128);
       const sessionHash = this.cryptService.encrypt(sessionValue, sessionValue, cookieConfig.SECRET);
@@ -36,6 +37,8 @@ export class CookieService {
   }
 
   private refreshSSOCookie(response: ResponseInfo, value: string): void {
+    this.logger.verbose('refreshSSOCookie');
+
     const expires = DateTime.now().plus({ seconds: cookieConfig.MAX_AGE }).toJSDate();
 
     response.cookie(cookieConfig.NAME, value, {
@@ -46,6 +49,8 @@ export class CookieService {
   }
 
   getSSOCookie(request: RequestInfo): string {
+    this.logger.verbose('getSSOCookie');
+
     return request.cookies?.iam_sso;
   }
 

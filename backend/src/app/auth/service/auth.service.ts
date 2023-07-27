@@ -1,4 +1,4 @@
-import { EntityRepository } from '@mikro-orm/core';
+import { EntityRepository, FilterQuery } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -144,10 +144,12 @@ export class AuthService {
   async findUserTokenBySession(sessionToken: string, scope: string): Promise<UserToken | null> {
     this.logger.verbose('findUserTokenBySession');
 
-    const userToken = await this.userTokenRepository.findOne(
-      { sessionToken, scope },
-      { populate: ['login', 'login.user'], orderBy: { expiresIn: 'DESC' } },
-    );
+    const query: FilterQuery<UserToken> = { sessionToken };
+    if (scope !== undefined) {
+      query.scope = scope;
+    }
+
+    const userToken = await this.userTokenRepository.findOne(query, { populate: ['login', 'login.user'], orderBy: { expiresIn: 'DESC' } });
 
     return this.validateUserToken(userToken) ? userToken : null;
   }
