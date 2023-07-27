@@ -133,17 +133,12 @@ export class OauthController {
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   async oauth2Token2(@Req() request: RequestInfo, @Body() body): Promise<OauthTokenDto> {
     this.logger.log('oauth2Token');
-    console.log(1111111111111);
-    console.log('oauth2Token');
-    console.log(1111111111111);
 
     //Executa os casos de uso com validações
     const allErros = [].concat(
       //
       await this.authOauthAuthorizeFieldsUseCase.execute(body),
     );
-
-    console.log(allErros);
 
     if (allErros.length) {
       throw new FormException(allErros);

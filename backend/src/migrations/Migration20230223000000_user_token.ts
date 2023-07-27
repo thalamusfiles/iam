@@ -18,7 +18,7 @@ export class Migration20230223000000_user_token extends Migration {
         "code_challenge" varchar(256) null, 
         "code_challenge_method" varchar(16) null,
         "session_token" varchar(512) null, 
-        "access_token" varchar(512) not null, 
+        "access_token" varchar(1024) not null, 
         "expires_in" timestamptz(0) null, 
         "deleted_at" timestamptz(0) null, 
         
@@ -26,7 +26,7 @@ export class Migration20230223000000_user_token extends Migration {
         constraint user_token_ip_check check (LENGTH(ip) >=8), 
         constraint user_token_code_challenge_method_check check (code_challenge_method = \'plain\' or code_challenge_method = \'S256\'), 
         constraint user_token_session_token_check check (LENGTH(session_token) > 64), 
-        constraint user_token_access_token_check check (LENGTH(access_token) > 64)
+        constraint user_token_access_token_check check (LENGTH(access_token) > 256)
       );`,
     );
 

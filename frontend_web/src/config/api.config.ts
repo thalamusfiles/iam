@@ -8,7 +8,6 @@ const apiConfigure = (accessToken: string | null, applicationLogged: string) => 
   const port = env.BASE_PORT !== '80' ? env.BASE_PORT : '';
 
   IamApisConfigure.configureConsumer(url, port);
-  console.log(accessToken, applicationLogged);
 
   if (accessToken) {
     IamApisConfigure.setGlobalAuthorizationToken(accessToken);

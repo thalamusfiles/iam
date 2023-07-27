@@ -1236,12 +1236,12 @@
         },
         "access_token": {
           "name": "access_token",
-          "type": "varchar(512)",
+          "type": "varchar(1024)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 512,
+          "length": 1024,
           "mappedType": "string"
         },
         "expires_in": {
@@ -1321,8 +1321,8 @@
         },
         {
           "name": "user_token_access_token_check",
-          "expression": "LENGTH(access_token) > 64",
-          "definition": "check ((LENGTH(access_token) > 64))",
+          "expression": "LENGTH(access_token) > 256",
+          "definition": "check ((LENGTH(access_token) > 256))",
           "columnName": "access_token"
         }
       ],

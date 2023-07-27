@@ -57,8 +57,8 @@ export class UserToken extends IamBaseEntity {
   sessionToken?: string;
 
   @Exclude()
-  @Check({ expression: 'LENGTH(access_token) > 64' })
-  @Property({ nullable: false, length: 512 })
+  @Check({ expression: 'LENGTH(access_token) > 256' })
+  @Property({ nullable: false, length: 1024 })
   accessToken!: string;
 
   @Property({ nullable: true })
