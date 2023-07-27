@@ -117,12 +117,21 @@ export class LoginCtrl {
 
   onKeyUpFilter = (e: any): void => {
     if (e.charCode === 13) {
-      this.toLogin();
+      this.handleLogin();
     }
   };
 
+  handleOldLogin = () => {
+    IamApisConfigure.setGlobalAuthorizationToken(this.oldLogin?.access_token!);
+    //IamApisConfigure.setGlobalApplication(userinfo.aud);
+    // Regista o login no contexto do usuário
+    UserCtxInstance.login({}, this.oldLogin?.access_token!, 0);
+    //UserCtxInstance.saveApplication({ uuid: userinfo.aud });
+    window.location.href = this.redirect_uri!;
+  };
+
   @action
-  toLogin = () => {
+  handleLogin = () => {
     new AuthDataSource()
       .login(
         { username: this.username, password: this.password },
@@ -161,7 +170,7 @@ export class LoginCtrl {
       });
   };
 
-  toRegister = () => {
+  handleRegister = () => {
     historyPush('register', {
       app: this.applicationUuid,
       search: {

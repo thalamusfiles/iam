@@ -81,6 +81,8 @@ const LoginPageProvided: React.FC = observer(() => {
                       </Alert>
                     )}
 
+                    <OldLoginComp />
+
                     <Form.Group controlId="login.application">
                       <Form.Label>{__('login.application')}</Form.Label>
                       <Form.Control type="text" defaultValue={ctrl.appInfo?.name} disabled />
@@ -122,13 +124,13 @@ const LoginPageProvided: React.FC = observer(() => {
                 <Card.Footer>
                   <Row>
                     <Col sm={4}>
-                      <Button variant="ligth" onClick={ctrl.toRegister}>
+                      <Button variant="ligth" onClick={ctrl.handleRegister}>
                         {__('login.action.register')}
                       </Button>
                     </Col>
                     <Col></Col>
                     <Col sm={4}>
-                      <Button variant="primary" onClick={ctrl.toLogin}>
+                      <Button variant="primary" onClick={ctrl.handleLogin}>
                         <FontAwesomeIcon icon={IconsDef.login} /> {__('login.action.login')}
                       </Button>
                     </Col>
@@ -141,6 +143,22 @@ const LoginPageProvided: React.FC = observer(() => {
         <Footer center />
       </div>
     </div>
+  );
+});
+
+const OldLoginComp: React.FC = observer(() => {
+  const __ = useI18N();
+  const ctrl = useLoginStore();
+
+  return (
+    <>
+      {ctrl.oldLogin && (
+        <div className="d-grid">
+          <Button onClick={ctrl.handleOldLogin}>Continuar com SSO</Button>
+          <br />
+        </div>
+      )}
+    </>
   );
 });
 
