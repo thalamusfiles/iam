@@ -114,7 +114,7 @@ export class AuthController {
 
     // Procura usuários e cria token de acesso
     const userLogin = await this.authService.findUserLoginByUsername(body.username, body.password);
-    const authResp = await this.authService.createAccessToken(userLogin.user, userLogin, loginInfo);
+    const authResp = await this.authService.createIdAndAccessToken(userLogin.user, userLogin, loginInfo);
     // Se necessário cria código de autorização para coleta de token entre aplicaçõe. Criptografa o code challange com esse código
     let code = null;
     if (loginInfo.codeChallenge) {
@@ -126,12 +126,12 @@ export class AuthController {
     // Remove todos os logins anteriores da máquina
     await this.authService.removeOldTokens(userLogin.user.uuid, userAgent, ip);
     // Format redirect Uril
-    authResp.callbackUri = await this.oauthInfoService.createCallbackUri(body.redirect_uri, body.response_type, body.state, code);
+    authResp.callback_uri = await this.oauthInfoService.createCallbackUri(body.redirect_uri, body.response_type, body.state, code);
     // Salva o registro do novo login
     await this.authService.saveUserToken(loginInfo);
 
     //Todo: Remover este bloco.
-    return { ...authResp, info: { name: '12312' } } as any;
+    return authResp;
   }
 
   /**

@@ -99,7 +99,7 @@ export class OauthController {
           sessionToken: cookieId,
         });
         // Procura usuários e cria token de acesso
-        await this.authService.createAccessToken(userToken.user, userToken.login, loginInfo);
+        await this.authService.createIdAndAccessToken(userToken.user, userToken.login, loginInfo);
 
         // Criar código de autorização para coleta de token entre aplicações e criptografa o code challange com esse código
         let code = null;

@@ -14,18 +14,24 @@ export class TokenController {
 
   @Get()
   async findAll(@Req() request: RequestInfo): Promise<TokenInfo[]> {
+    this.logger.log('findAll');
+
     const userUuid = request.user.sub;
     return await this.userService.findAll(userUuid, 0, 1000);
   }
 
   @Delete(':uuid')
   async delete(@Param('uuid') uuid: string, @Req() request: RequestInfo): Promise<void> {
+    this.logger.log('delete');
+
     const userUuid = request.user.sub;
     return await this.userService.delete(userUuid, uuid);
   }
 
   @Get('active')
   async active(@Req() request: RequestInfo): Promise<TokenInfo[]> {
+    this.logger.log('active');
+
     const userUuid = request.user.sub;
     return await this.userService.activeTokensByUser(userUuid);
   }

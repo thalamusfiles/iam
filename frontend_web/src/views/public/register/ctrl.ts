@@ -1,4 +1,5 @@
 import { ApplicationInfo, AuthDataSource, IamApisConfigure, OauthDataSource, ScopeInfo } from '@thalamus/iam-consumer';
+import { Buffer } from 'buffer';
 import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
 import type { ErrosAsList } from '../../../commons/error';
@@ -133,14 +134,17 @@ export class RegisterCtrl {
       )
       .then((response) => {
         const responseData = response.data;
+        const userinfo = JSON.parse(Buffer.from(responseData.id_token.split('.')[1], 'base64').toString());
+
         // Adicionar o token de acesso no consumidar da API
         IamApisConfigure.setGlobalAuthorizationToken(responseData.access_token);
-        IamApisConfigure.setGlobalApplication(responseData.info.applicationLogged);
+        IamApisConfigure.setGlobalApplication(userinfo.aud);
         // Regista o Register no contexto do usuário
-        UserCtxInstance.login(responseData.info, responseData.access_token, responseData.info.expires_in);
+        UserCtxInstance.login(userinfo, responseData.access_token, userinfo.exp);
+        UserCtxInstance.saveApplication({ uuid: userinfo.aud });
 
-        if (responseData.callbackUri) {
-          window.location.href = responseData.callbackUri;
+        if (responseData.callback_uri) {
+          window.location.href = responseData.callback_uri;
         }
       })
       .catch((error: any) => {

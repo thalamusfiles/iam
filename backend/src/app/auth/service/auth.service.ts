@@ -214,7 +214,7 @@ export class AuthService {
       appInfo.redirectUri = userToken.redirectUri;
       appInfo.scope = userToken.scope;
 
-      return this.createAccessToken(userToken.user, userToken.login, appInfo);
+      return this.createIdAndAccessToken(userToken.user, userToken.login, appInfo);
     }
     return null;
   }
@@ -226,14 +226,13 @@ export class AuthService {
    * @param appInfo
    * @returns
    */
-  async createAccessToken(user: User, userLogin: UserLogin, appInfo: LoginInfo): Promise<AuthLoginRespDto> {
-    this.logger.verbose('createAccessToken');
+  async createIdAndAccessToken(user: User, userLogin: UserLogin, appInfo: LoginInfo): Promise<AuthLoginRespDto> {
+    this.logger.verbose('createIdAndAccessToken');
 
     const expiresIn = DateTime.now().plus({ seconds: jwtConfig.MAX_AGE }).toJSDate();
-    const _salt = this.cryptService.generateRandomString(64);
 
     const id_token = this.createIdToken(user, appInfo.clientId);
-    const access_token = this.cryptService.encrypt(iamConfig.IAM_PASS_SECRET_SALT, id_token, _salt);
+    const access_token = this.createAccessToken(user, appInfo.clientId);
 
     appInfo.userUuid = user.uuid;
     appInfo.userLoginUuid = userLogin.uuid;
@@ -246,7 +245,7 @@ export class AuthService {
       token_type: appInfo.responseType,
       scope: appInfo.scope,
       expires_in: jwtConfig.MAX_AGE,
-      callbackUri: '',
+      callback_uri: '',
     };
   }
 
@@ -309,6 +308,25 @@ export class AuthService {
 
     const userLogin = await this.userLoginRepository.findOne({ username, type: UserLoginType.LOCAL });
     return !!userLogin;
+  }
+
+  /**
+   * Cria o token de acesso da aplicação
+   * @param user
+   * @param appInfo
+   * @returns
+   */
+  createAccessToken(user: User, clientId: string): string {
+    const salt = this.cryptService.encrypt(
+      this.cryptService.generateRandomString(12),
+      iamConfig.IAM_PASS_SECRET_SALT,
+      this.cryptService.generateRandomString(12),
+    );
+
+    const info: any = this.userInfo(user, clientId);
+    info.salt = salt;
+
+    return this.generateJwt(info, jwtConfig.MAX_AGE);
   }
 
   /**

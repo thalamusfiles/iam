@@ -14,6 +14,8 @@ export class MeController {
 
   @Get()
   async me(@Req() request: RequestInfo): Promise<UserInfo> {
+    this.logger.log('me');
+
     const uuid = request.user.sub;
     return await this.userService.userInfo(uuid);
   }

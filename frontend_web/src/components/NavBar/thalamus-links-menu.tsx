@@ -9,8 +9,8 @@ const ThalamusLinksMenu: React.FC = () => {
     <NavDropdown className="nav_menu_thalamus" title={<FontAwesomeIcon icon={'table-cells'} />}>
       <ul>
         {Object.values(thalamusLinks).map((link, idx) => (
-          <li className="text-center">
-            <a className="app_link" href={getLinkTo(link.link)} target="_blank" rel="noreferrer" key={idx}>
+          <li className="text-center" key={idx}>
+            <a className="app_link" href={getLinkTo(link.link)} target="_blank" rel="noreferrer">
               <span className={'icon ' + link.name.toLocaleLowerCase()}></span>
               <span>{link.name}</span>
             </a>

@@ -66,6 +66,6 @@ export type AuthLoginRespDto = {
   access_token?: string;
   scope: string;
   token_type: string;
-  callbackUri: string;
+  callback_uri: string;
   expires_in: number;
 };

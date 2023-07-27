@@ -24,7 +24,14 @@ export type LoginDto = {
   password: string;
 };
 
-export type AuthLoginRespDto = { token_type: string; access_token?: string; scope: string; expires_in: number; info?: any };
+export type AuthLoginRespDto = {
+  id_token: string;
+  access_token: string;
+  token_type: string;
+  scope: string;
+  expires_in: number;
+  callback_uri: string;
+};
 export type ApplicationInfo = { uuid: string; name: string };
 export type ScopeInfo = { scope: string; app: { name: string; description: string }; permission: { description: string } };
 
@@ -43,7 +50,7 @@ interface OauthDataSourceI {
 }
 
 export class AuthDataSource implements AuthDataSourceI {
-  async register({ name, username, password, password_confirmed }: RegisterDto, oauth: OauthFieldsDto): Promise<any> {
+  async register({ name, username, password, password_confirmed }: RegisterDto, oauth: OauthFieldsDto): Promise<AxiosResponse<AuthLoginRespDto>> {
     return await Apis.ApiAuth.post(`${Endpoints.apiAuthRegister}`, {
       name,
       username,
@@ -53,7 +60,7 @@ export class AuthDataSource implements AuthDataSourceI {
     });
   }
 
-  async login({ username, password }: LoginDto, oauth: OauthFieldsDto): Promise<any> {
+  async login({ username, password }: LoginDto, oauth: OauthFieldsDto): Promise<AxiosResponse<AuthLoginRespDto>> {
     return await Apis.ApiAuth.post(`${Endpoints.apiAuthLogin}`, {
       username,
       password,
@@ -63,14 +70,14 @@ export class AuthDataSource implements AuthDataSourceI {
 }
 
 export class OauthDataSource implements OauthDataSourceI {
-  async applicationInfo(applicationUuid: string): Promise<any> {
+  async applicationInfo(applicationUuid: string): Promise<AxiosResponse<ApplicationInfo>> {
     return await Apis.ApiAuth.get(`${Endpoints.apiOauthApplicationInfo}`, {
       params: {
         uuid: applicationUuid,
       },
     });
   }
-  async scopeInfo(scope: string): Promise<any> {
+  async scopeInfo(scope: string): Promise<AxiosResponse<ScopeInfo[]>> {
     return await Apis.ApiAuth.get(`${Endpoints.apiOauthScopeInfo}`, {
       params: {
         scope,

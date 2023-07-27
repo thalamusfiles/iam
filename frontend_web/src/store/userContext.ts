@@ -19,7 +19,7 @@ export class Ctx {
   @observable user = {} as AccessUserInfo;
   @observable token = null as string | null;
   @observable expiresIn = null as number | null;
-  @observable application = {} as { uuid: string; name: string };
+  @observable application = {} as { uuid: string; name?: string };
 
   changeLanguage(lng?: string): Promise<Function> {
     return i18next.changeLanguage(lng);
@@ -64,7 +64,7 @@ export class Ctx {
     this.application = Storage.getItem(localStorageDef.applicationContextKey, {});
   }
 
-  @action saveApplication(application: { uuid: string; name: string }) {
+  @action saveApplication(application: { uuid: string; name?: string }) {
     Storage.setItem(localStorageDef.applicationContextKey, application);
 
     this.application = application;
