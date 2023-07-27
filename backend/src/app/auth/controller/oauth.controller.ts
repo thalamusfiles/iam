@@ -58,7 +58,7 @@ export class OauthController {
   }
 
   @Get('oauth2/authorize')
-  //@Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
+  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   async oauth2Authorize(
     @Req() request: RequestInfo,
     @Res() res,
@@ -114,7 +114,9 @@ export class OauthController {
         const redirectUri = this.oauthInfoService.createCallbackUri(query.redirect_uri, query.response_type, query.state, code);
 
         // Salva o registro do novo login
-        await this.authService.saveUserToken(loginInfo);
+        if (loginInfo.responseType !== 'cookie') {
+          await this.authService.saveUserToken(loginInfo);
+        }
 
         return res.redirect(redirectUri);
       }
@@ -131,12 +133,17 @@ export class OauthController {
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   async oauth2Token2(@Req() request: RequestInfo, @Body() body): Promise<OauthTokenDto> {
     this.logger.log('oauth2Token');
+    console.log(1111111111111);
+    console.log('oauth2Token');
+    console.log(1111111111111);
 
     //Executa os casos de uso com validações
     const allErros = [].concat(
       //
       await this.authOauthAuthorizeFieldsUseCase.execute(body),
     );
+
+    console.log(allErros);
 
     if (allErros.length) {
       throw new FormException(allErros);

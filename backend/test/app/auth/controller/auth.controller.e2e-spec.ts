@@ -8,6 +8,8 @@ import { AuthRegisterDto } from '../../../../src/app/auth/controller/dto/auth.dt
 import { faker } from '@faker-js/faker';
 import iamConfig from '../../../../src/config/iam.config';
 import { NotFoundExceptionFilter } from '../../../../src/commons/catch.exception';
+import { OauthFieldsDto } from '../../../../src/app/auth/controller/dto/oauth.dto';
+import { IdTokenInfo } from '../../../../src/app/auth/passaport/access-user-info';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -17,7 +19,7 @@ describe('AuthController (e2e)', () => {
 
   // Cadastros de testes
   const password = '1Ab' + faker.internet.password(16);
-  const oauth = {
+  const oauth: OauthFieldsDto = {
     client_id: iamConfig.MAIN_APP_IAM_ID,
     response_type: 'cookie',
     redirect_uri: 'https://localhost:8080/',
@@ -30,8 +32,8 @@ describe('AuthController (e2e)', () => {
     password: password,
     password_confirmed: password,
   };
-  let accessToken;
-  let userInfo;
+  let accessToken: string;
+  let userInfo: IdTokenInfo;
 
   // Executa antes de cada teste
   beforeAll(async () => {
@@ -52,27 +54,31 @@ describe('AuthController (e2e)', () => {
 
     expect(result.headers['set-cookie']).toBeDefined();
     expect(result.body).toBeDefined();
-    expect(result.body).toHaveProperty('access_token');
-    expect(result.body).toHaveProperty('info');
     expect(result.body).toMatchObject(
       expect.objectContaining({
-        token_type: expect.any(String),
+        id_token: expect.any(String),
         access_token: expect.any(String),
+        token_type: expect.any(String),
         scope: expect.any(String),
         expires_in: expect.any(Number),
-        info: {
-          iat: expect.any(Number),
-          uuid: expect.any(String),
-          name: expect.any(String),
-          applicationLogged: expect.any(String),
-        },
       }),
     );
-    expect(result.body.info.applicationLogged).toEqual(registerDto01.client_id);
+    expect(result.body.id_token).toBeDefined();
     expect(result.body.access_token).toBeDefined();
-    expect(result.body.info).toBeDefined();
 
-    userInfo = result.body.info;
+    const jwtPayload = JSON.parse(Buffer.from(result.body.id_token.split('.')[1], 'base64').toString('utf8'));
+    expect(jwtPayload).toMatchObject(
+      expect.objectContaining({
+        aud: expect.any(String),
+        exp: expect.any(Number),
+        iat: expect.any(Number),
+        iss: expect.any(String),
+        name: expect.any(String),
+        sub: expect.any(String),
+      }),
+    );
+
+    userInfo = jwtPayload;
   });
 
   it(`${authUrl}/register (Post) Tentar registrar o mesmo usuário (não pode)`, async () => {
@@ -93,23 +99,29 @@ describe('AuthController (e2e)', () => {
 
     expect(result.headers['set-cookie']).toBeDefined();
     expect(result.body).toBeDefined();
-    expect(result.body).toHaveProperty('access_token');
-    expect(result.body).toHaveProperty('info');
     expect(result.body).toMatchObject(
       expect.objectContaining({
-        token_type: expect.any(String),
+        id_token: expect.any(String),
         access_token: expect.any(String),
+        token_type: expect.any(String),
         scope: expect.any(String),
         expires_in: expect.any(Number),
-        info: {
-          iat: expect.any(Number),
-          uuid: expect.any(String),
-          name: expect.any(String),
-          applicationLogged: expect.any(String),
-        },
       }),
     );
-    expect(result.body.info.applicationLogged).toEqual(registerDto01.client_id);
+    expect(result.body.id_token).toBeDefined();
+    expect(result.body.access_token).toBeDefined();
+
+    const jwtPayload = JSON.parse(Buffer.from(result.body.id_token.split('.')[1], 'base64').toString('utf8'));
+    expect(jwtPayload).toMatchObject(
+      expect.objectContaining({
+        aud: expect.any(String),
+        exp: expect.any(Number),
+        iat: expect.any(Number),
+        iss: expect.any(String),
+        name: expect.any(String),
+        sub: expect.any(String),
+      }),
+    );
 
     accessToken = result.body.access_token;
   });
@@ -137,10 +149,13 @@ describe('AuthController (e2e)', () => {
 
     expect(result.body).toBeDefined();
     expect(result.body).toHaveProperty('access_token');
-    expect(result.body).toHaveProperty('info');
+    expect(result.body).toHaveProperty('id_token');
     expect(result.body.access_token).not.toEqual(accessToken);
-    expect(result.body.info.uuid).toEqual(userInfo.uuid);
-    expect(result.body.info.applicationLogged).toEqual(userInfo.applicationLogged);
+
+    const jwtPayload = JSON.parse(Buffer.from(result.body.id_token.split('.')[1], 'base64').toString('utf8'));
+
+    expect(jwtPayload.sub).toEqual(userInfo.sub);
+    expect(jwtPayload.aud).toEqual(userInfo.aud);
   });
 
   it(`${authUrl}/refresh (Get) Tenta utilizar um token inválido`, async () => {

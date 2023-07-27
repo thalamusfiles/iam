@@ -1,6 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { IdTokenInfo } from '../../passaport/access-user-info';
 import { OauthFieldsDto } from './oauth.dto';
 
 /**

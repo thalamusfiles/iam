@@ -22,17 +22,17 @@ export class OauthFieldsDto {
   @Expose()
   @IsString()
   @IsOptional()
-  state: string;
+  state?: string;
 
   @Expose()
   @IsString()
   @IsOptional()
-  code_challenge: string;
+  code_challenge?: string;
 
   @Expose()
   @IsString()
   @IsOptional()
-  code_challenge_method: string;
+  code_challenge_method?: string;
 }
 
 export type OauthTokenDto = {

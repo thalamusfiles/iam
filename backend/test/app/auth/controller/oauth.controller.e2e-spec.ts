@@ -6,6 +6,7 @@ import { AppModule } from '../../../../src/app/app.module';
 import { addGlobalIAMMgtRequestHeader } from '../../../utils/setheader.utils';
 import iamConfig from '../../../../src/config/iam.config';
 import { NotFoundExceptionFilter } from '../../../../src/commons/catch.exception';
+import { OauthFieldsDto } from '../../../../src/app/auth/controller/dto/oauth.dto';
 
 describe('OauthController (e2e)', () => {
   let app: INestApplication;
@@ -14,7 +15,7 @@ describe('OauthController (e2e)', () => {
   const authUrl = '/auth';
 
   // Cadastros de testes
-  const oauth = {
+  const oauth: OauthFieldsDto = {
     client_id: iamConfig.MAIN_APP_IAM_ID,
     response_type: 'cookie',
     redirect_uri: 'https://localhost:8080/',
@@ -103,8 +104,12 @@ describe('OauthController (e2e)', () => {
   it(`${authUrl}/oauth2/authorize (GET) Tenta realizar login oauth sem cookie. Redireciona para o login`, async () => {
     const oauthUrl = `${authUrl}/oauth2/authorize`;
 
-    const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(oauthUrl)).send(oauth).expect(302);
-    expect(result.headers.location).toEqual('/login');
+    const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(oauthUrl)).query(oauth).expect(302);
+    expect(result.headers.location).toContain('/login');
+    expect(result.headers.location).toContain('&client_id');
+    expect(result.headers.location).toContain('response_type=');
+    expect(result.headers.location).toContain('scope=');
+    expect(result.headers.location).toContain('redirect_uri=');
   });
 
   it(`${authUrl}/oauth2/authorize (GET) Tenta realizar login oauth com cookie. Redireciona para url informada.`, async () => {
@@ -113,8 +118,8 @@ describe('OauthController (e2e)', () => {
     const getRequest = request(app.getHttpServer()).get(oauthUrl);
     const getRequestWithApp = addGlobalIAMMgtRequestHeader(getRequest);
 
-    const result = await getRequestWithApp.set('Cookie', coockies.join(' ')).send(oauth).expect(302);
-    expect(result.headers.location).toEqual(oauth.redirect_uri);
+    const result = await getRequestWithApp.set('Cookie', coockies.join(' ')).query(oauth).expect(302);
+    expect(result.headers.location).toEqual(oauth.redirect_uri + '?');
   });
 
   it(`${authUrl}/oauth2/authorize (GET) Tenta realizar login oauth con cookien inválido (não pode)`, async () => {
@@ -123,9 +128,14 @@ describe('OauthController (e2e)', () => {
     const getRequest = request(app.getHttpServer()).get(oauthUrl);
     const getRequestWithApp = addGlobalIAMMgtRequestHeader(getRequest);
 
-    const result = await getRequestWithApp.set('Cookie', 'cookie teste').send(oauth).expect(302);
+    const result = await getRequestWithApp.set('Cookie', 'cookie teste').query(oauth).expect(302);
 
-    expect(result.headers.location).toEqual('/login');
+    expect(result.headers.location).toContain('/public/app');
+    expect(result.headers.location).toContain('/login');
+    expect(result.headers.location).toContain('&client_id');
+    expect(result.headers.location).toContain('response_type=');
+    expect(result.headers.location).toContain('scope=');
+    expect(result.headers.location).toContain('redirect_uri=');
   });
 
   it(`${authUrl}/oauth2/authorize (GET) Tenta realizar login oauth não informando nada (não pode)`, async () => {

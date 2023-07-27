@@ -94,6 +94,7 @@ export class AuthController {
       await this.authOauthFieldsUseCase.execute(body),
       await this.authLoginClienteIdUseCase.execute(body),
     );
+
     if (allErros.length) {
       throw new FormException(allErros);
     }
