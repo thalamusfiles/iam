@@ -30,7 +30,7 @@ export class UserController implements CRUDController<User> {
   @Get()
   @UsePipes(new IamValidationPipe())
   find(@Query() query?: FindUserPropsDto): Promise<User[]> {
-    this.logger.log('Find all');
+    this.logger.log('find');
 
     return this.userService.find(query);
   }
@@ -41,7 +41,7 @@ export class UserController implements CRUDController<User> {
   @Get(':uuid')
   @UsePipes(new IamValidationPipe())
   async findById(@Param('uuid') uuid: string, @Query() query?: FindUserPropsDto): Promise<User> {
-    this.logger.log(`Find By Id ${uuid}`);
+    this.logger.log(`findById ${uuid}`);
 
     return this.userService.findById(uuid, query);
   }
@@ -55,7 +55,7 @@ export class UserController implements CRUDController<User> {
   @Post()
   @UsePipes(new IamValidationPipe({ transformOptions: { exposeUnsetFields: false } }))
   async create(@Body() props: EntityUserCreateDto, @Request() request: RequestInfo): Promise<EntityProps<User>> {
-    this.logger.log('Create User');
+    this.logger.log('create');
 
     if ((props.entity as any).uuid !== undefined) {
       this.logger.error('Tentativa de criação de registro com uuid informado');
@@ -74,7 +74,7 @@ export class UserController implements CRUDController<User> {
   @Put(':uuid')
   @UsePipes(new IamValidationPipe({ transformOptions: { exposeUnsetFields: false } }))
   async update(@Param('uuid') uuid: string, @Body() props: EntityUserUpdateDto, @Request() request: RequestInfo): Promise<EntityProps<User>> {
-    this.logger.log('Update User');
+    this.logger.log('update');
 
     if (!uuid) {
       this.logger.error('Tentativa de alteração de registro sem uuid informado');
@@ -94,7 +94,7 @@ export class UserController implements CRUDController<User> {
    */
   @Delete(':uuid')
   async delete(@Param('uuid') uuid: string, @Body() props: EntityProps<User>): Promise<void> {
-    this.logger.log('Delete User');
+    this.logger.log('delete');
 
     if (!uuid) {
       this.logger.error('Tentativa de remoção de registro sem uuid informado');

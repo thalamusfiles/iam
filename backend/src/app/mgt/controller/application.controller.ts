@@ -40,7 +40,7 @@ export class ApplicationController implements CRUDController<Application> {
   @Get()
   @UsePipes(new IamValidationPipe())
   async find(@Query() query?: FindApplicationPropsDto, @Request() request?: RequestInfo): Promise<Application[]> {
-    this.logger.log('Find all');
+    this.logger.log('find');
 
     // Se não for gerente principal deixa editar apenas as aplicações associadas
     const isMainManager = this.requestService.checkUserApplicationPermition(request.user.sub, iamConfig.MAIN_APP_IAM_MGT_ID);
@@ -58,7 +58,7 @@ export class ApplicationController implements CRUDController<Application> {
   @Get(':uuid')
   @UsePipes(new IamValidationPipe())
   async findById(@Param('uuid') uuid: string, @Query() query?: FindApplicationPropsDto, @Request() request?: RequestInfo): Promise<Application> {
-    this.logger.log(`Find By Id ${uuid}`);
+    this.logger.log(`findById ${uuid}`);
 
     // Se não for gerente principal deixa editar apenas as aplicações associadas
     const isMainManager = this.requestService.checkUserApplicationPermition(request.user.sub, iamConfig.MAIN_APP_IAM_MGT_ID);
@@ -79,7 +79,7 @@ export class ApplicationController implements CRUDController<Application> {
   @Post()
   @UsePipes(new IamValidationPipe({ transformOptions: { exposeUnsetFields: false } }))
   async create(@Body() props: EntityApplicationCreateDto, @Request() request: RequestInfo): Promise<EntityProps<Application>> {
-    this.logger.log('Create Application');
+    this.logger.log('create');
 
     if ((props.entity as any).uuid !== undefined) {
       this.logger.error('Tentativa de criação de registro com uuid informado');
@@ -102,7 +102,7 @@ export class ApplicationController implements CRUDController<Application> {
     @Body() props: EntityApplicationUpdateDto,
     @Request() request: RequestInfo,
   ): Promise<EntityProps<Application>> {
-    this.logger.log('Update Application');
+    this.logger.log('update');
 
     if (!uuid) {
       this.logger.error('Tentativa de alteração de registro sem uuid informado');
@@ -122,7 +122,7 @@ export class ApplicationController implements CRUDController<Application> {
    */
   @Delete(':uuid')
   async delete(@Param('uuid') uuid: string, @Body() props: EntityProps<Application>, @Request() request?: RequestInfo): Promise<void> {
-    this.logger.log('Delete Application');
+    this.logger.log('delete');
 
     if (!uuid) {
       this.logger.error('Tentativa de remoção de registro sem uuid informado');

@@ -34,7 +34,7 @@ export class PermissionController implements CRUDController<Permission> {
   @Get()
   @UsePipes(new IamValidationPipe())
   find(@Query() query?: FindPermissionPropsDto, @Request() request?: RequestInfo): Promise<Permission[]> {
-    this.logger.log('Find all');
+    this.logger.log('find');
 
     if (!query.where) query.where = {};
     query.where.application = request.applicationRef;
@@ -48,7 +48,7 @@ export class PermissionController implements CRUDController<Permission> {
   @Get(':uuid')
   @UsePipes(new IamValidationPipe())
   async findById(@Param('uuid') uuid: string, @Query() query?: FindPermissionPropsDto, @Request() request?: RequestInfo): Promise<Permission> {
-    this.logger.log(`Find By Id ${uuid}`);
+    this.logger.log(`findById ${uuid}`);
 
     if (!query.where) query.where = {};
     query.where.application = request.applicationRef;
@@ -65,7 +65,7 @@ export class PermissionController implements CRUDController<Permission> {
   @Post()
   @UsePipes(new IamValidationPipe({ transformOptions: { exposeUnsetFields: false } }))
   async create(@Body() props: EntityPermissionCreateDto, @Request() request: RequestInfo): Promise<EntityProps<Permission>> {
-    this.logger.log('Create Permission');
+    this.logger.log('create');
 
     if ((props.entity as any).uuid !== undefined) {
       this.logger.error('Tentativa de criação de registro com uuid informado');
@@ -88,7 +88,7 @@ export class PermissionController implements CRUDController<Permission> {
     @Body() props: EntityPermissionUpdateDto,
     @Request() request: RequestInfo,
   ): Promise<EntityProps<Permission>> {
-    this.logger.log('Update Permission');
+    this.logger.log('update');
 
     if (!uuid) {
       this.logger.error('Tentativa de alteração de registro sem uuid informado');
@@ -108,7 +108,7 @@ export class PermissionController implements CRUDController<Permission> {
    */
   @Delete(':uuid')
   async delete(@Param('uuid') uuid: string, @Body() props: EntityProps<Permission>): Promise<void> {
-    this.logger.log('Delete Permission');
+    this.logger.log('delete');
 
     if (!uuid) {
       this.logger.error('Tentativa de remoção de registro sem uuid informado');

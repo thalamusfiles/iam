@@ -36,7 +36,7 @@ export class RoleController implements CRUDController<Role> {
   @Get()
   @UsePipes(new IamValidationPipe())
   find(@Query() query?: FindRolePropsDto, @Request() request?: RequestInfo): Promise<Role[]> {
-    this.logger.log('Find all');
+    this.logger.log('find');
 
     if (!query.where) query.where = {};
     query.where.application = request.applicationRef;
@@ -50,7 +50,7 @@ export class RoleController implements CRUDController<Role> {
   @Get(':uuid')
   @UsePipes(new IamValidationPipe())
   async findById(@Param('uuid') uuid: string, @Query() query?: FindRolePropsDto): Promise<Role> {
-    this.logger.log(`Find By Id ${uuid}`);
+    this.logger.log(`findById ${uuid}`);
 
     return this.roleService.findById(uuid, query);
   }
@@ -64,7 +64,7 @@ export class RoleController implements CRUDController<Role> {
   @Post()
   @UsePipes(new IamValidationPipe({ transformOptions: { exposeUnsetFields: false } }))
   async create(@Body() props: EntityRoleCreateDto, @Request() request: RequestInfo): Promise<EntityProps<Role>> {
-    this.logger.log('Create Role');
+    this.logger.log('create');
 
     if ((props.entity as any).uuid !== undefined) {
       this.logger.error('Tentativa de criação de registro com uuid informado');
@@ -83,7 +83,7 @@ export class RoleController implements CRUDController<Role> {
   @Put(':uuid')
   @UsePipes(new IamValidationPipe({ transformOptions: { exposeUnsetFields: false } }))
   async update(@Param('uuid') uuid: string, @Body() props: EntityRoleUpdateDto, @Request() request: RequestInfo): Promise<EntityProps<Role>> {
-    this.logger.log('Update Role');
+    this.logger.log('update');
 
     if (!uuid) {
       this.logger.error('Tentativa de alteração de registro sem uuid informado');
@@ -103,7 +103,7 @@ export class RoleController implements CRUDController<Role> {
    */
   @Delete(':uuid')
   async delete(@Param('uuid') uuid: string, @Body() props: EntityProps<Role>): Promise<void> {
-    this.logger.log('Delete Role');
+    this.logger.log('delete');
 
     if (!uuid) {
       this.logger.error('Tentativa de remoção de registro sem uuid informado');

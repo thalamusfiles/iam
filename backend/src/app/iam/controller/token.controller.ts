@@ -13,8 +13,8 @@ export class TokenController {
   }
 
   @Get()
-  async findAll(@Req() request: RequestInfo): Promise<TokenInfo[]> {
-    this.logger.log('findAll');
+  async find(@Req() request: RequestInfo): Promise<TokenInfo[]> {
+    this.logger.log('find');
 
     const userUuid = request.user.sub;
     return await this.userService.findAll(userUuid, 0, 1000);

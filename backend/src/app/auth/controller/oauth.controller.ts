@@ -37,7 +37,7 @@ export class OauthController {
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   @UsePipes(new IamValidationPipe())
   async applicationInfo(@Query() query?: ApplicationInfoDto): Promise<{ uuid: string; name: string }> {
-    this.logger.log('Application info');
+    this.logger.log('applicationInfo');
 
     const { uuid, name } = await this.oauthInfoService.findApplication(query.uuid);
     return { uuid, name };
@@ -52,7 +52,7 @@ export class OauthController {
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
   @UsePipes(new IamValidationPipe())
   async scopeInfo(@Query() query?: ScopeInfoDto): Promise<any> {
-    this.logger.log('Scope info');
+    this.logger.log('scopeInfo');
 
     return await this.oauthInfoService.findScopesInfo(query.scope);
   }
@@ -66,7 +66,7 @@ export class OauthController {
     @Headers('User-Agent') userAgent,
     @Ip() ip: string,
   ): Promise<any> {
-    this.logger.log('Oauth2 authorize');
+    this.logger.log('oauth2Authorize');
 
     //Executa os casos de uso com validações
     const allErros = [].concat(
@@ -131,7 +131,7 @@ export class OauthController {
   @Post('oauth2/token')
   @HttpCode(200)
   @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
-  async oauth2Token2(@Req() request: RequestInfo, @Body() body): Promise<OauthTokenDto> {
+  async oauth2Token(@Body() body): Promise<OauthTokenDto> {
     this.logger.log('oauth2Token');
 
     //Executa os casos de uso com validações
@@ -161,7 +161,7 @@ export class OauthController {
 
   @Get('.well-known/openid-configuration')
   async openIDConfig() {
-    this.logger.log('OpenID Configuration');
+    this.logger.log('openIDConfig');
 
     return {
       issuer: 'thalamus_iam',
