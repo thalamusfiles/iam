@@ -12,7 +12,7 @@ import { EntityApplicationCreateDto, EntityApplicationUpdateDto, FindApplication
 import { IamValidationPipe } from '../../../commons/validation.pipe';
 import { ApplicationFieldsValidationUseCase } from '../usecase/application-fields-validation.usecase';
 import { RequestService } from '../../auth/service/request.service';
-import iamConfig from '../../../config/iam.config';
+import appsConfig from '../../../config/apps.config';
 
 @UseGuards(AccessGuard)
 @Controller('mgt/application')
@@ -43,7 +43,7 @@ export class ApplicationController implements CRUDController<Application> {
     this.logger.log('find');
 
     // Se não for gerente principal deixa editar apenas as aplicações associadas
-    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.sub, iamConfig.MAIN_APP_IAM_MGT_ID);
+    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.sub, appsConfig.MAIN_APP_IAM_MGT_ID);
     if (!isMainManager) {
       if (!query.where) query.where = {};
       query.where.managers = [request.user.sub];
@@ -61,7 +61,7 @@ export class ApplicationController implements CRUDController<Application> {
     this.logger.log(`findById ${uuid}`);
 
     // Se não for gerente principal deixa editar apenas as aplicações associadas
-    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.sub, iamConfig.MAIN_APP_IAM_MGT_ID);
+    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.sub, appsConfig.MAIN_APP_IAM_MGT_ID);
     if (!isMainManager) {
       if (!query.where) query.where = {};
       query.where.managers = [request.user.sub];
@@ -129,7 +129,7 @@ export class ApplicationController implements CRUDController<Application> {
       throw new UnauthorizedException('Uuid required');
     }
 
-    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.sub, iamConfig.MAIN_APP_IAM_MGT_ID);
+    const isMainManager = this.requestService.checkUserApplicationPermition(request.user.sub, appsConfig.MAIN_APP_IAM_MGT_ID);
     if (!isMainManager) {
       throw new UnauthorizedException('Main manager privilege required');
     }

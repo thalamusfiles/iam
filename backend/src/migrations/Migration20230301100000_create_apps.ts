@@ -4,8 +4,6 @@ import iamConfig from '../config/iam.config';
 
 export class Migration20230211100000_create_apps extends Migration {
   async up(): Promise<void> {
-    await this.driver.findOne('user_login', { username: iamConfig.FIRST_USER_EMAIL });
-
     await this.upIamSSO();
     await this.upIamMgt();
   }
@@ -69,7 +67,7 @@ export class Migration20230211100000_create_apps extends Migration {
     );
 
     this.addSql(`
-      INERT INTO "role_permission"  ("role_uuid", "permission_uuid") 
+      INSERT INTO "role_permission"  ("role_uuid", "permission_uuid") 
       SELECT "role".uuid, "permission".uuid FROM "role", "permission"
       WHERE "role".initials = '${iamConfig.MAIN_ROLE_IAM}'
       AND "permission".application_uuid = '${appsConfig.MAIN_APP_IAM_ID}'
