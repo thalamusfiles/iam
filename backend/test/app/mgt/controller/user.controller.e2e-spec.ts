@@ -16,7 +16,7 @@ describe('UserController (e2e)', () => {
   const userUrl = '/mgt/user';
 
   // Cadastros de testes
-  const uuidUserSaved = '11111111-1111-1111-1111-111111111111';
+  const uuidUserSaved = 'b688ddb8-19a2-4d5e-8452-b10518800ceb';
   const userNameCheck = iamConfig.FIRST_USER_NAME;
   const userToCreate: EntityProps<User> = {
     entity: {

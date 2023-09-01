@@ -30,16 +30,9 @@ const iamConfig = {
 
   // Scopo principal
   MAIN_SCOPE_IAM: 'iam_all',
-  // Aplicação de authenticação SSO
-  MAIN_APP_IAM: 'iam',
-  MAIN_APP_IAM_ID: '11111111-1111-1111-1111-111111111111',
-  MAIN_APP_IAM_NAME: 'Conta Thalamus',
-  // Aplicação de gestão do IAM SSO
-  MAIN_APP_IAM_MGT: 'iam_mgt',
-  MAIN_APP_IAM_MGT_ID: '22222222-2222-2222-2222-222222222222',
-  MAIN_APP_IAM_MGT_NAME: 'Gestão IAM Thalamus',
   // Perfil base Iam e suas permissões
   MAIN_ROLE_IAM: 'all',
+  // Permissões base do sistema
   MAIN_PERMISSION_ME_VIEW_IAM: 'me_view',
   MAIN_PERMISSION_LOGIN_VIEW_IAM: 'login_view',
   MAIN_PERMISSION_TOKEN_VIEW_IAM: 'token_view',

@@ -7,6 +7,7 @@ import { addGlobalIAMMgtRequestHeader } from '../../../utils/setheader.utils';
 import iamConfig from '../../../../src/config/iam.config';
 import { NotFoundExceptionFilter } from '../../../../src/commons/catch.exception';
 import { OauthFieldsDto } from '../../../../src/app/auth/controller/dto/oauth.dto';
+import appsConfig from '../../../../src/config/apps.config';
 
 describe('OauthController (e2e)', () => {
   let app: INestApplication;
@@ -41,7 +42,7 @@ describe('OauthController (e2e)', () => {
 
     const result = await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(appInfoUrl))
       .query({
-        uuid: iamConfig.MAIN_APP_IAM_ID,
+        uuid: appsConfig.MAIN_APP_IAM_ID,
       })
       .expect(200);
 
@@ -59,7 +60,7 @@ describe('OauthController (e2e)', () => {
 
     await addGlobalIAMMgtRequestHeader(request(app.getHttpServer()).get(appInfoUrl))
       .query({
-        uuid: iamConfig.MAIN_APP_IAM_ID.replace('11111111-', '12345678-'),
+        uuid: appsConfig.MAIN_APP_IAM_ID.replace('1c7c9168-', '12345678-'),
       })
       .expect(404);
   });
