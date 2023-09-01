@@ -14,6 +14,10 @@ export class Application extends IamBaseEntityWithDelete {
   @Property({ nullable: false })
   name!: string;
 
+  @Check({ expression: 'LENGTH(secrect) >= 32' })
+  @Property({ nullable: true })
+  secrect?: string;
+
   @Check({ expression: 'LENGTH(description) >= 10' })
   @Property({ nullable: false })
   description!: string;

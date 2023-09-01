@@ -15,11 +15,13 @@ export class Migration20230210300000_application extends Migration {
         "initials" varchar(255) not null, 
         "name" varchar(255) not null, 
         "description" varchar(255) not null, 
+        "secrect" varchar(255) null, 
         "public" boolean not null, 
         
         constraint "application_pkey" primary key ("uuid"), 
         constraint application_initials_check check (LENGTH(initials) >= 3), 
         constraint application_name_check check (LENGTH(name) >= 3), 
+        constraint application_secrect_check check (LENGTH(secrect) >= 32), 
         constraint application_description_check check (LENGTH(description) >= 10)
       );`,
     );
