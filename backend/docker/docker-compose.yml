@@ -42,9 +42,7 @@ services:
       - iam_db
     ports:
       - ${SYSTEM_PORT}:${SYSTEM_PORT}
-      - 9229:9229
-    command: 
-      ${COMMAND_START}
+    command: ${COMMAND_START}
 
 networks:
   iam_backend-net:
