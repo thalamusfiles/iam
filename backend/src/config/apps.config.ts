@@ -17,6 +17,10 @@ const appsConfig = {
   APP_BILLING: 'billing',
   APP_BILLING_ID: 'cea146ef-07a3-4df6-9b3d-e4b8c9629114',
   APP_BILLING_NAME: 'Billing',
+  // Aplicação de authenticação SSO
+  APP_BILLING_MGT: 'billing_mgt',
+  APP_BILLING_MGT_ID: 'b2a1dbbe-2241-487c-bccd-4aafadffc7df',
+  APP_BILLING_MGT_NAME: 'Gestão Billing',
 };
 
 export default appsConfig;
