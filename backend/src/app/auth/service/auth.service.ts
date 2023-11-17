@@ -187,6 +187,7 @@ export class AuthService {
         },
       ],
     });
+
     if (!application) {
       // Verifica se o usuário tem algum perfil na aplicação.
       const role = await this.roleRepository.findOne({ application: clientId, users: { $in: [userUuid] } });
