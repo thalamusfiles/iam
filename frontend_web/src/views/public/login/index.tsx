@@ -147,7 +147,6 @@ const LoginPageProvided: React.FC = observer(() => {
 });
 
 const OldLoginComp: React.FC = observer(() => {
-  const __ = useI18N();
   const ctrl = useLoginStore();
 
   return (
