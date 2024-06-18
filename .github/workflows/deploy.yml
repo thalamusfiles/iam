@@ -45,7 +45,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p ~/.ssh/
-          ssh-keyscan -H ${{ secrets.HOST_URL }} >> ~/.ssh/known_hosts
+          ssh-keyscan -T 15 -H ${{ secrets.HOST_URL }} >> ~/.ssh/known_hosts
           sudo chmod 600 ~/.ssh/known_hosts
       #Atualiza servidor
       - name: Atualiza servidor
@@ -77,7 +77,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p ~/.ssh/
-          ssh-keyscan -H ${{ secrets.HOST_URL }} >> ~/.ssh/known_hosts
+          ssh-keyscan -T 15 -H ${{ secrets.HOST_URL }} >> ~/.ssh/known_hosts
           sudo chmod 600 ~/.ssh/known_hosts
       #Atualiza frontend
       - name: Atualiza frontend
@@ -109,7 +109,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p ~/.ssh/
-          ssh-keyscan -H ${{ secrets.HOST_URL }} >> ~/.ssh/known_hosts
+          ssh-keyscan -T 15 -H ${{ secrets.HOST_URL }} >> ~/.ssh/known_hosts
           sudo chmod 600 ~/.ssh/known_hosts
       #Atualiza servidor
       - name: Atualiza servidor
