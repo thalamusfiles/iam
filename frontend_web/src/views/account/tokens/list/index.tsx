@@ -11,14 +11,24 @@ import TCard from '../../../../components/Card/card';
 import { Route, Routes } from 'react-router-dom';
 import TokensNewModalPage from '../new';
 import { historyPush } from '../../../../commons/route';
+import { TokensCtx, TokensProvider, useTokensStore } from './ctrl';
+import { useEffect } from 'react';
 
 const TokensPage: React.FC = () => {
+  const ctrl = new TokensCtx();
+
+  useEffect(() => {
+    ctrl.init();
+  });
+
   return (
     <>
       <Routes>
         <Route path={'/modal/new'} element={<TokensNewModalPage />} />
       </Routes>
-      <TokensPageProvided />
+      <TokensProvider value={ctrl}>
+        <TokensPageProvided />
+      </TokensProvider>
     </>
   );
 };
@@ -56,17 +66,16 @@ const TokensPageProvided: React.FC = () => {
 };
 
 const TokensList: React.FC = observer(() => {
+  const ctrl = useTokensStore();
   return (
     <>
-      <TCard title="Name: ASD asddda XXX" subtitle="Permissions: asd; asd; asd; " full />
-      <br />
-      <TCard title="Name: ASD asddda XXX" subtitle="Permissions: asd; asd; asd; " full />
-      <br />
-      <TCard title="Name: ASD asddda XXX" subtitle="Permissions: asd; asd; asd; " full />
-      <br />
-      <TCard title="Name: ASD asddda XXX" subtitle="Permissions: asd; asd; asd; " full />
-      <br />
-      <TCard title="Name: ASD asddda XXX" subtitle="Permissions: asd; asd; asd; " full />
+      {ctrl.tokens.map((token, idx) => (
+        <div key={idx}>
+          {' '}
+          <TCard title={token.applicationName!} subtitle={token.scope} full />
+          <br />
+        </div>
+      ))}
     </>
   );
 });
