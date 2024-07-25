@@ -8,17 +8,23 @@ import { IconsDef } from '../../../commons/consts';
 import { useI18N } from '../../../commons/i18';
 import { historyPush } from '../../../commons/route';
 
-const SideBarHome: React.FC = () => {
+const SideBarHome: React.FC<{ isHome?: boolean }> = ({ isHome }) => {
   const __ = useI18N();
   return (
     <div className="sidebar">
       <div className="title">{__('menu.mgt.activity')}</div>
-      <SideBarAction
-        faicon={IconsDef.tokensActive}
-        title={__('menu.mgt.my_devices_connected')}
-        onClick={() => historyPush('/alldevices', { inModal: true })}
-      />
-      <SideBarAction faicon={IconsDef.history} title={__('menu.mgt.my_logins')} onClick={() => historyPush('/alllogins', { inModal: true })} />
+      <SideBarAction faicon={IconsDef.history} title={__('menu.mgt.home')} onClick={() => historyPush('/account/')} />
+      {isHome && (
+        <SideBarAction
+          faicon={IconsDef.tokensActive}
+          title={__('menu.mgt.my_devices_connected')}
+          onClick={() => historyPush('/alldevices', { inModal: true })}
+        />
+      )}
+      {isHome && (
+        <SideBarAction faicon={IconsDef.history} title={__('menu.mgt.my_logins')} onClick={() => historyPush('/alllogins', { inModal: true })} />
+      )}
+      <SideBarAction faicon={IconsDef.tokens} title={__('menu.mgt.access_tokens')} onClick={() => historyPush('/account/tokens')} />
     </div>
   );
 };

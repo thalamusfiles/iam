@@ -1,4 +1,4 @@
-import { TokenDataSource, TokenInfo } from '@thalamus/iam-consumer';
+import { TokenDataSource, TokenInfo } from '@piemontez/iam-consumer';
 import { DateTime } from 'luxon';
 import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';

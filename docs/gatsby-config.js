@@ -1,11 +1,11 @@
 module.exports = {
   siteMetadata: {
     siteTitle: `IAM`,
-    defaultTitle: `IAM Thalamus Doc`,
+    defaultTitle: `IAM Doc`,
     siteTitleShort: `IAM  Doc`,
     siteDescription: `Ferramenta SSO para controle de acesso centralizado`,
-    siteUrl: `https://iam.thalamus.digital`,
-    siteAuthor: `@thalamus`,
+    siteUrl: `https://iam.piemontez.digital`,
+    siteAuthor: `@piemontez`,
     siteImage: `/banner.png`,
     siteLanguage: `pt`,
     themeColor: `#8257E6`,
@@ -18,15 +18,15 @@ module.exports = {
         configPath: `src/config`,
         docsPath: `src/docs`,
         yamlFilesPath: `src/yamlFiles`,
-        repositoryUrl: `https://github.com/thalamusfiles/iam`,
+        repositoryUrl: `https://github.com/piemontez/iam`,
         baseDir: `examples/gatsby-theme-docs`,
       },
     },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `IAM Thalamus Doc`,
-        short_name: `IAM Thalamus Doc`,
+        name: `IAM Doc`,
+        short_name: `IAM Doc`,
         start_url: `/`,
         background_color: `#ffffff`,
         display: `standalone`,
@@ -44,7 +44,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-canonical-urls`,
       options: {
-        siteUrl: `https://iam.thalamus.digital`,
+        siteUrl: `https://iam.piemontez.digital`,
       },
     },
     `gatsby-plugin-offline`,

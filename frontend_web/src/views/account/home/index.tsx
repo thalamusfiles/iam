@@ -28,7 +28,7 @@ const HomeAccountPageProvided: React.FC = () => {
     <Container>
       <Row>
         <Col md={3}>
-          <SideBarHome />
+          <SideBarHome isHome />
         </Col>
         <Col md={9}>
           <AccountInfo />

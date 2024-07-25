@@ -12,6 +12,7 @@ import { IamValidationPipe } from '../../../commons/validation.pipe';
 import { AuthService } from '../service/auth.service';
 import { AuthOauthAuthorizeFieldsUseCase } from '../usecase/auth-oauth-authorize-fields.usecase';
 import { OauthFieldsDto, OauthTokenDto } from './dto/oauth.dto';
+import jwtConfig from '../../../config/jwt.config';
 
 @Controller('auth')
 export class OauthController {
@@ -164,7 +165,7 @@ export class OauthController {
     this.logger.log('openIDConfig');
 
     return {
-      issuer: 'thalamus_iam',
+      issuer: jwtConfig.ISS,
       authorization_endpoint: iamConfig.HOST + '/auth/oauth2/authorize',
       token_endpoint: iamConfig.HOST + '/auth/oauth2/token',
       userinfo_endpoint: null,

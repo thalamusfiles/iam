@@ -1972,7 +1972,7 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
-"@thalamus/iam-consumer@file:../consumer/node":
+"@piemontez/iam-consumer@file:../consumer/node":
   version "0.1.0"
   dependencies:
     "@types/node" "^16.18.16"

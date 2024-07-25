@@ -40,7 +40,7 @@ const iamConfig = {
   // Primeiro Usuário
   FIRST_USER_NAME: 'First User',
   // Após instalação, cadastrar um segundo usuário e remover o primeiro.
-  FIRST_USER_EMAIL: 'first@thalamus.digital',
+  FIRST_USER_EMAIL: 'first@first.first',
 };
 
 export default iamConfig;

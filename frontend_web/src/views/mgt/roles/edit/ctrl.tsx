@@ -1,4 +1,4 @@
-import { PermissionCRUDDatasource, RoleCRUDDatasource } from '@thalamus/iam-consumer';
+import { PermissionCRUDDatasource, RoleCRUDDatasource } from '@piemontez/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { ErrosAsList, getFormExceptionErrosToObject } from '../../../../commons/error';
 import { TargetForm } from '../../../../commons/plugin.component';

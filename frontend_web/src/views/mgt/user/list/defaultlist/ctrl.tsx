@@ -1,4 +1,4 @@
-import { UserCRUDDatasource } from '@thalamus/iam-consumer';
+import { UserCRUDDatasource } from '@piemontez/iam-consumer';
 import { makeObservable } from 'mobx';
 import { AttributeType } from '../../../../../commons/attribute-type';
 import { SortOrder } from '../../../../../commons/enums/sort-order.enum';

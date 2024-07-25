@@ -1,4 +1,4 @@
-import { MeDataSource, UserInfo } from '@thalamus/iam-consumer';
+import { MeDataSource, UserInfo } from '@piemontez/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
 

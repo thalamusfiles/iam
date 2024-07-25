@@ -1,5 +1,5 @@
-import { IamApisConfigure } from '@thalamus/iam-consumer';
-import env from '../.env';
+import { IamApisConfigure } from '@piemontez/iam-consumer';
+import env from '../.env.js';
 import { getLinkTo } from '../commons/route';
 import UserCtxInstance from '../store/userContext';
 

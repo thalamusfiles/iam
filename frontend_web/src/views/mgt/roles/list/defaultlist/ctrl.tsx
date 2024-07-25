@@ -1,4 +1,4 @@
-import { RoleCRUDDatasource } from '@thalamus/iam-consumer';
+import { RoleCRUDDatasource } from '@piemontez/iam-consumer';
 import { makeObservable } from 'mobx';
 import { AttributeType } from '../../../../../commons/attribute-type';
 import { SortOrder } from '../../../../../commons/enums/sort-order.enum';

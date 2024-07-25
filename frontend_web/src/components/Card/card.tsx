@@ -11,11 +11,12 @@ type TCardProps = PropsWithChildren<{
   border?: Variant;
   text?: Color;
   onClick?: Function;
+  full?: boolean;
 }>;
 
 const TCard: React.FC<TCardProps> = (props: TCardProps) => {
   return (
-    <Card style={{ width: '18rem' }} bg={props.bg} border={props.border} text={props.text} onClick={() => props.onClick && props.onClick()}>
+    <Card style={{ width: props.full ? '100%' : '18rem' }} bg={props.bg} border={props.border} text={props.text} onClick={() => props.onClick && props.onClick()}>
       <Card.Header>
         <Card.Title className={'float-end text-' + props.border}>{props.faicon && <FontAwesomeIcon icon={props.faicon} size="2x" />}</Card.Title>
         <Card.Title>{props.title}</Card.Title>

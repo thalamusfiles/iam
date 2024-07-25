@@ -1,5 +1,5 @@
-import { ApplicationInfo, AuthDataSource, IamApisConfigure, OauthDataSource, ScopeInfo } from '@thalamus/iam-consumer';
-import { AuthLoginRespDto } from '@thalamus/iam-consumer/dist/auth';
+import { ApplicationInfo, AuthDataSource, IamApisConfigure, OauthDataSource, ScopeInfo } from '@piemontez/iam-consumer';
+import { AuthLoginRespDto } from '@piemontez/iam-consumer/dist/auth';
 import { Buffer } from 'buffer';
 import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';

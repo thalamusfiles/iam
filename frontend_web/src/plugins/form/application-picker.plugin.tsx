@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ApplicationCRUDDatasource } from '@thalamus/iam-consumer';
+import { ApplicationCRUDDatasource } from '@piemontez/iam-consumer';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { PickersNames } from '../../commons/attribute-type';

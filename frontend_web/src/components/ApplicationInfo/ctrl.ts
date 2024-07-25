@@ -1,4 +1,4 @@
-import { ApplicationCRUDDatasource, ApplicationInfo } from '@thalamus/iam-consumer';
+import { ApplicationCRUDDatasource, ApplicationInfo } from '@piemontez/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
 

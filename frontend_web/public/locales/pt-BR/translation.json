@@ -20,11 +20,11 @@
   "footer": {},
 
   "login": {
-    "title":"Thalamus IAM",
-    "subtitle":"Gerenciamento de identidades e acesso.",
-    "cardindo":"Informe seu usuário e senha para entrar no sistema",
+    "title":"IAM",
+    "subtitle":"Gerenciamento de identidades e acesso",
+    "cardindo":"Informe seu usuário e senha para entrar no sistema.",
     "application": "Aplicação",
-    "application-info": "Após realizar o login você será redirecionado para a aplicação.",
+    "application-info": "Após realizar o login você será redirecionado para a aplicação",
     "permissions-info": "Apos realizar o login, você irá compartilhar várias permissões com a aplicação. Clique aqui para visualizá-las.",
     "username": "E-mail",
     "typeusername": "Informe seu e-mail",
@@ -40,9 +40,9 @@
     }
   },
   "register": {
-    "title":"Thalamus IAM",
-    "subtitle":"Cadastro de novo usuário.",
-    "cardindo":"Um unico cadastro para todas as aplicações Thalamus",
+    "title":"IAM",
+    "subtitle":"Cadastro de novo usuário",
+    "cardindo":"Um único cadastro para todas as aplicações",
     "name": "Nome e sobrenome",
     "typename": "Informe nome e sobrenome",
     "username": "E-mail",
@@ -55,15 +55,23 @@
   },
   "changeapplication": {
     "title": "Gerenciar aplicação",
-    "subtitle": "Selecione a aplicação que você pretende gerenciar.",
+    "subtitle": "Selecione a aplicação que você pretende gerenciar",
     "application": "Aplicação",
     "description": "Descrição da aplicação"
   },
   "account" : {
     "home": {
       "title": "Bem vindo {{name}}!",
-      "subtitle": "Sua conta esta pronta para ser utilizada nas aplicações Thalamus.",
+      "subtitle": "Sua conta esta pronta para ser utilizada.",
       "accessmsg": "Sua identidade de acesso é {{username}}."
+    },
+    "tokens": {
+      "title": "Tokens de acesso",
+      "description": "Listagem de tokens de acesso e suas permissões",
+      "name": "Token",
+      "grant": "Permissão",
+      "new.title": "Novo token de acesso",
+      "new.description": "Informe as permissões que você deseja conceder ao token. Você poderá alterar as permissões após finalizar o cadastro."
     }
   },
   "devices": {
@@ -74,7 +82,7 @@
   },
   "logins": {
     "title": "Todos os logins realizados",
-    "description": "Histórico de logins realizados.",
+    "description": "Histórico de logins realizados",
     "device": "Dispositivo",
     "to_application": "Aplicação",
     "login_at": "Realizado em"
@@ -86,10 +94,10 @@
     },
     "edit": {
       "about.title": "Aplicação",
-      "about.description": "Informe os campos abaixo para criar/modificar a aplicação.",
-      "about.initials_append": "Após salvar este campo não poderá ser alterado.",
+      "about.description": "Informe os campos abaixo para criar/modificar a aplicação",
+      "about.initials_append": "Após salvar este campo não poderá ser alterado",
       "managers.title": "Gerentes",
-      "managers.description": "Usuários com permissão para alterar os escopos/perfis e permissões deste aplicação.",
+      "managers.description": "Usuários com permissão para alterar os escopos/perfis e permissões deste aplicação",
       "manager": "Gerente",
       "username": "Login"
     }
@@ -97,14 +105,14 @@
   "role": {
     "list": {
       "title": "Escopos / Perfis / Papeis / Cargos",
-      "about.description": "Listagem de escopos e perfis.",
+      "about.description": "Listagem de escopos e perfis",
       "initials": "Iniciais",
       "name": "Nome"
     },
     "edit": {
       "about.title": "Escopo",
-      "about.description": "Informe os campos abaixo para criar/modificar o escopo.",
-      "about.initials_append": "Após salvar este campo não poderá ser alterado.",
+      "about.description": "Informe os campos abaixo para criar/modificar o escopo",
+      "about.initials_append": "Após salvar este campo não poderá ser alterado",
       "permissions.title": "Permissões",
       "permissions.description": "Listagem de permissões da aplicação disponível para associação."
     }
@@ -116,9 +124,9 @@
     },
     "edit": {
       "about.title": "Permissão",
-      "about.description": "Informe os campos abaixo para criar/modificar a permissão.",
-      "about.application_append": "Após salvar este campo não poderá ser alterado.",
-      "about.initials_append": "A informação deste campo é composta pela junção dos campos ON e Action.",
+      "about.description": "Informe os campos abaixo para criar/modificar a permissão",
+      "about.application_append": "Após salvar este campo não poderá ser alterado",
+      "about.initials_append": "A informação deste campo é composta pela junção dos campos ON e Action",
       "roles.title": "Escopos / Perfis",
       "roles.description": "Listagem de escopos/perfis associados."
     }
@@ -136,7 +144,7 @@
     "brand": "IAM",
     "home": "Início",
     "help": "Ajuda",
-    "search": "Procurar por...",
+    "search": "Procurar por..",
     "actions": "Ações",
     "quickaccess": "Acesso Rápido",
     "language": "Idioma",
@@ -155,13 +163,15 @@
       "systems": "Sistemas",
       "applications": "Aplicações",
       "user": "Usuários",
-      "user_description": "Listagem e visualização dos usuários. Perfís e permissões associados aos usuários.",
+      "user_description": "Listagem e visualização dos usuários. Perfís e permissões associados aos usuários",
       "roles": "Escopos / Perfis / Papeis / Cargos",
-      "roles_description": "Listagem e edição de escopos e perfis do sistema. Vínculos com as permissões e lista de usuários associados ao perfil.",
+      "roles_description": "Listagem e edição de escopos e perfis do sistema. Vínculos com as permissões e lista de usuários associados ao perfil",
       "permissions": "Permissões / Recursos",
-      "permissions_description": "Listagem e edição de permissões de acesso aos recursos das aplicações.",
+      "permissions_description": "Listagem e edição de permissões de acesso aos recursos das aplicações",
       "my_devices_connected": "Meus dispositivos conectados",
-      "my_logins": "Meus logins realizados"
+      "my_logins": "Meus logins realizados",
+      "access_tokens": "Tokens de acesso",
+      "home": "Início"
     }
   },
   "info": {
@@ -193,7 +203,7 @@
   "generic": {
     "list": {
       "save-list.title": "Salvar Listagem",
-      "save-list.desc": "Revise os campos e nomeia a nova aba. Clique em salvar para registrar as definições da listagem.",
+      "save-list.desc": "Revise os campos e nomeia a nova aba. Clique em salvar para registrar as definições da listagem",
       "name": "Table name",
       "empty": "Listagem vazia"
     },
@@ -217,7 +227,7 @@
       "auth.title": "Autenticação",
       "auth.description": "",
       "roles.title": "Escopos / Perfis / Papeis / Cargos",
-      "roles.description": "Um usuário pode ter um ou mais perfis.",
+      "roles.description": "Um usuário pode ter um ou mais perfis",
       "permissions.title": "Permissões",
       "permissions.description": "Listagem de permissões associadas a este usuário. Aplicações públicas não necessitam de liberação de permissão."
     }

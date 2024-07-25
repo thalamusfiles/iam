@@ -1,4 +1,4 @@
-import { PermissionCRUDDatasource, RoleCRUDDatasource, UserCRUDDatasource } from '@thalamus/iam-consumer';
+import { PermissionCRUDDatasource, RoleCRUDDatasource, UserCRUDDatasource } from '@piemontez/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { useParams } from 'react-router-dom';
 import { ErrosAsList, getFormExceptionErrosToObject } from '../../../../commons/error';
