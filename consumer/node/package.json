@@ -1,9 +1,9 @@
 {
   "name": "iam-consumer",
   "version": "0.1.0",
-  "description": "Consumidor da api Thalamus IAM",
+  "description": "Consumidor da api IAM",
   "main": "dist/index.js",
-  "author": "Thalamus Digital",
+  "author": "Rafael Alexandre Piemontez",
   "private": false,
   "license": "MIT",
   "engines": {

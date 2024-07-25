@@ -1,4 +1,4 @@
-# Thalamus - IAM
+# IAM
 
 ## Tecnologias utilizadas no projeto
 
@@ -77,9 +77,5 @@ $ yarn test:e2e
 # Tests e2e / integração
 $ yarn test:e2e
 ```
-
-## Support
-
-- Author - [Thalamus](http://thalamus.digital/)
 
 ## License
