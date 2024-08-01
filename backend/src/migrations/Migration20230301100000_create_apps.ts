@@ -34,7 +34,7 @@ export class Migration20230211100000_create_apps extends Migration {
         application_uuid, initials, "name", description)
       values (
         uuid_generate_v4(), CURRENT_DATE, CURRENT_DATE, '${appsConfig.FIRST_ID}', '${appsConfig.FIRST_ID}',
-        '${appsConfig.MAIN_APP_IAM_ID}', '${iamConfig.MAIN_ROLE_IAM}', 'Toda Permissões', 'Todas as permissões do projeto SSO estão vinculadas a este perfil');
+        '${appsConfig.MAIN_APP_IAM_ID}', '${iamConfig.MAIN_ROLE_IAM}', 'IAM/SSO Todas Permissões', 'Todas as permissões do projeto SSO estão vinculadas a este perfil');
     `,
     );
 

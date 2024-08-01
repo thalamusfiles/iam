@@ -13,6 +13,7 @@ export enum AttributeType {
 
 export const PickersNames = {
   user: 'user_picker',
+  scope: 'scope_picker',
   application: 'application_picker',
 };
 

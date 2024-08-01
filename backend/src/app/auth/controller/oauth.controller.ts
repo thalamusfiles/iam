@@ -145,7 +145,7 @@ export class OauthController {
       throw new FormException(allErros);
     }
 
-    // Gera o code challeng encriptado
+    // Gera o code challeng encriptado a partir do código de verificação
     const codeChallenge = this.oauthInfoService.encriptCodeVerifierToChallenge(body.code_verifier);
     const codeChallengeEncripted = this.oauthInfoService.encriptCodeChallengWithSalt(codeChallenge, body.code);
 

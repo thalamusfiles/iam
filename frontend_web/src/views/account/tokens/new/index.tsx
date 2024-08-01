@@ -4,9 +4,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { historyPush } from '../../../../commons/route';
 import { IconsDef } from '../../../../commons/consts';
 import { WmsFormGroup } from '../../../../components/Form';
-import { AttributeType } from '../../../../commons/attribute-type';
+import { AttributeType, PickersNames } from '../../../../commons/attribute-type';
+import { TokensEditCtx, TokensEditProvider, useTokensEditStore } from './ctrl';
+import { observer } from 'mobx-react-lite';
 
 const TokensNewModalPage: React.FC = () => {
+  const ctrl = new TokensEditCtx();
+
+  return (
+    <TokensEditProvider value={ctrl}>
+      <TokensNewModalPageProvided />
+    </TokensEditProvider>
+  );
+};
+
+const TokensNewModalPageProvided: React.FC = observer(() => {
+  const ctrl = useTokensEditStore();
   const __ = useI18N();
 
   return (
@@ -22,24 +35,26 @@ const TokensNewModalPage: React.FC = () => {
           name="name"
           title={__('account.tokens.name')}
           type={AttributeType.Text}
-          value={''}
-          onChange={(value) => false /*assignContent({ name: value })*/}
-          invalidFeed={'ctrl.erros?.name?.map(__)'}
+          value={ctrl.content.name}
+          onChange={(value) => ctrl.assignContent({ name: value })}
+          invalidFeed={ctrl.erros?.name?.map(__)}
         />
         <WmsFormGroup
           name="name"
           title={__('account.tokens.grant')}
-          type={AttributeType.Text}
-          value={''}
-          onChange={(value) => false /*assignContent({ name: value })*/}
-          invalidFeed={'ctrl.erros?.name?.map(__)'}
+          type={PickersNames.scope}
+          multi
+          value={ctrl.content.scope}
+          onChange={(scopes) => ctrl.assignContent({ scope: scopes.map((s: any) => s.initials).join(' ') })}
+          invalidFeed={ctrl.erros?.scope?.map(__)}
         />
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => historyPush(-1)}>{__('actions.close')}</Button>
+        <Button variant='secondary' onClick={() => historyPush(-1)}>{__('actions.close')}</Button>
+        <Button onClick={ctrl.onSave}>{__('actions.save')}</Button>
       </Modal.Footer>
     </Modal>
   );
-};
+});
 
 export default TokensNewModalPage;

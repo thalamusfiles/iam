@@ -10,7 +10,7 @@ import { UserLogin, UserLoginType } from '../../../model/UserLogin';
 import { UserToken } from '../../../model/UserToken';
 import { FormException } from '../../../commons/form.exception';
 import { AuthLoginRespDto } from '../controller/dto/auth.dto';
-import { IdTokenInfo } from '../passaport/access-user-info';
+import { IdTokenInfo, isIdTokenInfo } from '../passaport/access-user-info';
 import { CryptService } from './crypt.service';
 import { Application } from '../../../model/System/Application';
 import { Role } from '../../../model/Role';
@@ -283,7 +283,7 @@ export class AuthService {
     this.userTokenRepository.create({
       // USER
       user: this.userRepository.getReference(loginInfo.userUuid),
-      login: this.userLoginRepository.getReference(loginInfo.userLoginUuid),
+      login: loginInfo.userLoginUuid ? this.userLoginRepository.getReference(loginInfo.userLoginUuid) : null,
       // OAUTH
       application: loginInfo.clientId,
       ip: loginInfo.ip,
@@ -319,7 +319,7 @@ export class AuthService {
    * @param appInfo
    * @returns
    */
-  createAccessToken(user: User, clientId: string): string {
+  createAccessToken(user: User | IdTokenInfo, clientId: string): string {
     const salt = this.cryptService.encrypt(
       this.cryptService.generateRandomString(12),
       iamConfig.IAM_PASS_SECRET_SALT,
@@ -338,14 +338,17 @@ export class AuthService {
    * @param appInfo
    * @returns
    */
-  createIdToken(user: User, clientId: string): string {
+  createIdToken(user: User | IdTokenInfo, clientId: string): string {
     const info = this.userInfo(user, clientId);
     return this.generateJwt(info, jwtConfig.MAX_AGE);
   }
 
-  private userInfo(user: User, clientId: string): IdTokenInfo {
+  private userInfo(user: User | IdTokenInfo, clientId: string): IdTokenInfo {
     this.logger.verbose('userInfo');
 
+    if (isIdTokenInfo(user)) {
+      return user;
+    }
     return {
       iss: jwtConfig.ISS,
       iat: DateTime.now().valueOf(),
