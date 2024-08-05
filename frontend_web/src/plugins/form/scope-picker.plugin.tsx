@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RoleCRUDDatasource } from '@piemontez/iam-consumer';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -6,7 +5,6 @@ import { PickersNames } from '../../commons/attribute-type';
 import { defaultPageSize } from '../../commons/consts';
 import { SortOrder } from '../../commons/enums/sort-order.enum';
 import { WmsFormComponent, WmsFormPlugin } from '../../commons/plugin.component';
-import { historyPush } from '../../commons/route';
 import { WmsPicker } from '../../components/Form/wms-picker';
 
 @WmsFormPlugin({

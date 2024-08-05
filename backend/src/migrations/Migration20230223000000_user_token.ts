@@ -8,8 +8,9 @@ export class Migration20230223000000_user_token extends Migration {
         "created_at" timestamptz(0) not null, 
         "updated_at" timestamptz(0) not null, 
         "user_uuid" uuid not null, 
-        "login_uuid" uuid not null, 
-        "application_uuid" uuid not null, 
+        "login_uuid" uuid null, 
+        "name" varchar(128) null,
+        "application_uuid" uuid null, 
         "ip" varchar(128) not null, 
         "user_agent" varchar(255) not null, 
         "response_type" varchar(256) not null, 
@@ -24,7 +25,7 @@ export class Migration20230223000000_user_token extends Migration {
         
         constraint "user_token_pkey" primary key ("uuid"), 
         constraint user_token_ip_check check (LENGTH(ip) >=8), 
-        constraint user_token_code_challenge_method_check check (code_challenge_method = \'plain\' or code_challenge_method = \'S256\'), 
+        constraint user_token_code_challenge_method_check check (code_challenge_method = \'plain\' or code_challenge_method = \'S256\' or (code_challenge_method = \'\' and name <> \'\' and application_uuid is null and login_uuid is null));
         constraint user_token_session_token_check check (LENGTH(session_token) > 64), 
         constraint user_token_access_token_check check (LENGTH(access_token) > 256)
       );`,
@@ -41,10 +42,10 @@ export class Migration20230223000000_user_token extends Migration {
       'alter table "auth"."user_token" add constraint "user_token_user_uuid_foreign" foreign key ("user_uuid") references "user" ("uuid") on update cascade;',
     );
     this.addSql(
-      'alter table "auth"."user_token" add constraint "user_token_login_uuid_foreign" foreign key ("login_uuid") references "user_login" ("uuid") on update cascade;',
+      'alter table "auth"."user_token" add constraint "user_token_login_uuid_foreign" foreign key ("login_uuid") references "user_login" ("uuid") on update cascade on delete set null;',
     );
     this.addSql(
-      'alter table "auth"."user_token" add constraint "user_token_application_uuid_foreign" foreign key ("application_uuid") references "system"."application" ("uuid") on update cascade;',
+      'alter table "auth"."user_token" add constraint "user_token_application_uuid_foreign" foreign key ("application_uuid") references "system"."application" ("uuid") on update cascade on delete set null;',
     );
   }
 

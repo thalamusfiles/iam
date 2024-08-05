@@ -47,8 +47,7 @@ export class UserToken extends IamBaseEntity {
   @Property({ nullable: true, length: 256 })
   codeChallenge?: string;
 
-  @Check({ expression: "code_challenge_method = 'plain' or code_challenge_method = 'S256' or code_challenge_method = ''" })
-  @Check({ expression: "code_challenge_method <> '' or (name <> '' and application_uuid is null and login_uuid is null)" })
+  @Check({ expression: "code_challenge_method = 'plain' or code_challenge_method = 'S256' or (code_challenge_method = '' and name <> '' and application_uuid is null and login_uuid is null)" })
   @Property({ nullable: true, length: 16 })
   codeChallengeMethod?: string;
 
