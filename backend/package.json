@@ -16,6 +16,7 @@
     "test:watch": "yarn && yarn migrate && jest --watchAll --config ./test/jest-e2e.json",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "migrate:create": "yarn build && yarn mikro-orm migration:create",
     "migrate": "yarn build && yarn mikro-orm migration:up"
   },
   "dependencies": {

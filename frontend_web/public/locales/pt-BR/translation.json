@@ -69,7 +69,7 @@
       "title": "Tokens de acesso",
       "description": "Listagem de tokens de acesso e suas permissões",
       "name": "Token",
-      "grant": "Permissão",
+      "grant": "Permissão/Escopo",
       "new.title": "Novo token de acesso",
       "new.description": "Informe as permissões que você deseja conceder ao token. Você poderá alterar as permissões após finalizar o cadastro."
     }

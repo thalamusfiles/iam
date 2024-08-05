@@ -18,13 +18,14 @@ import { Role } from '../../../model/Role';
 export type LoginInfo = {
   userUuid: string;
   userLoginUuid: string;
+  name: string;
+  scope: string;
 
   clientId: string;
   userAgent: string;
   ip: string;
   responseType: string;
   redirectUri: string;
-  scope: string;
   codeChallenge: string;
   codeChallengeMethod: string;
 
@@ -53,13 +54,14 @@ export class AuthService {
     return {
       userUuid: null,
       userLoginUuid: null,
+      name: null,
+      scope: null,
 
       clientId: null,
       userAgent: null,
       ip: null,
       responseType: null,
       redirectUri: null,
-      scope: null,
       codeChallenge: null,
       codeChallengeMethod: null,
 

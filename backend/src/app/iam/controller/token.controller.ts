@@ -50,8 +50,14 @@ export class TokenController {
       userAgent,
       ip,
       userUuid: user.sub,
-      scope: body.scope,
+      userLoginUuid: null,
+      clientId: null,
+      responseType: 'null',
+      redirectUri: '',
+      codeChallengeMethod: '',
       accessToken,
+      name: body.name,
+      scope: body.scope,
     });
     await this.authService.saveUserToken(loginInfo);
 
