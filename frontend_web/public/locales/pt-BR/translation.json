@@ -68,8 +68,10 @@
     "tokens": {
       "title": "Tokens de acesso",
       "description": "Listagem de tokens de acesso e suas permissões",
-      "name": "Token",
-      "grant": "Permissão/Escopo",
+      "saveYourToken": "Certifique-se de copiar este token de acesso. Você não poderá vê-lo novamente!",
+      "name": "Token:",
+      "grant": "Permissão/Escopo:",
+      "accessToken": "Token de acesso:",
       "new.title": "Novo token de acesso",
       "new.description": "Informe as permissões que você deseja conceder ao token. Você poderá alterar as permissões após finalizar o cadastro."
     }

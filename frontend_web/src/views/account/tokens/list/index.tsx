@@ -71,8 +71,7 @@ const TokensList: React.FC = observer(() => {
     <>
       {ctrl.tokens.map((token, idx) => (
         <div key={idx}>
-          {' '}
-          <TCard title={token.name} subtitle={token.scope} full />
+          <TCard faicon={IconsDef.remove} title={token.name} subtitle={token.scope} full onIconClick={() => ctrl.removeToken(token)} />
           <br />
         </div>
       ))}

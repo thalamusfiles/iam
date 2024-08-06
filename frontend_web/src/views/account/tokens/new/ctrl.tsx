@@ -23,25 +23,6 @@ export class TokensEditCtx {
     makeObservable(this);
   }
 
-  /**
-   * Carregas o conteudo da tela
-   * @param id
-   */
-  @action
-  loadContent = async (uuid: any) => {
-    this.loading = true;
-
-    /*try {
-      //Carrega o conteudo
-      this.content = await this.datasource.createOrEditPermanent(this.content);
-    } catch (error) {
-      console.error(error);
-      notify.warn('An error occurred while updating the listing.');
-    }*/
-
-    this.loading = false;
-  };
-
   @action
   onSave = async () => {
     this.loading = true;
@@ -52,7 +33,6 @@ export class TokensEditCtx {
       this.content = response.data;
 
       notify.success('Salvo com sucesso.');
-      historyPush(-1);
     } catch (err) {
       const data = (err as any).response?.data;
 

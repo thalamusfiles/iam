@@ -1,4 +1,4 @@
-import { Button, Modal } from 'react-bootstrap';
+import { Alert, Button, Modal } from 'react-bootstrap';
 import { useI18N } from '../../../../commons/i18';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { historyPush } from '../../../../commons/route';
@@ -30,28 +30,46 @@ const TokensNewModalPageProvided: React.FC = observer(() => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>{__('account.tokens.new.description')}</p>
-        <WmsFormGroup
-          name="name"
-          title={__('account.tokens.name')}
-          type={AttributeType.Text}
-          value={ctrl.content.name}
-          onChange={(value) => ctrl.assignContent({ name: value })}
-          invalidFeed={ctrl.erros?.name?.map(__)}
-        />
-        <WmsFormGroup
-          name="name"
-          title={__('account.tokens.grant')}
-          type={PickersNames.scope}
-          multi
-          value={ctrl.content.scope}
-          onChange={(scopes) => ctrl.assignContent({ scope: scopes.map((s: any) => s.initials).join(' ') })}
-          invalidFeed={ctrl.erros?.scope?.map(__)}
-        />
+        {ctrl.content.accessToken && (
+          <>
+            <Alert variant="warning">{__('account.tokens.saveYourToken')}</Alert>
+            <WmsFormGroup
+              name="accessToken"
+              title={__('account.tokens.accessToken')}
+              type={AttributeType.Text}
+              multiline={6}
+              value={ctrl.content.accessToken}
+            />
+          </>
+        )}
+        {!ctrl.content.accessToken && (
+          <>
+            <p>{__('account.tokens.new.description')}</p>
+            <WmsFormGroup
+              name="name"
+              title={__('account.tokens.name')}
+              type={AttributeType.Text}
+              value={ctrl.content.name}
+              onChange={(value) => ctrl.assignContent({ name: value })}
+              invalidFeed={ctrl.erros?.name?.map(__)}
+            />
+            <WmsFormGroup
+              name="name"
+              title={__('account.tokens.grant')}
+              type={PickersNames.scope}
+              multi
+              value={ctrl.content.scope}
+              onChange={(scopes) => ctrl.assignContent({ scope: scopes.map((s: any) => s.initials).join(' ') })}
+              invalidFeed={ctrl.erros?.scope?.map(__)}
+            />
+          </>
+        )}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='secondary' onClick={() => historyPush(-1)}>{__('actions.close')}</Button>
-        <Button onClick={ctrl.onSave}>{__('actions.save')}</Button>
+        <Button variant="secondary" onClick={() => historyPush(-1)}>
+          {__('actions.close')}
+        </Button>
+        {!ctrl.content.accessToken && <Button onClick={ctrl.onSave}>{__('actions.save')}</Button>}
       </Modal.Footer>
     </Modal>
   );

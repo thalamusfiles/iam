@@ -111,7 +111,7 @@ export class AuthService {
     this.logger.verbose('Remove Old Tokens');
 
     const user = this.userRepository.getReference(userUuid);
-    await this.userTokenRepository.nativeUpdate({ user, userAgent, ip }, { deletedAt: new Date() });
+    await this.userTokenRepository.nativeUpdate({ user, userAgent, ip, name: { $eq: null } }, { deletedAt: new Date() });
   }
 
   /**

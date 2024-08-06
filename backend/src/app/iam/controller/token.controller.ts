@@ -70,6 +70,7 @@ export class TokenController {
     await this.authService.saveUserToken(loginInfo);
 
     return {
+      uuid: body.uuid,
       name: body.name,
       scope: body.scope,
       accessToken,

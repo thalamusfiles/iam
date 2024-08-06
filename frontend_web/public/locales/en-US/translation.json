@@ -68,8 +68,10 @@
     "tokens": {
       "title": "Access tokens",
       "description": "Listing of access tokens and their granted permissions",
-      "name": "Token",
-      "grant": "Grant/Scope",
+      "saveYourToken": "Make sure you copy this access token. You won't be able to see it again!",
+      "name": "Token:",
+      "grant": "Grant/Scope:",
+      "accessToken": "Access Token:",
       "new.title": "New access tokens",
       "new.description": "Enter the permissions you want to grant to the token. You can change permissions after completing registration"
     }
