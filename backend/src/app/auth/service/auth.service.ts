@@ -271,7 +271,9 @@ export class AuthService {
   validateUserToken(userToken: UserToken): boolean {
     this.logger.verbose('validateUserToken');
 
-    const notExpiresIn = DateTime.now() < DateTime.fromJSDate(userToken?.expiresIn);
+    const notExpiresIn = userToken?.expiresIn //
+      ? DateTime.now() < DateTime.fromJSDate(userToken?.expiresIn)
+      : true;
     return userToken && !userToken?.deletedAt && notExpiresIn;
   }
 
