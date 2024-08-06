@@ -1,8 +1,7 @@
-import { TokenDataSource, TokenInfo } from '@piemontez/iam-consumer';
-import { DateTime } from 'luxon';
+import { TokenDataSource } from '@piemontez/iam-consumer';
+import { TokenPermanent } from '@piemontez/iam-consumer/dist/iam';
 import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
-import { UAParser } from 'ua-parser-js';
 
 export class TokensCtx {
   constructor() {
@@ -11,7 +10,7 @@ export class TokensCtx {
   }
 
   // Dispositivos conectados
-  @observable tokens: TokenInfo[] = [];
+  @observable tokens: TokenPermanent[] = [];
   // Informa quando esta sendo carregado a listagem
   @observable loading: boolean = false;
   // Indica que já foi disparado o init
@@ -31,18 +30,9 @@ export class TokensCtx {
     this.loading = true;
 
     // Carrega os logins ativos
-    new TokenDataSource().findAll().then((response) => {
+    new TokenDataSource().findPermanent().then((response) => {
       this.loading = false;
-
-      const responseData = response.data;
-
-      this.tokens = responseData.map((device) => {
-        const uap = new UAParser(device.userAgent);
-        device.userAgent = `${uap.getOS().name}/${uap.getOS().version} ${uap.getBrowser().name} ${uap.getBrowser().version}`;
-        device.createdAt = DateTime.fromISO(device.createdAt).toFormat('dd/MM/yyyy HH:mm');
-
-        return device;
-      });
+      this.tokens = response.data;
     });
   };
 }

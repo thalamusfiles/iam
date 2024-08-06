@@ -286,13 +286,14 @@ export class AuthService {
       // USER
       user: this.userRepository.getReference(loginInfo.userUuid),
       login: loginInfo.userLoginUuid ? this.userLoginRepository.getReference(loginInfo.userLoginUuid) : null,
+      name: loginInfo.name,
+      scope: loginInfo.scope,
       // OAUTH
       application: loginInfo.clientId,
       ip: loginInfo.ip,
       userAgent: loginInfo.userAgent,
       responseType: loginInfo.responseType,
       redirectUri: loginInfo.redirectUri,
-      scope: loginInfo.scope,
       codeChallenge: loginInfo.codeChallenge,
       codeChallengeMethod: loginInfo.codeChallengeMethod || null,
       // TOKENS

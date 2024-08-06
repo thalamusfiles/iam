@@ -34,7 +34,15 @@ export class TokenController {
     return await this.tokenService.activeTokensByUser(userUuid);
   }
 
-  @Post()
+  @Get('permanent')
+  async permanent(@Req() request: RequestInfo): Promise<TokenPermanentDto[]> {
+    this.logger.log('permanent');
+
+    const userUuid = request.user.sub;
+    return await this.tokenService.permanentTokensByUser(userUuid);
+  }
+
+  @Post('permanent')
   async createOrEditPermanent(
     @Body() body: TokenPermanentDto,
     @Req() request: RequestInfo,
@@ -62,7 +70,7 @@ export class TokenController {
     await this.authService.saveUserToken(loginInfo);
 
     return {
-      name: '',
+      name: body.name,
       scope: body.scope,
       accessToken,
     };

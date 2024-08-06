@@ -18,6 +18,7 @@ class EndpointsConfigure {
   apiIAMMe = '/me';
   apiIAMToken = '/token';
   apiIAMTokenActive = '/token/active';
+  apiIAMTokenPermanent = '/token/permanent';
   // API MGT Urls
   apiMGT = null as string | null;
   apiMGTUser = `/user`;

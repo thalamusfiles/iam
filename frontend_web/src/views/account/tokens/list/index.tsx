@@ -72,7 +72,7 @@ const TokensList: React.FC = observer(() => {
       {ctrl.tokens.map((token, idx) => (
         <div key={idx}>
           {' '}
-          <TCard title={token.applicationName!} subtitle={token.scope} full />
+          <TCard title={token.name} subtitle={token.scope} full />
           <br />
         </div>
       ))}

@@ -31,7 +31,7 @@ export class DevicesConnectedCtx {
     this.loading = true;
 
     // Carrega os logins ativos
-    new TokenDataSource().active().then((response) => {
+    new TokenDataSource().findActive().then((response) => {
       this.loading = false;
 
       const responseData = response.data;

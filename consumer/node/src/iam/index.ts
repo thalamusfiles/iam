@@ -15,11 +15,13 @@ interface TokenDataSourceI {
   // Coleta todos os logins realizados
   findAll(): Promise<AxiosResponse<TokenInfo[]>>;
   // Coleta todos os tokens ativos
-  active(): Promise<AxiosResponse<TokenInfo[]>>;
-  // Coleta todos os tokens ativos
-  disable(uuid: string): Promise<AxiosResponse<void>>;
+  findActive(): Promise<AxiosResponse<TokenInfo[]>>;
+  // Coleta todos os tokens permanentes
+  findPermanent(): Promise<AxiosResponse<TokenPermanent[]>>;
   // Cria um token permanente
   createOrEditPermanent(token: TokenPermanent): Promise<AxiosResponse<TokenPermanent>>;
+  // Desabilita/Remove um token
+  disable(uuid: string): Promise<AxiosResponse<void>>;
 }
 
 export class MeDataSource implements MeDataSourceI {
@@ -32,11 +34,14 @@ export class TokenDataSource implements TokenDataSourceI {
   async findAll(): Promise<AxiosResponse<TokenInfo[]>> {
     return await Apis.ApiIAM.get(`${Endpoints.apiIAMToken}`);
   }
-  async active(): Promise<AxiosResponse<TokenInfo[]>> {
+  async findActive(): Promise<AxiosResponse<TokenInfo[]>> {
     return await Apis.ApiIAM.get(`${Endpoints.apiIAMTokenActive}`);
   }
+  async findPermanent(): Promise<AxiosResponse<TokenPermanent[]>> {
+    return await Apis.ApiIAM.get(`${Endpoints.apiIAMTokenPermanent}`);
+  }
   async createOrEditPermanent(token: TokenPermanent): Promise<AxiosResponse<TokenPermanent>> {
-    return await Apis.ApiIAM.post(`${Endpoints.apiIAMToken}`, token);
+    return await Apis.ApiIAM.post(`${Endpoints.apiIAMTokenPermanent}`, token);
   }
   async disable(tokenUuid: string): Promise<AxiosResponse<void>> {
     return await Apis.ApiIAM.delete(`${Endpoints.apiIAMToken}/${tokenUuid}`, {
