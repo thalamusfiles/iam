@@ -157,6 +157,22 @@ export class AuthService {
   }
 
   /**
+   * Carrega o token do usuário a partir do accessToken
+   * @param username
+   * @param password
+   * @returns
+   */
+  async findUserTokenByAccess(accessToken: string): Promise<UserToken | null> {
+    this.logger.verbose('findUserTokenBySession');
+
+    const query: FilterQuery<UserToken> = { accessToken };
+
+    const userToken = await this.userTokenRepository.findOne(query, { populate: ['login', 'login.user'], orderBy: { expiresIn: 'DESC' } });
+
+    return this.validateUserToken(userToken) ? userToken : null;
+  }
+
+  /**
    * Carrega o usuário a partir do code challeng
    * @param username
    * @param password

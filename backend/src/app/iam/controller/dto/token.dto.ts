@@ -33,9 +33,9 @@ export class TokenPermanentDto {
 
   @Expose()
   @IsString()
-  scope: string;
+  accessToken?: string;
 
   @Expose()
   @IsString()
-  accessToken?: string;
+  scope: string;
 };

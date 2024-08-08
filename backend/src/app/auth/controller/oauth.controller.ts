@@ -11,7 +11,7 @@ import { OauthInfoService } from '../service/oauthinfo.service';
 import { IamValidationPipe } from '../../../commons/validation.pipe';
 import { AuthService } from '../service/auth.service';
 import { AuthOauthAuthorizeFieldsUseCase } from '../usecase/auth-oauth-authorize-fields.usecase';
-import { OauthFieldsDto, OauthTokenDto } from './dto/oauth.dto';
+import { OauthFieldsDto, OauthIntrospectionDto, OauthTokenDto } from './dto/oauth.dto';
 import jwtConfig from '../../../config/jwt.config';
 
 @Controller('auth')
@@ -158,6 +158,14 @@ export class OauthController {
       id_token: idToken,
       access_token: userToken.accessToken,
     };
+  }
+
+  @Get('introspection')
+  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
+  async oauth2Introspection(@Req() request: RequestInfo, @Headers('authorization') authorization: string): Promise<OauthIntrospectionDto> {
+    const accessToken = authorization.replace('Bearer ', '');
+    const { scope, accessToken: access_token } = await this.authService.findUserTokenByAccess(accessToken);
+    return { scope, access_token };
   }
 
   @Get('.well-known/openid-configuration')
