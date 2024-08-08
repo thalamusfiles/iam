@@ -74,5 +74,5 @@ addPagePlugin({
   name: 'user_permissions',
   sidebarTitle: 'Permissions',
   target: TargetForm.user_edit,
-  order: 30,
+  order: 10,
 });

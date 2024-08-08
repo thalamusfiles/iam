@@ -5,7 +5,7 @@ import { localStorageDef } from '../commons/consts';
 import { historyPush } from '../commons/route';
 import Storage from '../commons/storage';
 
-type AccessUserInfo = { iat: number; uuid: string; /*sub*/ name: string; applicationLogged: string };
+type AccessUserInfo = { iat: number; uuid: string; sub: string; name: string; applicationLogged: string };
 
 export class Ctx {
   constructor() {

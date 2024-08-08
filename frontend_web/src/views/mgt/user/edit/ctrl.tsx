@@ -1,12 +1,12 @@
-import { PermissionCRUDDatasource, RoleCRUDDatasource, UserCRUDDatasource } from '@piemontez/iam-consumer';
+import { ApplicationCRUDDatasource, PermissionCRUDDatasource, RoleCRUDDatasource, UserCRUDDatasource } from '@piemontez/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
-import { useParams } from 'react-router-dom';
 import { ErrosAsList, getFormExceptionErrosToObject } from '../../../../commons/error';
 import { TargetForm } from '../../../../commons/plugin.component';
 import { historyPush } from '../../../../commons/route';
 import type { ErrorListRecord } from '../../../../commons/types/ErrorListRecord';
 import { notify } from '../../../../components/Notification';
 import { CommonEditCtx } from '../../../generic/edit/ctrl';
+import UserCtxInstance from '../../../../store/userContext';
 
 type PermInfo = { uuid: string; on: string; action: string; initials: string };
 
@@ -14,6 +14,7 @@ export class UserEditStore extends CommonEditCtx {
   datasource = new UserCRUDDatasource();
   roleDatasource = new RoleCRUDDatasource();
   permissionDatasource = new PermissionCRUDDatasource();
+  applicationDatasource = new ApplicationCRUDDatasource();
 
   //Conteudo da tela
   @observable content: any = {};
@@ -27,19 +28,13 @@ export class UserEditStore extends CommonEditCtx {
   @observable permissionsOns: string[] = [];
   @observable permissionsActs: string[] = [];
   @observable permissionsByOnAct: Record<string, PermInfo> = {};
+  @observable applications: any[] = [];
 
   constructor() {
     super(TargetForm.user_edit, false);
 
     makeObservable(this);
   }
-
-  afterBuild = async () => {
-    const { id } = useParams();
-    if (id) {
-      this.loadContent(id);
-    }
-  };
 
   /**
    * Carregas o conteudo da tela
@@ -69,6 +64,16 @@ export class UserEditStore extends CommonEditCtx {
       last[role.uuid] = role.permissions.map((permission: any) => permission.uuid);
       return last;
     }, {});
+  };
+
+  @action
+  loadApplications = async () => {
+    this.applicationDatasource
+      .findAll({ where: { managers: { uuid: UserCtxInstance.user.sub } } })
+      .then((resp) => {
+        this.applications = resp;
+      })
+      .catch(console.error);
   };
 
   @action

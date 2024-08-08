@@ -102,7 +102,9 @@
       "managers.description": "Users allowed to change this application's scopes/profiles and permissions",
       "manager": "Manager",
       "username": "Logins"
-    }
+    },
+    "name": "Name",
+    "description": "Description"
   },
   "role": {
     "list": {
@@ -231,7 +233,9 @@
       "roles.title": "Scopes / Roles / Profiles / Positions",
       "roles.description": "A user can have one or more roles in the system",
       "permissions.title": "Permissões",
-      "permissions.description": "Listing of permissions associated with this user. Public applications do not require permission release."
+      "permissions.description": "Listing of permissions associated with this user. Public applications do not require permission release.",
+      "application.title": "Application / Manager",
+      "application.description": "List of applications that the user is managing"
     }
   }
 }

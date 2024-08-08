@@ -102,7 +102,9 @@
       "managers.description": "Usuários com permissão para alterar os escopos/perfis e permissões deste aplicação",
       "manager": "Gerente",
       "username": "Login"
-    }
+    },
+    "name": "Nome",
+    "description": "Descrição"
   },
   "role": {
     "list": {
@@ -231,7 +233,9 @@
       "roles.title": "Escopos / Perfis / Papeis / Cargos",
       "roles.description": "Um usuário pode ter um ou mais perfis",
       "permissions.title": "Permissões",
-      "permissions.description": "Listagem de permissões associadas a este usuário. Aplicações públicas não necessitam de liberação de permissão."
+      "permissions.description": "Listagem de permissões associadas a este usuário. Aplicações públicas não necessitam de liberação de permissão.",
+      "application.title": "Aplicação / Gerente",
+      "application.description": "Listagem de aplicações que o usuário é gerente"
     }
   }
 }

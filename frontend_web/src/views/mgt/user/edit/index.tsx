@@ -7,6 +7,7 @@ export * from './components/about';
 export * from './components/authorization';
 export * from './components/permissions';
 export * from './components/profiles';
+export * from './components/applications';
 
 const UserEdit: React.FC<GenericEditProps> = (props) => {
   const ctrl = new UserEditStore();
@@ -14,6 +15,7 @@ const UserEdit: React.FC<GenericEditProps> = (props) => {
 
   ctrl.afterBuild = async () => {
     ctrl.loadRoles();
+    ctrl.loadApplications();
     if (uuid) {
       ctrl.loadContent(uuid);
     }
