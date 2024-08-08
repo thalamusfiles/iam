@@ -167,7 +167,7 @@ export class AuthService {
 
     const query: FilterQuery<UserToken> = { accessToken };
 
-    const userToken = await this.userTokenRepository.findOne(query, { populate: ['login', 'login.user'], orderBy: { expiresIn: 'DESC' } });
+    const userToken = await this.userTokenRepository.findOneOrFail(query, { populate: ['login', 'login.user'], orderBy: { expiresIn: 'DESC' } });
 
     return this.validateUserToken(userToken) ? userToken : null;
   }
