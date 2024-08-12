@@ -22,8 +22,8 @@ const AboutComp: React.FC = observer(() => {
   return (
     <>
       <h1 id="user_about">
-        {IconsDef.user.map((icon) => (
-          <FontAwesomeIcon icon={icon} />
+        {IconsDef.user.map((icon, idx) => (
+          <FontAwesomeIcon key={idx} icon={icon} />
         ))}
         &nbsp; {__('user.edit.about.title')}: {content.name}
       </h1>

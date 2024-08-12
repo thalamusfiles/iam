@@ -31,19 +31,21 @@ export class DevicesConnectedCtx {
     this.loading = true;
 
     // Carrega os logins ativos
-    new TokenDataSource().findActive().then((response) => {
-      this.loading = false;
+    new TokenDataSource().findActive().then(
+      action((response) => {
+        this.loading = false;
 
-      const responseData = response.data;
+        const responseData = response.data;
 
-      this.devices = responseData.map((device) => {
-        const uap = new UAParser(device.userAgent);
-        device.userAgent = `${uap.getOS().name}/${uap.getOS().version} ${uap.getBrowser().name} ${uap.getBrowser().version}`;
-        device.createdAt = DateTime.fromISO(device.createdAt).toFormat('dd/MM/yyyy HH:mm');
+        this.devices = responseData.map((device) => {
+          const uap = new UAParser(device.userAgent);
+          device.userAgent = `${uap.getOS().name}/${uap.getOS().version} ${uap.getBrowser().name} ${uap.getBrowser().version}`;
+          device.createdAt = DateTime.fromISO(device.createdAt).toFormat('dd/MM/yyyy HH:mm');
 
-        return device;
-      });
-    });
+          return device;
+        });
+      }),
+    );
   };
 }
 

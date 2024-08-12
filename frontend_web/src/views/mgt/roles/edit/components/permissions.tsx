@@ -115,7 +115,7 @@ const ListTable: React.FC = observer(() => {
                     name={on + '_' + act}
                     disabled={!perm}
                     checked={ctrl.contentPermissionsUuids.includes(perm?.uuid)}
-                    onClick={() => ctrl.togglePermission(perm?.uuid)}
+                    onChange={() => ctrl.togglePermission(perm?.uuid)}
                   />
                 </td>
               );

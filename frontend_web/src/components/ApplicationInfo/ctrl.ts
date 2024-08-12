@@ -29,9 +29,11 @@ export class ApplicationInfoCtrl {
   loadApplicationInfo = async () => {
     this.datasource
       .findById(this.applicationUuid!)
-      .then((response) => {
-        this.appInfo = response;
-      })
+      .then(
+        action((response) => {
+          this.appInfo = response;
+        }),
+      )
       .catch(() => {});
   };
 }

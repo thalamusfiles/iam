@@ -37,16 +37,17 @@ export class TokensCtx {
     });
   };
 
-  @action
   removeToken = (token: TokenPermanent) => {
     if (window.confirm('Você tem certeza que deseja remover o token?')) {
       new TokenDataSource()
         .disable(token.uuid!)
-        .then(() => {
-          notify.success('Token removido com sucesso.');
+        .then(
+          action(() => {
+            notify.success('Token removido com sucesso.');
 
-          this.loadTokens();
-        })
+            this.loadTokens();
+          }),
+        )
         .catch(() => {
           notify.success('Ocorreu um erro ao remover o token.');
         });

@@ -24,10 +24,12 @@ export class AccountHomeCtrl {
 
   @action
   loadUsernInfo = () => {
-    new MeDataSource().me().then((response) => {
-      const responseData = response.data;
-      this.me = responseData;
-    });
+    new MeDataSource().me().then(
+      action((response) => {
+        const responseData = response.data;
+        this.me = responseData;
+      }),
+    );
   };
 }
 

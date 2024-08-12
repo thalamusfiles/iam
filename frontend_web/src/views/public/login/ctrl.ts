@@ -75,23 +75,25 @@ export class LoginCtrl {
       .catch(() => {});
   };
 
-  @action
   loadApplicationInfo = () => {
     new OauthDataSource()
       .applicationInfo(this.applicationUuid!)
-      .then((response) => {
-        this.appInfo = response.data;
-      })
+      .then(
+        action((response) => {
+          this.appInfo = response.data;
+        }),
+      )
       .catch(() => {});
   };
 
-  @action
   loadScopeInfo = () => {
     new OauthDataSource()
       .scopeInfo(this.scope!)
-      .then((response) => {
-        this.scopeInfo = response.data;
-      })
+      .then(
+        action((response) => {
+          this.scopeInfo = response.data;
+        }),
+      )
       .catch(() => {});
   };
 
@@ -130,7 +132,6 @@ export class LoginCtrl {
     window.location.href = this.redirect_uri!;
   };
 
-  @action
   handleLogin = () => {
     new AuthDataSource()
       .login(
@@ -145,21 +146,23 @@ export class LoginCtrl {
           code_challenge_method: this.code_challenge_method || undefined,
         },
       )
-      .then((response) => {
-        const responseData = response.data;
-        const userinfo = JSON.parse(Buffer.from(responseData.id_token.split('.')[1], 'base64').toString());
+      .then(
+        action((response) => {
+          const responseData = response.data;
+          const userinfo = JSON.parse(Buffer.from(responseData.id_token.split('.')[1], 'base64').toString());
 
-        // Adicionar o token de acesso no consumidar da API
-        IamApisConfigure.setGlobalAuthorizationToken(responseData.access_token);
-        IamApisConfigure.setGlobalApplication(userinfo.aud);
-        // Regista o login no contexto do usuário
-        UserCtxInstance.login(userinfo, responseData.access_token, userinfo.exp);
-        UserCtxInstance.saveApplication({ uuid: userinfo.aud });
+          // Adicionar o token de acesso no consumidar da API
+          IamApisConfigure.setGlobalAuthorizationToken(responseData.access_token);
+          IamApisConfigure.setGlobalApplication(userinfo.aud);
+          // Regista o login no contexto do usuário
+          UserCtxInstance.login(userinfo, responseData.access_token, userinfo.exp);
+          UserCtxInstance.saveApplication({ uuid: userinfo.aud });
 
-        if (responseData.callback_uri) {
-          window.location.href = responseData.callback_uri;
-        }
-      })
+          if (responseData.callback_uri) {
+            window.location.href = responseData.callback_uri;
+          }
+        }),
+      )
       .catch((error: any) => {
         const data = error.response?.data;
 
