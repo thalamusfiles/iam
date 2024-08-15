@@ -22,10 +22,10 @@ export class UserToken extends IamBaseEntity {
   @ManyToOne(() => User, { nullable: false })
   user!: User;
 
-  @ManyToOne(() => UserLogin, { nullable: false })
+  @ManyToOne(() => UserLogin, { nullable: true })
   login!: UserLogin;
 
-  @ManyToOne(() => Application, { nullable: false })
+  @ManyToOne(() => Application, { nullable: true })
   application!: Application; //Oauth client_id
 
   @Check({ expression: 'LENGTH(ip) >=8' })
@@ -47,7 +47,7 @@ export class UserToken extends IamBaseEntity {
   @Property({ nullable: true, length: 256 })
   codeChallenge?: string;
 
-  @Check({ expression: "code_challenge_method = 'plain' or code_challenge_method = 'S256'" })
+  @Check({ expression: "code_challenge_method = 'plain' or code_challenge_method = 'S256' or (code_challenge_method = '' and name <> '' and application_uuid is null and login_uuid is null)" })
   @Property({ nullable: true, length: 16 })
   codeChallengeMethod?: string;
 
@@ -66,4 +66,7 @@ export class UserToken extends IamBaseEntity {
 
   @Property({ nullable: true })
   deletedAt?: Date;
+
+  @Property({ nullable: true, length: 128 })
+  name!: string;
 }

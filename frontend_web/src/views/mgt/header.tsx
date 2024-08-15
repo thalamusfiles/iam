@@ -11,7 +11,6 @@ import * as json from '../../../package.json';
 import { useI18N } from '../../commons/i18';
 import { historyPush } from '../../commons/route';
 import ApplicationInfo from '../../components/ApplicationInfo';
-import ThalamusLinksMenu from '../../components/NavBar/thalamus-links-menu';
 import NotificationValue, { NotificationProvider, useNotificationStore } from '../../components/Notification/ctrl';
 import UserCtxInstance, { useUserStore } from '../../store/userContext';
 
@@ -54,9 +53,6 @@ const Header: React.FC = () => {
             <NotificationProvider value={NotificationValue}>
               <NotificationBell />
             </NotificationProvider>
-            <div className="navbar-spacer" />
-
-            <ThalamusLinksMenu />
             <div className="navbar-spacer" />
 
             <NavDropdown title={<FontAwesomeIcon icon={'user-circle'} />} id="user-dd">

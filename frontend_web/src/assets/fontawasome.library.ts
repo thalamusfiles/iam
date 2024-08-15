@@ -19,6 +19,7 @@ import {
   faFile,
   faFilter,
   faHistory,
+  faKey,
   faLaptop,
   faList,
   faLockOpen,
@@ -101,4 +102,5 @@ library.add(
   faEarthAmericas,
   faLockOpen,
   faTableCells,
+  faKey
 );

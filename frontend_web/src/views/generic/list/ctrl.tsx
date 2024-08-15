@@ -159,7 +159,7 @@ export class CommonListCtx {
    * e monta os dados para serem exeibidos em tela
    */
   @action
-  search = async () => {
+  search = () => {
     this.loading = true;
 
     //Remove definição de filtros rápido e não os exibe mais em tela
@@ -168,17 +168,25 @@ export class CommonListCtx {
     //Cancela requisição anterior
     if (this.cancelRequestCallback) this.cancelRequestCallback();
 
-    try {
-      this.response = await this.execSearch();
-      this.formatList(this.response);
-    } catch (error) {
-      if (!Axios.isCancel(error)) {
-        notify.warn('An error occurred while updating the listing.', undefined, JSON.stringify(error));
-      }
-    }
+    this.execSearch()
+      .then(
+        action((response) => {
+          this.loading = false;
+          this.response = response;
 
-    this.loading = false;
+          this.formatList(response);
+        }),
+      )
+      .catch(
+        action((error) => {
+          this.loading = false;
+          if (!Axios.isCancel(error)) {
+            notify.warn('An error occurred while updating the listing.', undefined, JSON.stringify(error));
+          }
+        }),
+      );
   };
+
   // Função chamada quando é solicitado uma nova busca.
   execSearch = async (): Promise<any[]> => {
     return [];
@@ -188,6 +196,7 @@ export class CommonListCtx {
    * Formata o resultado do DataSouce
    * @param response
    */
+  @action
   formatList(response: any[]) {
     // Percore cada linha do json e formata
     this.list = response.map((responseRow) => {

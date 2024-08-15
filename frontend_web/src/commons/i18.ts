@@ -5,7 +5,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import Backend from 'i18next-http-backend';
 import { registerLocale } from 'react-datepicker';
 import { initReactI18next, useTranslation } from 'react-i18next';
-import env from '../.env';
+import env from '../.env.js';
 
 i18next
   .use(Backend)

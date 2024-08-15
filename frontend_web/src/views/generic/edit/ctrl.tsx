@@ -1,4 +1,4 @@
-import { computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
 import { findComponents, PagePluginProps, TargetForm } from '../../../commons/plugin.component';
 import { historyPush } from '../../../commons/route';
@@ -52,6 +52,7 @@ export class CommonEditCtx {
     await this.clear();
   };
 
+  @action
   clear = () => {
     this.components = [];
     this.componentsClasses = [];
@@ -61,6 +62,7 @@ export class CommonEditCtx {
   /**
    * Carrega os componentes vinculados à tela
    */
+  @action
   loadComponents = async () => {
     this.components = findComponents(this.name);
     this.componentsClasses = this.components

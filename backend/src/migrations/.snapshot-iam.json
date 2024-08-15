@@ -192,6 +192,15 @@
           "nullable": false,
           "mappedType": "string"
         },
+        "secrect": {
+          "name": "secrect",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
         "description": {
           "name": "description",
           "type": "varchar(255)",
@@ -245,6 +254,12 @@
           "expression": "LENGTH(name) >= 3",
           "definition": "check ((LENGTH(name) >= 3))",
           "columnName": "name"
+        },
+        {
+          "name": "application_secrect_check",
+          "expression": "LENGTH(secrect) >= 32",
+          "definition": "check ((LENGTH(secrect) >= 32))",
+          "columnName": "secrect"
         },
         {
           "name": "application_description_check",
@@ -1143,7 +1158,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "uuid"
         },
         "application_uuid": {
@@ -1152,7 +1167,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "uuid"
         },
         "ip": {
@@ -1263,6 +1278,16 @@
           "nullable": true,
           "length": 6,
           "mappedType": "datetime"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(128)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 128,
+          "mappedType": "string"
         }
       },
       "name": "user_token",
@@ -1309,8 +1334,8 @@
         },
         {
           "name": "user_token_code_challenge_method_check",
-          "expression": "code_challenge_method = 'plain' or code_challenge_method = 'S256'",
-          "definition": "check ((code_challenge_method = 'plain' or code_challenge_method = 'S256'))",
+          "expression": "code_challenge_method = 'plain' or code_challenge_method = 'S256' or (code_challenge_method = '' and name <> '' and application_uuid is null and login_uuid is null)",
+          "definition": "check ((code_challenge_method = 'plain' or code_challenge_method = 'S256' or (code_challenge_method = '' and name <> '' and application_uuid is null and login_uuid is null)))",
           "columnName": "code_challenge_method"
         },
         {
@@ -1349,6 +1374,7 @@
             "uuid"
           ],
           "referencedTableName": "public.user_login",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "user_token_application_uuid_foreign": {
@@ -1361,6 +1387,7 @@
             "uuid"
           ],
           "referencedTableName": "system.application",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         }
       }

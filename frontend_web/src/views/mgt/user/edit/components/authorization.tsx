@@ -31,5 +31,5 @@ addPagePlugin({
   name: 'user_authorization',
   sidebarTitle: 'Authorization',
   target: TargetForm.user_edit,
-  order: 100,
+  order: 20,
 });

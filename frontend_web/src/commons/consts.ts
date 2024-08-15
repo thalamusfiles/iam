@@ -41,6 +41,7 @@ export const IconsDef = {
   // Atividades
   tokensActive: 'mobile-alt' as IconName,
   history: 'history' as IconName,
+  tokens: 'key' as IconName,
   // Outros
   language: 'earth-americas' as IconName,
 };

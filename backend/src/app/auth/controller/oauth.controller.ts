@@ -11,7 +11,8 @@ import { OauthInfoService } from '../service/oauthinfo.service';
 import { IamValidationPipe } from '../../../commons/validation.pipe';
 import { AuthService } from '../service/auth.service';
 import { AuthOauthAuthorizeFieldsUseCase } from '../usecase/auth-oauth-authorize-fields.usecase';
-import { OauthFieldsDto, OauthTokenDto } from './dto/oauth.dto';
+import { OauthFieldsDto, OauthIntrospectionDto, OauthTokenDto } from './dto/oauth.dto';
+import jwtConfig from '../../../config/jwt.config';
 
 @Controller('auth')
 export class OauthController {
@@ -144,7 +145,7 @@ export class OauthController {
       throw new FormException(allErros);
     }
 
-    // Gera o code challeng encriptado
+    // Gera o code challeng encriptado a partir do código de verificação
     const codeChallenge = this.oauthInfoService.encriptCodeVerifierToChallenge(body.code_verifier);
     const codeChallengeEncripted = this.oauthInfoService.encriptCodeChallengWithSalt(codeChallenge, body.code);
 
@@ -159,12 +160,20 @@ export class OauthController {
     };
   }
 
+  @Get('introspection')
+  @Throttle(iamConfig.REGISTER_RATE_LIMITE, iamConfig.REGISTER_RATE_LIMITE_RESET_TIME)
+  async oauth2Introspection(@Req() request: RequestInfo, @Headers('authorization') authorization: string): Promise<OauthIntrospectionDto> {
+    const accessToken = authorization.replace('Bearer ', '');
+    const { scope, accessToken: access_token } = await this.authService.findUserTokenByAccess(accessToken);
+    return { scope, access_token };
+  }
+
   @Get('.well-known/openid-configuration')
   async openIDConfig() {
     this.logger.log('openIDConfig');
 
     return {
-      issuer: 'thalamus_iam',
+      issuer: jwtConfig.ISS,
       authorization_endpoint: iamConfig.HOST + '/auth/oauth2/authorize',
       token_endpoint: iamConfig.HOST + '/auth/oauth2/token',
       userinfo_endpoint: null,

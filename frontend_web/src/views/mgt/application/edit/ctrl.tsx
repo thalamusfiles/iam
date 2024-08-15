@@ -1,4 +1,4 @@
-import { ApplicationCRUDDatasource } from '@thalamus/iam-consumer';
+import { ApplicationCRUDDatasource } from '@piemontez/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { ErrosAsList, getFormExceptionErrosToObject } from '../../../../commons/error';
 import { TargetForm } from '../../../../commons/plugin.component';

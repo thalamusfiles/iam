@@ -1,4 +1,4 @@
-import { ApplicationInfo, AuthDataSource, IamApisConfigure, OauthDataSource, ScopeInfo } from '@thalamus/iam-consumer';
+import { ApplicationInfo, AuthDataSource, IamApisConfigure, OauthDataSource, ScopeInfo } from '@piemontez/iam-consumer';
 import { Buffer } from 'buffer';
 import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';

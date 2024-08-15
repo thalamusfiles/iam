@@ -1,4 +1,4 @@
-import { ApplicationCRUDDatasource, ApplicationInfo } from '@thalamus/iam-consumer';
+import { ApplicationCRUDDatasource, ApplicationInfo } from '@piemontez/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
 
@@ -29,9 +29,11 @@ export class ApplicationInfoCtrl {
   loadApplicationInfo = async () => {
     this.datasource
       .findById(this.applicationUuid!)
-      .then((response) => {
-        this.appInfo = response;
-      })
+      .then(
+        action((response) => {
+          this.appInfo = response;
+        }),
+      )
       .catch(() => {});
   };
 }

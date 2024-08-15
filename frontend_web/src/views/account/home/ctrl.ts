@@ -1,4 +1,4 @@
-import { MeDataSource, UserInfo } from '@thalamus/iam-consumer';
+import { MeDataSource, UserInfo } from '@piemontez/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
 
@@ -24,10 +24,12 @@ export class AccountHomeCtrl {
 
   @action
   loadUsernInfo = () => {
-    new MeDataSource().me().then((response) => {
-      const responseData = response.data;
-      this.me = responseData;
-    });
+    new MeDataSource().me().then(
+      action((response) => {
+        const responseData = response.data;
+        this.me = responseData;
+      }),
+    );
   };
 }
 

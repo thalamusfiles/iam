@@ -10,7 +10,7 @@ import { UserLogin, UserLoginType } from '../../../model/UserLogin';
 import { UserToken } from '../../../model/UserToken';
 import { FormException } from '../../../commons/form.exception';
 import { AuthLoginRespDto } from '../controller/dto/auth.dto';
-import { IdTokenInfo } from '../passaport/access-user-info';
+import { IdTokenInfo, isIdTokenInfo } from '../passaport/access-user-info';
 import { CryptService } from './crypt.service';
 import { Application } from '../../../model/System/Application';
 import { Role } from '../../../model/Role';
@@ -18,13 +18,14 @@ import { Role } from '../../../model/Role';
 export type LoginInfo = {
   userUuid: string;
   userLoginUuid: string;
+  name: string;
+  scope: string;
 
   clientId: string;
   userAgent: string;
   ip: string;
   responseType: string;
   redirectUri: string;
-  scope: string;
   codeChallenge: string;
   codeChallengeMethod: string;
 
@@ -53,13 +54,14 @@ export class AuthService {
     return {
       userUuid: null,
       userLoginUuid: null,
+      name: null,
+      scope: null,
 
       clientId: null,
       userAgent: null,
       ip: null,
       responseType: null,
       redirectUri: null,
-      scope: null,
       codeChallenge: null,
       codeChallengeMethod: null,
 
@@ -109,7 +111,7 @@ export class AuthService {
     this.logger.verbose('Remove Old Tokens');
 
     const user = this.userRepository.getReference(userUuid);
-    await this.userTokenRepository.nativeUpdate({ user, userAgent, ip }, { deletedAt: new Date() });
+    await this.userTokenRepository.nativeUpdate({ user, userAgent, ip, name: { $eq: null } }, { deletedAt: new Date() });
   }
 
   /**
@@ -150,6 +152,22 @@ export class AuthService {
     }
 
     const userToken = await this.userTokenRepository.findOne(query, { populate: ['login', 'login.user'], orderBy: { expiresIn: 'DESC' } });
+
+    return this.validateUserToken(userToken) ? userToken : null;
+  }
+
+  /**
+   * Carrega o token do usuário a partir do accessToken
+   * @param username
+   * @param password
+   * @returns
+   */
+  async findUserTokenByAccess(accessToken: string): Promise<UserToken | null> {
+    this.logger.verbose('findUserTokenBySession');
+
+    const query: FilterQuery<UserToken> = { accessToken };
+
+    const userToken = await this.userTokenRepository.findOneOrFail(query, { populate: ['login', 'login.user'], orderBy: { expiresIn: 'DESC' } });
 
     return this.validateUserToken(userToken) ? userToken : null;
   }
@@ -269,7 +287,9 @@ export class AuthService {
   validateUserToken(userToken: UserToken): boolean {
     this.logger.verbose('validateUserToken');
 
-    const notExpiresIn = DateTime.now() < DateTime.fromJSDate(userToken?.expiresIn);
+    const notExpiresIn = userToken?.expiresIn //
+      ? DateTime.now() < DateTime.fromJSDate(userToken?.expiresIn)
+      : true;
     return userToken && !userToken?.deletedAt && notExpiresIn;
   }
 
@@ -283,14 +303,15 @@ export class AuthService {
     this.userTokenRepository.create({
       // USER
       user: this.userRepository.getReference(loginInfo.userUuid),
-      login: this.userLoginRepository.getReference(loginInfo.userLoginUuid),
+      login: loginInfo.userLoginUuid ? this.userLoginRepository.getReference(loginInfo.userLoginUuid) : null,
+      name: loginInfo.name,
+      scope: loginInfo.scope,
       // OAUTH
       application: loginInfo.clientId,
       ip: loginInfo.ip,
       userAgent: loginInfo.userAgent,
       responseType: loginInfo.responseType,
       redirectUri: loginInfo.redirectUri,
-      scope: loginInfo.scope,
       codeChallenge: loginInfo.codeChallenge,
       codeChallengeMethod: loginInfo.codeChallengeMethod || null,
       // TOKENS
@@ -319,7 +340,7 @@ export class AuthService {
    * @param appInfo
    * @returns
    */
-  createAccessToken(user: User, clientId: string): string {
+  createAccessToken(user: User | IdTokenInfo, clientId: string): string {
     const salt = this.cryptService.encrypt(
       this.cryptService.generateRandomString(12),
       iamConfig.IAM_PASS_SECRET_SALT,
@@ -338,14 +359,17 @@ export class AuthService {
    * @param appInfo
    * @returns
    */
-  createIdToken(user: User, clientId: string): string {
+  createIdToken(user: User | IdTokenInfo, clientId: string): string {
     const info = this.userInfo(user, clientId);
     return this.generateJwt(info, jwtConfig.MAX_AGE);
   }
 
-  private userInfo(user: User, clientId: string): IdTokenInfo {
+  private userInfo(user: User | IdTokenInfo, clientId: string): IdTokenInfo {
     this.logger.verbose('userInfo');
 
+    if (isIdTokenInfo(user)) {
+      return user;
+    }
     return {
       iss: jwtConfig.ISS,
       iat: DateTime.now().valueOf(),

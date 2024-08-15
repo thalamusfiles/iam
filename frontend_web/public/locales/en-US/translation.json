@@ -20,11 +20,11 @@
   "footer": {},
 
   "login": {
-    "title":"Thalamus IAM",
-    "subtitle":"Identity and Access Management.",
+    "title":"IAM",
+    "subtitle":"Identity and Access Management",
     "cardindo":"Type your username and password to enter the system.",
     "application": "Application",
-    "application-info": "After login, you will be redirected to the application.",
+    "application-info": "After login, you will be redirected to the application",
     "permissions-info": "After logging in, you will share various permissions with the application. Click here to view them.",
     "username": "E-mail",
     "typeusername": "Type your e-mail",
@@ -40,9 +40,9 @@
     }
   },
   "register": {
-    "title":"Thalamus IAM",
-    "subtitle":"New user registration.",
-    "cardindo":"A single registration for all Thalamus applications..",
+    "title":"IAM",
+    "subtitle":"New user registration",
+    "cardindo":"A single registration for all applications",
     "name": "Name and surname",
     "typename": "Type your name and last name",
     "username": "E-mail",
@@ -55,15 +55,25 @@
   },
   "changeapplication": {
     "title": "Aplication to manager",
-    "subtitle": "Select the application that you would like to manager.",
+    "subtitle": "Select the application that you would like to manager",
     "application": "Application",
     "description": "Description of application"
   },
   "account" : {
     "home": {
       "title": "Welcome {{name}}!",
-      "subtitle": "Your account is ready to be used in Thalamus applications.",
+      "subtitle": "Your account is ready to be used in applications.",
       "accessmsg": "Your access identity is {{username}}."
+    },
+    "tokens": {
+      "title": "Access tokens",
+      "description": "Listing of access tokens and their granted permissions",
+      "saveYourToken": "Make sure you copy this access token. You won't be able to see it again!",
+      "name": "Token:",
+      "grant": "Grant/Scope:",
+      "accessToken": "Access Token:",
+      "new.title": "New access tokens",
+      "new.description": "Enter the permissions you want to grant to the token. You can change permissions after completing registration"
     }
   },
   "devices": {
@@ -86,24 +96,26 @@
     },
     "edit": {
       "about.title": "Application",
-      "about.description": "Enter the fields below to create/modify the application.",
+      "about.description": "Enter the fields below to create/modify the application",
       "about.initials_append": "After saving this field cannot be changed",
       "managers.title": "Managers",
-      "managers.description": "Users allowed to change this application's scopes/profiles and permissions.",
+      "managers.description": "Users allowed to change this application's scopes/profiles and permissions",
       "manager": "Manager",
       "username": "Logins"
-    }
+    },
+    "name": "Name",
+    "description": "Description"
   },
   "role": {
     "list": {
       "title": "Scopes / Roles / Profiles / Positions",
-      "about.description": "Listing of scopes and profiles..",
+      "about.description": "Listing of scopes and profiles.",
       "initials": "Initials",
       "name": "Name"
     },
     "edit": {
       "about.title": "Scope",
-      "about.description": "Enter the fields below to create/modify the scope.",
+      "about.description": "Enter the fields below to create/modify the scope",
       "about.initials_append": "After saving this field cannot be changed",
       "permissions.title": "Permission",
       "permissions.description": "Application permissions listing available for association."
@@ -116,9 +128,9 @@
     },
     "edit": {
       "about.title": "Permission",
-      "about.description": "Enter the fields below to create/modify the permission.",
+      "about.description": "Enter the fields below to create/modify the permission",
       "about.application_append": "After saving this field cannot be changed",
-      "about.initials_append": "The information in this field is composed by the combination of the fields ON and Action.",
+      "about.initials_append": "The information in this field is composed by the combination of the fields ON and Action",
       "roles.title": "Scopes/ Roles",
       "roles.description": "List of associated scopes/profiles."
     }
@@ -136,7 +148,7 @@
     "brand": "IAM",
     "home": "Home",
     "help": "Help",
-    "search": "Search for...",
+    "search": "Search for..",
     "actions": "Actions",
     "quickaccess": "Quick Access",
     "language": "Language",
@@ -155,13 +167,15 @@
       "systems": "Systems",
       "applications": "Applications",
       "user": "Users",
-      "user_description": "Listing and visualization of users. Profiles and permissions associated with users.",
+      "user_description": "Listing and visualization of users. Profiles and permissions associated with users",
       "roles": "Scopes / Roles / Profiles / Positions",
-      "roles_description": "Listing and editing system scopes and profiles. Links to the permissions and list of users associated with the profile.",
+      "roles_description": "Listing and editing system scopes and profiles. Links to the permissions and list of users associated with the profile",
       "permissions": "Permissions / Resources",
-      "permissions_description": "Listing and editing access permissions to application resources.",
+      "permissions_description": "Listing and editing access permissions to application resources",
       "my_devices_connected": "My connected devices",
-      "my_logins": "My logins performed"
+      "my_logins": "My logins performed",
+      "access_tokens": "Access tokens",
+      "home": "Home"
     }
   },
   "info": {
@@ -193,7 +207,7 @@
   "generic": {
     "list": {
       "save-list.title": "Save List",
-      "save-list.desc": "Review the fields and name the new tab. Click save to register the listing definitions.",
+      "save-list.desc": "Review the fields and name the new tab. Click save to register the listing definitions",
       "name": "Nome da tabela",
       "empty": "Empty list"
     },
@@ -219,7 +233,9 @@
       "roles.title": "Scopes / Roles / Profiles / Positions",
       "roles.description": "A user can have one or more roles in the system",
       "permissions.title": "Permissões",
-      "permissions.description": "Listing of permissions associated with this user. Public applications do not require permission release."
+      "permissions.description": "Listing of permissions associated with this user. Public applications do not require permission release.",
+      "application.title": "Application / Manager",
+      "application.description": "List of applications that the user is managing"
     }
   }
 }

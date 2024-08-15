@@ -1,4 +1,4 @@
-import { UserCRUDDatasource } from '@thalamus/iam-consumer';
+import { UserCRUDDatasource } from '@piemontez/iam-consumer';
 import Form from 'react-bootstrap/Form';
 import { PickersNames } from '../../commons/attribute-type';
 import { defaultPageSize } from '../../commons/consts';

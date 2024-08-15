@@ -1,14 +1,20 @@
-import { Controller, Delete, Get, Logger, Param, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Post, Get, Logger, Param, Req, UseGuards, Ip, Headers } from '@nestjs/common';
 import { RequestInfo } from '../../../commons/request-info';
 import { AccessGuard } from '../../auth/passaport/access.guard';
-import { TokenInfo, TokenService } from '../service/token.service';
+import { TokenService } from '../service/token.service';
+import { TokenInfo, TokenPermanentDto } from './dto/token.dto';
+import { AuthService } from '../../auth/service/auth.service';
 
 @UseGuards(AccessGuard)
 @Controller('iam/token')
 export class TokenController {
   private readonly logger = new Logger(TokenController.name);
 
-  constructor(private readonly userService: TokenService) {
+  constructor(
+    //
+    private readonly tokenService: TokenService,
+    private readonly authService: AuthService,
+  ) {
     this.logger.log('starting');
   }
 
@@ -17,15 +23,7 @@ export class TokenController {
     this.logger.log('find');
 
     const userUuid = request.user.sub;
-    return await this.userService.findAll(userUuid, 0, 1000);
-  }
-
-  @Delete(':uuid')
-  async delete(@Param('uuid') uuid: string, @Req() request: RequestInfo): Promise<void> {
-    this.logger.log('delete');
-
-    const userUuid = request.user.sub;
-    return await this.userService.delete(userUuid, uuid);
+    return await this.tokenService.findAll(userUuid, 0, 1000);
   }
 
   @Get('active')
@@ -33,6 +31,57 @@ export class TokenController {
     this.logger.log('active');
 
     const userUuid = request.user.sub;
-    return await this.userService.activeTokensByUser(userUuid);
+    return await this.tokenService.activeTokensByUser(userUuid);
+  }
+
+  @Get('permanent')
+  async permanent(@Req() request: RequestInfo): Promise<TokenPermanentDto[]> {
+    this.logger.log('permanent');
+
+    const userUuid = request.user.sub;
+    return await this.tokenService.permanentTokensByUser(userUuid);
+  }
+
+  @Post('permanent')
+  async createOrEditPermanent(
+    @Body() body: TokenPermanentDto,
+    @Req() request: RequestInfo,
+    @Headers('User-Agent') userAgent,
+    @Ip() ip: string,
+  ): Promise<TokenPermanentDto> {
+    this.logger.log('newPermanent');
+
+    const user = request.user;
+    const accessToken = this.authService.createAccessToken(user, null);
+
+    const loginInfo = this.authService.startLoginInfo({
+      userAgent,
+      ip,
+      userUuid: user.sub,
+      userLoginUuid: null,
+      clientId: null,
+      responseType: 'null',
+      redirectUri: '',
+      codeChallengeMethod: '',
+      accessToken,
+      name: body.name,
+      scope: body.scope,
+    });
+    await this.authService.saveUserToken(loginInfo);
+
+    return {
+      uuid: body.uuid,
+      name: body.name,
+      scope: body.scope,
+      accessToken,
+    };
+  }
+
+  @Delete(':uuid')
+  async delete(@Param('uuid') uuid: string, @Req() request: RequestInfo): Promise<void> {
+    this.logger.log('delete');
+
+    const userUuid = request.user.sub;
+    return await this.tokenService.delete(userUuid, uuid);
   }
 }

@@ -1,10 +1,10 @@
 {
-  "name": "thalamus_iam",
+  "name": "iam",
   "version": "0.1.1",
-  "author": "Thalamus",
+  "author": "Rafael Alexandre Piemontez",
   "since": "2022",
-  "url": "https://thalamus.digital/",
-  "docUrl": "https://docs.iam.thalamus.digital/",
+  "url": "",
+  "docUrl": "",
   "private": false,
   "engines": {
     "node": ">=18.0"
@@ -16,7 +16,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "@thalamus/iam-consumer": "file:../consumer/node",
+    "@piemontez/iam-consumer": "file:../consumer/node",
     "@types/luxon": "^3.2.0",
     "@types/node": "^16.18.16",
     "@types/numeral": "^2.0.2",

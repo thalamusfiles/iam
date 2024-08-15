@@ -39,3 +39,12 @@ export type OauthTokenDto = {
   id_token: string;
   access_token: string;
 };
+export class OauthIntrospectionDto {
+  @Expose()
+  @IsString()
+  access_token: string;
+
+  @Expose()
+  @IsString()
+  scope: string;
+}

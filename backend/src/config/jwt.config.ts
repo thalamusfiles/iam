@@ -3,7 +3,7 @@ const defaultConfig = {
 };
 
 const jwtConfig = {
-  ISS: 'thalamus_iam',
+  ISS: 'iam',
   SECRET: process.env.JWT_SECRET || defaultConfig.SECRET,
   IGNORE_EXPIRATION: false,
   MAX_AGE: 60 * 60 * 24,

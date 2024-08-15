@@ -135,6 +135,7 @@ export class WmsPicker<T = unknown> extends React.Component<T & PickerProps> {
         contents: props.options,
       };
     }
+    return {};
   }
 
   setOptions = (options: WmsOptionValue[]) => {

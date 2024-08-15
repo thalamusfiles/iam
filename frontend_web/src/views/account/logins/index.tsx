@@ -19,7 +19,7 @@ const LoginsPage: React.FC = () => {
   return (
     <LoginsProvider value={ctrl}>
       <Routes>
-        <Route path={'/modal/alllogins'} element={<LoginsPageModalProvided />} />
+        <Route path={'/modal/alllogins'} element={<LoginsModalPageProvided />} />
       </Routes>
 
       <LoginsPageProvided />
@@ -49,7 +49,7 @@ const LoginsPageProvided: React.FC = () => {
  * Modal com todos os logins realizados
  * @returns
  */
-const LoginsPageModalProvided: React.FC = () => {
+const LoginsModalPageProvided: React.FC = () => {
   const __ = useI18N();
 
   return (

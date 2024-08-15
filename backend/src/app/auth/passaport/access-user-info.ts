@@ -5,9 +5,13 @@ export class IdTokenInfo {
   // Expires In
   exp?: number;
 
-  sub: string; /*sub*/
+  sub: string; /*user uuid*/
 
   name: string;
   //Aplication / ClientId
   aud: string;
 }
+
+export const isIdTokenInfo = (value: any): value is IdTokenInfo => {
+  return value.sub;
+};

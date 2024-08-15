@@ -3,6 +3,7 @@ import { RouteDefinitions } from '../../commons/route';
 import DevicesConnectedPage from '../account/devices';
 import HomeAccount from '../account/home';
 import LoginsPage from '../account/logins';
+import TokensPage from './tokens/list';
 
 /**
  * Definições das rotas.
@@ -14,6 +15,7 @@ export const routes: RouteDefinitions = {
   //
   devices_connected: { title: '', path: '/devices/connected', component: DevicesConnectedPage },
   logins_history: { title: '', path: '/logins/history', component: LoginsPage },
+  tokens: { title: '', path: '/tokens', component: TokensPage },
 };
 
 /**

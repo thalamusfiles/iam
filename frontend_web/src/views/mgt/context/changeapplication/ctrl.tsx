@@ -1,4 +1,4 @@
-import { ApplicationCRUDDatasource, IamApisConfigure } from '@thalamus/iam-consumer';
+import { ApplicationCRUDDatasource, IamApisConfigure } from '@piemontez/iam-consumer';
 import { action, makeObservable, observable } from 'mobx';
 import { TargetForm } from '../../../../commons/plugin.component';
 import { historyPush } from '../../../../commons/route';
